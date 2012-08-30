@@ -29,7 +29,7 @@ Or install it yourself as:
 
 class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
-    @window = HomeScreen.open_in_navigation
+    @window = HomeScreen.open_with_nav_bar
 
     true
   end

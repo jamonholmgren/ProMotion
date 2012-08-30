@@ -22,7 +22,7 @@ Typical /app file structure:
 
 The "views" folder contains custom view components, written in normal RubyMotion. "models" can be whatever ORM you're using.
 
-### What about MVC????
+### What about MVC?
 
 I'm a big believer in MVC (I'm a Rails developer, too). I found that most of the time working in RubyMotion seems to happen
 in the ViewControllers. This pattern may be best for simpler, smaller apps.

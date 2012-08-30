@@ -77,9 +77,9 @@ class HomeScreen < ProMotion::Screen
   # You can also refresh the table data manually by calling `self.reload_table_data`
   def table_data
     # You can create a new table section here and add cells to it like so:
-    @account_section = addSection(label: "Your Account")
-    @account_section.addCell(title: "Edit Profile", action: :edit_profile, arguments: { account_id: @account.id })
-    @account_section.addCell(title: "Log Out", action: :log_out)
+    @account_section = add_section(label: "Your Account")
+    @account_section.add_cell(title: "Edit Profile", action: :edit_profile, arguments: { account_id: @account.id })
+    @account_section.add_cell(title: "Log Out", action: :log_out)
 
     # Or just pass back an array with everything defined and we'll build it for you:
     [{

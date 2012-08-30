@@ -6,6 +6,20 @@ ProMotion is a new way to organize RubyMotion apps. Instead of dealing
 with UIViewControllers and UIViews, you work with Screens. Screens are
 a logical way to think of your app.
 
+Typical /app file structure:
+
+* app
+  * screens
+    * photos
+      * list_photos_screen.rb
+      * show_photo_screen.rb
+      * edit_photo_screen.rb
+    * home_screen.rb
+    * settings_screen.rb
+  * models
+  * views (custom views)
+  * app_delegate.rb
+
 ## Installation
 
 Add this line to your application's Gemfile:

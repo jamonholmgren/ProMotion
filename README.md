@@ -116,10 +116,18 @@ end
 @edit_button.on(:tap, :edit_pushed, id: 4)
 ```
 
-To open other screens, just call the built-in "open" method on a new instance:
+To open other screens, just call the built-in "open" method on a new instance or class:
 
 ```ruby
 def settings_button_tapped
+  # ...with a class...
+  open SettingsScreen
+
+  # ...or with an instance...
+  @settings_screen = SettingsScreen.new(some_attr: 4)
+  open @settings_screen
+
+  # ...or if you like...
   open SettingsScreen.new
 end
 ```

@@ -45,13 +45,13 @@ Or install it yourself as:
 
 ## Usage
 
-It's easy to load your first view with a navigation bar (the view is opened in a UINavigationController):
+It's easy to load your first screen with a navigation bar (the screen is opened in a UINavigationController behind the scenes):
 
 ```ruby
-# In /app/app_delegate.rb:
-class AppDelegate
+# In /app/app_delegate.rb (note that AppDelegate extends ProMotion::AppDelegate)
+class AppDelegate < ProMotion::AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
-    @window = HomeScreen.open_with_nav_bar
+    open_with_nav_bar HomeScreen
 
     true
   end
@@ -66,7 +66,7 @@ class HomeScreen < ProMotion::Screen
   # Set the title for use in nav bars and other containers
   title "Home"
 
-  # Called when this view is first "opened" and allows you to set up your view
+  # Called when this screen is first "opened" and allows you to set up your view components
   def on_load
     @default_image = add_image(:default_image, src: "default.png", frame: [10, 50, 100, 100])
   end
@@ -81,7 +81,6 @@ class HomeScreen < ProMotion::Screen
   # Set the title for use in nav bars and other containers
   title "Home"
 
-  # Called when this view is first "opened" and allows you to set up your view
   def on_load
     # Add view items as instance vars so you can access them in other methods
 
@@ -100,7 +99,7 @@ class HomeScreen < ProMotion::Screen
 end
 ```
 
-View items can be bound to events (like jQuery) and run methods or run a block.
+View components can be bound to events (like jQuery) and run methods or run a block.
 
 ```ruby
 # settings_pushed is executed when the button is tapped
@@ -117,11 +116,11 @@ end
 @edit_button.on(:tap, :edit_pushed, id: 4)
 ```
 
-To open other screens, just call their "open" method:
+To open other screens, just call the built-in "open" method on a new instance:
 
 ```ruby
 def settings_button_tapped
-  SettingsScreen.open
+  open SettingsScreen.new
 end
 ```
 
@@ -146,7 +145,7 @@ class HomeScreen < ProMotion::Screen
   # ...
 
   def settings_button_tapped
-    SettingsScreen.open(user_type: "Admin")
+    open SettingsScreen.new(user_type: "Admin")
   end
 end
 ```
@@ -156,7 +155,7 @@ When you're done with a screen, just close it:
 ```ruby
 def save_and_close
   if @model.save
-    self.close
+    close
   end
 end
 ```
@@ -168,7 +167,7 @@ class SettingsScreen < ProMotion::Screen
   # ...
 
   def save_and_close
-    self.close(saved_changes: true)
+    close(saved_changes: true)
   end
 end
 
@@ -238,7 +237,7 @@ class HomeScreen < ProMotion::Screen
   # Defaults to :normal. :plain_table, :grouped_table are options.
   screen_type :plain_table
 
-  # Called when this view is first "opened" and allows you to set up your view
+  # Called when this screen is first "opened" and allows you to set up your view components
   def on_load
     # Add view items as instance vars so you can access them in other methods
     # This adds a right nav bar button. on_tap allows you to set a method to call when it's tapped.
@@ -294,12 +293,12 @@ class HomeScreen < ProMotion::Screen
     # Assuming some sort of ORM, like ParseModel
     @my_model.save
     
-    # When you want to close the current view (usually in a navigation controller), just run this.
-    self.close
+    # When you want to close the current screen (usually in a navigation controller), just run this.
+    close
 
-    # You can also pass back arguments to the previous view as you close.
+    # You can also pass back arguments to the previous screen as you close.
     # If the previous screen has an `on_return` method, this will be passed into that method
-    self.close(did_stuff: true)
+    close(did_stuff: true)
   end
 
   # This is called any time a screen "above" this screen is closed. args = {} is required.
@@ -312,17 +311,20 @@ class HomeScreen < ProMotion::Screen
   # Custom method
   def settings_pushed
     # Just open a settings screen
-    SettingsScreen.open
+    open SettingsScreen
+
+    # If you prefer to pass in an instance, that works too:
+    open SettingsScreen.new
   end
 
   def close_pushed
-    self.close
+    close
   end
 
   # Custom method with passed in arguments
   def edit_pushed(args)
     # Open a screen and set some of its attributes
-    EditScreen.open(id: args[:id])
+    open EditScreen.new(id: args[:id])
   end
 end
 ```

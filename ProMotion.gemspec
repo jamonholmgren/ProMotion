@@ -4,8 +4,10 @@ require File.expand_path('../lib/ProMotion/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Jamon Holmgren"]
   gem.email         = ["jamon@clearsightstudio.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = "ProMotion is a new way to organize RubyMotion apps. Proof Of Concept right now."
+  gem.summary       = "ProMotion is a new way to organize RubyMotion apps. Instead of dealing
+                        with UIViewControllers and UIViews, you work with Screens. Screens are
+                        a logical way to think of your app."
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($\)

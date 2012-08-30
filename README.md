@@ -38,69 +38,99 @@ end
 # In /app/screens/home_screen.rb:
 
 class HomeScreen < ProMotion::Screen
-  attr_accessor :id
+  # Accessors allow screens to set parameters when opening this screen
+  attr_accessor :foo
 
+  # Set the title for use in nav bars and other containers
   title "Home"
-  screenType :plain_table
 
+  # Defaults to :normal. :plain_table, :grouped_table are options.
+  screen_type :plain_table
+
+  # Called when this view is first "opened" and allows you to set up your view
   def on_load
+    # Add view items as instance vars so you can access them in other methods
+    # This adds a right nav bar button. on_tap allows you to set a method to call when it's tapped.
     @right_bar_button = add_right_nav_button(label: "Save", on_tap: :save)
 
+    # Helper function for adding a button
     @settings_button = add_button(label: "Settings", frame: [10, 10, 100, 30])
-    @settings_button.on(:tap, :settings_pushed)
-    @settings_button.on(:tapHold, :settings_held)
     
+    # View items can be bound to events (like jQuery) and run methods or run a block.
+    @settings_button.on(:tap, :settings_pushed)
+    @settings_button.on(:tapHold) do
+      # Do something
+    end
+    
+    # Helper function for adding an image
     @default_image = add_image(:default_image, src: "default.png", frame: [10, 50, 100, 100])
     
+    # This button passes in arguments to the method when it's tapped
     @edit_button = add_button(label: "Edit", frame: [10, 10, 100, 30])
     @edit_button.on(:tap, :edit_pushed, id: 4)
 
+    # You can also add custom UIViews through the add_view method.
     @custom_view = add_view(ChatView.alloc.initWithFrame(CGRectMake(10, 300, 40, 40)))
   end
 
+  # If you define your screen_type as some sort of table, this gets called to get the data. 
+  # You can also refresh the table data manually by calling `self.reload_table_data`
   def table_data
-    # You can create a new table section here and add cells to it
+    # You can create a new table section here and add cells to it like so:
     @account_section = addSection(label: "Your Account")
     @account_section.addCell(title: "Edit Profile", action: :edit_profile, arguments: { account_id: @account.id })
     @account_section.addCell(title: "Log Out", action: :log_out)
 
-    # Or just pass back an array with everything defined and we'll build it for you
+    # Or just pass back an array with everything defined and we'll build it for you:
     [{
       title: "Your Account",
       cells: [
-        { title: "Edit Profile", action: :editProfile },
-        { title: "Log Out", action: :logOut },
-        { title: "Find Friends", action: :findFriends },
-        { title: "Sharing Settings", action: :sharingSettings },
-        { title: "Notification Settings", action: :notificationSettings }
+        { title: "Edit Profile", action: :edit_profile },
+        { title: "Log Out", action: :log_out },
+        { title: "Notification Settings", action: :notification_settings }
       ]
     }, {
       title: "App Stuff",
       cells: [
-        { title: "About", action: :showAbout },
-        { title: "Feedback", action: :showFeedback }
+        { title: "About", action: :show_about },
+        { title: "Feedback", action: :show_feedback }
       ]
     }]
   end
 
+  # Custom method, invoked when tapping something with this as the action
   def save
+    # Assuming some sort of ORM, like ParseModel
     @my_model.save
+    
+    # When you want to close the current view (usually in a navigation controller), just run this.
     self.close
+
+    # You can also pass back arguments to the previous view as you close.
+    # If the previous screen has an `on_return` method, this will be passed into that method
+    self.close(did_stuff: true)
   end
 
+  # This is called any time a screen "above" this screen is closed. args = {} is required.
+  def on_return(args = {})
+    if args[:did_stuff]
+      # Refresh?
+    end
+  end
+
+  # Custom method
   def settings_pushed
+    # Just open a settings screen
     SettingsScreen.open
-  end
-
-  def settings_held
-    @default_image.animate_to([10, 150, 100, 100])
   end
 
   def close_pushed
     self.close
   end
 
+  # Custom method with passed in arguments
   def edit_pushed(args)
+    # Open a screen and set some of its attributes
     EditScreen.open(id: args[:id])
   end
 end

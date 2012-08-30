@@ -45,11 +45,10 @@ Or install it yourself as:
 
 ## Usage
 
-
+It's easy to load your first view with a navigation bar (the view is opened in a UINavigationController):
 
 ```ruby
 # In /app/app_delegate.rb:
-
 class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     @window = HomeScreen.open_with_nav_bar
@@ -57,7 +56,176 @@ class AppDelegate
     true
   end
 end
+```
 
+Screens are pretty straightforward. You extend ProMotion::Screen and provide a title and an on_load method.
+
+```ruby
+# In /app/screens/home_screen.rb:
+class HomeScreen < ProMotion::Screen
+  # Set the title for use in nav bars and other containers
+  title "Home"
+
+  # Called when this view is first "opened" and allows you to set up your view
+  def on_load
+    @default_image = add_image(:default_image, src: "default.png", frame: [10, 50, 100, 100])
+  end
+end
+```
+
+In on_load, you can add images, buttons, labels, custom views to your screen.
+
+```ruby
+# In /app/screens/home_screen.rb:
+class HomeScreen < ProMotion::Screen
+  # Set the title for use in nav bars and other containers
+  title "Home"
+
+  # Called when this view is first "opened" and allows you to set up your view
+  def on_load
+    # Add view items as instance vars so you can access them in other methods
+
+    # This adds a right nav bar button. on_tap allows you to set a method to call when it's tapped.
+    @right_bar_button = add_right_nav_button(label: "Save", on_tap: :save)
+
+    # Helper function for adding a button
+    @settings_button = add_button(label: "Settings", frame: [10, 10, 100, 30])
+    
+    # Helper function for adding an image
+    @default_image = add_image(:default_image, src: "default.png", frame: [10, 50, 100, 100])
+    
+    # You can also add custom UIViews through the add_view method.
+    @custom_view = add_view(ChatView.alloc.initWithFrame(CGRectMake(10, 300, 40, 40)))
+  end
+end
+```
+
+View items can be bound to events (like jQuery) and run methods or run a block.
+
+```ruby
+# settings_pushed is executed when the button is tapped
+@settings_button = add_button(label: "Settings", frame: [10, 10, 100, 30])
+@settings_button.on(:tap, :settings_pushed)
+
+# This demonstrates a block
+@settings_button.on(:tap) do
+  # Do something
+end
+
+# This button passes in arguments to the method when it's tapped
+@edit_button = add_button(label: "Edit", frame: [10, 10, 100, 30])
+@edit_button.on(:tap, :edit_pushed, id: 4)
+```
+
+To open other screens, just call their "open" method:
+
+```ruby
+def settings_button_tapped
+  SettingsScreen.open
+end
+```
+
+You can pass in arguments to those screens if they have accessors:
+
+```ruby
+# /app/screens/settings_screen.rb
+class SettingsScreen < ProMotion::Screen
+  attr_accessor :user_type
+
+  def on_load
+    if self.user_type == "Admin"
+      # Stuff
+    end
+  end
+
+  # ...
+end
+
+# /app/screens/home_screen.rb
+class HomeScreen < ProMotion::Screen
+  # ...
+
+  def settings_button_tapped
+    SettingsScreen.open(user_type: "Admin")
+  end
+end
+```
+
+When you're done with a screen, just close it:
+
+```ruby
+def save_and_close
+  if @model.save
+    self.close
+  end
+end
+```
+
+If you want to pass arguments back to the previous screen, go for it.
+
+```ruby
+class SettingsScreen < ProMotion::Screen
+  # ...
+
+  def save_and_close
+    self.close(saved_changes: true)
+  end
+end
+
+class MainScreen < ProMotion::Screen
+  # ...
+
+  def on_return(args = {})
+    if args[:saved_changes]
+      self.reload_something
+    end
+  end
+end
+```
+
+You can create sectioned table screens easily.
+
+```ruby
+class HomeScreen < ProMotion::Screen
+  title "Home"
+
+  # Defaults to :normal. :plain_table, :grouped_table are options.
+  screen_type :grouped_table
+
+  def on_load
+    # No need to set anything up, really
+  end
+
+  # If you define your screen_type as some sort of table, this gets called to get the data. 
+  # You can also refresh the table data manually by calling `self.reload_table_data`
+  def table_data
+    # You can create a new table section here and add cells to it like so:
+    @account_section = add_section(label: "Your Account")
+    @account_section.add_cell(title: "Edit Profile", action: :edit_profile, arguments: { account_id: @account.id })
+    @account_section.add_cell(title: "Log Out", action: :log_out)
+
+    # Or just pass back an array with everything defined and we'll build it for you:
+    [{
+      title: "Your Account",
+      cells: [
+        { title: "Edit Profile", action: :edit_profile },
+        { title: "Log Out", action: :log_out },
+        { title: "Notification Settings", action: :notification_settings }
+      ]
+    }, {
+      title: "App Stuff",
+      cells: [
+        { title: "About", action: :show_about },
+        { title: "Feedback", action: :show_feedback }
+      ]
+    }]
+  end
+end
+```
+
+Here's a full demo of a screen:
+
+```ruby
 # In /app/screens/home_screen.rb:
 
 class HomeScreen < ProMotion::Screen

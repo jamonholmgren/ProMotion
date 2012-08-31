@@ -23,10 +23,14 @@ module ProMotion
       tab_bar_controller = UITabBarController.alloc.init
 
       view_controllers = []
-      
+      $stderr.puts screens.to_s
       screens.each do |s|
-        s = s.new if s.respond_to? :new
-        view_controllers << s.main_controller
+        if s.is_a? Screen
+          s = s.new if s.respond_to? :new
+          view_controllers << s.main_controller
+        else
+          Console.log("Non-Screen passed into open_tab_bar.", withColor: Console::RED_COLOR)
+        end
       end
 
       tab_bar_controller.viewControllers = view_controllers
@@ -35,7 +39,7 @@ module ProMotion
 
       screens.each do |s|
         s.on_opened if s.respond_to? :on_opened
-        s.parent_screen = self
+        s.parent_screen = self if s.respond_to? "parent_screen="
       end
     end
 

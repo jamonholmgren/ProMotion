@@ -10,19 +10,30 @@ module ProMotion
 
       Console.log("You need to specify a home screen with home, nav_bar, or tab_bar.", withColor: Console::RED_COLOR) unless has_home_screen
       if has_tab_bar
-        # @root = NavigationController.alloc.initWithRootViewController(@home_screen.view_controller)
         # Set up tabbed bar here
-      elsif has_nav_bar
-        @root = NavigationController.alloc.initWithRootViewController(@home_screen.view_controller)
-      else
-        @root = @home_screen.view_controller
       end
       
-      self.window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
-      self.window.rootViewController = @root
-      self.window.makeKeyAndVisible
+      @root = get_home_screen.main_controller
+      
+      load_root_view @root
+
+      get_home_screen.on_opened if get_home_screen.respond_to? :on_opened
       
       true
+    end
+
+    def app_delegate
+      UIApplication.sharedApplication.delegate
+    end
+
+    def app_window
+      self.app_delegate.window
+    end
+
+    def load_root_view(new_view)
+      self.window ||= UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
+      self.window.rootViewController = new_view
+      self.window.makeKeyAndVisible
     end
 
     def home(screen)
@@ -31,6 +42,8 @@ module ProMotion
     end
     
     def nav_bar(screen)
+      screen = screen.new if screen.respond_to? :new
+      screen.add_nav_bar
       @nav = true
       home(screen)
     end
@@ -45,18 +58,6 @@ module ProMotion
 
     def has_home_screen
       @home_screen.nil? == false
-    end
-
-    def tab_bar(screen, args = {})
-      @tabbed = true
-      screen = screen.new if screen.respond_to? :new
-      @tabbed_screens ||= []
-      @tabbed_screens << screen
-      @home_screen = screen if !screen || args[:default]
-    end
-
-    def has_tab_bar
-      @tabbed
     end
   end
 end

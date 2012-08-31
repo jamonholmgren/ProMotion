@@ -9,6 +9,7 @@ Motion::Project::App.setup do |app|
   app.name = 'ProMotionTest'
   app.version = "0.0.1"
 
+
   # Devices
   app.deployment_target = "4.3"
   app.device_family = [:iphone, :ipad]

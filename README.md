@@ -45,22 +45,13 @@ Or install it yourself as:
 
 ## Usage
 
-It's easy to load your first screen. Add a navigation bar, tab bar, or just load it bare.
+It's easy to load your first screen. Add a navigation bar or just load it bare.
 
 ```ruby
-# In /app/app_delegate.rb (note that AppDelegate extends ProMotion::AppDelegate)
-class AppDelegate < ProMotion::AppDelegate
+# In /app/app_delegate.rb (note that AppDelegate extends ProMotion::AppDelegateParent)
+class AppDelegate < ProMotion::AppDelegateParent
   def on_app_load(options)
-    # Set the home screen to MyHomeScreen wrapped in a navigation controller
-    nav_bar MyHomeScreen
-    
-    # ... or specify a bare home screen
-    home MyHomeScreen
-    
-    # ... or specify a tabbed bar with several screens
-    tab_bar MyHomeScreen, system_icon: UITabBarSystemItemFavorites, default: true, nav_bar: true
-    tab_bar MySettingsScreen, icon: "settings_tab.png", title: "Settings"
-    tab_bar MyOtherScreen, icon: "other_tab.png", title: "Other", nav_bar: true
+    home MyHomeScreen.new(nav_bar: true)
   end
 end
 ```
@@ -194,6 +185,14 @@ class MainScreen < ProMotion::Screen
       self.reload_something
     end
   end
+end
+```
+
+If you have a custom view controller you want to use on a particular screen, just set it like this:
+
+```ruby
+def on_load
+  view_controller = MyCustomViewController
 end
 ```
 

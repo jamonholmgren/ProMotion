@@ -1,4 +1,4 @@
-module RubyMotion
+module ProMotion
   class Console
     NAME = "RubyMotion::Console"
     DEFAULT_COLOR = [ '', '' ]

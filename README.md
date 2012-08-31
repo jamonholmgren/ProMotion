@@ -57,9 +57,9 @@ class AppDelegate < ProMotion::AppDelegate
   home MyHomeScreen
   
   # ... or specify a tabbed bar with several screens
-  tab_bar MyHomeScreen, system_icon: UITabBarSystemItemFavorites, default: true
+  tab_bar MyHomeScreen, system_icon: UITabBarSystemItemFavorites, default: true, nav_bar: true
   tab_bar MySettingsScreen, icon: "settings_tab.png", title: "Settings"
-  tab_bar MyOtherScreen, icon: "other_tab.png", title: "Other"
+  tab_bar MyOtherScreen, icon: "other_tab.png", title: "Other", nav_bar: true
 end
 ```
 

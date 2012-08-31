@@ -3,12 +3,14 @@ module ProMotion
     attr_accessor :window
     
     def application(application, didFinishLaunchingWithOptions:launchOptions)
+      return true if RUBYMOTION_ENV == "test"
+
       @home_screen = self.class.get_home_screen
       
-      if self.class.has_tab_bar
+      if self.class.send :has_tab_bar
         # @root = NavigationController.alloc.initWithRootViewController(@home_screen.view_controller)
         # Set up tabbed bar here
-      elsif self.class.has_nav_bar
+      elsif self.class.send :has_nav_bar
         @root = NavigationController.alloc.initWithRootViewController(@home_screen.view_controller)
       else
         @root = @home_screen.view_controller

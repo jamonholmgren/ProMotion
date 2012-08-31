@@ -14,5 +14,5 @@ Motion::Project::App.setup do |app|
   app.device_family = [:iphone, :ipad]
 
   # Preload screens
-  app.files = Dir.glob(File.join(app.project_dir, 'lib/**/*.rb')) | app.files
+  # app.files = Dir.glob(File.join(app.project_dir, 'lib/**/*.rb')) | app.files
 end

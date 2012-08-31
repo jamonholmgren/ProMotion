@@ -19,3 +19,4 @@ tmp
 build
 build/*
 *.000
+.rvmrc

@@ -23,7 +23,6 @@ module ProMotion
   
   # Class methods
   class Screen
-    attr_accessor :x
     class << self
     end
   end

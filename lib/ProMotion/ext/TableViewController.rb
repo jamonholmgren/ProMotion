@@ -1,3 +1,5 @@
-class TableViewController < UITableViewController
-  
+module ProMotion
+  class TableViewController < UITableViewController
+    
+  end
 end

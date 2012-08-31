@@ -10,9 +10,7 @@ module ProMotion
 
       Console.log(" You need to specify a home screen with home().", withColor: Console::RED_COLOR) unless has_home_screen
       
-      @root = get_home_screen.main_controller
-      
-      load_root_view @root
+      open_home_screen
 
       get_home_screen.on_opened if get_home_screen.respond_to? :on_opened
       
@@ -36,6 +34,16 @@ module ProMotion
     def home(screen)
       screen = screen.new if screen.respond_to? :new
       @home_screen = screen
+    end
+
+    def fresh_start(new_screen)
+      home(new_screen)
+      open_home_screen
+    end
+
+    def open_home_screen
+      root = get_home_screen.main_controller
+      load_root_view root
     end
     
     def get_home_screen

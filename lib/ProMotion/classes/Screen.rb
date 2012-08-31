@@ -19,24 +19,33 @@ module ProMotion
       end
     end
 
-    def open_tab_bar(*screens)
+    def tab_bar_controller(*screens)
       tab_bar_controller = UITabBarController.alloc.init
 
       view_controllers = []
-      $stderr.puts screens.to_s
       screens.each do |s|
         if s.is_a? Screen
           s = s.new if s.respond_to? :new
           view_controllers << s.main_controller
         else
-          Console.log("Non-Screen passed into open_tab_bar.", withColor: Console::RED_COLOR)
+          Console.log("Non-Screen passed into tab_bar_controller: #{s.to_s}", withColor: Console::RED_COLOR)
         end
       end
 
       tab_bar_controller.viewControllers = view_controllers
+      tab_bar_controller
+    end
+    
+    def open_tab_bar(*screens)
+      open_view_controller tab_bar_controller(*screens)
+      screens.each do |s|
+        s.on_opened if s.respond_to? :on_opened
+        s.parent_screen = self if s.respond_to? "parent_screen="
+      end
+    end
 
-      open_view_controller tab_bar_controller
-
+    def push_tab_bar(*screens)
+      push_view_controller tab_bar_controller(*screens)
       screens.each do |s|
         s.on_opened if s.respond_to? :on_opened
         s.parent_screen = self if s.respond_to? "parent_screen="
@@ -44,12 +53,12 @@ module ProMotion
     end
 
     def open_view_controller(vc)
-      # Push view onto existing UINavigationController, or make it visible if not in a UINavigationController.
-      if self.navigation_controller
-        self.navigation_controller.pushViewController(vc, animated: true)  
-      else
-        UIApplication.sharedApplication.delegate.load_root_view vc
-      end
+      UIApplication.sharedApplication.delegate.load_root_view vc
+    end
+
+    def push_view_controller(vc)
+      Console.log(" You need a nav_bar if you are going to push #{vc.to_s} onto it.", withColor: Console::RED_COLOR) unless self.navigation_controller
+      self.navigation_controller.pushViewController(vc, animated: true)
     end
   end
 end
@@ -58,41 +67,66 @@ module ProMotion
   # Instance methods
   class Screen
     include ProMotion::ScreenNavigation
-
+    
     attr_accessor :view_controller
     attr_accessor :navigation_controller
     attr_accessor :parent_screen
+    attr_accessor :first_screen
+    attr_accessor :tab_bar_item
 
     def initialize(attrs = {})
       attrs.each do |k, v|
         self.call "#{k}=", v if self.respond_to? "#{k}="
       end
       
-      unless attrs[:view_controller]
-        self.view_controller = ViewController
-        self.view_controller.title = self.title
-      end
-
+      self.load_view_controller
+      
+      self.view_controller.title = self.title
+      
       self.add_nav_bar if attrs[:nav_bar]
 
       self.on_load if self.respond_to? :on_load
+
+      self
+    end
+
+    def load_view_controller
+      self.view_controller ||= ViewController
     end
 
     def set_tab_bar_item(args = {})
-      self.main_controller.tabBarItem = ProMotion::TabBar.tab_bar_item(args)
+      self.tab_bar_item = args
+      refresh_tab_bar_item
+    end
+
+    def refresh_tab_bar_item
+      self.main_controller.tabBarItem = ProMotion::TabBar.tab_bar_item(self.tab_bar_item) if self.tab_bar_item
     end
     
     def add_nav_bar
-      self.navigation_controller ||= NavigationController.alloc.initWithRootViewController(self.view_controller)
+      unless self.navigation_controller
+        self.navigation_controller = NavigationController.alloc.initWithRootViewController(self.view_controller)
+        self.first_screen = true
+      end
     end
 
     def view_controller=(vc)
       vc = vc.alloc.initWithNibName(nil, bundle:nil) if vc.respond_to? :alloc
-      @view_controller = vc
+      if self.navigation_controller && self.first_screen?
+        @view_controller = vc
+        self.navigation_controller = NavigationController.alloc.initWithRootViewController(self.view_controller)
+      else
+        @view_controller = vc
+      end
+      refresh_tab_bar_item
+    end
+
+    def first_screen?
+      self.first_screen == true
     end
 
     def set_view_controller(vc)
-      view_controller = vc
+      self.view_controller = vc
     end
 
     def title

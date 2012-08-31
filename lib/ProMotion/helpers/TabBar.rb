@@ -6,7 +6,7 @@ module ProMotion
         title = args[:title] if args[:title]
         args[:tag] ||= 0
 
-        tb_item = tab_bar_icon_(args[:system_icon], args[:tag]) if args[:systemIcon]
+        tb_item = tab_bar_icon(args[:system_icon], args[:tag]) if args[:system_icon]
         tb_item = tab_bar_icon_custom(title, args[:icon], args[:tag]) if args[:icon]
         
         if tb_item

@@ -3,6 +3,7 @@ require 'motion/project'
 require 'bundler/gem_tasks'
 Bundler.setup
 Bundler.require
+require 'motion-table'
 
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.

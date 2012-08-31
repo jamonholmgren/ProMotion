@@ -14,5 +14,4 @@ Motion::Project::App.setup do |app|
   app.files = Dir.glob(File.join(File.dirname(__FILE__), 'ProMotion/modules/**/*.rb')) | app.files
   app.files = Dir.glob(File.join(File.dirname(__FILE__), 'ProMotion/ext/**/*.rb')) | app.files
   
-  # app.files_dependencies File.join(File.dirname(__FILE__), 'ProMotion/Screen.rb') => File.join(File.dirname(__FILE__), 'ProMotion/modules/ScreenNavigation.rb')
 end

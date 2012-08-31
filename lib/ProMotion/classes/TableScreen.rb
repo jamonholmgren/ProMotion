@@ -1,0 +1,41 @@
+module ProMotion
+  # Instance methods
+  class TableScreen < Screen
+    include MotionTable::PlainTable
+    include MotionTable::SearchableTable
+
+    def view
+      return self.view_controller.view
+    end
+
+    def load_view_controller
+      self.view_controller ||= TableViewController
+      self.view_controller.view = self.createTableViewFromData(self.table_data)
+      if self.class.get_searchable
+        self.makeSearchable(contentController: self.view_controller)
+      end
+    end
+
+    def update_table_data
+      self.updateTableViewData(table_data)
+    end
+
+    class << self
+      def searchable
+        @searchable = true
+      end
+
+      def get_searchable
+        @searchable ||= false
+      end
+    end
+  end
+
+  class GroupedTableScreen < TableScreen
+    include MotionTable::GroupedTable
+  end
+
+  class SectionedTableScreen < TableScreen
+    include MotionTable::SectionedTable
+  end
+end

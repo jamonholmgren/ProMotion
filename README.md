@@ -1,6 +1,6 @@
 # ProMotion
 
-**Please note: this is a proof of concept and does not yet work.**
+**Please note: this is a proof of concept and does not yet function...but we are elbow deep in coding it!**
 
 ProMotion is a new way to organize RubyMotion apps. Instead of dealing
 with UIViewControllers and UIViews, you work with Screens. Screens are

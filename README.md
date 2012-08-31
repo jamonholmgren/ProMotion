@@ -50,11 +50,16 @@ It's easy to load your first screen with a navigation bar (the screen is opened 
 ```ruby
 # In /app/app_delegate.rb (note that AppDelegate extends ProMotion::AppDelegate)
 class AppDelegate < ProMotion::AppDelegate
-  def application(application, didFinishLaunchingWithOptions:launchOptions)
-    open_with_nav_bar HomeScreen
-
-    true
-  end
+  # Set the home screen to MyHomeScreen wrapped in a navigation controller
+  nav_bar MyHomeScreen
+  
+  # ... or specify a bare home screen
+  home MyHomeScreen
+  
+  # ... or specify a tabbed bar with several screens
+  tab_bar MyHomeScreen, system_icon: UITabBarSystemItemFavorites, default: true
+  tab_bar MySettingsScreen, icon: "settings_tab.png", title: "Settings"
+  tab_bar MyOtherScreen, icon: "other_tab.png", title: "Other"
 end
 ```
 

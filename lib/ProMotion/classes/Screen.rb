@@ -5,9 +5,22 @@ module ProMotion
       screen = screen.new if screen.respond_to? :new
       screen.add_nav_bar if args[:nav_bar]
       
-      open_view_controller screen.main_controller
+      if args[:push]
+        push_view_controller screen.main_controller
+      else
+        open_view_controller screen.main_controller
+      end
       screen.parent_screen = self
       screen.on_opened if screen.respond_to? :on_opened
+    end
+
+    def push_screen(screen, args = {})
+      args[:push] = true
+      open_screen(screen, args)
+    end
+
+    def fresh_start(screen)
+      UIApplication.sharedApplication.delegate.fresh_start(screen)
     end
 
     def close_screen(args = {})

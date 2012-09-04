@@ -14,7 +14,7 @@ module ProMotion
 
     def set_attributes(element, args = {})
       args.each do |k, v|
-        element.k = v if element.respond_to? "#{k}="
+        element.send("#{k}=", v) if element.respond_to? "#{k}="
       end
       element
     end

@@ -11,6 +11,13 @@ module ProMotion
     def view
       return self.view_controller.view
     end
+
+    def set_attributes(element, args = {})
+      args.each do |k, v|
+        element.k = v if element.respond_to? "#{k}="
+      end
+      element
+    end
   end
 
   module ScreenNavigation

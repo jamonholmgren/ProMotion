@@ -7,6 +7,10 @@ module ProMotion
     def bounds
       return self.view_controller.view.bounds
     end
+
+    def view
+      return self.view_controller.view
+    end
   end
 
   module ScreenNavigation

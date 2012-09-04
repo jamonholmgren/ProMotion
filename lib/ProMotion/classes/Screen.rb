@@ -3,6 +3,10 @@ module ProMotion
     def add_view(view)
       return self.view_controller.view.addSubview(view)
     end
+
+    def bounds
+      return self.view_controller.view.bounds
+    end
   end
 
   module ScreenNavigation

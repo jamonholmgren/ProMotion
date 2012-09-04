@@ -31,6 +31,10 @@ module ProMotion
       self.window.makeKeyAndVisible
     end
 
+    def open_screen(screen)
+      home(screen)
+    end
+
     def home(screen)
       screen = screen.new if screen.respond_to? :new
       @home_screen = screen

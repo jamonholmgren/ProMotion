@@ -9,6 +9,7 @@ module ProMotion
     end
 
     def load_view_controller
+      Console.log("- table_data method needed in table view screen.", withColor: Console::RED_COLOR) unless self.respond_to? :table_data
       self.view_controller ||= TableViewController
       self.view_controller.view = self.createTableViewFromData(self.table_data)
       if self.class.get_searchable

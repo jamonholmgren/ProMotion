@@ -1,26 +1,37 @@
 module ProMotion
+  module ScreenElements
+    def add_view(view)
+      return self.view_controller.view.addSubview(view)
+    end
+  end
+
   module ScreenNavigation
     def open_screen(screen, args = {})
       # Instantiate screen if given a class instead
       screen = screen.new if screen.respond_to? :new
       screen.add_nav_bar if args[:nav_bar]
+      screen.parent_screen = self
+
+      screen.main_controller.hidesBottomBarWhenPushed = true if args[:hide_tab_bar]
       
-      if args[:push]
-        push_view_controller screen.main_controller
+      if args[:close_all]
+        fresh_start(screen)
+      elsif self.navigation_controller
+        screen.navigation_controller = self.navigation_controller
+        push_view_controller screen.view_controller
       else
         open_view_controller screen.main_controller
       end
-      screen.parent_screen = self
+      
       screen.on_opened if screen.respond_to? :on_opened
     end
 
-    def push_screen(screen, args = {})
-      args[:push] = true
-      open_screen(screen, args)
+    def fresh_start(screen)
+      app_delegate.fresh_start(screen)
     end
 
-    def fresh_start(screen)
-      UIApplication.sharedApplication.delegate.fresh_start(screen)
+    def app_delegate
+      UIApplication.sharedApplication.delegate
     end
 
     def close_screen(args = {})
@@ -50,19 +61,23 @@ module ProMotion
     end
     
     def open_tab_bar(*screens)
-      open_view_controller tab_bar_controller(*screens)
+      tab_bar = tab_bar_controller(*screens)
+      open_view_controller tab_bar
       screens.each do |s|
         s.on_opened if s.respond_to? :on_opened
         s.parent_screen = self if s.respond_to? "parent_screen="
       end
+      tab_bar
     end
 
     def push_tab_bar(*screens)
-      push_view_controller tab_bar_controller(*screens)
+      tab_bar = tab_bar_controller(*screens)
+      push_view_controller tab_bar
       screens.each do |s|
         s.on_opened if s.respond_to? :on_opened
         s.parent_screen = self if s.respond_to? "parent_screen="
       end
+      tab_bar
     end
 
     def open_view_controller(vc)
@@ -70,6 +85,7 @@ module ProMotion
     end
 
     def push_view_controller(vc)
+      # vc.hidesBottomBarWhenPushed = true if args[:hide_tab_bar]
       Console.log(" You need a nav_bar if you are going to push #{vc.to_s} onto it.", withColor: Console::RED_COLOR) unless self.navigation_controller
       self.navigation_controller.pushViewController(vc, animated: true)
     end
@@ -80,6 +96,7 @@ module ProMotion
   # Instance methods
   class Screen
     include ProMotion::ScreenNavigation
+    include ProMotion::ScreenElements
     
     attr_accessor :view_controller
     attr_accessor :navigation_controller
@@ -89,7 +106,7 @@ module ProMotion
 
     def initialize(attrs = {})
       attrs.each do |k, v|
-        self.call "#{k}=", v if self.respond_to? "#{k}="
+        self.send "#{k}=", v if self.respond_to? "#{k}="
       end
       
       self.load_view_controller
@@ -123,6 +140,15 @@ module ProMotion
       end
     end
 
+    def set_nav_bar_right_button(title, args={})
+      args[:style]  ||= UIBarButtonItemStyleBordered
+      args[:target] ||= self
+      args[:action] ||= nil
+
+      right_button = UIBarButtonItem.alloc.initWithTitle(title, style: args[:style], target: args[:target], action: args[:action])
+      self.view_controller.navigationItem.rightBarButtonItem = right_button
+    end
+
     def view_controller=(vc)
       vc = vc.alloc.initWithNibName(nil, bundle:nil) if vc.respond_to? :alloc
       if self.navigation_controller && self.first_screen?
@@ -131,6 +157,8 @@ module ProMotion
       else
         @view_controller = vc
       end
+      @view_controller.screen = self if @view_controller.respond_to? "screen="
+
       refresh_tab_bar_item
     end
 
@@ -142,20 +170,36 @@ module ProMotion
       self.view_controller = vc
     end
 
+    def view_will_appear(animated)
+    end
+
+    def view_did_appear(animated)
+      self.on_appear if self.respond_to? :on_appear
+    end
+
     def title
       self.class.send :get_title
+    end
+
+    def title=(new_title)
+      self.class.title = new_title
+      self.view_controller.title = new_title
     end
 
     def main_controller
       return self.navigation_controller if self.navigation_controller
       self.view_controller
     end
+
   end
   
   # Class methods
   class Screen
     class << self
       def title(t)
+        @title = t
+      end
+      def title=(t)
         @title = t
       end
       def get_title

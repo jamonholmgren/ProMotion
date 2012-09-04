@@ -30,6 +30,11 @@ module ProMotion::MotionTable
       return sectionAtIndex(section)[:title]
     end
 
+    # Set table_data_index if you want the right hand index column (jumplist)
+    def sectionIndexTitlesForTableView(tableView)
+      self.table_data_index if respond_to? :table_data_index
+    end
+
     def tableView(tableView, cellForRowAtIndexPath:indexPath)
       dataCell = cellAtSectionAndIndex(indexPath.section, indexPath.row)
       

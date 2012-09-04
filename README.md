@@ -233,6 +233,12 @@ class HomeScreen < ProMotion::Screen
       ]
     }]
   end
+
+  # This method allows you to create a "jumplist", the index on the right side of the table
+  def table_data_index
+    # Normally you want to do this programmatically. This is just to show the format.
+    return ["A", "B", "C"]
+  end
 end
 ```
 

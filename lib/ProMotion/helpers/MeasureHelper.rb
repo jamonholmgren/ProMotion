@@ -11,3 +11,4 @@ module MeasureHelper
     height
   end
 end
+::Measure = MeasureHelper unless defined?(::Measure)

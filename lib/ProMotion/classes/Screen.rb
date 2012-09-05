@@ -9,6 +9,11 @@ module ProMotion
       view = nil
     end
 
+    def add_view_to_subview(view, atTag:tag)
+      subview = self.view_controller.view.viewWithTag(tag)
+      return subview.addSubview(view)
+    end
+
     def bounds
       return self.view_controller.view.bounds
     end

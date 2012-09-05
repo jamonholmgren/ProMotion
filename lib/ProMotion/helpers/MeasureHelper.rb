@@ -3,9 +3,9 @@ module ProMotion
     class << self
       def content_height(view)
         height = 0
-        view.subviews.each do |subView|
-          y = subView.frame.origin.y
-          h = subView.frame.size.height
+        view.subviews.each do |sub_view|
+          y = sub_view.frame.origin.y
+          h = sub_view.frame.size.height
           if (y + h) > height
             height = y + h
           end

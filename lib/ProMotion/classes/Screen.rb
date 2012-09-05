@@ -4,6 +4,11 @@ module ProMotion
       return self.view_controller.view.addSubview(view)
     end
 
+    def remove_view(view)
+      view.removeFromSuperview
+      view = nil
+    end
+
     def bounds
       return self.view_controller.view.bounds
     end

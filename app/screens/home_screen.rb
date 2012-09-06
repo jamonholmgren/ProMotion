@@ -1,5 +1,5 @@
-class TestScreen < ProMotion::TableScreen
-  title "Test Screen"
+class HomeScreen < ProMotion::Screen
+  title "Home Screen"
   
   def on_load
     @label = add_view UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {

@@ -5,14 +5,13 @@ module ProMotion
     def application(application, didFinishLaunchingWithOptions:launchOptions)
       return true if RUBYMOTION_ENV == "test"
 
-      Console.log(" Your AppDelegate (usually in app_delegate.rb) needs an on_app_load(options) method.", withColor: Console::RED_COLOR) unless self.respond_to? :on_app_load
-      on_app_load launchOptions
-
-      Console.log(" You need to specify a home screen with home().", withColor: Console::RED_COLOR) unless has_home_screen
+      Console.log(" Your AppDelegate (usually in app_delegate.rb) needs an on_load(options) method.", withColor: Console::RED_COLOR) unless self.respond_to? :on_load
       
-      open_home_screen
+      on_load launchOptions
 
-      get_home_screen.on_opened if get_home_screen.respond_to? :on_opened
+      open_home_screen if has_home_screen
+
+      get_home_screen.on_opened if has_home_screen && get_home_screen.respond_to? :on_opened
       
       true
     end

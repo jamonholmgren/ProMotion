@@ -1,21 +1,25 @@
 module ProMotion
   module ScreenElements
-    def add_view(view)
-      return self.view_controller.view.addSubview(view)
+    def add_element(view, attrs = {})
+      if attrs.length > 0
+        set_attributes(view, attrs)
+      end
+      self.view_controller.view.addSubview(view)
+      view
     end
 
-    def remove_view(view)
+    def remove_element(view)
       view.removeFromSuperview
       view = nil
-    end
-
-    def add_view_to_subview(view, atTag:tag)
-      subview = self.view_controller.view.viewWithTag(tag)
-      return subview.addSubview(view)
+      nil
     end
 
     def bounds
       return self.view_controller.view.bounds
+    end
+    
+    def frame
+      return self.view_controller.view.frame
     end
 
     def view
@@ -229,12 +233,6 @@ module ProMotion
       end
       def get_title
         @title ||= self.to_s
-      end
-      def screen_type(type)
-        @type = type
-      end
-      def get_screen_type
-        @type ||= :normal
       end
     end
   end

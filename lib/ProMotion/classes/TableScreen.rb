@@ -13,7 +13,7 @@ module ProMotion
       self.view_controller ||= TableViewController
       self.view_controller.view = self.createTableViewFromData(self.table_data)
       if self.class.get_searchable
-        self.makeSearchable(contentController: self.view_controller)
+        self.makeSearchable(contentController: self.view_controller, searchBar: self.class.get_searchable_params)
       end
     end
 
@@ -22,8 +22,13 @@ module ProMotion
     end
 
     class << self
-      def searchable
+      def searchable(params={})
+        @searchable_params = params
         @searchable = true
+      end
+
+      def get_searchable_params
+        @searchable_params ||= nil
       end
 
       def get_searchable

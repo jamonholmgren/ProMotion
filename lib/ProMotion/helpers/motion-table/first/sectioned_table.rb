@@ -37,12 +37,13 @@ module ProMotion::MotionTable
 
     def tableView(tableView, cellForRowAtIndexPath:indexPath)
       dataCell = cellAtSectionAndIndex(indexPath.section, indexPath.row)
+      dataCell[:cellStyle] ||= UITableViewCellStyleDefault
       
       cellIdentifier = "Cell"
 
       tableCell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier)
       unless tableCell
-        tableCell = UITableViewCell.alloc.initWithFrame(CGRectZero, reuseIdentifier:cellIdentifier)
+        tableCell = UITableViewCell.alloc.initWithStyle(dataCell[:cellStyle], reuseIdentifier:cellIdentifier)
         tableCell.accessoryView = dataCell[:accessoryView] if dataCell[:accessoryView]
         
         if dataCell[:accessory] && dataCell[:accessory] == :switch
@@ -51,7 +52,12 @@ module ProMotion::MotionTable
           switchView.on = true if dataCell[:accessoryDefault]
           tableCell.accessoryView = switchView
         end
+
+        if dataCell[:subtitle]
+          tableCell.detailTextLabel.text = dataCell[:subtitle]
+        end
       end
+
       tableCell.text = dataCell[:title]
       return tableCell
     end

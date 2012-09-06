@@ -1,6 +1,8 @@
 module ProMotion::MotionTable
   module SearchableTable
     def makeSearchable(params={})
+      $stderr.puts params
+
       params[:frame] ||= CGRectMake(0, 0, 320, 44)
       params[:contentController] ||= self
       params[:delegate] ||= self
@@ -8,6 +10,9 @@ module ProMotion::MotionTable
       params[:searchResultsDelegate] ||= self
 
       searchBar = UISearchBar.alloc.initWithFrame(params[:frame])
+      if params[:searchBar] && params[:searchBar][:placeholder]
+        searchBar.placeholder = params[:searchBar][:placeholder]
+      end
 
       @contactsSearchDisplayController = UISearchDisplayController.alloc.initWithSearchBar(searchBar, contentsController: params[:contentController])
       @contactsSearchDisplayController.delegate = params[:delegate]

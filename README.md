@@ -26,7 +26,7 @@ Loading your home screen:
 # In /app/app_delegate.rb (note that AppDelegate extends ProMotion::AppDelegateParent)
 class AppDelegate < ProMotion::AppDelegateParent
   def on_load(options)
-    home MyHomeScreen, nav_bar: true
+    open_screen MyHomeScreen.new(nav_bar: true)
   end
 end
 ```
@@ -48,6 +48,17 @@ class HomeScreen < ProMotion::Screen
   def on_appear
     # Refresh the data if you want
   end
+end
+```
+
+Creating a tabbed bar:
+
+```ruby
+def on_load(options)
+  @home = MyHomeScreen.new(nav_bar: true)
+  @settings = SettingsScreen.new
+  @contact = ContactScreen.new(nav_bar: true)
+  open_tab_bar @home, @settings, @contact
 end
 ```
 

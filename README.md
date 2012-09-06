@@ -100,7 +100,7 @@ class HomeScreen < ProMotion::Screen
   # ...
 
   def settings_button_tapped
-    open ProfileScreen.new(user: some_user)
+    open_screen ProfileScreen.new(user: some_user)
   end
 end
 

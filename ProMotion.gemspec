@@ -4,10 +4,10 @@ require File.expand_path('../lib/ProMotion/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Jamon Holmgren", "Silas Matson", "ClearSight Studio"]
   gem.email         = ["jamon@clearsightstudio.com"]
-  gem.description   = "ProMotion is a new way to organize RubyMotion apps. Currently a proof of concept."
+  gem.description   = "ProMotion is a new way to organize RubyMotion apps."
   gem.summary       = "
                         ProMotion is a new way to organize RubyMotion apps. Instead of dealing
-                        with UIViewControllers and UIViews, you work with Screens. Screens are
+                        with UIViewControllers, you work with Screens. Screens are
                         a logical way to think of your app -- similar in some ways to Storyboards.
                       "
   gem.homepage      = "https://github.com/clearsightstudio/ProMotion"

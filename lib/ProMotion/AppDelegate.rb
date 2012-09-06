@@ -11,7 +11,7 @@ module ProMotion
 
       open_home_screen if has_home_screen
 
-      get_home_screen.on_opened if has_home_screen && get_home_screen.respond_to? :on_opened
+      get_home_screen.on_opened if has_home_screen && get_home_screen.respond_to?(:on_opened)
       
       true
     end

@@ -147,7 +147,19 @@ def on_load
 end
 ```
 
-The helper add_element takes a
+The helper add_element takes any view object and adds it to the current view. You can also use
+the helper ProMotion::ViewHelper.set_attributes(view, attributes) to do the same thing without adding
+it to the current view. Screens include this helper by default.
+
+```ruby
+@element = add_element UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
+  backgroundColor: UIColor.whiteColor
+}
+
+@element = set_attributes(UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
+  backgroundColor: UIColor.whiteColor
+}
+```
 
 You can create sectioned table screens easily. TableScreen, SectionedTableScreen, GroupedTableScreen
 

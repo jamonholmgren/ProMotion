@@ -1,5 +1,7 @@
 module ProMotion
   module ScreenElements
+    include ProMotion::ViewHelper
+    
     def add_element(view, attrs = {})
       if attrs.length > 0
         set_attributes(view, attrs)
@@ -24,13 +26,6 @@ module ProMotion
 
     def view
       return self.view_controller.view
-    end
-
-    def set_attributes(element, args = {})
-      args.each do |k, v|
-        element.send("#{k}=", v) if element.respond_to? "#{k}="
-      end
-      element
     end
   end
 

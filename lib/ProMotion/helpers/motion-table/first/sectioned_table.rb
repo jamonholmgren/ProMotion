@@ -44,18 +44,26 @@ module ProMotion::MotionTable
       tableCell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier)
       unless tableCell
         tableCell = UITableViewCell.alloc.initWithStyle(dataCell[:cellStyle], reuseIdentifier:cellIdentifier)
-        tableCell.accessoryView = dataCell[:accessoryView] if dataCell[:accessoryView]
-        
-        if dataCell[:accessory] && dataCell[:accessory] == :switch
-          switchView = UISwitch.alloc.initWithFrame(CGRectZero)
-          switchView.addTarget(self, action: "accessoryToggledSwitch:", forControlEvents:UIControlEventValueChanged);
-          switchView.on = true if dataCell[:accessoryDefault]
-          tableCell.accessoryView = switchView
-        end
+      end
 
-        if dataCell[:subtitle]
-          tableCell.detailTextLabel.text = dataCell[:subtitle]
-        end
+      tableCell.accessoryView = dataCell[:accessoryView] if dataCell[:accessoryView]
+  
+      if dataCell[:accessory] && dataCell[:accessory] == :switch
+        switchView = UISwitch.alloc.initWithFrame(CGRectZero)
+        switchView.addTarget(self, action: "accessoryToggledSwitch:", forControlEvents:UIControlEventValueChanged);
+        switchView.on = true if dataCell[:accessoryDefault]
+        tableCell.accessoryView = switchView
+      end
+
+      if dataCell[:subtitle]
+        tableCell.detailTextLabel.text = dataCell[:subtitle]
+      end
+
+
+      if dataCell[:image]
+        tableCell.imageView.layer.masksToBounds = true
+        tableCell.imageView.image = dataCell[:image][:image]
+        tableCell.imageView.layer.cornerRadius = dataCell[:image][:radius] if dataCell[:image][:radius]
       end
 
       tableCell.text = dataCell[:title]

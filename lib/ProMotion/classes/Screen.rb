@@ -195,6 +195,7 @@ module ProMotion
     end
 
     def view_will_appear(animated)
+      self.will_appear if self.respond_to? :will_appear
     end
 
     def view_did_appear(animated)

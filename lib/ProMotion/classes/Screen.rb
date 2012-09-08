@@ -40,6 +40,9 @@ module ProMotion
       
       if args[:close_all]
         fresh_start(screen)
+      elsif args[:modal]
+        screen.modal = true
+        self.view_controller.presentModalViewController(screen.main_controller, animated:true)
       elsif self.navigation_controller
         screen.navigation_controller = self.navigation_controller
         push_view_controller screen.view_controller
@@ -60,10 +63,12 @@ module ProMotion
 
     def close_screen(args = {})
       # Pop current view, maybe with arguments, if in navigation controller
-      if self.navigation_controller
+      if self.is_modal?
+        self.parent_screen.view_controller.dismissModalViewControllerAnimated(true)
+      elsif self.navigation_controller
         self.navigation_controller.popViewControllerAnimated(true)
       else
-        # What do we do now? Nothing to "pop"
+        # What do we do now? Nothing to "pop". For now, don't do anything.
       end
     end
 
@@ -122,11 +127,7 @@ module ProMotion
     include ProMotion::ScreenNavigation
     include ProMotion::ScreenElements
     
-    attr_accessor :view_controller
-    attr_accessor :navigation_controller
-    attr_accessor :parent_screen
-    attr_accessor :first_screen
-    attr_accessor :tab_bar_item
+    attr_accessor :view_controller, :navigation_controller, :parent_screen, :first_screen, :tab_bar_item, :modal
 
     def initialize(attrs = {})
       attrs.each do |k, v|
@@ -142,6 +143,10 @@ module ProMotion
       self.on_load if self.respond_to? :on_load
 
       self
+    end
+
+    def is_modal?
+      self.modal
     end
 
     def load_view_controller

@@ -93,6 +93,12 @@ def settings_button_tapped
 end
 ```
 
+Open a new screen as a modal:
+
+```ruby
+open_screen SettingsScreen, modal: true
+```
+
 You can pass in arguments to other screens if they have accessors:
 
 ```ruby

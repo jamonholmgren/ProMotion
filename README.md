@@ -41,7 +41,7 @@ class HomeScreen < ProMotion::Screen
     # Set up the elements in your view with add_element:
     @label = add_element UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
       text: "This is awesome!",
-      font: UIFont.UIFont.systemFontOfSize(18)
+      font: UIFont.systemFontOfSize(18)
     }
   end
   

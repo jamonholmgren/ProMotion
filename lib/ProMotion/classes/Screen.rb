@@ -70,6 +70,8 @@ module ProMotion
       else
         # What do we do now? Nothing to "pop". For now, don't do anything.
       end
+
+      self.parent_screen.send(:on_return, args) if self.parent_screen && self.parent_screen.respond_to?(:on_return)
     end
 
     def tab_bar_controller(*screens)

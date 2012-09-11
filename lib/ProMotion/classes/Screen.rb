@@ -7,16 +7,13 @@ module ProMotion
     attr_accessor :view_controller, :navigation_controller, :parent_screen, :first_screen, :tab_bar_item, :modal
 
     def initialize(args = {})
+      $stderr.puts(args.to_s)
       args.each do |k, v|
         self.send "#{k}=", v if self.respond_to? "#{k}="
       end
       self.load_view_controller
 
-      self.main_controller.hidesBottomBarWhenPushed = args[:hide_tab_bar] if args[:hide_tab_bar]
-      self.view_controller.title = self.title
-      self.add_nav_bar if args[:nav_bar]
-
-      self.on_load if self.respond_to? :on_load
+      self.on_init if self.respond_to? :on_init
       self
     end
 
@@ -42,10 +39,8 @@ module ProMotion
     end
     
     def add_nav_bar
-      unless self.navigation_controller
-        self.navigation_controller = NavigationController.alloc.initWithRootViewController(self.view_controller)
-        self.first_screen = true
-      end
+      self.navigation_controller = NavigationController.alloc.initWithRootViewController(self.view_controller)
+      self.first_screen = true
     end
 
     def set_nav_bar_right_button(title, args={})

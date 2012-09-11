@@ -2,10 +2,19 @@ module ProMotion
   module ScreenNavigation
     def open_screen(screen, args = {})
       # Instantiate screen if given a class instead
-      args[:parent_screen] = self
-      args[:navigation_controller] = self.navigation_controller if self.has_nav_bar?
+      screen = screen.new if screen.respond_to? :new
+
+      screen.parent_screen = self
+      screen.view_controller.title = self.title
+
+      screen.add_nav_bar if args[:nav_bar]
+      unless args[:close_all] || args[:modal]
+        screen.navigation_controller ||= self.navigation_controller
+      end
       
-      screen = screen.new(args) if screen.respond_to? :new
+      screen.main_controller.hidesBottomBarWhenPushed = args[:hide_tab_bar] if args[:hide_tab_bar]
+      
+      screen.send(:on_load) if screen.respond_to?(:on_load)
 
       if args[:close_all]
         fresh_start(screen)
@@ -60,21 +69,35 @@ module ProMotion
     
     def open_tab_bar(*screens)
       tab_bar = tab_bar_controller(*screens)
+
+      screens.each do |s|
+        s.parent_screen = self if s.respond_to? "parent_screen="
+        s.on_load if s.respond_to? :on_load
+      end
+      
       open_view_controller tab_bar
+
       screens.each do |s|
         s.on_opened if s.respond_to? :on_opened
-        s.parent_screen = self if s.respond_to? "parent_screen="
       end
+
       tab_bar
     end
 
     def push_tab_bar(*screens)
       tab_bar = tab_bar_controller(*screens)
+
+      screens.each do |s|
+        s.parent_screen = self if s.respond_to? "parent_screen="
+        s.on_load if s.respond_to? :on_load
+      end
+
       push_view_controller tab_bar
+
       screens.each do |s|
         s.on_opened if s.respond_to? :on_opened
-        s.parent_screen = self if s.respond_to? "parent_screen="
       end
+
       tab_bar
     end
 

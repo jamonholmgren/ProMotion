@@ -45,8 +45,8 @@ module ProMotion
     end
 
     def open_home_screen
-      root = get_home_screen.main_controller
-      load_root_view root
+      get_home_screen.send(:on_load) if get_home_screen.respond_to?(:on_load)
+      load_root_view get_home_screen.main_controller
     end
     
     def get_home_screen

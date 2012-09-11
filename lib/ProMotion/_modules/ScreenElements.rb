@@ -28,4 +28,4 @@ module ProMotion
       return self.view_controller.view
     end
   end
-
+end

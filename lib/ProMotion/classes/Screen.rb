@@ -7,7 +7,6 @@ module ProMotion
     attr_accessor :view_controller, :navigation_controller, :parent_screen, :first_screen, :tab_bar_item, :modal
 
     def initialize(args = {})
-      $stderr.puts "Initializing #{self.to_s}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ============================="
       args.each do |k, v|
         self.send "#{k}=", v if self.respond_to? "#{k}="
       end
@@ -20,6 +19,7 @@ module ProMotion
     end
 
     def is_modal?
+      $stderr.puts self.modal
       self.modal == true
     end
 
@@ -42,7 +42,6 @@ module ProMotion
     end
     
     def add_nav_bar
-      $stderr.puts "VC Title: #{self.view_controller.title}"
       self.navigation_controller = NavigationController.alloc.initWithRootViewController(self.view_controller)
       self.first_screen = true
     end

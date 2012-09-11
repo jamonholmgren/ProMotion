@@ -13,6 +13,8 @@ module ProMotion
       end
       
       screen.main_controller.hidesBottomBarWhenPushed = args[:hide_tab_bar] if args[:hide_tab_bar]
+
+      screen.modal = args[:modal] if args[:modal]
       
       screen.send(:on_load) if screen.respond_to?(:on_load)
 
@@ -38,15 +40,17 @@ module ProMotion
     end
 
     def close_screen(args = {})
+      args ||= {}
+      
       # Pop current view, maybe with arguments, if in navigation controller
       if self.is_modal?
         self.parent_screen.view_controller.dismissModalViewControllerAnimated(true)
       elsif self.navigation_controller
         self.navigation_controller.popViewControllerAnimated(true)
       else
-        # What do we do now? Nothing to "pop". For now, don't do anything.
+        Console.log("Tried to close #{self.to_s}; however, this screen isn't modal or in a nav bar.", withColor: Console::PURPLE_COLOR)
       end
-      
+
       self.parent_screen.send(:on_return, args) if self.parent_screen && self.parent_screen.respond_to?(:on_return)
     end
 

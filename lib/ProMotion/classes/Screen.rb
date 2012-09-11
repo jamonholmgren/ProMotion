@@ -53,6 +53,7 @@ module ProMotion
 
       right_button = UIBarButtonItem.alloc.initWithTitle(title, style: args[:style], target: args[:target], action: args[:action])
       self.view_controller.navigationItem.rightBarButtonItem = right_button
+      right_button
     end
 
     def view_controller=(vc)

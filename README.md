@@ -76,8 +76,8 @@ element before it is dropped into the view.
 Add a nav_bar button and a tab_bar icon:
 
 ```ruby
-add_right_nav_button(label: "Save", action: :save)
-set_tab_bar_item(title: "Contacts", system_icon: UITabBarSystemItemContacts)
+set_nav_bar_right_button "Save", action: :save_something, type: UIBarButtonItemStyleDone
+set_tab_bar_item title: "Contacts", system_icon: UITabBarSystemItemContacts
 ```
 
 Open a new screen:

@@ -6,7 +6,7 @@ module ProMotion
       screen.add_nav_bar if args[:nav_bar]
       screen.parent_screen = self
 
-      screen.main_controller.hidesBottomBarWhenPushed = true if args[:hide_tab_bar]
+      screen.main_controller.hidesBottomBarWhenPushed = args[:hide_tab_bar] if args[:hide_tab_bar]
       
       if args[:close_all]
         fresh_start(screen)

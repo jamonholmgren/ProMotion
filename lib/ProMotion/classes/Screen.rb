@@ -56,6 +56,18 @@ module ProMotion
       right_button
     end
 
+    def set_nav_bar_left_button(title, args={})
+      args[:style]  ||= UIBarButtonItemStyleBordered
+      args[:target] ||= self
+      args[:action] ||= nil
+      
+      left_button = UIBarButtonItem.alloc.initWithTitle(title, style: args[:style], target: args[:target], action: args[:action])
+      self.view_controller.navigationItem.leftBarButtonItem = left_button
+      left_button
+    end
+
+
+
     def view_controller=(vc)
       vc = vc.alloc.initWithNibName(nil, bundle:nil) if vc.respond_to? :alloc
       if self.navigation_controller && self.first_screen?

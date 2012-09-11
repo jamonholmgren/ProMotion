@@ -26,6 +26,10 @@ module ProMotion
       self.modal
     end
 
+    def has_nav_bar?
+      self.navigation_controller.nil? == false
+    end
+
     def load_view_controller
       self.view_controller ||= ViewController
     end
@@ -60,7 +64,7 @@ module ProMotion
       args[:style]  ||= UIBarButtonItemStyleBordered
       args[:target] ||= self
       args[:action] ||= nil
-      
+
       left_button = UIBarButtonItem.alloc.initWithTitle(title, style: args[:style], target: args[:target], action: args[:action])
       self.view_controller.navigationItem.leftBarButtonItem = left_button
       left_button

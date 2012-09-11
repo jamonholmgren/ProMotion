@@ -2,19 +2,16 @@ module ProMotion
   module ScreenNavigation
     def open_screen(screen, args = {})
       # Instantiate screen if given a class instead
-      screen = screen.new if screen.respond_to? :new
-      screen.add_nav_bar if args[:nav_bar]
-      screen.parent_screen = self
-
-      screen.main_controller.hidesBottomBarWhenPushed = args[:hide_tab_bar] if args[:hide_tab_bar]
+      args[:parent_screen] = self
+      args[:navigation_controller] = self.navigation_controller if self.has_nav_bar?
       
+      screen = screen.new(args) if screen.respond_to? :new
+
       if args[:close_all]
         fresh_start(screen)
       elsif args[:modal]
-        screen.modal = true
         self.view_controller.presentModalViewController(screen.main_controller, animated:true)
       elsif self.navigation_controller
-        screen.navigation_controller = self.navigation_controller
         push_view_controller screen.view_controller
       else
         open_view_controller screen.main_controller

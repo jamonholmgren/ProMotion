@@ -6,28 +6,26 @@ module ProMotion
     
     attr_accessor :view_controller, :navigation_controller, :parent_screen, :first_screen, :tab_bar_item, :modal
 
-    def initialize(attrs = {})
-      attrs.each do |k, v|
+    def initialize(args = {})
+      args.each do |k, v|
         self.send "#{k}=", v if self.respond_to? "#{k}="
       end
-      
       self.load_view_controller
-      
+
+      self.main_controller.hidesBottomBarWhenPushed = args[:hide_tab_bar] if args[:hide_tab_bar]
       self.view_controller.title = self.title
-      
-      self.add_nav_bar if attrs[:nav_bar]
+      self.add_nav_bar if args[:nav_bar]
 
       self.on_load if self.respond_to? :on_load
-
       self
     end
 
     def is_modal?
-      self.modal
+      self.modal == true
     end
 
     def has_nav_bar?
-      self.navigation_controller.nil? == false
+      self.navigation_controller.nil? != true
     end
 
     def load_view_controller
@@ -69,8 +67,6 @@ module ProMotion
       self.view_controller.navigationItem.leftBarButtonItem = left_button
       left_button
     end
-
-
 
     def view_controller=(vc)
       vc = vc.alloc.initWithNibName(nil, bundle:nil) if vc.respond_to? :alloc

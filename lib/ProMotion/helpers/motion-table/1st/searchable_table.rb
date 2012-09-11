@@ -1,8 +1,6 @@
 module ProMotion::MotionTable
   module SearchableTable
     def makeSearchable(params={})
-      $stderr.puts params
-
       params[:frame] ||= CGRectMake(0, 0, 320, 44)
       params[:contentController] ||= self
       params[:delegate] ||= self

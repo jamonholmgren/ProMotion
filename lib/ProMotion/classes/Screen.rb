@@ -7,12 +7,14 @@ module ProMotion
     attr_accessor :view_controller, :navigation_controller, :parent_screen, :first_screen, :tab_bar_item, :modal
 
     def initialize(args = {})
-      $stderr.puts(args.to_s)
+      $stderr.puts "Initializing #{self.to_s}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ============================="
       args.each do |k, v|
         self.send "#{k}=", v if self.respond_to? "#{k}="
       end
       self.load_view_controller
+      self.view_controller.title = self.title
 
+      self.add_nav_bar if args[:nav_bar]
       self.on_init if self.respond_to? :on_init
       self
     end
@@ -25,6 +27,7 @@ module ProMotion
       self.navigation_controller.nil? != true
     end
 
+    # Note: this is overridden in TableScreen
     def load_view_controller
       self.view_controller ||= ViewController
     end
@@ -39,6 +42,7 @@ module ProMotion
     end
     
     def add_nav_bar
+      $stderr.puts "VC Title: #{self.view_controller.title}"
       self.navigation_controller = NavigationController.alloc.initWithRootViewController(self.view_controller)
       self.first_screen = true
     end

@@ -5,7 +5,7 @@ module ProMotion
       screen = screen.new if screen.respond_to? :new
 
       screen.parent_screen = self
-      screen.view_controller.title = self.title
+      screen.view_controller.title = args[:title] if args[:title]
 
       screen.add_nav_bar if args[:nav_bar]
       unless args[:close_all] || args[:modal]

@@ -97,7 +97,6 @@ module ProMotion::MotionTable
     end
 
     def triggerAction(action, arguments)
-      $stderr.puts "Action: #{action.to_s} and args #{arguments.to_s}"
       if self.respond_to?(action)
         expectedArguments = self.method(action).arity
         if expectedArguments == 0

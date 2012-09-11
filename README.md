@@ -162,7 +162,7 @@ it to the current view. Screens include this helper by default.
   backgroundColor: UIColor.whiteColor
 }
 
-@element = set_attributes(UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
+@element = set_attributes UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
   backgroundColor: UIColor.whiteColor
 }
 ```

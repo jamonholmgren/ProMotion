@@ -120,7 +120,7 @@ end
 
 ```
 
-Close a screen, passing back arguments to the previous screen's "on_return" method:
+Close a screen (modal or in a nav controller), passing back arguments to the previous screen's "on_return" method:
 
 ```ruby
 class ItemScreen
@@ -167,7 +167,9 @@ it to the current view. Screens include this helper by default.
 }
 ```
 
-You can create sectioned table screens easily. TableScreen, SectionedTableScreen, GroupedTableScreen
+You can create sectioned table screens easily. TableScreen, SectionedTableScreen, GroupedTableScreen.
+This is loosely based on [motion-table](https://github.com/clearsightstudio/motion-table) (there are a 
+few minor differences).
 
 ```ruby
 class SettingsScreen < ProMotion::GroupedTableScreen
@@ -209,12 +211,42 @@ class SettingsScreen < ProMotion::GroupedTableScreen
 end
 ```
 
+# Reference
+(not comprehensive yet...working on this)
+
+<table>
+  <tr>
+    <th>Class or Module</th>
+    <th>Method</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Screen</td>
+    <td>is_modal?</td>
+    <td>Returns if the screen was opened in a modal window.</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>has_nav_bar?</td>
+    <td>Returns if the screen is contained in a navigation controller.</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>set_tab_bar_item(args)</td>
+    <td>
+      Creates the tab that is shown in a tab bar item.<br />
+      Arguments: icon: "imagename", systemIcon: UISystemIconContacts, title: "tabtitle"
+    </td>
+  </tr>
+</table
+
 ### What about MVC?
 
 I'm a big believer in MVC (I'm a Rails developer, too). I found that most of the time working in RubyMotion seems to happen
-in the ViewControllers and views are mainly custom elements. This pattern may be best for simpler, smaller apps.
+in the ViewControllers and views are mainly custom elements. This pattern is probably best for navigation controller and
+tab bar based apps.
 
-Feedback welcome via twitter @jamonholmgren.
+Feedback welcome via twitter @jamonholmgren or email jamon@clearsightstudio.com.
 
 ## Contributing
 

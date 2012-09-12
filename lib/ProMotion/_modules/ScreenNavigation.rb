@@ -12,7 +12,7 @@ module ProMotion
         screen.navigation_controller ||= self.navigation_controller
       end
       
-      screen.main_controller.hidesBottomBarWhenPushed = args[:hide_tab_bar] if args[:hide_tab_bar]
+      screen.view_controller.hidesBottomBarWhenPushed = args[:hide_tab_bar] if args[:hide_tab_bar]
 
       screen.modal = args[:modal] if args[:modal]
       

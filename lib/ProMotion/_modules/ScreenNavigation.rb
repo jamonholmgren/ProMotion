@@ -43,11 +43,13 @@ module ProMotion
       args ||= {}
       
       # Pop current view, maybe with arguments, if in navigation controller
+      previous_screen = self.parent_screen
       if self.is_modal?
         self.parent_screen.view_controller.dismissModalViewControllerAnimated(true)
       elsif self.navigation_controller
         if args[:to_screen]
           self.navigation_controller.popToViewController(args[:to_screen].view_controller, animated: true)
+          previous_screen = args[:to_screen]
         else
           self.navigation_controller.popViewControllerAnimated(true)
         end
@@ -55,7 +57,7 @@ module ProMotion
         Console.log("Tried to close #{self.to_s}; however, this screen isn't modal or in a nav bar.", withColor: Console::PURPLE_COLOR)
       end
 
-      self.parent_screen.send(:on_return, args) if self.parent_screen && self.parent_screen.respond_to?(:on_return)
+      previous_screen.send(:on_return, args) if previous_screen && previous_screen.respond_to?(:on_return)
     end
 
     def tab_bar_controller(*screens)

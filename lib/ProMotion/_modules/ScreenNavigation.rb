@@ -46,7 +46,11 @@ module ProMotion
       if self.is_modal?
         self.parent_screen.view_controller.dismissModalViewControllerAnimated(true)
       elsif self.navigation_controller
-        self.navigation_controller.popViewControllerAnimated(true)
+        if args[:to_screen]
+          self.navigation_controller.popToViewController(args[:to_screen].view_controller, animated: true)
+        else
+          self.navigation_controller.popViewControllerAnimated(true)
+        end
       else
         Console.log("Tried to close #{self.to_s}; however, this screen isn't modal or in a nav bar.", withColor: Console::PURPLE_COLOR)
       end

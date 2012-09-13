@@ -235,7 +235,7 @@ end
     <td>set_tab_bar_item(args)</td>
     <td>
       Creates the tab that is shown in a tab bar item.<br />
-      Arguments: icon: "imagename", systemIcon: UISystemIconContacts, title: "tabtitle"
+      Arguments: <code>{ icon: "imagename", systemIcon: UISystemIconContacts, title: "tabtitle" }</code>
     </td>
   </tr>
 </table>

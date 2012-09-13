@@ -238,7 +238,7 @@ end
       Arguments: icon: "imagename", systemIcon: UISystemIconContacts, title: "tabtitle"
     </td>
   </tr>
-</table
+</table>
 
 ### What about MVC?
 

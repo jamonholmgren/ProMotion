@@ -11,12 +11,9 @@ module ProMotion
       unless args[:close_all] || args[:modal]
         screen.navigation_controller ||= self.navigation_controller
       end
-      
-      screen.view_controller.hidesBottomBarWhenPushed = args[:hide_tab_bar] if args[:hide_tab_bar]
-
       screen.modal = args[:modal] if args[:modal]
-      
       screen.send(:on_load) if screen.respond_to?(:on_load)
+      screen.view_controller.hidesBottomBarWhenPushed = args[:hide_tab_bar] if args[:hide_tab_bar]
 
       if args[:close_all]
         fresh_start(screen)

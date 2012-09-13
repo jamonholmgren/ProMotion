@@ -2,7 +2,14 @@ module ProMotion
   module ViewHelper
     def set_attributes(element, args = {})
       args.each do |k, v|
-        element.send("#{k}=", v) if element.respond_to? "#{k}="
+        if v.is_a? Hash
+          v.each do |k2, v2|
+            sub_element = element.send("#{k}")
+            sub_element.send("#{k2}=", v2) if sub_element.respond_to? "#{k2}="
+          end
+        else
+          element.send("#{k}=", v) if element.respond_to? "#{k}="
+        end
       end
       element
     end

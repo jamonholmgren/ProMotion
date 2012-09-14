@@ -4,7 +4,7 @@ module ProMotion
     include ProMotion::ScreenNavigation
     include ProMotion::ScreenElements
     
-    attr_accessor :view_controller, :navigation_controller, :parent_screen, :first_screen, :tab_bar_item, :modal
+    attr_accessor :view_controller, :navigation_controller, :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal
 
     def initialize(args = {})
       args.each do |k, v|

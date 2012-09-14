@@ -10,6 +10,7 @@ module ProMotion
       screen.add_nav_bar if args[:nav_bar]
       unless args[:close_all] || args[:modal]
         screen.navigation_controller ||= self.navigation_controller
+        screen.tab_bar ||= self.tab_bar
       end
       screen.modal = args[:modal] if args[:modal]
       screen.send(:on_load) if screen.respond_to?(:on_load)
@@ -19,6 +20,17 @@ module ProMotion
         fresh_start(screen)
       elsif args[:modal]
         self.view_controller.presentModalViewController(screen.main_controller, animated:true)
+      elsif args[:in_tab] && self.tab_bar
+        vc = PM::TabBar.select(self.tab_bar, title: args[:in_tab])
+        if vc
+          if vc.navigation_controller
+            push_view_controller(screen.view_controller, vc.navigation_controller)
+          else
+            PM::TabBar.replace_current_item(vc, screen.view_controller)
+          end
+        else
+          $stderr.puts "No tab bar item '#{args[:in_tab]}'"
+        end
       elsif self.navigation_controller
         push_view_controller screen.view_controller
       else
@@ -74,15 +86,21 @@ module ProMotion
       tab_bar_controller
     end
     
+    # Open a UITabBarController with the specified screens as the
+    # root view controller of the current app.
+    # @param [Array] A comma-delimited list of screen classes or instances.
+    # @return [UITabBarController] (this may change in the future; please
+    #   do not rely on it right now)
     def open_tab_bar(*screens)
       tab_bar = tab_bar_controller(*screens)
 
       screens.each do |s|
         s.parent_screen = self if s.respond_to?("parent_screen=")
+        s.tab_bar = tab_bar
         s.on_load if s.respond_to?(:on_load)
       end
       
-      open_view_controller tab_bar
+      open_view_controller(tab_bar)
 
       screens.each do |s|
         s.on_opened if s.respond_to?(:on_opened)
@@ -92,34 +110,22 @@ module ProMotion
     end
 
     def open_tab(tab)
-
-    end
-
-    def push_tab_bar(*screens)
-      tab_bar = tab_bar_controller(*screens)
-
-      screens.each do |s|
-        s.parent_screen = self if s.respond_to?("parent_screen=")
-        s.on_load if s.respond_to?(:on_load)
+      if tab.is_a? String
+        PM::TabBar.select(self.tab_bar, title: tab)
+      else
+        $stderr.puts "Unable to open tab #{tab.to_s} because it isn't a string."
       end
-
-      push_view_controller tab_bar
-
-      screens.each do |s|
-        s.on_opened if s.respond_to?(:on_opened)
-      end
-
-      tab_bar
     end
 
     def open_view_controller(vc)
       UIApplication.sharedApplication.delegate.load_root_view vc
     end
 
-    def push_view_controller(vc)
+    def push_view_controller(vc, nav_controller=nil)
       # vc.hidesBottomBarWhenPushed = true if args[:hide_tab_bar]
       Console.log(" You need a nav_bar if you are going to push #{vc.to_s} onto it.", withColor: Console::RED_COLOR) unless self.navigation_controller
-      self.navigation_controller.pushViewController(vc, animated: true)
+      nav_controller ||= self.navigation_controller
+      nav_controller.pushViewController(vc, animated: true)
     end
   end
 end

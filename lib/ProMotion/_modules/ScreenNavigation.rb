@@ -23,8 +23,8 @@ module ProMotion
       elsif args[:in_tab] && self.tab_bar
         vc = PM::TabBar.select(self.tab_bar, title: args[:in_tab])
         if vc
-          if vc.navigation_controller
-            push_view_controller(screen.view_controller, vc.navigation_controller)
+          if vc.navigationController
+            push_view_controller(screen.view_controller, vc.navigationController)
           else
             PM::TabBar.replace_current_item(vc, screen.view_controller)
           end

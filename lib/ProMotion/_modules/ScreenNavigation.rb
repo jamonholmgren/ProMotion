@@ -26,7 +26,7 @@ module ProMotion
           if vc.navigationController
             push_view_controller(screen.view_controller, vc.navigationController)
           else
-            PM::TabBar.replace_current_item(vc, screen.view_controller)
+            PM::TabBar.replace_current_item(vc, view_controller: screen.view_controller)
           end
         else
           $stderr.puts "No tab bar item '#{args[:in_tab]}'"

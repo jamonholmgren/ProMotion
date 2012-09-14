@@ -2,7 +2,7 @@ module ProMotion
   module ScreenNavigation
     def open_screen(screen, args = {})
       # Instantiate screen if given a class instead
-      screen = screen.new if screen.respond_to? :new
+      screen = screen.new if screen.respond_to?(:new)
 
       screen.parent_screen = self
       screen.view_controller.title = args[:title] if args[:title]
@@ -63,7 +63,7 @@ module ProMotion
       view_controllers = []
       screens.each do |s|
         if s.is_a? Screen
-          s = s.new if s.respond_to? :new
+          s = s.new if s.respond_to?(:new)
           view_controllers << s.main_controller
         else
           Console.log("Non-Screen passed into tab_bar_controller: #{s.to_s}", withColor: Console::RED_COLOR)
@@ -78,31 +78,35 @@ module ProMotion
       tab_bar = tab_bar_controller(*screens)
 
       screens.each do |s|
-        s.parent_screen = self if s.respond_to? "parent_screen="
-        s.on_load if s.respond_to? :on_load
+        s.parent_screen = self if s.respond_to?("parent_screen=")
+        s.on_load if s.respond_to?(:on_load)
       end
       
       open_view_controller tab_bar
 
       screens.each do |s|
-        s.on_opened if s.respond_to? :on_opened
+        s.on_opened if s.respond_to?(:on_opened)
       end
 
       tab_bar
+    end
+
+    def open_tab(tab)
+
     end
 
     def push_tab_bar(*screens)
       tab_bar = tab_bar_controller(*screens)
 
       screens.each do |s|
-        s.parent_screen = self if s.respond_to? "parent_screen="
-        s.on_load if s.respond_to? :on_load
+        s.parent_screen = self if s.respond_to?("parent_screen=")
+        s.on_load if s.respond_to?(:on_load)
       end
 
       push_view_controller tab_bar
 
       screens.each do |s|
-        s.on_opened if s.respond_to? :on_opened
+        s.on_opened if s.respond_to?(:on_opened)
       end
 
       tab_bar

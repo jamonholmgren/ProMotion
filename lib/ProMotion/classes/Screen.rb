@@ -8,7 +8,7 @@ module ProMotion
 
     def initialize(args = {})
       args.each do |k, v|
-        self.send "#{k}=", v if self.respond_to? "#{k}="
+        self.send "#{k}=", v if self.respond_to?("#{k}=")
       end
       self.load_view_controller
       self.view_controller.title = self.title
@@ -67,14 +67,14 @@ module ProMotion
     end
 
     def view_controller=(vc)
-      vc = vc.alloc.initWithNibName(nil, bundle:nil) if vc.respond_to? :alloc
+      vc = vc.alloc.initWithNibName(nil, bundle:nil) if vc.respond_to?(:alloc)
       if self.navigation_controller && self.first_screen?
         @view_controller = vc
         self.navigation_controller = NavigationController.alloc.initWithRootViewController(self.view_controller)
       else
         @view_controller = vc
       end
-      @view_controller.screen = self if @view_controller.respond_to? "screen="
+      @view_controller.screen = self if @view_controller.respond_to?("screen=")
 
       refresh_tab_bar_item
     end
@@ -88,11 +88,11 @@ module ProMotion
     end
 
     def view_will_appear(animated)
-      self.will_appear if self.respond_to? :will_appear
+      self.will_appear if self.respond_to?(:will_appear)
     end
 
     def view_did_appear(animated)
-      self.on_appear if self.respond_to? :on_appear
+      self.on_appear if self.respond_to?(:on_appear)
     end
 
     def title

@@ -14,7 +14,7 @@ module ProMotion
       self.view_controller.title = self.title
 
       self.add_nav_bar if args[:nav_bar]
-      self.on_init if self.respond_to? :on_init
+      self.on_init if self.respond_to?(:on_init)
       self
     end
 

@@ -29,7 +29,7 @@ module ProMotion
 
 
 
-      def createTabBarControllerFromData(data)
+      def create_tab_bar_controller_from_data(data)
         data = self.setTags(data)
 
         tabBarController = UITabBarController.alloc.init
@@ -38,47 +38,47 @@ module ProMotion
         return tabBarController
       end
 
-      def setTags(data)
-        tagNumber = 0
+      def set_tags(data)
+        tag_number = 0
         
         data.each do |d|
-          d[:tag] = tagNumber
-          tagNumber += 1
+          d[:tag] = tag_number
+          tag_number += 1
         end
 
         return data
       end
 
-      def tabBarIcon(icon, tag)
+      def tab_bar_icon(icon, tag)
         return UITabBarItem.alloc.initWithTabBarSystemItem(icon, tag: tag)
       end
 
-      def tabBarIconCustom(title, imageName, tag)
-        iconImage = UIImage.imageNamed(imageName)
-        return UITabBarItem.alloc.initWithTitle(title, image:iconImage, tag:tag)
+      def tab_bar_icon_custom(title, image_name, tag)
+        icon_image = UIImage.imageNamed(image_name)
+        return UITabBarItem.alloc.initWithTitle(title, image:icon_image, tag:tag)
       end
 
-      def tabControllersFromData(data)
+      def tab_controllers_from_data(data)
         mt_tab_controllers = []
 
         data.each do |tab|
-          mt_tab_controllers << self.controllerFromTabData(tab)
+          mt_tab_controllers << self.controller_from_tab_data(tab)
         end
 
         return mt_tab_controllers
       end
 
-      def controllerFromTabData(tab)
+      def controller_from_tab_data(tab)
         tab[:badgeNumber] = 0 unless tab[:badgeNumber]
         tab[:tag] = 0 unless tab[:tag]
         
-        viewController = tab[:viewController]
-        viewController = tab[:viewController].alloc.init if tab[:viewController].respond_to?(:alloc)
+        view_controller = tab[:view_controller]
+        view_controller = tab[:view_controller].alloc.init if tab[:view_controller].respond_to?(:alloc)
         
         if tab[:navigationController]
-          controller = UINavigationController.alloc.initWithRootViewController(viewController)
+          controller = UINavigationController.alloc.initWithRootViewController(view_controller)
         else
-          controller = viewController
+          controller = view_controller
         end
 
         controller.tabBarItem = self.tabBarItem(tab)
@@ -87,23 +87,24 @@ module ProMotion
         return controller
       end
 
-      def tabBarItem(tab)
+      def tab_bar_item(tab)
         title = "Untitled"
         title = tab[:title] if tab[:title]
+        tab[:tag] ||= 0
 
-        tabBarItem = tabBarIcon(tab[:systemIcon], tab[:tag]) if tab[:systemIcon]
-        tabBarItem = tabBarIconCustom(title, tab[:icon], tab[:tag]) if tab[:icon]
+        tab_bar_item = tab_bar_icon(tab[:systemIcon], tab[:tag]) if tab[:systemIcon]
+        tab_bar_item = tab_bar_icon_custom(title, tab[:icon], tab[:tag]) if tab[:icon]
         
-        tabBarItem.badgeValue = tab[:badgeNumber].to_s unless tab[:badgeNumber].nil? || tab[:badgeNumber] <= 0
+        tab_bar_item.badgeValue = tab[:badgeNumber].to_s unless tab[:badgeNumber].nil? || tab[:badgeNumber] <= 0
         
-        return tabBarItem
+        return tab_bar_item
       end
 
-      def select(tabBarController, title: title)
+      def select(tab_bar_controller, title: title)
         root_controller = nil
-        tabBarController.viewControllers.each do |vc|
+        tab_bar_controller.viewControllers.each do |vc|
           if vc.tabBarItem.title == title
-            tabBarController.selectedIndex = vc.tabBarItem.tag
+            tab_bar_controller.selectedIndex = vc.tabBarItem.tag
             root_controller = vc
             break
           end
@@ -111,14 +112,14 @@ module ProMotion
         root_controller
       end
 
-      def select(tabBarController, tag: tag)
-        tabBarController.selectedIndex = tag
+      def select(tab_bar_controller, tag: tag)
+        tab_bar_controller.selectedIndex = tag
       end
 
-      def replace_current_item(tabBarController, view_controller: vc)
-        controllers = NSMutableArray.arrayWithArray(tabBarController.viewControllers)
-        controllers.replaceObjectAtIndex(tabBarController.selectedIndex, withObject: newController)
-        tabBarController.viewControllers = controllers
+      def replace_current_item(tab_bar_controller, view_controller: vc)
+        controllers = NSMutableArray.arrayWithArray(tab_bar_controller.viewControllers)
+        controllers.replaceObjectAtIndex(tab_bar_controller.selectedIndex, withObject: vc)
+        tab_bar_controller.viewControllers = controllers
       end
     end
   end

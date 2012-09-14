@@ -8,10 +8,12 @@ module ProMotion
       screen.view_controller.title = args[:title] if args[:title]
 
       screen.add_nav_bar if args[:nav_bar]
+      
       unless args[:close_all] || args[:modal]
         screen.navigation_controller ||= self.navigation_controller
         screen.tab_bar ||= self.tab_bar
       end
+
       screen.modal = args[:modal] if args[:modal]
       screen.send(:on_load) if screen.respond_to?(:on_load)
       screen.view_controller.hidesBottomBarWhenPushed = args[:hide_tab_bar] if args[:hide_tab_bar]
@@ -21,12 +23,15 @@ module ProMotion
       elsif args[:modal]
         self.view_controller.presentModalViewController(screen.main_controller, animated:true)
       elsif args[:in_tab] && self.tab_bar
-        vc = PM::TabBar.select(self.tab_bar, title: args[:in_tab])
+        vc = open_tab(args[:in_tab])
+        $stderr.puts "Found a #{vc.to_s}"
         if vc
-          if vc.navigationController
-            push_view_controller(screen.view_controller, vc.navigationController)
+          if vc.is_a? UINavigationController
+            push_view_controller(screen.view_controller, vc)
           else
-            PM::TabBar.replace_current_item(vc, view_controller: screen.view_controller)
+            self.tab_bar.selectedIndex = vc.tabBarItem.tag
+            $stderr.puts "#{self.tab_bar.selectedIndex} is selected and should be #{vc.tabBarItem.tag}"
+            # PM::TabBar.replace_current_item(self.tab_bar, view_controller: screen.view_controller)
           end
         else
           $stderr.puts "No tab bar item '#{args[:in_tab]}'"
@@ -73,10 +78,13 @@ module ProMotion
       tab_bar_controller = UITabBarController.alloc.init
 
       view_controllers = []
+      tag_index = 0
       screens.each do |s|
         if s.is_a? Screen
           s = s.new if s.respond_to?(:new)
+          s.view_controller.tabBarItem.tag = tag_index
           view_controllers << s.main_controller
+          tag_index += 1
         else
           Console.log("Non-Screen passed into tab_bar_controller: #{s.to_s}", withColor: Console::RED_COLOR)
         end
@@ -111,7 +119,8 @@ module ProMotion
 
     def open_tab(tab)
       if tab.is_a? String
-        PM::TabBar.select(self.tab_bar, title: tab)
+        $stderr.puts "Opening tab in #{self.tab_bar.to_s} : #{tab}"
+        return PM::TabBar.select(self.tab_bar, title: tab)
       else
         $stderr.puts "Unable to open tab #{tab.to_s} because it isn't a string."
       end

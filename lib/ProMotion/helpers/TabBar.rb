@@ -33,7 +33,7 @@ module ProMotion
         data = self.setTags(data)
 
         tabBarController = UITabBarController.alloc.init
-        tabBarController.viewControllers = self.tabControllersFromData(data)
+        tabBarController.viewControllers = self.tab_controllers_from_data(data)
 
         return tabBarController
       end
@@ -90,8 +90,9 @@ module ProMotion
       def tab_bar_item(tab)
         title = "Untitled"
         title = tab[:title] if tab[:title]
-        tab[:tag] ||= 0
-
+        tab[:tag] ||= @current_tag ||= 0
+        @current_tag = tab[:tag] + 1
+        
         tab_bar_item = tab_bar_icon(tab[:systemIcon], tab[:tag]) if tab[:systemIcon]
         tab_bar_item = tab_bar_icon_custom(title, tab[:icon], tab[:tag]) if tab[:icon]
         
@@ -104,7 +105,7 @@ module ProMotion
         root_controller = nil
         tab_bar_controller.viewControllers.each do |vc|
           if vc.tabBarItem.title == title
-            tab_bar_controller.selectedIndex = vc.tabBarItem.tag
+            tab_bar_controller.selectedViewController = vc
             root_controller = vc
             break
           end
@@ -118,6 +119,7 @@ module ProMotion
 
       def replace_current_item(tab_bar_controller, view_controller: vc)
         controllers = NSMutableArray.arrayWithArray(tab_bar_controller.viewControllers)
+        $stderr.puts "Selected index is : #{tab_bar_controller.selectedIndex}"
         controllers.replaceObjectAtIndex(tab_bar_controller.selectedIndex, withObject: vc)
         tab_bar_controller.viewControllers = controllers
       end

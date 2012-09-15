@@ -93,10 +93,10 @@ module ProMotion
         tab[:tag] ||= @current_tag ||= 0
         @current_tag = tab[:tag] + 1
         
-        tab_bar_item = tab_bar_icon(tab[:systemIcon], tab[:tag]) if tab[:systemIcon]
+        tab_bar_item = tab_bar_icon(tab[:system_icon], tab[:tag]) if tab[:system_icon]
         tab_bar_item = tab_bar_icon_custom(title, tab[:icon], tab[:tag]) if tab[:icon]
         
-        tab_bar_item.badgeValue = tab[:badgeNumber].to_s unless tab[:badgeNumber].nil? || tab[:badgeNumber] <= 0
+        tab_bar_item.badgeValue = tab[:badge_number].to_s unless tab[:badge_number].nil? || tab[:badge_number] <= 0
         
         return tab_bar_item
       end

@@ -119,7 +119,6 @@ module ProMotion
 
       def replace_current_item(tab_bar_controller, view_controller: vc)
         controllers = NSMutableArray.arrayWithArray(tab_bar_controller.viewControllers)
-        $stderr.puts "Selected index is : #{tab_bar_controller.selectedIndex}"
         controllers.replaceObjectAtIndex(tab_bar_controller.selectedIndex, withObject: vc)
         tab_bar_controller.viewControllers = controllers
       end

@@ -38,7 +38,7 @@ module ProMotion
     end
 
     def refresh_tab_bar_item
-      self.main_controller.tabBarItem ||= ProMotion::TabBar.tab_bar_item(self.tab_bar_item) if self.tab_bar_item
+      self.main_controller.tabBarItem = ProMotion::TabBar.tab_bar_item(self.tab_bar_item) if self.tab_bar_item
     end
     
     def add_nav_bar

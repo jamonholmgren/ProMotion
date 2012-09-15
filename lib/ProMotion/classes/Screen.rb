@@ -19,7 +19,6 @@ module ProMotion
     end
 
     def is_modal?
-      $stderr.puts self.modal
       self.modal == true
     end
 

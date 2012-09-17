@@ -3,7 +3,7 @@
 ProMotion introduces a new object called "Screens". Screens have a one-to-one relationship 
 with your app's screens and can (usually) take the place of view controllers.
 
-Typical /app file structure:
+Typical app file structure:
 
     app/
       screens/

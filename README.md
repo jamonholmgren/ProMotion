@@ -5,17 +5,17 @@ with your app's screens and can (usually) take the place of view controllers.
 
 Typical /app file structure:
 
-    app
-      screens
-        photos
+    app/
+      screens/
+        photos/
           list_photos_screen.rb
           show_photo_screen.rb
           edit_photo_screen.rb
         home_screen.rb
         settings_screen.rb
-      models
-      view_controllers
-      views
+      models/
+      view_controllers/
+      views/
       app_delegate.rb
 
 ## Usage

@@ -3,7 +3,7 @@ module ProMotion
   class Screen
     include ProMotion::ScreenNavigation
     include ProMotion::ScreenElements
-    
+
     attr_accessor :view_controller, :navigation_controller, :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal
 
     def initialize(args = {})
@@ -39,7 +39,7 @@ module ProMotion
     def refresh_tab_bar_item
       self.main_controller.tabBarItem = ProMotion::TabBar.tab_bar_item(self.tab_bar_item) if self.tab_bar_item
     end
-    
+
     def add_nav_bar
       self.navigation_controller = NavigationController.alloc.initWithRootViewController(self.view_controller)
       self.first_screen = true
@@ -109,7 +109,7 @@ module ProMotion
     end
 
   end
-  
+
   # Class methods
   class Screen
     class << self

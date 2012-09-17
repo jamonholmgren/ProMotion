@@ -35,7 +35,7 @@ module ProMotion
     end
 
     def home(screen)
-      screen = screen.new if screen.respond_to? :new
+      screen = screen.new if screen.respond_to?(:new)
       @home_screen = screen
     end
 

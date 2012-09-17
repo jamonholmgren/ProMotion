@@ -5,10 +5,10 @@ module ProMotion
         if v.is_a? Hash
           v.each do |k2, v2|
             sub_element = element.send("#{k}")
-            sub_element.send("#{k2}=", v2) if sub_element.respond_to? "#{k2}="
+            sub_element.send("#{k2}=", v2) if sub_element.respond_to?("#{k2}=")
           end
         else
-          element.send("#{k}=", v) if element.respond_to? "#{k}="
+          element.send("#{k}=", v) if element.respond_to?("#{k}=")
         end
       end
       element

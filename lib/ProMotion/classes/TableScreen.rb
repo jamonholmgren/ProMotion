@@ -19,7 +19,7 @@ module ProMotion
     end
 
     def check_table_data_method
-      Console.log("- table_data method needed in table view screen.", withColor: Console::RED_COLOR) unless self.respond_to? :table_data
+      Console.log("- table_data method needed in table view screen.", withColor: Console::RED_COLOR) unless self.respond_to?(:table_data)
     end
 
     def update_table_data

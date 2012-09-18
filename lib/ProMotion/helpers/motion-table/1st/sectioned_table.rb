@@ -66,6 +66,10 @@ module ProMotion::MotionTable
         tableCell.imageView.layer.cornerRadius = dataCell[:image][:radius] if dataCell[:image][:radius]
       end
 
+      if dataCell[:details]
+        tableCell.addSubview dataCell[:details][:image]
+      end
+
       tableCell.text = dataCell[:title]
       return tableCell
     end

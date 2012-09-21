@@ -27,7 +27,8 @@ module ProMotion::MotionTable
 
     # Number of cells
     def tableView(tableView, numberOfRowsInSection:section)
-      return sectionAtIndex(section)[:cells].length
+      return sectionAtIndex(section)[:cells].length if sectionAtIndex(section)
+      0
     end
 
     def tableView(tableView, titleForHeaderInSection:section)

@@ -88,7 +88,7 @@ module ProMotion::MotionTable
     end
 
     def cellAtSectionAndIndex(section, index)
-      return sectionAtIndex(section)[:cells].at(index) if sectionAtIndex(section)
+      return sectionAtIndex(section)[:cells].at(index) if sectionAtIndex(section) && sectionAtIndex(section)[:cells]
     end
 
     def tableView(tableView, didSelectRowAtIndexPath:indexPath)

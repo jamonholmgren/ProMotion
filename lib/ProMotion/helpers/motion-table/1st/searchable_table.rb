@@ -50,6 +50,7 @@ module ProMotion::MotionTable
 
     def searchDisplayControllerWillBeginSearch(controller)
       @mt_filtered = true
+      @mt_filtered_data = []
       self.tableView.setScrollEnabled false
     end
   end

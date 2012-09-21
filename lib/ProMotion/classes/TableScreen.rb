@@ -5,7 +5,7 @@ module ProMotion
     include MotionTable::SearchableTable
 
     def view
-      return self.view_controller.view
+      self.view_controller.view
     end
 
     def load_view_controller

@@ -9,7 +9,7 @@ module ProMotion::MotionTable
 
     def updateTableViewData(data)
       setTableViewData data
-      @tableView.reloadData
+      self.tableView.reloadData
     end
 
     def setTableViewData(data)
@@ -94,7 +94,7 @@ module ProMotion::MotionTable
 
       dataCell = cellAtSectionAndIndex(indexPath.section, indexPath.row)
       dataCell[:arguments] = {} unless dataCell[:arguments]
-      dataCell[:arguments][:value] = switch.isOn
+      dataCell[:arguments][:value] = switch.isOn if dataCell[:arguments].is_a? Hash
       
       triggerAction(dataCell[:accessoryAction], dataCell[:arguments]) if dataCell[:accessoryAction]
 

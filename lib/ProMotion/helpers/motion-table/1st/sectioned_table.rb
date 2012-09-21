@@ -17,7 +17,7 @@ module ProMotion::MotionTable
     end
 
     def numberOfSectionsInTableView(tableView)
-      if @mt_filtered && tableView == self.tableView
+      if @mt_filtered
         return @mt_filtered_data.length if @mt_filtered_data
       else
         return @mt_table_view_groups.length if @mt_table_view_groups

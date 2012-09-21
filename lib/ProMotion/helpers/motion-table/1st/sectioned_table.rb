@@ -17,7 +17,11 @@ module ProMotion::MotionTable
     end
 
     def numberOfSectionsInTableView(tableView)
-      return @mt_table_view_groups.length if @mt_table_view_groups
+      if @mt_filtered && tableView == self.tableView
+        return @mt_filtered_data.length if @mt_filtered_data
+      else
+        return @mt_table_view_groups.length if @mt_table_view_groups
+      end
       0
     end
 
@@ -27,12 +31,12 @@ module ProMotion::MotionTable
     end
 
     def tableView(tableView, titleForHeaderInSection:section)
-      return sectionAtIndex(section)[:title]
+      return sectionAtIndex(section)[:title] if sectionAtIndex(section)
     end
 
     # Set table_data_index if you want the right hand index column (jumplist)
     def sectionIndexTitlesForTableView(tableView)
-      self.table_data_index if respond_to? :table_data_index
+      self.table_data_index if respond_to?(:table_data_index)
     end
 
     def tableView(tableView, cellForRowAtIndexPath:indexPath)
@@ -75,11 +79,15 @@ module ProMotion::MotionTable
     end
 
     def sectionAtIndex(index)
-      @mt_table_view_groups.at(index)
+      if @mt_filtered && tableView == self.tableView
+        @mt_filtered_data.at(index)
+      else
+        @mt_table_view_groups.at(index)
+      end
     end
 
     def cellAtSectionAndIndex(section, index)
-      return sectionAtIndex(section)[:cells].at(index)
+      return sectionAtIndex(section)[:cells].at(index) if sectionAtIndex(section)
     end
 
     def tableView(tableView, didSelectRowAtIndexPath:indexPath)

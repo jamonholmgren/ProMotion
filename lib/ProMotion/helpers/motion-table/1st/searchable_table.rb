@@ -21,9 +21,9 @@ module ProMotion::MotionTable
     end
 
     def searchDisplayController(controller, shouldReloadTableForSearchString:searchString)
-      @mt_table_view_groups = []
+      @mt_filtered_data = []
 
-      @original_data.each do |section|
+      @mt_table_view_groups.each do |section|
         newSection = {}
         newSection[:cells] = []
 
@@ -33,22 +33,24 @@ module ProMotion::MotionTable
           end
         end
 
-        if newSection.count > 0
+        if newSection[:cells].length > 0
           newSection[:title] = section[:title]
-          @mt_table_view_groups << newSection
+          @mt_filtered_data << newSection
         end
       end
-      
+
       true
     end
 
     def searchDisplayControllerWillEndSearch(controller)
-      @mt_table_view_groups = @original_data.clone
-      @original_data = nil
+      @mt_filtered = false
+      @mt_filtered_data = nil
+      self.tableView.setScrollEnabled true
     end
 
     def searchDisplayControllerWillBeginSearch(controller)
-      @original_data = @mt_table_view_groups.clone
+      @mt_filtered = true
+      self.tableView.setScrollEnabled false
     end
   end
 end

@@ -42,7 +42,9 @@ module ProMotion
         open_view_controller screen.main_controller
       end
       
-      screen.send(:on_opened) if screen.respond_to?(:on_opened)
+      if screen.respond_to?(:on_opened)
+        screen.send(:on_opened)
+      end
     end
 
     def fresh_start(screen)

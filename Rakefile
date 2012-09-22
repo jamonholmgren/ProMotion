@@ -8,7 +8,7 @@ require 'motion-table'
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'ProMotionTest'
-  app.version = "0.1.0"
+  app.version = "0.2.0"
 
 
   # Devices

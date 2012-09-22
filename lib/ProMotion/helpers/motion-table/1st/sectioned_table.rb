@@ -64,11 +64,18 @@ module ProMotion::MotionTable
         tableCell.detailTextLabel.text = dataCell[:subtitle]
       end
 
+      tableCell.selectionStyle = UITableViewCellSelectionStyleNone if dataCell[:no_select]
 
       if dataCell[:image]
         tableCell.imageView.layer.masksToBounds = true
         tableCell.imageView.image = dataCell[:image][:image]
         tableCell.imageView.layer.cornerRadius = dataCell[:image][:radius] if dataCell[:image][:radius]
+      end
+
+      if dataCell[:subViews]
+        dataCell[:subViews].each do |view|
+          tableCell.addSubview view
+        end
       end
 
       if dataCell[:details]

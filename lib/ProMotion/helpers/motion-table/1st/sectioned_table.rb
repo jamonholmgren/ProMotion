@@ -27,12 +27,12 @@ module ProMotion::MotionTable
 
     # Number of cells
     def tableView(tableView, numberOfRowsInSection:section)
-      return sectionAtIndex(section)[:cells].length if sectionAtIndex(section)
+      return sectionAtIndex(section)[:cells].length if sectionAtIndex(section) && sectionAtIndex(section)[:cells]
       0
     end
 
     def tableView(tableView, titleForHeaderInSection:section)
-      return sectionAtIndex(section)[:title] if sectionAtIndex(section)
+      return sectionAtIndex(section)[:title] if sectionAtIndex(section) && sectionAtIndex(section)[:title]
     end
 
     # Set table_data_index if you want the right hand index column (jumplist)
@@ -42,6 +42,7 @@ module ProMotion::MotionTable
 
     def tableView(tableView, cellForRowAtIndexPath:indexPath)
       dataCell = cellAtSectionAndIndex(indexPath.section, indexPath.row)
+      return UITableViewCell.alloc.init unless dataCell
       dataCell[:cellStyle] ||= UITableViewCellStyleDefault
       
       cellIdentifier = "Cell"
@@ -87,7 +88,7 @@ module ProMotion::MotionTable
     end
 
     def sectionAtIndex(index)
-      if @mt_filtered && tableView == self.tableView
+      if @mt_filtered
         @mt_filtered_data.at(index)
       else
         @mt_table_view_groups.at(index)

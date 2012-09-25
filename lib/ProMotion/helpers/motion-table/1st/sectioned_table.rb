@@ -41,15 +41,19 @@ module ProMotion::MotionTable
     end
 
     def tableView(tableView, cellForRowAtIndexPath:indexPath)
+      # Aah, magic happens here...
+
       dataCell = cellAtSectionAndIndex(indexPath.section, indexPath.row)
       return UITableViewCell.alloc.init unless dataCell
       dataCell[:cellStyle] ||= UITableViewCellStyleDefault
-      
-      cellIdentifier = "Cell"
+      dataCell[:cellIdentifier] ||= "Cell"
+      cellIdentifier = dataCell[:cellIdentifier]
 
       tableCell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier)
       unless tableCell
         tableCell = UITableViewCell.alloc.initWithStyle(dataCell[:cellStyle], reuseIdentifier:cellIdentifier)
+        
+        # Add optimizations here
       end
 
       tableCell.accessoryView = dataCell[:accessoryView] if dataCell[:accessoryView]
@@ -73,6 +77,7 @@ module ProMotion::MotionTable
         tableCell.imageView.layer.cornerRadius = dataCell[:image][:radius] if dataCell[:image][:radius]
       end
 
+      # Quite ingenious ;)
       if dataCell[:subViews]
         dataCell[:subViews].each do |view|
           tableCell.addSubview view
@@ -85,6 +90,17 @@ module ProMotion::MotionTable
 
       tableCell.text = dataCell[:title]
       return tableCell
+    end
+
+    def tableView(table_view, willDisplayCell:cell, forRowAtIndexPath:index_path)
+      # yet more magic
+
+      cell_data_styles = cellAtSectionAndIndex(index_path.section, index_path.row)[:styles] if cellAtSectionAndIndex(index_path.section, index_path.row)
+      cell ||= UITableViewCell.alloc.init 
+     
+      set_attributes(cell, cell_data_styles) if cell_data_styles
+
+      cell
     end
 
     def sectionAtIndex(index)
@@ -131,6 +147,21 @@ module ProMotion::MotionTable
         MotionTable::Console.log(self, actionNotImplemented: action)
       end
     end
+  end
 
+  def set_attributes(element, args = {})
+    args.each do |k, v|
+      if v.is_a? Hash
+        # May be dangerous.. we'll see
+        set_attributes(k, v)
+        # v.each do |k2, v2|
+        #   sub_element = element.send("#{k}")
+        #   sub_element.send("#{k2}=", v2) if sub_element.respond_to?("#{k2}=")
+        # end
+      else
+        element.send("#{k}=", v) if element.respond_to?("#{k}=")
+      end
+    end
+    element
   end
 end

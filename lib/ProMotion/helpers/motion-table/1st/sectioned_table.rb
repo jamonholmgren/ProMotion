@@ -88,19 +88,18 @@ module ProMotion::MotionTable
         tableCell.addSubview dataCell[:details][:image]
       end
 
-      tableCell.text = dataCell[:title]
+      if dataCell[:styles] && dataCell[:styles][:textLabel] && dataCell[:styles][:textLabel][:frame]
+        label = UILabel.alloc.initWithFrame(CGRectZero)
+        set_cell_attributes label, dataCell[:styles][:textLabel]
+        tableCell.contentView.addSubview label
+
+        # hackery
+        tableCell.textLabel.textColor = UIColor.clearColor
+      else
+        tableCell.textLabel.text = dataCell[:title]
+      end
+
       return tableCell
-    end
-
-    def tableView(table_view, willDisplayCell:cell, forRowAtIndexPath:index_path)
-      # yet more magic
-
-      cell_data_styles = cellAtSectionAndIndex(index_path.section, index_path.row)[:styles] if cellAtSectionAndIndex(index_path.section, index_path.row)
-      cell ||= UITableViewCell.alloc.init 
-     
-      set_attributes(cell, cell_data_styles) if cell_data_styles
-
-      cell
     end
 
     def sectionAtIndex(index)
@@ -147,21 +146,23 @@ module ProMotion::MotionTable
         MotionTable::Console.log(self, actionNotImplemented: action)
       end
     end
-  end
-
-  def set_attributes(element, args = {})
-    args.each do |k, v|
-      if v.is_a? Hash
-        # May be dangerous.. we'll see
-        set_attributes(k, v)
-        # v.each do |k2, v2|
-        #   sub_element = element.send("#{k}")
-        #   sub_element.send("#{k2}=", v2) if sub_element.respond_to?("#{k2}=")
-        # end
-      else
-        element.send("#{k}=", v) if element.respond_to?("#{k}=")
+  
+    def set_cell_attributes(element, args = {})
+      args.each do |k, v|
+        if v.is_a? Hash
+          v.each do
+            sub_element = element.send("#{k}")
+            set_cell_attributes(sub_element, v)
+          end
+          # v.each do |k2, v2|
+          #   sub_element = element.send("#{k}")
+          #   sub_element.send("#{k2}=", v2) if sub_element.respond_to?("#{k2}=")
+          # end
+        else
+          element.send("#{k}=", v) if element.respond_to?("#{k}=")
+        end
       end
+      element
     end
-    element
   end
 end

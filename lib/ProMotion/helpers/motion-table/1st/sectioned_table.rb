@@ -48,12 +48,19 @@ module ProMotion::MotionTable
       dataCell[:cellStyle] ||= UITableViewCellStyleDefault
       dataCell[:cellIdentifier] ||= "Cell"
       cellIdentifier = dataCell[:cellIdentifier]
+      dataCell[:cellClass] ||= UITableViewCell
 
       tableCell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier)
       unless tableCell
-        tableCell = UITableViewCell.alloc.initWithStyle(dataCell[:cellStyle], reuseIdentifier:cellIdentifier)
+        tableCell = dataCell[:cellClass].alloc.initWithStyle(dataCell[:cellStyle], reuseIdentifier:cellIdentifier)
         
         # Add optimizations here
+        tableCell.layer.masksToBounds = true if dataCell[:masksToBounds]
+        tableCell.backgroundColor = dataCell[:backgroundColor] if dataCell[:backgroundColor]
+      end
+
+      if dataCell[:cellClassAttributes]
+        set_cell_attributes tableCell, dataCell[:cellClassAttributes]
       end
 
       tableCell.accessoryView = dataCell[:accessoryView] if dataCell[:accessoryView]
@@ -80,7 +87,13 @@ module ProMotion::MotionTable
       # Quite ingenious ;)
       if dataCell[:subViews]
         dataCell[:subViews].each do |view|
-          tableCell.addSubview view
+          already = false
+          tableCell.subviews.each do  |v|
+            if  v == view
+              already = true
+            end
+          end
+          tableCell.addSubview view unless already 
         end
       end
 
@@ -89,10 +102,19 @@ module ProMotion::MotionTable
       end
 
       if dataCell[:styles] && dataCell[:styles][:textLabel] && dataCell[:styles][:textLabel][:frame]
-        label = UILabel.alloc.initWithFrame(CGRectZero)
-        set_cell_attributes label, dataCell[:styles][:textLabel]
-        tableCell.contentView.addSubview label
+        ui_label = false
+        tableCell.contentView.subviews.each do |view|
+          if view.is_a? UILabel
+            ui_label = true
+            view.text = dataCell[:styles][:textLabel][:text]
+          end
+        end
 
+        unless ui_label == true
+          label ||= UILabel.alloc.initWithFrame(CGRectZero)
+          set_cell_attributes label, dataCell[:styles][:textLabel]
+          tableCell.contentView.addSubview label
+        end
         # hackery
         tableCell.textLabel.textColor = UIColor.clearColor
       else

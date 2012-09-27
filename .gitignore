@@ -18,5 +18,5 @@ tmp
 .repl_history
 build
 build/*
-*.000
+.*.0??
 .rvmrc

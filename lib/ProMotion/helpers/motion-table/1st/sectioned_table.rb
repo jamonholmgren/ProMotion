@@ -37,7 +37,7 @@ module ProMotion::MotionTable
 
     # Set table_data_index if you want the right hand index column (jumplist)
     def sectionIndexTitlesForTableView(tableView)
-      self.table_data_index if respond_to?(:table_data_index)
+      self.table_data_index if self.respond_to?(:table_data_index)
     end
 
     def tableView(tableView, cellForRowAtIndexPath:indexPath)
@@ -87,13 +87,12 @@ module ProMotion::MotionTable
       # Quite ingenious ;)
       if dataCell[:subViews]
         dataCell[:subViews].each do |view|
-          already = false
           tableCell.subviews.each do  |v|
             if  v == view
-              already = true
+              v.removeFromSuperview
             end
           end
-          tableCell.addSubview view unless already 
+          tableCell.addSubview view 
         end
       end
 

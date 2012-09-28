@@ -95,7 +95,7 @@ module ProMotion
     end
 
     def title
-      self.class.send :get_title
+      self.class.send(:get_title)
     end
 
     def title=(new_title)

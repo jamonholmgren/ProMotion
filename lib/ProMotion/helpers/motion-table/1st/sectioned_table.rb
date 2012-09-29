@@ -117,7 +117,9 @@ module ProMotion::MotionTable
         # hackery
         tableCell.textLabel.textColor = UIColor.clearColor
       else
-        tableCell.textLabel.text = dataCell[:title]
+        cell_title = dataCell[:title]
+        cell_title ||= ""
+        tableCell.textLabel.text = cell_title
       end
 
       return tableCell

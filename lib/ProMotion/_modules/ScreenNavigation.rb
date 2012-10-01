@@ -26,7 +26,7 @@ module ProMotion
         vc = open_tab(args[:in_tab])
         $stderr.puts "Found a #{vc.to_s}"
         if vc
-          if vc.is_a? UINavigationController
+          if vc.is_a?(UINavigationController)
             push_view_controller(screen.view_controller, vc)
           else
             self.tab_bar.selectedIndex = vc.tabBarItem.tag

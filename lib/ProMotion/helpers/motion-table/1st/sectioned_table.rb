@@ -37,7 +37,9 @@ module ProMotion::MotionTable
 
     # Set table_data_index if you want the right hand index column (jumplist)
     def sectionIndexTitlesForTableView(tableView)
-      self.table_data_index if self.respond_to?(:table_data_index)
+      if self.respond_to?(:table_data_index)
+        self.table_data_index 
+      end
     end
 
     def tableView(tableView, cellForRowAtIndexPath:indexPath)

@@ -72,8 +72,10 @@ module ProMotion
       else
         Console.log("Tried to close #{self.to_s}; however, this screen isn't modal or in a nav bar.", withColor: Console::PURPLE_COLOR)
       end
-
-      previous_screen.send(:on_return, args) if previous_screen && previous_screen.respond_to?(:on_return)
+      
+      if previous_screen && previous_screen.respond_to?(:on_return)
+        previous_screen.send(:on_return, args)
+      end
     end
 
     def tab_bar_controller(*screens)

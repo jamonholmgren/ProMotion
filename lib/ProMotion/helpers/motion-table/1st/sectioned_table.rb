@@ -57,6 +57,7 @@ module ProMotion::MotionTable
         # Add optimizations here
         tableCell.layer.masksToBounds = true if dataCell[:masksToBounds]
         tableCell.backgroundColor = dataCell[:backgroundColor] if dataCell[:backgroundColor]
+        tableCell.selectionStyle = dataCell[:selectionStyle] if dataCell[:selectionStyle]
       end
 
       if dataCell[:cellClassAttributes]

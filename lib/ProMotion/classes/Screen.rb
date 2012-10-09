@@ -8,7 +8,7 @@ module ProMotion
 
     def initialize(args = {})
       args.each do |k, v|
-        self.send "#{k}=", v if self.respond_to?("#{k}=")
+        self.send("#{k}=", v) if self.respond_to?("#{k}=")
       end
       self.load_view_controller
       self.view_controller.title = self.title

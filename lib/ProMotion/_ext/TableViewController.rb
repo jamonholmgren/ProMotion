@@ -16,6 +16,19 @@ module ProMotion
       super
       self.screen.view_did_appear(animated) if self.screen && self.screen.respond_to?(:view_did_appear)
     end
-
+    
+    def viewWillDisappear(animated)
+      if self.screen && self.screen.respond_to?(:view_will_disappear)
+        self.screen.view_will_disappear(animated)
+      end
+      super      
+    end
+    
+    def viewDidDisappear(animated)
+      if self.screen && self.screen.respond_to?(:view_did_disappear)
+        self.screen.view_did_disappear(animated)
+      end
+      super      
+    end
   end
 end

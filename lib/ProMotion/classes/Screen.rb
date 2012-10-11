@@ -109,7 +109,7 @@ module ProMotion
 
     def title=(new_title)
       self.class.title = new_title
-      self.view_controller.title = new_title
+      self.view_controller.title = new_title if self.view_controller
     end
 
     def main_controller

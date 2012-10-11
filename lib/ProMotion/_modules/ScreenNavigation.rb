@@ -74,7 +74,11 @@ module ProMotion
       end
       
       if previous_screen && previous_screen.respond_to?(:on_return)
-        previous_screen.send(:on_return, args)
+        if args
+          previous_screen.send(:on_return, args)
+        else
+          previous_screen.send(:on_return)
+        end          
       end
     end
 

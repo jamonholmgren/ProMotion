@@ -4,37 +4,41 @@ module ProMotion
 
     def viewDidLoad
       super
-      if self.screen && self.screen.respond_to?(:view_did_load)
+      if screen_will_respond_to?(:view_did_load)
         self.screen.view_did_load
       end
     end
 
     def viewWillAppear(animated)
       super
-      if self.screen && self.screen.respond_to?(:view_will_appear)
+      if screen_will_respond_to?(:view_will_appear)
         self.screen.view_will_appear(animated)
       end
     end
 
     def viewDidAppear(animated)
       super
-      if self.screen && self.screen.respond_to?(:view_did_appear)
+      if screen_will_respond_to?(:view_did_appear)
         self.screen.view_did_appear(animated)
       end
     end
 
     def viewWillDisappear(animated)
-      if self.screen && self.screen.respond_to?(:view_will_disappear)
+      if screen_will_respond_to?(:view_will_disappear)
         self.screen.view_will_disappear(animated)
       end
       super      
     end
     
-    def viewWillDisappear(animated)
-      if self.screen && self.screen.respond_to?(:view_did_disappear)
+    def viewDidDisappear(animated)
+      if screen_will_respond_to?(:view_did_disappear)
         self.screen.view_did_disappear(animated)
       end
       super      
+    end
+
+    def screen_will_respond_to?(method)
+      self.screen && self.screen.respond_to?(method)
     end
   end
 end

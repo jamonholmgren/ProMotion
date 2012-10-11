@@ -24,7 +24,7 @@ module ProMotion
         self.view_controller.presentModalViewController(screen.main_controller, animated:true)
       elsif args[:in_tab] && self.tab_bar
         vc = open_tab(args[:in_tab])
-        $stderr.puts "Found a #{vc.to_s}"
+        # $stderr.puts "Found a #{vc.to_s}"
         if vc
           if vc.is_a?(UINavigationController)
             push_view_controller(screen.view_controller, vc)
@@ -123,7 +123,6 @@ module ProMotion
 
     def open_tab(tab)
       if tab.is_a? String
-        $stderr.puts "Opening tab in #{self.tab_bar.to_s} : #{tab}"
         return PM::TabBar.select(self.tab_bar, title: tab)
       else
         $stderr.puts "Unable to open tab #{tab.to_s} because it isn't a string."

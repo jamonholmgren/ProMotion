@@ -88,20 +88,24 @@ module ProMotion
     end
 
     def view_will_appear(animated)
-      self.will_appear if self.respond_to?(:will_appear)
+      self.will_appear
     end
+    def will_appear; end
 
     def view_did_appear(animated)
-      self.on_appear if self.respond_to?(:on_appear)
+      self.on_appear
     end
+    def on_appear; end
 
     def view_will_disappear(animated)
-      self.will_disappear if self.respond_to?(:will_disappear)
+      self.will_disappear
     end
+    def will_disappear; end
 
     def view_did_disappear(animated)
-      self.on_disappear if self.respond_to?(:on_disappear)
+      self.on_disappear
     end
+    def on_disappear; end
 
     def title
       self.class.send(:get_title)

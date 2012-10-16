@@ -88,10 +88,6 @@ module ProMotion
     end
 
     def view_did_load; end
-    def will_appear; end
-    def on_appear; end
-    def will_disappear; end
-    def did_disappear; end
 
     def view_will_appear(animated)
       self.will_appear

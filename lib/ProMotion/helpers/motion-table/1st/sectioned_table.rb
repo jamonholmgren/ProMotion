@@ -90,11 +90,6 @@ module ProMotion::MotionTable
       # Quite ingenious ;)
       if dataCell[:subViews]
         dataCell[:subViews].each do |view|
-          tableCell.subviews.each do  |v|
-            if  v == view
-              v.removeFromSuperview
-            end
-          end
           tableCell.addSubview view 
         end
       end

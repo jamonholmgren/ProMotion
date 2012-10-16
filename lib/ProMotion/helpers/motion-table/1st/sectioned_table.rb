@@ -91,12 +91,16 @@ module ProMotion::MotionTable
       if dataCell[:subViews]
         tag_number = 0
         dataCell[:subViews].each do |view|
+          # Remove an existing view at that tag number
           tag_number += 1
           existing_view = tableCell.viewWithTag(tag_number)
           existing_view.removeFromSuperview if existing_view
 
-          view.tag = tag_number
-          tableCell.addSubview view
+          # Add the subview if it exists
+          if view
+            view.tag = tag_number
+            tableCell.addSubview view
+          end
         end
       end
 

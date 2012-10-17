@@ -41,7 +41,7 @@ module ProMotion
       else
         open_view_controller screen.main_controller
       end
-      
+
       if screen.respond_to?(:on_opened)
         screen.send(:on_opened)
       end

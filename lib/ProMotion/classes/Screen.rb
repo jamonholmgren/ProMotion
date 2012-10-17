@@ -91,6 +91,7 @@ module ProMotion
     def on_opened; end
 
     def view_will_appear(animated)
+      self.class.send("current_screen=", self)
       self.will_appear
     end
     def will_appear; end
@@ -129,6 +130,14 @@ module ProMotion
   # Class methods
   class Screen
     class << self
+      def current_screen=(s)
+        @current_screen = s
+      end
+
+      def current_screen
+        @current_screen
+      end
+
       def title(t)
         @title = t
       end

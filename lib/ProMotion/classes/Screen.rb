@@ -91,13 +91,13 @@ module ProMotion
     def on_opened; end
 
     def view_will_appear(animated)
-      self.class.send("current_screen=", self)
+      ProMotion::Screen.current_screen = self
       self.will_appear
     end
     def will_appear; end
 
     def view_did_appear(animated)
-      self.class.send("current_screen=", self)
+      ProMotion::Screen.current_screen = self
       self.on_appear
     end
     def on_appear; end

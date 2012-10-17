@@ -97,6 +97,7 @@ module ProMotion
     def will_appear; end
 
     def view_did_appear(animated)
+      self.class.send("current_screen=", self)
       self.on_appear
     end
     def on_appear; end

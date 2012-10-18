@@ -9,6 +9,8 @@ module ProMotion
       
       on_load(application, launchOptions)
 
+      $stderr.puts "Application launched with options: #{launchOptions.to_s}"
+
       open_home_screen if has_home_screen
 
       get_home_screen.on_opened if has_home_screen && get_home_screen.respond_to?(:on_opened)

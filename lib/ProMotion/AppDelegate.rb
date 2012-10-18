@@ -9,7 +9,7 @@ module ProMotion
       
       on_load(application, launchOptions)
 
-      $stderr.puts "Application launched with options: #{launchOptions.to_s}"
+      # $stderr.puts "Application launched with options: #{launchOptions.to_s}"
 
       open_home_screen if has_home_screen
 

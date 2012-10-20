@@ -42,7 +42,7 @@ module ProMotion
     end
 
     def dealloc
-      $stderr.puts "Deallocating #{self.to_s}"
+      $stderr.puts "Deallocating #{self.to_s}" if ProMotion::Screen.debug_mode
     end
   end
 end

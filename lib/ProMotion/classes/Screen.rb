@@ -131,6 +131,14 @@ module ProMotion
   # Class methods
   class Screen
     class << self
+      def debug_mode
+        @debug_mode
+      end
+
+      def debug_mode=(v)
+        @debug_mode = v
+      end
+
       def current_screen=(s)
         @current_screen = s
       end

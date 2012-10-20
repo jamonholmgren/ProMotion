@@ -40,5 +40,9 @@ module ProMotion
     def screen_will_respond_to?(method)
       self.screen && self.screen.respond_to?(method)
     end
+
+    def dealloc
+      $stderr.puts "Deallocating #{self.to_s}"
+    end
   end
 end

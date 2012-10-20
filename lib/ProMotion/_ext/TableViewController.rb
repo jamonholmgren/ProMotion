@@ -30,5 +30,9 @@ module ProMotion
       end
       super      
     end
+
+    def dealloc
+      $stderr.puts "Deallocating #{self.to_s}"
+    end    
   end
 end

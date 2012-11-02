@@ -148,6 +148,8 @@ module ProMotion::MotionTable
     def tableView(tableView, didSelectRowAtIndexPath:indexPath)
       cell = cellAtSectionAndIndex(indexPath.section, indexPath.row)
       tableView.deselectRowAtIndexPath(indexPath, animated: true);
+      cell[:arguments] ||= {}
+      cell[:arguments][:cell] = cell
       triggerAction(cell[:action], cell[:arguments]) if cell[:action]
     end
 

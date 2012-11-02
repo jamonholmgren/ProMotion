@@ -171,10 +171,10 @@ module ProMotion::MotionTable
         elsif expectedArguments == 1 || expectedArguments == -1
           self.send(action, arguments)
         else
-          MotionTable::Console.log("MotionTable warning: #{action} expects #{expectedArguments} arguments. Maximum number of required arguments for an action is 1.", withColor: MotionTable::Console::RED_COLOR)
+          ProMotion::MotionTable::Console.log("MotionTable warning: #{action} expects #{expectedArguments} arguments. Maximum number of required arguments for an action is 1.", withColor: MotionTable::Console::RED_COLOR)
         end
       else
-        MotionTable::Console.log(self, actionNotImplemented: action)
+        ProMotion::MotionTable::Console.log(self, actionNotImplemented: action)
       end
     end
   

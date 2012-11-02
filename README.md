@@ -1,7 +1,7 @@
 # ProMotion - A new way to organize RubyMotion apps.
 
 ProMotion introduces a new object called "Screens". Screens have a one-to-one relationship 
-with your app's screens and can (usually) take the place of view controllers.
+with your app's designed screens.
 
 Typical app file structure:
 
@@ -14,7 +14,6 @@ Typical app file structure:
         home_screen.rb
         settings_screen.rb
       models/
-      view_controllers/
       views/
       app_delegate.rb
 

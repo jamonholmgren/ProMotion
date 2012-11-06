@@ -149,7 +149,7 @@ module ProMotion::MotionTable
       cell = cellAtSectionAndIndex(indexPath.section, indexPath.row)
       tableView.deselectRowAtIndexPath(indexPath, animated: true);
       cell[:arguments] ||= {}
-      cell[:arguments][:cell] = cell
+      cell[:arguments][:cell] = cell if cell[:arguments].is_a?(Hash)
       triggerAction(cell[:action], cell[:arguments]) if cell[:action]
     end
 

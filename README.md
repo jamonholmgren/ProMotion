@@ -1,4 +1,4 @@
-# ProMotion - A new way to organize RubyMotion apps.
+# ProMotion - A new way to easily build RubyMotion apps.
 
 ProMotion introduces a new object called "Screens". Screens have a one-to-one relationship 
 with your app's designed screens.

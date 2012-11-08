@@ -58,15 +58,15 @@ Creating a tabbed bar from a screen (this has to be done inside a screen -- it w
 in your app_delegate.rb). This will set the tab bar as the root view controller for your app,
 so keep that in mind. 
 
-NOTE: It needs to be done in the on_appear or afterward, not the on_load or
-will_appear. We will likely fix this in the future, but for now that's a restriction.
+NOTE: It needs to be done in the on_appear or afterward, not the `on_load` or
+`will_appear`. We will likely fix this in the future, but for now that's a restriction.
 
 ```ruby
 def on_appear
-  @home = MyHomeScreen.new(nav_bar: true)
-  @settings = SettingsScreen.new
-  @contact = ContactScreen.new(nav_bar: true)
-  open_tab_bar @home, @settings, @contact
+  @home ||= MyHomeScreen.new(nav_bar: true)
+  @settings ||= SettingsScreen.new
+  @contact ||= ContactScreen.new(nav_bar: true)
+  @tab_bar ||= open_tab_bar @home, @settings, @contact
 end
 ```
 

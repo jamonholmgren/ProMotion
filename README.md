@@ -63,10 +63,19 @@ NOTE: It needs to be done in the on_appear or afterward, not the `on_load` or
 
 ```ruby
 def on_appear
-  @home ||= MyHomeScreen.new(nav_bar: true)
+  @home     ||= MyHomeScreen.new(nav_bar: true)
   @settings ||= SettingsScreen.new
-  @contact ||= ContactScreen.new(nav_bar: true)
-  @tab_bar ||= open_tab_bar @home, @settings, @contact
+  @contact  ||= ContactScreen.new(nav_bar: true)
+  @tab_bar  ||= open_tab_bar @home, @settings, @contact
+end
+```
+
+For each screen that belongs to the tab bar, you need to set the tab name and icon in the files. 
+In this example, we would need add the following to the three files (my_home_screen.rb, settings_screen.rb, contact_screen.rb):
+
+```ruby
+def on_opened
+  set_tab_bar_item title: "Tab Name Goes Here", icon: "tab_icon.png" # in resources folder
 end
 ```
 

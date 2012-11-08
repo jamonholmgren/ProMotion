@@ -28,7 +28,7 @@ Loading your home screen:
 ```ruby
 # In /app/app_delegate.rb (note that AppDelegate extends ProMotion::AppDelegateParent)
 class AppDelegate < ProMotion::AppDelegateParent
-  def on_load(options)
+  def on_load(app, options)
     open_screen MyHomeScreen.new(nav_bar: true)
   end
 end
@@ -54,10 +54,15 @@ class HomeScreen < ProMotion::Screen
 end
 ```
 
-Creating a tabbed bar:
+Creating a tabbed bar from a screen (this has to be done inside a screen -- it won't work
+in your app_delegate.rb). This will set the tab bar as the root view controller for your app,
+so keep that in mind. 
+
+NOTE: It needs to be done in the on_appear or afterward, not the on_load or
+will_appear. We will likely fix this in the future, but for now that's a restriction.
 
 ```ruby
-def on_load(options)
+def on_appear
   @home = MyHomeScreen.new(nav_bar: true)
   @settings = SettingsScreen.new
   @contact = ContactScreen.new(nav_bar: true)

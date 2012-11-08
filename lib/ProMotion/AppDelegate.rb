@@ -6,10 +6,8 @@ module ProMotion
       return true if RUBYMOTION_ENV == "test"
 
       Console.log(" Your AppDelegate (usually in app_delegate.rb) needs an on_load(options) method.", withColor: Console::RED_COLOR) unless self.respond_to?(:on_load)
-      
-      on_load(application, launchOptions)
 
-      # $stderr.puts "Application launched with options: #{launchOptions.to_s}"
+      on_load(application, launchOptions)
 
       open_home_screen if has_home_screen
 

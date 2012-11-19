@@ -60,14 +60,18 @@ module ProMotion::MotionTable
         tableCell.layer.masksToBounds = true if dataCell[:masksToBounds]
         tableCell.backgroundColor = dataCell[:backgroundColor] if dataCell[:backgroundColor]
         tableCell.selectionStyle = dataCell[:selectionStyle] if dataCell[:selectionStyle]
+        tableCell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
       end
 
       if dataCell[:cellClassAttributes]
         set_cell_attributes tableCell, dataCell[:cellClassAttributes]
       end
+      
+      if dataCell[:accessoryView]
+        tableCell.accessoryView = dataCell[:accessoryView]
+        tableCell.accessoryView.autoresizingMask = UIViewAutoresizingFlexibleWidth
+      end
 
-      tableCell.accessoryView = dataCell[:accessoryView] if dataCell[:accessoryView]
-  
       if dataCell[:accessory] && dataCell[:accessory] == :switch
         switchView = UISwitch.alloc.initWithFrame(CGRectZero)
         switchView.addTarget(self, action: "accessoryToggledSwitch:", forControlEvents:UIControlEventValueChanged);
@@ -77,6 +81,7 @@ module ProMotion::MotionTable
 
       if dataCell[:subtitle]
         tableCell.detailTextLabel.text = dataCell[:subtitle]
+        tableCell.detailTextLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth
       end
 
       tableCell.selectionStyle = UITableViewCellSelectionStyleNone if dataCell[:no_select]

@@ -186,7 +186,7 @@ it to the current view. Screens include this helper by default.
 
 You can create sectioned table screens easily. TableScreen, SectionedTableScreen, GroupedTableScreen.
 This is loosely based on [motion-table](https://github.com/clearsightstudio/motion-table) (there are a 
-few minor differences).
+few minor differences). We will eventually combine the two.
 
 ```ruby
 class SettingsScreen < ProMotion::GroupedTableScreen
@@ -226,6 +226,18 @@ class SettingsScreen < ProMotion::GroupedTableScreen
     # ...
   end
 end
+```
+
+You can provide remotely downloaded images for cells by including the CocoaPod "SDWebImage" in 
+your Rakefile and doing this:
+
+```ruby
+  cells: [
+    {
+      title: "Cell with image",
+      remoteImage: { url: "http://placekitten.com/200/300", placeholder: "some-local-image" }
+    }
+  ]
 ```
 
 # Reference

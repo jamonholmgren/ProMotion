@@ -86,13 +86,14 @@ module ProMotion::MotionTable
 
       tableCell.selectionStyle = UITableViewCellSelectionStyleNone if dataCell[:no_select]
 
-      if dataCell[:image]
+      if dataCell[:imageView]
+        tableCell.imageView = dataCell[:imageView]
+      elsif dataCell[:image]
         tableCell.imageView.layer.masksToBounds = true
         tableCell.imageView.image = dataCell[:image][:image]
         tableCell.imageView.layer.cornerRadius = dataCell[:image][:radius] if dataCell[:image][:radius]
       end
 
-      # Quite ingenious ;)
       if dataCell[:subViews]
         tag_number = 0
         dataCell[:subViews].each do |view|

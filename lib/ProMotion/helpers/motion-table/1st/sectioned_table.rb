@@ -86,8 +86,15 @@ module ProMotion::MotionTable
 
       tableCell.selectionStyle = UITableViewCellSelectionStyleNone if dataCell[:no_select]
 
-      if dataCell[:imageView]
-        tableCell.imageView = dataCell[:imageView]
+      if dataCell[:remoteImage]
+        if tableCell.imageView.respond_to?("setImageWithURL:placeholderImage:")
+          url = dataCell[:remoteImage][:url]
+          url = NSURL.URLWithString(url) unless url.is_a?(NSURL)
+          placeholder = UIImage.imageNamed(dataCell[:remoteImage][:placeholder]) unless dataCell[:remoteImage][:placeholder].is_a?(UIImage)
+          cell.imageView.setImageWithURL(url, placeholderImage: placeholder)
+        else
+          ProMotion::MotionTable::Console.log("ProMotion Warning: to use remoteImage with TableScreen you need to include the CocoaPod 'SDWebImage'.", withColor: MotionTable::Console::RED_COLOR)
+        end
       elsif dataCell[:image]
         tableCell.imageView.layer.masksToBounds = true
         tableCell.imageView.image = dataCell[:image][:image]

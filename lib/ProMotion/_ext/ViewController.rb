@@ -46,7 +46,7 @@ module ProMotion
     end
 
     def shouldAutorotate
-      true
+      self.screen.should_autorotate
     end
 
     def supportedInterfaceOrientations
@@ -55,6 +55,10 @@ module ProMotion
 
     def willRotateToInterfaceOrientation(orientation, duration:duration)
       self.screen.will_rotate(orientation, duration)
+    end
+
+    def didRotateFromInterfaceOrientation(orientation)
+      self.screen.on_rotate
     end
 
     def dealloc

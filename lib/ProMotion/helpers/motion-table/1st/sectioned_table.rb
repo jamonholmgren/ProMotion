@@ -50,7 +50,7 @@ module ProMotion::MotionTable
       dataCell[:cellStyle] ||= UITableViewCellStyleDefault
       dataCell[:cellIdentifier] ||= "Cell"
       cellIdentifier = dataCell[:cellIdentifier]
-      dataCell[:cellClass] ||= UITableViewCell
+      dataCell[:cellClass] ||= PM::TableViewCell
 
       tableCell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier)
       unless tableCell
@@ -86,13 +86,26 @@ module ProMotion::MotionTable
 
       tableCell.selectionStyle = UITableViewCellSelectionStyleNone if dataCell[:no_select]
 
-      if dataCell[:image]
+      if dataCell[:remoteImage]
+        if tableCell.imageView.respond_to?("setImageWithURL:placeholderImage:")
+          url = dataCell[:remoteImage][:url]
+          url = NSURL.URLWithString(url) unless url.is_a?(NSURL)
+          placeholder = dataCell[:remoteImage][:placeholder]
+          placeholder = UIImage.imageNamed(placeholder) if placeholder.is_a?(String)
+
+          tableCell.image_size = dataCell[:remoteImage][:size] if dataCell[:remoteImage][:size] && tableCell.respond_to?("image_size=")
+          tableCell.imageView.setImageWithURL(url, placeholderImage: placeholder)
+          tableCell.imageView.layer.masksToBounds = true
+          tableCell.imageView.layer.cornerRadius = dataCell[:remoteImage][:radius]
+        else
+          ProMotion::MotionTable::Console.log("ProMotion Warning: to use remoteImage with TableScreen you need to include the CocoaPod 'SDWebImage'.", withColor: MotionTable::Console::RED_COLOR)
+        end
+      elsif dataCell[:image]
         tableCell.imageView.layer.masksToBounds = true
         tableCell.imageView.image = dataCell[:image][:image]
         tableCell.imageView.layer.cornerRadius = dataCell[:image][:radius] if dataCell[:image][:radius]
       end
 
-      # Quite ingenious ;)
       if dataCell[:subViews]
         tag_number = 0
         dataCell[:subViews].each do |view|

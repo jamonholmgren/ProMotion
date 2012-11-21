@@ -93,15 +93,16 @@ module ProMotion::MotionTable
           placeholder = dataCell[:remoteImage][:placeholder]
           placeholder = UIImage.imageNamed(placeholder) if placeholder.is_a?(String)
 
-          tableCell.imageView.setImageWithURL(url, placeholderImage: placeholder)
+          tableCell.imageView.setImageWithURL(url, placeholderImage: placeholder, success: lambda { |image, cached|
+            if dataCell[:remoteImage][:size]
+              f = tableCell.imageView.frame
+              size_inset_x = tableCell.imageView.image.size.width - dataCell[:remoteImage][:size]
+              size_inset_y = tableCell.imageView.image.size.height - dataCell[:remoteImage][:size]
+              tableCell.imageView.frame = CGRectInset(f, size_inset_x, size_inset_y)
+            end
+          }, failure: nil)
           tableCell.imageView.layer.masksToBounds = true
           tableCell.imageView.layer.cornerRadius = dataCell[:remoteImage][:radius]
-          if dataCell[:remoteImage][:size]
-            f = tableCell.imageView.frame
-            size_inset_x = tableCell.imageView.image.size.width - dataCell[:remoteImage][:size]
-            size_inset_y = tableCell.imageView.image.size.height - dataCell[:remoteImage][:size]
-            tableCell.imageView.frame = CGRectInset(f, size_inset_x, size_inset_y)
-          end
         else
           ProMotion::MotionTable::Console.log("ProMotion Warning: to use remoteImage with TableScreen you need to include the CocoaPod 'SDWebImage'.", withColor: MotionTable::Console::RED_COLOR)
         end

@@ -144,6 +144,9 @@ module ProMotion
     def will_rotate(orientation, duration)
     end
 
+    def on_rotate
+    end
+
     def supported_orientation?(orientation)
       NSBundle.mainBundle.infoDictionary["UISupportedInterfaceOrientations"].include?(orientation)
     end

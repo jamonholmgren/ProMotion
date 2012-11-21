@@ -90,7 +90,9 @@ module ProMotion::MotionTable
         if tableCell.imageView.respond_to?("setImageWithURL:placeholderImage:")
           url = dataCell[:remoteImage][:url]
           url = NSURL.URLWithString(url) unless url.is_a?(NSURL)
-          placeholder = UIImage.imageNamed(dataCell[:remoteImage][:placeholder]) unless dataCell[:remoteImage][:placeholder].is_a?(UIImage)
+          placeholder = dataCell[:remoteImage][:placeholder]
+          placeholder = UIImage.imageNamed(placeholder) if placeholder.is_a?(String)
+
           tableCell.imageView.setImageWithURL(url, placeholderImage: placeholder)
           tableCell.imageView.layer.masksToBounds = true
           tableCell.imageView.layer.cornerRadius = dataCell[:remoteImage][:radius]

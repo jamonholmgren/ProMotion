@@ -126,6 +126,46 @@ module ProMotion
       self.view_controller
     end
 
+    def should_rotate(orientation)
+      case orientation
+      when UIInterfaceOrientationPortrait
+        return supported_orientation?("UIInterfaceOrientationPortrait")
+      when UIInterfaceOrientationLandscapeLeft
+        return supported_orientation?("UIInterfaceOrientationLandscapeLeft")
+      when UIInterfaceOrientationLandscapeRight
+        return supported_orientation?("UIInterfaceOrientationLandscapeRight")
+      when UIInterfaceOrientationPortraitUpsideDown
+        return supported_orientation?("UIInterfaceOrientationPortraitUpsideDown")
+      else
+        false
+      end
+    end
+
+    def will_rotate(orientation, duration)
+    end
+
+    def supported_orientation?(orientation)
+      NSBundle.mainBundle.infoDictionary["UISupportedInterfaceOrientations"].include?(orientation)
+    end
+
+    def supported_orientations
+      ors = 0
+      NSBundle.mainBundle.infoDictionary["UISupportedInterfaceOrientations"].each do |ori|
+        case ori
+        when "UIInterfaceOrientationPortrait"
+          ors |= UIInterfaceOrientationPortrait
+        when "UIInterfaceOrientationLandscapeLeft"
+          ors |= UIInterfaceOrientationLandscapeLeft
+        when "UIInterfaceOrientationLandscapeRight"
+          ors |= UIInterfaceOrientationLandscapeRight
+        when "UIInterfaceOrientationPortraitUpsideDown"
+          ors |= UIInterfaceOrientationPortraitUpsideDown
+        else
+          false
+        end
+      end
+      ors
+    end
   end
 
   # Class methods

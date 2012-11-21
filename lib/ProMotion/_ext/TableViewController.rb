@@ -39,6 +39,10 @@ module ProMotion
       self.screen.will_rotate(orientation, duration)
     end
     
+    def didRotateFromInterfaceOrientation(orientation)
+      self.screen.on_rotate
+    end
+
     def dealloc
       $stderr.puts "Deallocating #{self.to_s}" if ProMotion::Screen.debug_mode
     end    

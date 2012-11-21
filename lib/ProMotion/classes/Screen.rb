@@ -144,6 +144,10 @@ module ProMotion
     def will_rotate(orientation, duration)
     end
 
+    def should_autorotate
+      false
+    end
+
     def supported_orientation?(orientation)
       NSBundle.mainBundle.infoDictionary["UISupportedInterfaceOrientations"].include?(orientation)
     end
@@ -153,15 +157,13 @@ module ProMotion
       NSBundle.mainBundle.infoDictionary["UISupportedInterfaceOrientations"].each do |ori|
         case ori
         when "UIInterfaceOrientationPortrait"
-          ors |= UIInterfaceOrientationPortrait
+          ors |= UIInterfaceOrientationMaskPortrait
         when "UIInterfaceOrientationLandscapeLeft"
-          ors |= UIInterfaceOrientationLandscapeLeft
+          ors |= UIInterfaceOrientationMaskLandscapeLeft
         when "UIInterfaceOrientationLandscapeRight"
-          ors |= UIInterfaceOrientationLandscapeRight
+          ors |= UIInterfaceOrientationMaskLandscapeRight
         when "UIInterfaceOrientationPortraitUpsideDown"
-          ors |= UIInterfaceOrientationPortraitUpsideDown
-        else
-          false
+          ors |= UIInterfaceOrientationMaskPortraitUpsideDown
         end
       end
       ors

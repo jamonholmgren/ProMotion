@@ -35,10 +35,14 @@ module ProMotion
       self.screen.should_rotate(orientation)
     end
 
+    def shouldAutorotate
+      self.screen.should_autorotate
+    end
+
     def willRotateToInterfaceOrientation(orientation, duration:duration)
       self.screen.will_rotate(orientation, duration)
     end
-    
+
     def dealloc
       $stderr.puts "Deallocating #{self.to_s}" if ProMotion::Screen.debug_mode
     end    

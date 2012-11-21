@@ -45,6 +45,10 @@ module ProMotion
       self.screen.should_rotate(orientation)
     end
 
+    def shouldAutorotate
+      true
+    end
+
     def supportedInterfaceOrientations
       self.screen.supported_orientations
     end

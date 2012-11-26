@@ -20,3 +20,4 @@ build
 build/*
 .*.0??
 .rvmrc
+.DS_Store

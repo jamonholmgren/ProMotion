@@ -27,11 +27,13 @@ module ProMotion
         # $stderr.puts "Found a #{vc.to_s}"
         if vc
           if vc.is_a?(UINavigationController)
+            screen.navigation_controller = vc
             push_view_controller(screen.view_controller, vc)
           else
             self.tab_bar.selectedIndex = vc.tabBarItem.tag
             $stderr.puts "#{self.tab_bar.selectedIndex} is selected and should be #{vc.tabBarItem.tag}"
             # PM::TabBar.replace_current_item(self.tab_bar, view_controller: screen.view_controller)
+            # TODO: This doesn't work yet.
           end
         else
           $stderr.puts "No tab bar item '#{args[:in_tab]}'"

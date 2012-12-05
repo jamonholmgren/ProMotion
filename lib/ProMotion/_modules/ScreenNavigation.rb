@@ -80,7 +80,8 @@ module ProMotion
           previous_screen.send(:on_return, args)
         else
           previous_screen.send(:on_return)
-        end          
+        end
+        ProMotion::Screen.current_screen = previous_screen
       end
     end
 

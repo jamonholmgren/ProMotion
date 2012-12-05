@@ -108,6 +108,7 @@ module ProMotion
     def will_disappear; end
 
     def view_did_disappear(animated)
+      ProMotion::Screen.current_screen = self.parent_screen if self.parent_screen
       self.on_disappear
     end
     def on_disappear; end

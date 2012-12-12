@@ -65,7 +65,7 @@ module ProMotion
       if self.is_modal?
         self.parent_screen.view_controller.dismissModalViewControllerAnimated(true)
       elsif self.navigation_controller
-        if args[:to_screen]
+        if args[:to_screen] && args[:to_screen].is_a?(Screen)
           self.navigation_controller.popToViewController(args[:to_screen].view_controller, animated: true)
           previous_screen = args[:to_screen]
         else

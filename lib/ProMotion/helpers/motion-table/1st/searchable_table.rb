@@ -8,6 +8,7 @@ module ProMotion::MotionTable
       params[:searchResultsDelegate] ||= self
 
       searchBar = UISearchBar.alloc.initWithFrame(params[:frame])
+      searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth
       if params[:searchBar] && params[:searchBar][:placeholder]
         searchBar.placeholder = params[:searchBar][:placeholder]
       end

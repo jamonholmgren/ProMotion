@@ -7,6 +7,8 @@ module ProMotion
             sub_element = element.send("#{k}")
             sub_element.send("#{k2}=", v2) if sub_element.respond_to?("#{k2}=")
           end
+        elsif v.is_a? Array
+          element.send("#{k}", *v) if element.respond_to?("#{k}")
         else
           element.send("#{k}=", v) if element.respond_to?("#{k}=")
         end

@@ -360,6 +360,41 @@ your Rakefile and doing this:
       Sets title of current screen.<br />
     </td>
   </tr>
+  <tr>
+    <td>ScreenElements</td>
+    <td>add_element(view, attrs = {})</td>
+    <td>
+      Adds the view to the screen after applying the attributes.<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>remove_element</td>
+    <td>
+      Removes the view from the superview and sets it to nil<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>bounds</td>
+    <td>
+      Accessor for self.view_controller.view.bounds<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>frame</td>
+    <td>
+      Accessor for self.view_controller.view.frame<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>view</td>
+    <td>
+      Accessor for self.view_controller.view<br />
+    </td>
+  </tr>
 </table>
 
 ### What about MVC?

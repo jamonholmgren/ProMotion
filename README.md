@@ -266,6 +266,99 @@ your Rakefile and doing this:
       Creates the tab that is shown in a tab bar item.<br />
       Arguments: <code>{ icon: "imagename", systemIcon: UISystemIconContacts, title: "tabtitle" }</code>
     </td>
+  </tr>  
+  <tr>
+    <td>&nbsp;</td>
+    <td>on_appear</td>
+    <td>
+      Callback for when the screen appears.<br />
+    </td>
+  </tr> 
+  <tr>
+    <td>&nbsp;</td>
+    <td>will_appear</td>
+    <td>
+      Callback for before the screen appears.<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>will_disappear</td>
+    <td>
+      Callback for before the screen disappears.<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>will_rotate(orientation, duration)</td>
+    <td>
+      Callback for before the screen rotates.<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>on_opened **Deprecated**</td>
+    <td>
+      Callback when screen is opened via a tab bar. Please don't use this, as it will be removed in the future<br />
+      Use will_appear
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>set_nav_bar_left_button(title, args = {})</td>
+    <td>
+      Set a left nav bar button.<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>set_nav_bar_right_button(title, args = {})</td>
+    <td>
+      Set a right nav bar button.<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>should_autorotate</td>
+    <td>
+      iOS 5 return true/false if screen should rotate<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>should_rotate(orientation)</td>
+    <td>
+      Return true/false for rotation to orientation.<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>supported_orientation?(orientation)</td>
+    <td>
+      Returns true/false if orientation is in NSBundle.mainBundle.infoDictionary["UISupportedInterfaceOrientations"].<br />
+      Shouldn't need to override this.
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>supported_orientations</td>
+    <td>
+      Returns supported orientation mask<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>title</td>
+    <td>
+      Returns title of current screen.<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>title=(title)</td>
+    <td>
+      Sets title of current screen.<br />
+    </td>
   </tr>
 </table>
 

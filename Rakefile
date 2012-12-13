@@ -3,7 +3,7 @@ require 'motion/project'
 require 'bundler/gem_tasks'
 Bundler.setup
 Bundler.require
-require 'motion-table'
+# require 'motion-table'
 
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
@@ -12,8 +12,10 @@ Motion::Project::App.setup do |app|
 
 
   # Devices
-  app.deployment_target = "4.3"
+  app.deployment_target = "5.0"
   app.device_family = [:iphone, :ipad]
+
+  app.detect_dependencies = false
 
   # Preload screens
   # app.files = Dir.glob(File.join(app.project_dir, 'lib/**/*.rb')) | app.files

@@ -443,6 +443,51 @@ your Rakefile and doing this:
       Returns true if 'ios_version' is less than or equal to the version passed in, false otherwise<br />
     </td>
   </tr>
+  <tr>
+    <td>ScreenNavigation<br />
+      included in Screen
+    </td>
+    <td>app_delegate</td>
+    <td>
+      Returns the AppDelegate<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>close_screen(args = {})</td>
+    <td>
+      Closes the current screen, passes args back to the previous screen's on_return method<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>fresh_start(screen)</td>
+    <td>
+      'restarts' app with the screen passed in<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>open_screen(screen, args = {})</td>
+    <td>
+      Pushes the screen onto the navigation stack<br />
+      argument options :hide_tab_bar, :modal
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>open_tab(tab)</td>
+    <td>
+      Opens the tab where the "string" title is equal to the passed in tab<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>open_tab_bar(*screens)</td>
+    <td>
+      Open a UITabBarController with the specified screens as the root view controller of the current app<br />
+    </td>
+  </tr>
 </table>
 
 ### What about MVC?

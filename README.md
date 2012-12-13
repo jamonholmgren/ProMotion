@@ -361,11 +361,13 @@ your Rakefile and doing this:
     </td>
   </tr>
   <tr>
-    <td>ScreenElements</td>
+    <td>
+      ScreenElements<br />
+      Included in Screen by default
+    </td>
     <td>add_element(view, attrs = {})</td>
     <td>
       Adds the view to the screen after applying the attributes.<br />
-      Included in Screen by default
     </td>
   </tr>
   <tr>
@@ -394,6 +396,51 @@ your Rakefile and doing this:
     <td>view</td>
     <td>
       Accessor for self.view_controller.view<br />
+    </td>
+  </tr>
+  <tr>
+    <td>
+      SystemHelper<br />
+      Included in Screen by default
+    </td>
+    <td>ios_version</td>
+    <td>
+      Returns the iOS version that is running on the device<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>ios_version_greater?(version)</td>
+    <td>
+      Returns true if 'ios_version' is greater than the version passed in, false otherwise<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>ios_version_greater_eq?(version)</td>
+    <td>
+      Returns true if 'ios_version' is greater than or equal to the version passed in, false otherwise<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>ios_version_is?(version)</td>
+    <td>
+      Returns true if 'ios_version' is equal to the version passed in, false otherwise<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>ios_version_less?(version)</td>
+    <td>
+      Returns true if 'ios_version' is less than the version passed in, false otherwise<br />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>ios_version_less_eq?(version)</td>
+    <td>
+      Returns true if 'ios_version' is less than or equal to the version passed in, false otherwise<br />
     </td>
   </tr>
 </table>

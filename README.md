@@ -365,6 +365,7 @@ your Rakefile and doing this:
     <td>add_element(view, attrs = {})</td>
     <td>
       Adds the view to the screen after applying the attributes.<br />
+      Included in Screen by default
     </td>
   </tr>
   <tr>

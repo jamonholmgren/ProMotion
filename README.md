@@ -86,7 +86,7 @@ element before it is dropped into the view.
 ```ruby
 @label = add_element UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
   text: "This is awesome!",
-  font: UIFont.UIFont.systemFontOfSize(18)
+  font: UIFont.systemFontOfSize(18)
 }
 ```
 

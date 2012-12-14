@@ -1,6 +1,6 @@
 module ProMotion
   # Instance methods
-  class Screen
+  class Screen > UIViewController
     include ProMotion::ScreenNavigation
     include ProMotion::ScreenElements
     include ProMotion::SystemHelper
@@ -29,7 +29,7 @@ module ProMotion
 
     # Note: this is overridden in TableScreen
     def load_view_controller
-      self.view_controller ||= ViewController
+      self.view_controller ||= self
     end
 
     def set_tab_bar_item(args = {})
@@ -125,6 +125,10 @@ module ProMotion
     def main_controller
       return self.navigation_controller if self.navigation_controller
       self.view_controller
+    end
+
+    def view_controller
+      self
     end
 
     def should_rotate(orientation)

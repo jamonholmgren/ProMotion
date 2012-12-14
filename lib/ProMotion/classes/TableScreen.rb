@@ -4,9 +4,6 @@ module ProMotion
     include MotionTable::PlainTable
     include MotionTable::SearchableTable
 
-    def view
-      self.view_controller.view
-    end
 
     def load_view_controller
       check_table_data_method

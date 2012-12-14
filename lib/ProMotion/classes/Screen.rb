@@ -1,6 +1,6 @@
 module ProMotion
   # Instance methods
-  class Screen > UIViewController
+  class Screen < UIViewController
     include ProMotion::ScreenNavigation
     include ProMotion::ScreenElements
     include ProMotion::SystemHelper

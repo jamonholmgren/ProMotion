@@ -315,6 +315,7 @@ your Rakefile and doing this:
     <td>set_nav_bar_right_button(title, args = {})</td>
     <td>
       Set a right nav bar button.<br />
+      <img src="i.imgur.com/whbkc.png" />
     </td>
   </tr>
   <tr>

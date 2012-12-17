@@ -462,9 +462,9 @@ your Rakefile and doing this:
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td>fresh_start(screen)</td>
+    <td>open_root_screen(screen)</td>
     <td>
-      'restarts' app with the screen passed in<br />
+      Closes all other open screens and opens `screen` at the root.<br />
     </td>
   </tr>
   <tr>
@@ -472,7 +472,7 @@ your Rakefile and doing this:
     <td>open_screen(screen, args = {})</td>
     <td>
       Pushes the screen onto the navigation stack<br />
-      argument options :hide_tab_bar, :modal
+      argument options :hide_tab_bar, :modal, any accessors in `screen`
     </td>
   </tr>
   <tr>

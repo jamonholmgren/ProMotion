@@ -15,7 +15,7 @@ Motion::Project::App.setup do |app|
   app.deployment_target = "5.0"
   app.device_family = [:iphone, :ipad]
 
-  app.detect_dependencies = false
+  # app.detect_dependencies = false
 
   # Preload screens
   # app.files = Dir.glob(File.join(app.project_dir, 'lib/**/*.rb')) | app.files

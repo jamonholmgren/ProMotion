@@ -10,8 +10,8 @@ Motion::Project::App.setup do |app|
   #   app.files.unshift(file)
   # end
   app.files = Dir.glob(File.join(File.dirname(__FILE__), 'ProMotion/**/*.rb')) | app.files
-  app.files = Dir.glob(File.join(File.dirname(__FILE__), 'ProMotion/helpers/**/*.rb')) | app.files
-  app.files = Dir.glob(File.join(File.dirname(__FILE__), 'ProMotion/modules/**/*.rb')) | app.files
-  app.files = Dir.glob(File.join(File.dirname(__FILE__), 'ProMotion/ext/**/*.rb')) | app.files
+  # app.files = Dir.glob(File.join(File.dirname(__FILE__), 'ProMotion/helpers/**/*.rb')) | app.files
+  # app.files = Dir.glob(File.join(File.dirname(__FILE__), 'ProMotion/modules/**/*.rb')) | app.files
+  # app.files = Dir.glob(File.join(File.dirname(__FILE__), 'ProMotion/ext/**/*.rb')) | app.files
   
 end

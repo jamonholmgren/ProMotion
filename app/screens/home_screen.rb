@@ -1,4 +1,4 @@
-class HomeScreen < ProMotion::Screen
+class HomeScreen < ProMotion
   title "Home Screen"
   
   def on_load

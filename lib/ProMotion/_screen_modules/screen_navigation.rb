@@ -5,7 +5,7 @@ module ProMotion
       screen = screen.new if screen.respond_to?(:new)
 
       screen.parent_screen = self
-      screen.view_controller.title = args[:title] if args[:title]
+      screen.title = args[:title] if args[:title]
 
       screen.add_nav_bar if args[:nav_bar]
       
@@ -15,8 +15,10 @@ module ProMotion
       end
 
       screen.modal = args[:modal] if args[:modal]
+      
       screen.send(:on_load) if screen.respond_to?(:on_load)
-      screen.view_controller.hidesBottomBarWhenPushed = args[:hide_tab_bar] if args[:hide_tab_bar]
+      
+      screen.hidesBottomBarWhenPushed = args[:hide_tab_bar] if args[:hide_tab_bar]
 
       if args[:close_all]
         fresh_start(screen)
@@ -48,6 +50,7 @@ module ProMotion
         screen.send(:on_opened)
       end
     end
+    alias :open :open_screen
 
     def fresh_start(screen)
       app_delegate.fresh_start(screen)
@@ -59,17 +62,18 @@ module ProMotion
 
     def close_screen(args = {})
       args ||= {}
+      args[:animated] = true
       
       # Pop current view, maybe with arguments, if in navigation controller
       previous_screen = self.parent_screen
       if self.is_modal?
-        self.parent_screen.view_controller.dismissModalViewControllerAnimated(true)
+        self.parent_screen.view_controller.dismissModalViewControllerAnimated(args[:animated])
       elsif self.navigation_controller
         if args[:to_screen] && args[:to_screen].is_a?(Screen)
-          self.navigation_controller.popToViewController(args[:to_screen].view_controller, animated: true)
+          self.navigation_controller.popToViewController(args[:to_screen].view_controller, animated: args[:animated])
           previous_screen = args[:to_screen]
         else
-          self.navigation_controller.popViewControllerAnimated(true)
+          self.navigation_controller.popViewControllerAnimated(args[:animated])
         end
       else
         Console.log("Tried to close #{self.to_s}; however, this screen isn't modal or in a nav bar.", withColor: Console::PURPLE_COLOR)
@@ -84,6 +88,7 @@ module ProMotion
         ProMotion::Screen.current_screen = previous_screen
       end
     end
+    alias :close :close_screen
 
     def tab_bar_controller(*screens)
       tab_bar_controller = UITabBarController.alloc.init

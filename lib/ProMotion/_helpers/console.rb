@@ -7,12 +7,17 @@ module ProMotion
     PURPLE_COLOR = [ "\e[0;35m", "\e[0m" ] 
 
     class << self
-      def log(log, withColor:color)
+      def log(log, with_color:color)
         puts color[0] + NAME + log + color[1]
+      end
+      
+      def log(log, withColor:color)
+        warn "[DEPRECATION] `log(log, withColor:color)` is deprecated. Use `log(log, with_color:color)`"
+        self.log(log, with_color:color)
       end
 
       def log(log)
-        log(log, withColor: DEFAULT_COLOR)
+        log(log, with_color: DEFAULT_COLOR)
       end
     end
   end

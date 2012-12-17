@@ -2,12 +2,12 @@ module ProMotion
   class TabBar
     class << self
       def create_tab_bar_controller_from_data(data)
-        data = self.setTags(data)
+        data = self.set_tags(data)
 
-        tabBarController = UITabBarController.alloc.init
-        tabBarController.viewControllers = self.tab_controllers_from_data(data)
+        tab_bar_controller = UITabBarController.alloc.init
+        tab_bar_controller.viewControllers = self.tab_controllers_from_data(data)
 
-        return tabBarController
+        return tab_bar_controller
       end
 
       def set_tags(data)
@@ -31,30 +31,33 @@ module ProMotion
       end
 
       def tab_controllers_from_data(data)
-        mt_tab_controllers = []
+        tab_controllers = []
 
         data.each do |tab|
-          mt_tab_controllers << self.controller_from_tab_data(tab)
+          tab_controllers << self.controller_from_tab_data(tab)
         end
 
-        return mt_tab_controllers
+        return tab_controllers
       end
 
       def controller_from_tab_data(tab)
-        tab[:badgeNumber] = 0 unless tab[:badgeNumber]
+        tab[:badge_number] ||= tab[:badgeNumber]
+        tab[:navigation_controller] ||= tab[:navigationController]
+
+        tab[:badge_number] = 0 unless tab[:badge_number]
         tab[:tag] = 0 unless tab[:tag]
         
         view_controller = tab[:view_controller]
         view_controller = tab[:view_controller].alloc.init if tab[:view_controller].respond_to?(:alloc)
         
-        if tab[:navigationController]
+        if tab[:navigation_controller]
           controller = UINavigationController.alloc.initWithRootViewController(view_controller)
         else
           controller = view_controller
         end
 
-        controller.tabBarItem = self.tabBarItem(tab)
-        controller.tabBarItem.title = controller.title unless tab[:title]
+        view_controller.tabBarItem = self.tabBarItem(tab)
+        view_controller.tabBarItem.title = view_controller.title unless tab[:title]
 
         return controller
       end

@@ -382,21 +382,21 @@ your Rakefile and doing this:
     <td>&nbsp;</td>
     <td>bounds</td>
     <td>
-      Accessor for self.view_controller.view.bounds<br />
+      Accessor for self.view.bounds<br />
     </td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td>frame</td>
     <td>
-      Accessor for self.view_controller.view.frame<br />
+      Accessor for self.view.frame<br />
     </td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td>view</td>
     <td>
-      Accessor for self.view_controller.view<br />
+      Accessor for self.view<br />
     </td>
   </tr>
   <tr>

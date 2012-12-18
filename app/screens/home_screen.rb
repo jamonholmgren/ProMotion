@@ -2,9 +2,20 @@ class HomeScreen < ProMotion::Screen
   title "Home Screen"
   
   def on_load
-    @label = add_view UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
-      text: "This is awesome!",
-      font: UIFont.UIFont.systemFontOfSize(18)
+    @label = add_view UILabel.alloc.initWithFrame(CGRectZero), {
+      text: "Working...",
+      font: UIFont.systemFontOfSize(18),
+      textColor: UIColor.blackColor
     }
+
+    self.view.backgroundColor = UIColor.whiteColor
+    self.set_nav_bar_right_button("Test", action: :test_it)
+  end
+
+  def on_appear
+  end
+
+  def test_it
+    open_screen TestScreen.new
   end
 end

@@ -21,16 +21,16 @@ module ProMotion
       screen.hidesBottomBarWhenPushed = args[:hide_tab_bar] if args[:hide_tab_bar]
 
       if args[:close_all]
-        fresh_start(screen)
+        open_root_screen(screen)
       elsif args[:modal]
-        self.view_controller.presentModalViewController(screen.main_controller, animated:true)
+        self.presentModalViewController(screen.main_controller, animated:true)
       elsif args[:in_tab] && self.tab_bar
         vc = open_tab(args[:in_tab])
         # $stderr.puts "Found a #{vc.to_s}"
         if vc
           if vc.is_a?(UINavigationController)
             screen.navigation_controller = vc
-            push_view_controller(screen.view_controller, vc)
+            push_view_controller(screen, vc)
           else
             self.tab_bar.selectedIndex = vc.tabBarItem.tag
             $stderr.puts "#{self.tab_bar.selectedIndex} is selected and should be #{vc.tabBarItem.tag}"
@@ -41,7 +41,7 @@ module ProMotion
           $stderr.puts "No tab bar item '#{args[:in_tab]}'"
         end
       elsif self.navigation_controller
-        push_view_controller screen.view_controller
+        push_view_controller screen
       else
         open_view_controller screen.main_controller
       end
@@ -52,9 +52,10 @@ module ProMotion
     end
     alias :open :open_screen
 
-    def fresh_start(screen)
-      app_delegate.fresh_start(screen)
+    def open_root_screen(screen)
+      app_delegate.open_root_screen(screen)
     end
+    alias :fresh_start :open_root_screen
 
     def app_delegate
       UIApplication.sharedApplication.delegate
@@ -67,10 +68,10 @@ module ProMotion
       # Pop current view, maybe with arguments, if in navigation controller
       previous_screen = self.parent_screen
       if self.is_modal?
-        self.parent_screen.view_controller.dismissModalViewControllerAnimated(args[:animated])
+        self.parent_screen.dismissModalViewControllerAnimated(args[:animated])
       elsif self.navigation_controller
         if args[:to_screen] && args[:to_screen].is_a?(Screen)
-          self.navigation_controller.popToViewController(args[:to_screen].view_controller, animated: args[:animated])
+          self.navigation_controller.popToViewController(args[:to_screen], animated: args[:animated])
           previous_screen = args[:to_screen]
         else
           self.navigation_controller.popViewControllerAnimated(args[:animated])
@@ -98,7 +99,7 @@ module ProMotion
       screens.each do |s|
         if s.is_a? Screen
           s = s.new if s.respond_to?(:new)
-          s.view_controller.tabBarItem.tag = tag_index
+          s.tabBarItem.tag = tag_index
           view_controllers << s.main_controller
           tag_index += 1
         else
@@ -126,10 +127,6 @@ module ProMotion
       
       open_view_controller(tab_bar)
 
-      screens.each do |s|
-        s.on_opened if s.respond_to?(:on_opened)
-      end
-
       tab_bar
     end
 
@@ -149,7 +146,8 @@ module ProMotion
       # vc.hidesBottomBarWhenPushed = true if args[:hide_tab_bar]
       Console.log(" You need a nav_bar if you are going to push #{vc.to_s} onto it.", withColor: Console::RED_COLOR) unless self.navigation_controller
       nav_controller ||= self.navigation_controller
-      nav_controller.pushViewController(vc, animated: true)
+      # nav_controller.pushViewController(vc, animated: true)
+      $nc = nav_controller
     end
   end
 end

@@ -64,7 +64,7 @@ module ProMotion
       args[:action] ||= nil
 
       right_button = UIBarButtonItem.alloc.initWithTitle(title, style: args[:style], target: args[:target], action: args[:action])
-      self.view_controller.navigationItem.rightBarButtonItem = right_button
+      self.navigationItem.rightBarButtonItem = right_button
       right_button
     end
 
@@ -74,7 +74,7 @@ module ProMotion
       args[:action] ||= nil
 
       left_button = UIBarButtonItem.alloc.initWithTitle(title, style: args[:style], target: args[:target], action: args[:action])
-      self.view_controller.navigationItem.leftBarButtonItem = left_button
+      self.navigationItem.leftBarButtonItem = left_button
       left_button
     end
 
@@ -127,7 +127,7 @@ module ProMotion
 
     def title=(new_title)
       self.class.title = new_title
-      self.view_controller.title = new_title if self.view_controller
+      super
     end
 
     def main_controller

@@ -86,53 +86,6 @@ module ProMotion
     end
     alias :close :close_screen
 
-    def tab_bar_controller(*screens)
-      tab_bar_controller = UITabBarController.alloc.init
-
-      view_controllers = []
-      tag_index = 0
-      screens.each do |s|
-        if s.is_a? Screen
-          s = s.new if s.respond_to?(:new)
-          s.tabBarItem.tag = tag_index
-          view_controllers << s.main_controller
-          tag_index += 1
-        else
-          Console.log("Non-Screen passed into tab_bar_controller: #{s.to_s}", withColor: Console::RED_COLOR)
-        end
-      end
-
-      tab_bar_controller.viewControllers = view_controllers
-      tab_bar_controller
-    end
-    
-    # Open a UITabBarController with the specified screens as the
-    # root view controller of the current app.
-    # @param [Array] A comma-delimited list of screen classes or instances.
-    # @return [UITabBarController] (this may change in the future; please
-    #   do not rely on it right now)
-    def open_tab_bar(*screens)
-      tab_bar = tab_bar_controller(*screens)
-
-      screens.each do |s|
-        s.parent_screen = self if s.respond_to?("parent_screen=")
-        s.tab_bar = tab_bar
-        s.on_load if s.respond_to?(:on_load)
-      end
-      
-      open_view_controller(tab_bar)
-
-      tab_bar
-    end
-
-    def open_tab(tab)
-      if tab.is_a? String
-        return PM::TabBar.select(self.tab_bar, title: tab)
-      else
-        $stderr.puts "Unable to open tab #{tab.to_s} because it isn't a string."
-      end
-    end
-
     def open_view_controller(vc)
       UIApplication.sharedApplication.delegate.load_root_view vc
     end

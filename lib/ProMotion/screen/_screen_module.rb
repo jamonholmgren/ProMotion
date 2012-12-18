@@ -3,6 +3,7 @@ module ProMotion
     include ProMotion::ScreenNavigation
     include ProMotion::ScreenElements
     include ProMotion::SystemHelper
+    include ProMotion::ScreenTabs
 
     attr_accessor :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal
 

@@ -1,5 +1,6 @@
 module ProMotion
   class AppDelegateParent
+    include ProMotion::ScreenTabs
     attr_accessor :window
     
     def application(application, didFinishLaunchingWithOptions:launch_options)
@@ -23,8 +24,10 @@ module ProMotion
     end
 
     def load_root_screen(new_screen)
+      new_screen = new_screen.main_controller if new_screen.respond_to?(:main_controller)
+
       self.window ||= UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
-      self.window.rootViewController = new_screen.main_controller
+      self.window.rootViewController = new_screen
       self.window.makeKeyAndVisible
     end
 

@@ -31,11 +31,11 @@ module ProMotion
     end
 
     def navigation_controller
-      self.navigationController
+      @navigation_controller ||= self.navigationController
     end
 
     def navigation_controller=(val)
-      self.navigationController = val
+      @navigation_controller = val
       val
     end
 
@@ -54,7 +54,7 @@ module ProMotion
     end
 
     def add_nav_bar
-      self.navigationController = NavigationController.alloc.initWithRootViewController(self)
+      self.navigation_controller = NavigationController.alloc.initWithRootViewController(self)
       self.first_screen = true
     end
 

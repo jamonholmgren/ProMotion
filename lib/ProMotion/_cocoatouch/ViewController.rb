@@ -1,4 +1,4 @@
 module ProMotion
-  class TableViewController < ProMotion::Screen
+  class TableViewController < UITableViewController
   end
 end

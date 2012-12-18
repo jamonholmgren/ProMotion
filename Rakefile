@@ -8,14 +8,14 @@ Bundler.require
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'ProMotionTest'
-  app.version = "0.2.0"
+  app.version = "0.3.0"
 
 
   # Devices
   app.deployment_target = "5.0"
   app.device_family = [:iphone, :ipad]
 
-  # app.detect_dependencies = false
+  app.detect_dependencies = false
 
   # Preload screens
   # app.files = Dir.glob(File.join(app.project_dir, 'lib/**/*.rb')) | app.files

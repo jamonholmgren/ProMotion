@@ -99,13 +99,13 @@ module ProMotion
     end
 
     def view_will_appear(animated)
-      ProMotion::Screen.current_screen = self
+      # ProMotion::Screen.current_screen = self
       self.will_appear
     end
     def will_appear; end
 
     def view_did_appear(animated)
-      ProMotion::Screen.current_screen = self
+      # ProMotion::Screen.current_screen = self
       self.on_appear
     end
     def on_appear; end
@@ -116,7 +116,7 @@ module ProMotion
     def will_disappear; end
 
     def view_did_disappear(animated)
-      ProMotion::Screen.current_screen = self.parent_screen if self.parent_screen
+      # ProMotion::Screen.current_screen = self.parent_screen if self.parent_screen
       self.on_disappear
     end
     def on_disappear; end
@@ -193,23 +193,23 @@ module ProMotion
 
     def viewWillAppear(animated)
       super
-      self.view_will_appear(animated) if self.respond_to?(:view_will_appear)
+      self.view_will_appear(animated) if self.respond_to?("view_will_appear:")
     end
 
     def viewDidAppear(animated)
       super
-      self.view_did_appear(animated) if self.respond_to?(:view_did_appear)
+      self.view_did_appear(animated) if self.respond_to?("view_did_appear:")
     end
     
     def viewWillDisappear(animated)
-      if self.respond_to?(:view_will_disappear)
+      if self.respond_to?("view_will_disappear:")
         self.view_will_disappear(animated)
       end
       super      
     end
     
     def viewDidDisappear(animated)
-      if self.respond_to?(:view_did_disappear)
+      if self.respond_to?("view_did_disappear:")
         self.view_did_disappear(animated)
       end
       super      
@@ -229,10 +229,6 @@ module ProMotion
     
     def didRotateFromInterfaceOrientation(orientation)
       self.on_rotate
-    end
-
-    def dealloc
-      $stderr.puts "Deallocating #{self.to_s}" if ProMotion::Screen.debug_mode
     end
 
     # Class methods

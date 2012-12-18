@@ -1,7 +1,7 @@
 module ProMotion
   module ScreenNavigation
     def open_screen(screen, args = {})
-      # Instantiate screen if given a class instead
+      # Instantiate screen if given a class
       screen = screen.new if screen.respond_to?(:new)
 
       screen.parent_screen = self
@@ -16,9 +16,9 @@ module ProMotion
 
       screen.modal = args[:modal] if args[:modal]
       
-      screen.send(:on_load) if screen.respond_to?(:on_load)
-      
       screen.hidesBottomBarWhenPushed = args[:hide_tab_bar] if args[:hide_tab_bar]
+      
+      screen.send(:on_load) if screen.respond_to?(:on_load)
 
       if args[:close_all]
         open_root_screen(screen)
@@ -26,7 +26,6 @@ module ProMotion
         self.presentModalViewController(screen.main_controller, animated:true)
       elsif args[:in_tab] && self.tab_bar
         vc = open_tab(args[:in_tab])
-        # $stderr.puts "Found a #{vc.to_s}"
         if vc
           if vc.is_a?(UINavigationController)
             screen.navigation_controller = vc
@@ -44,10 +43,6 @@ module ProMotion
         push_view_controller screen
       else
         open_view_controller screen.main_controller
-      end
-
-      if screen.respond_to?(:on_opened)
-        screen.send(:on_opened)
       end
     end
     alias :open :open_screen
@@ -143,11 +138,9 @@ module ProMotion
     end
 
     def push_view_controller(vc, nav_controller=nil)
-      # vc.hidesBottomBarWhenPushed = true if args[:hide_tab_bar]
       Console.log(" You need a nav_bar if you are going to push #{vc.to_s} onto it.", withColor: Console::RED_COLOR) unless self.navigation_controller
       nav_controller ||= self.navigation_controller
-      # nav_controller.pushViewController(vc, animated: true)
-      $nc = nav_controller
+      nav_controller.pushViewController(vc, animated: true)
     end
   end
 end

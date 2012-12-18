@@ -16,6 +16,6 @@ class HomeScreen < ProMotion::Screen
   end
 
   def test_it
-    open_screen TestScreen.new
+    open_screen TestScreen
   end
 end

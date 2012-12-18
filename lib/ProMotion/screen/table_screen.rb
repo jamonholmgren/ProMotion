@@ -1,6 +1,6 @@
 module ProMotion
   # Instance methods
-  class TableScreen < UITableViewController
+  class TableScreen < TableViewController
     include ProMotion::TableScreenModule
   end
 

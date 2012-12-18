@@ -1,7 +1,5 @@
 module ProMotion
   class TableViewController < UITableViewController
-    attr_accessor :screen
-
     def viewDidLoad
       super
       self.view_did_load if self.respond_to?(:view_did_load)
@@ -9,23 +7,21 @@ module ProMotion
 
     def viewWillAppear(animated)
       super
-      self.view_will_appear(animated) if self.respond_to?(:view_will_appear)
+      self.view_will_appear(animated) if self.respond_to?("view_will_appear:")
     end
 
     def viewDidAppear(animated)
       super
-      self.view_did_appear(animated) if self.respond_to?(:view_did_appear)
+      self.view_did_appear(animated) if self.respond_to?("view_did_appear:")
     end
     
     def viewWillDisappear(animated)
-      if self.respond_to?(:view_will_disappear)
-        self.view_will_disappear(animated)
-      end
+      self.view_will_disappear(animated) if self.respond_to?("view_will_disappear:")
       super      
     end
     
     def viewDidDisappear(animated)
-      if self.respond_to?(:view_did_disappear)
+      if self.respond_to?("view_did_disappear:")
         self.view_did_disappear(animated)
       end
       super      

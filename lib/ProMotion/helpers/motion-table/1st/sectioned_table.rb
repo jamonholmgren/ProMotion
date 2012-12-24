@@ -72,6 +72,8 @@ module ProMotion::MotionTable
         tableCell.accessoryView.autoresizingMask = UIViewAutoresizingFlexibleWidth
       end
 
+      tableCell.accessoryType = dataCell[:accessoryType] if dataCell[:accessoryType]
+      
       if dataCell[:accessory] && dataCell[:accessory] == :switch
         switchView = UISwitch.alloc.initWithFrame(CGRectZero)
         switchView.addTarget(self, action: "accessoryToggledSwitch:", forControlEvents:UIControlEventValueChanged);

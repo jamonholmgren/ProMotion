@@ -26,10 +26,10 @@ Typical app file structure:
 Loading your home screen:
 
 ```ruby
-# In /app/app_delegate.rb (note that AppDelegate extends ProMotion::AppDelegateParent)
-class AppDelegate < ProMotion::AppDelegateParent
+# In /app/app_delegate.rb
+class AppDelegate < ProMotion::AppDelegate
   def on_load(app, options)
-    open_screen MyHomeScreen.new(nav_bar: true)
+    open MyHomeScreen.new(nav_bar: true)
   end
 end
 ```
@@ -61,6 +61,8 @@ so keep that in mind.
 NOTE: It needs to be done in the on_appear or afterward, not the `on_load` or
 `will_appear`. We will likely fix this in the future, but for now that's a restriction.
 
+### Creating a tab bar with several screens
+
 ```ruby
 def on_appear
   @home     ||= MyHomeScreen.new(nav_bar: true)
@@ -74,12 +76,17 @@ For each screen that belongs to the tab bar, you need to set the tab name and ic
 In this example, we would need add the following to the three files (my_home_screen.rb, settings_screen.rb, contact_screen.rb):
 
 ```ruby
-def on_opened
-  set_tab_bar_item title: "Tab Name Goes Here", icon: "tab_icon.png" # in resources folder
+def on_load
+  set_tab_bar_item title: "Tab Name Goes Here", icon: "icons/tab_icon.png" # in resources/icons folder
+  
+  # or...
+  set_tab_bar_item title: "Contacts", system_icon: UITabBarSystemItemContacts
 end
 ```
 
-Any view item (UIView, UIButton, etc) can be used with add_element.
+### Adding view elements
+
+Any view item (UIView, UIButton, custom UIView subclasses, etc) can be used with add_element.
 The second argument is a hash of settings that get applied to the
 element before it is dropped into the view.
 
@@ -90,11 +97,11 @@ element before it is dropped into the view.
 }
 ```
 
-Add a nav_bar button and a tab_bar icon:
+Add nav_bar buttons:
 
 ```ruby
 set_nav_bar_right_button "Save", action: :save_something, type: UIBarButtonItemStyleDone
-set_tab_bar_item title: "Contacts", system_icon: UITabBarSystemItemContacts
+set_nav_bar_left_button "Cancel", action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
 ```
 
 Open a new screen:
@@ -102,18 +109,18 @@ Open a new screen:
 ```ruby
 def settings_button_tapped
   # ...with a class...
-  open_screen SettingsScreen
+  open SettingsScreen
 
   # ...or with an instance...
   @settings_screen = SettingsScreen.new
-  open_screen @settings_screen
+  open @settings_screen
 end
 ```
 
 Open a new screen as a modal:
 
 ```ruby
-open_screen SettingsScreen, modal: true
+open SettingsScreen, modal: true
 ```
 
 You can pass in arguments to other screens if they have accessors:
@@ -123,7 +130,7 @@ class HomeScreen < ProMotion::Screen
   # ...
 
   def settings_button_tapped
-    open_screen ProfileScreen.new(user: some_user)
+    open ProfileScreen.new(user: some_user)
   end
 end
 
@@ -144,7 +151,7 @@ class ItemScreen
   # ...
   def save_and_close
     if @model.save
-      close_screen(model_saved: true)
+      close(model_saved: true)
     end
   end
 end
@@ -455,7 +462,7 @@ your Rakefile and doing this:
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td>close_screen(args = {})</td>
+    <td>close(args = {})</td>
     <td>
       Closes the current screen, passes args back to the previous screen's on_return method<br />
     </td>
@@ -469,9 +476,9 @@ your Rakefile and doing this:
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td>open_screen(screen, args = {})</td>
+    <td>open(screen, args = {})</td>
     <td>
-      Pushes the screen onto the navigation stack<br />
+      Pushes the screen onto the navigation stack or opens in a modal<br />
       argument options :hide_tab_bar, :modal, any accessors in `screen`
     </td>
   </tr>

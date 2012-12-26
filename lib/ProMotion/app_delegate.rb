@@ -6,7 +6,7 @@ module ProMotion
     def application(application, didFinishLaunchingWithOptions:launch_options)
       return true if RUBYMOTION_ENV == "test"
 
-      Console.log(" Your AppDelegate (usually in app_delegate.rb) needs an on_load(options) method.", withColor: Console::RED_COLOR) unless self.respond_to?("on_load:")
+      Console.log(" Your AppDelegate (usually in app_delegate.rb) needs an on_load(options) method.", with_color: Console::RED_COLOR) unless self.respond_to?("on_load:")
 
       on_load(application, launch_options)
 

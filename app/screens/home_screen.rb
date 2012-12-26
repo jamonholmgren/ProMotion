@@ -9,13 +9,13 @@ class HomeScreen < ProMotion::Screen
     }
 
     self.view.backgroundColor = UIColor.whiteColor
-    self.set_nav_bar_right_button("Test", action: :test_it)
+    self.set_nav_bar_right_button "Test", action: :test_it
   end
 
   def on_appear
   end
 
   def test_it
-    open_screen TestScreen
+    open TestScreen
   end
 end

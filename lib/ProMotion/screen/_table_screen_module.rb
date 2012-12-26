@@ -36,6 +36,7 @@ module ProMotion
       end
     end
     def self.included(base)
+      base.extend(ClassMethods)
       base.extend(TableClassMethods)
     end
   end

@@ -7,20 +7,21 @@ module ProMotion
 
     attr_accessor :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal
 
-    def initialize(args = {})
+    def on_create(args = {})
       unless self.is_a?(UIViewController)
         raise StandardError.new("ERROR: Screens must extend UIViewController or a subclass of UIViewController.")
       end
       
-      self.initWithNibName(nil, bundle:nil)
-
       args.each do |k, v|
         self.send("#{k}=", v) if self.respond_to?("#{k}=")
       end
 
+      puts "#{__FILE__}:#{__LINE__}"
+
       self.add_nav_bar if args[:nav_bar]
       self.table_setup if self.respond_to?(:table_setup)      
       self.on_init if self.respond_to?(:on_init)
+      puts "#{__FILE__}:#{__LINE__}"
       self
     end
 

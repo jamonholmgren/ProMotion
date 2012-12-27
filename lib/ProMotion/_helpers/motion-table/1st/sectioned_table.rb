@@ -48,7 +48,7 @@ module ProMotion::MotionTable
         elsif expected_arguments == 1 || expected_arguments == -1
           self.send(action, arguments)
         else
-          Console.log("MotionTable warning: #{action} expects #{expected_arguments} arguments. Maximum number of required arguments for an action is 1.", withColor: MotionTable::Console::RED_COLOR)
+          Console.log("MotionTable warning: #{action} expects #{expected_arguments} arguments. Maximum number of required arguments for an action is 1.", with_color: MotionTable::Console::RED_COLOR)
         end
       else
         Console.log(self, actionNotImplemented: action)
@@ -168,7 +168,7 @@ module ProMotion::MotionTable
           table_cell.imageView.layer.masksToBounds = true
           table_cell.imageView.layer.cornerRadius = data_cell[:remoteImage][:radius]
         else
-          ProMotion::MotionTable::Console.log("ProMotion Warning: to use remoteImage with TableScreen you need to include the CocoaPod 'SDWebImage'.", withColor: MotionTable::Console::RED_COLOR)
+          Console.log("ProMotion Warning: to use remoteImage with TableScreen you need to include the CocoaPod 'SDWebImage'.", with_color: Console::RED_COLOR)
         end
       elsif data_cell[:image]
         table_cell.imageView.layer.masksToBounds = true

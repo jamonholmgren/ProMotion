@@ -1,5 +1,11 @@
 module ProMotion
   class ViewController < UIViewController
+    def self.new(args = {})
+      s = self.alloc.initWithNibName(nil, bundle:nil)
+      s.on_create(args) if s.respond_to?(:on_create)
+      s
+    end
+
     def viewDidLoad
       super
       self.view_did_load if self.respond_to?(:view_did_load)

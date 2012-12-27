@@ -27,7 +27,11 @@ module ProMotion
       elsif args[:modal]
         vc = screen
         vc = screen.main_controller if screen.respond_to?(:main_controller)
-        self.presentModalViewController(vc, animated:true)
+        if MPMoviePlayerViewController && vc.is_a?(MPMoviePlayerViewController)
+          self.presentMoviePlayerViewControllerAnimated(vc)
+        else
+          self.presentModalViewController(vc, animated:true)
+        end
       elsif args[:in_tab] && self.tab_bar
         vc = open_tab(args[:in_tab])
         if vc

@@ -54,21 +54,17 @@ class HomeScreen < ProMotion::Screen
 end
 ```
 
-Creating a tabbed bar from a screen (this has to be done inside a screen -- it won't work
-in your app_delegate.rb). This will set the tab bar as the root view controller for your app,
-so keep that in mind. 
-
-NOTE: It needs to be done in the on_appear or afterward, not the `on_load` or
-`will_appear`. We will likely fix this in the future, but for now that's a restriction.
+Creating a tabbed bar with multiple screens. This will set the tab bar as the root view controller for your app,
+so keep that in mind. It can be done from the AppDelegate#on_load or from a screen.
 
 ### Creating a tab bar with several screens
 
 ```ruby
-def on_appear
-  @home     ||= MyHomeScreen.new(nav_bar: true)
-  @settings ||= SettingsScreen.new
-  @contact  ||= ContactScreen.new(nav_bar: true)
-  @tab_bar  ||= open_tab_bar @home, @settings, @contact
+def on_load(app, options)
+  @home     = MyHomeScreen.new(nav_bar: true)
+  @settings = SettingsScreen.new
+  @contact  = ContactScreen.new(nav_bar: true)
+  @tab_bar  = open_tab_bar @home, @settings, @contact
 end
 ```
 

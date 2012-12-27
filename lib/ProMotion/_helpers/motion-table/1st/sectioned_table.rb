@@ -51,7 +51,7 @@ module ProMotion::MotionTable
           ProMotion::Console.log("MotionTable warning: #{action} expects #{expected_arguments} arguments. Maximum number of required arguments for an action is 1.", with_color: MotionTable::ProMotion::Console::RED_COLOR)
         end
       else
-        ProMotion::Console.log(self, actionNotImplemented: action)
+        ProMotion::Console.log("Not implemented: #{action.to_s}", with_color: ProMotion::Console::RED_COLOR)
       end
     end
   

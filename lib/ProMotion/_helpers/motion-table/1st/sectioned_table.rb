@@ -1,7 +1,7 @@
 module ProMotion::MotionTable
   module SectionedTable
     def table_setup
-      Console.log(" - #table_data method needed in TableScreen #{self.class.to_s}.", with_color: Console::RED_COLOR) unless self.respond_to?(:table_data)
+      ProMotion::Console.log(" - #table_data method needed in TableScreen #{self.class.to_s}.", with_color: ProMotion::Console::RED_COLOR) unless self.respond_to?(:table_data)
 
       self.view = self.create_table_view_from_data(self.table_data)
       if self.class.get_searchable
@@ -48,10 +48,10 @@ module ProMotion::MotionTable
         elsif expected_arguments == 1 || expected_arguments == -1
           self.send(action, arguments)
         else
-          Console.log("MotionTable warning: #{action} expects #{expected_arguments} arguments. Maximum number of required arguments for an action is 1.", with_color: MotionTable::Console::RED_COLOR)
+          ProMotion::Console.log("MotionTable warning: #{action} expects #{expected_arguments} arguments. Maximum number of required arguments for an action is 1.", with_color: MotionTable::ProMotion::Console::RED_COLOR)
         end
       else
-        Console.log(self, actionNotImplemented: action)
+        ProMotion::Console.log(self, actionNotImplemented: action)
       end
     end
   
@@ -168,7 +168,7 @@ module ProMotion::MotionTable
           table_cell.imageView.layer.masksToBounds = true
           table_cell.imageView.layer.cornerRadius = data_cell[:remoteImage][:radius]
         else
-          Console.log("ProMotion Warning: to use remoteImage with TableScreen you need to include the CocoaPod 'SDWebImage'.", with_color: Console::RED_COLOR)
+          ProMotion::Console.log("ProMotion Warning: to use remoteImage with TableScreen you need to include the CocoaPod 'SDWebImage'.", with_color: ProMotion::Console::RED_COLOR)
         end
       elsif data_cell[:image]
         table_cell.imageView.layer.masksToBounds = true

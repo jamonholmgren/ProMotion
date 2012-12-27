@@ -6,6 +6,8 @@ module ProMotion
       view_controllers = []
       tag_index = 0
 
+      screens.map! { |s| s.respond_to?(:new) ? s.new : s } # Initialize any classes
+
       screens.each do |s|
         if s.is_a?(ProMotion::Screen) || s.is_a?(ProMotion::TableScreen)
           s = s.new if s.respond_to?(:new)

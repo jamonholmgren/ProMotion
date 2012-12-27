@@ -17,8 +17,9 @@ module ProMotion
       args.each do |k, v|
         self.send("#{k}=", v) if self.respond_to?("#{k}=")
       end
-      
+
       self.add_nav_bar if args[:nav_bar]
+      self.table_setup if self.respond_to?(:table_setup)      
       self.on_init if self.respond_to?(:on_init)
       self
     end

@@ -1,5 +1,14 @@
 module ProMotion::MotionTable
   module SectionedTable
+    def table_setup
+      Console.log(" - #table_data method needed in TableScreen #{self.class.to_s}.", with_color: Console::RED_COLOR) unless self.respond_to?(:table_data)
+
+      self.view = self.create_table_view_from_data(self.table_data)
+      if self.class.get_searchable
+        self.make_searchable(content_controller: self, search_bar: self.class.get_searchable_params)
+      end
+    end
+
     # @param [Array] Array of table data
     # @returns [UITableView] delegated to self
     def create_table_view_from_data(data)

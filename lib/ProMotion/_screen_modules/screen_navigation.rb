@@ -4,26 +4,30 @@ module ProMotion
       # Instantiate screen if given a class
       screen = screen.new if screen.respond_to?(:new)
 
-      screen.parent_screen = self
-      screen.title = args[:title] if args[:title]
+      if screen.is_a?(ProMotion::Screen || ProMotion::TableScreen)
+        screen.parent_screen = self if screen.respond_to?("parent_screen=")
+        screen.title = args[:title] if args[:title]
 
-      screen.add_nav_bar if args[:nav_bar]
-      
-      unless args[:close_all] || args[:modal]
-        screen.navigation_controller ||= self.navigation_controller
-        screen.tab_bar ||= self.tab_bar
+        screen.add_nav_bar if args[:nav_bar]
+        
+        unless args[:close_all] || args[:modal]
+          screen.navigation_controller ||= self.navigation_controller
+          screen.tab_bar ||= self.tab_bar
+        end
+
+        screen.modal = args[:modal] if args[:modal]
+        
+        screen.hidesBottomBarWhenPushed = args[:hide_tab_bar] if args[:hide_tab_bar]
+        
+        screen.send(:on_load) if screen.respond_to?(:on_load)
       end
-
-      screen.modal = args[:modal] if args[:modal]
-      
-      screen.hidesBottomBarWhenPushed = args[:hide_tab_bar] if args[:hide_tab_bar]
-      
-      screen.send(:on_load) if screen.respond_to?(:on_load)
 
       if args[:close_all]
         open_root_screen(screen)
       elsif args[:modal]
-        self.presentModalViewController(screen.main_controller, animated:true)
+        vc = screen
+        vc = screen.main_controller if screen.respond_to?(:main_controller)
+        self.presentModalViewController(vc, animated:true)
       elsif args[:in_tab] && self.tab_bar
         vc = open_tab(args[:in_tab])
         if vc

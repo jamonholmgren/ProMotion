@@ -16,12 +16,9 @@ module ProMotion
         self.send("#{k}=", v) if self.respond_to?("#{k}=")
       end
 
-      puts "#{__FILE__}:#{__LINE__}"
-
       self.add_nav_bar if args[:nav_bar]
       self.table_setup if self.respond_to?(:table_setup)      
       self.on_init if self.respond_to?(:on_init)
-      puts "#{__FILE__}:#{__LINE__}"
       self
     end
 

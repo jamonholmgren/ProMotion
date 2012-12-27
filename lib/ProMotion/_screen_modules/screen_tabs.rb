@@ -7,7 +7,7 @@ module ProMotion
       tag_index = 0
 
       screens.each do |s|
-        if s.is_a? Screen
+        if s.is_a?(ProMotion::Screen)
           s = s.new if s.respond_to?(:new)
           s.tabBarItem.tag = tag_index
           s.parent_screen = self if self.is_a?(Screen) && s.respond_to?("parent_screen=")

@@ -27,12 +27,12 @@ module ProMotion
       end
 
       def tab_bar_icon(icon, tag)
-        warn "[DEPRECATION] `TabBar.tab_bar_icon` is deprecated. Use `tab_bar_icon` in ScreenTabs instead."
+        warn "[DEPRECATION] `TabBar.tab_bar_icon` is deprecated. Use `create_tab_bar_icon` in ScreenTabs instead."
         return UITabBarItem.alloc.initWithTabBarSystemItem(icon, tag: tag)
       end
 
       def tab_bar_icon_custom(title, image_name, tag)
-        warn "[DEPRECATION] `TabBar.tab_bar_icon_custom` is deprecated. Use `tab_bar_icon_custom` in ScreenTabs instead."
+        warn "[DEPRECATION] `TabBar.tab_bar_icon_custom` is deprecated. Use `create_tab_bar_icon_custom` in ScreenTabs instead."
         icon_image = UIImage.imageNamed(image_name)
         return UITabBarItem.alloc.initWithTitle(title, image:icon_image, tag:tag)
       end

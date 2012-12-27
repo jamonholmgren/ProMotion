@@ -48,23 +48,23 @@ module ProMotion
       end
     end
 
-    def tab_bar_icon(icon, tag)
+    def create_tab_bar_icon(icon, tag)
       return UITabBarItem.alloc.initWithTabBarSystemItem(icon, tag: tag)
     end
 
-    def tab_bar_icon_custom(title, image_name, tag)
+    def create_tab_bar_icon_custom(title, image_name, tag)
       icon_image = UIImage.imageNamed(image_name)
       return UITabBarItem.alloc.initWithTitle(title, image:icon_image, tag:tag)
     end
 
-    def tab_bar_item(tab={})
+    def create_tab_bar_item(tab={})
       title = "Untitled"
       title = tab[:title] if tab[:title]
       tab[:tag] ||= @current_tag ||= 0
       @current_tag = tab[:tag] + 1
       
-      tab_bar_item = tab_bar_icon(tab[:system_icon], tab[:tag]) if tab[:system_icon]
-      tab_bar_item = tab_bar_icon_custom(title, tab[:icon], tab[:tag]) if tab[:icon]
+      tab_bar_item = create_tab_bar_icon(tab[:system_icon], tab[:tag]) if tab[:system_icon]
+      tab_bar_item = create_tab_bar_icon_custom(title, tab[:icon], tab[:tag]) if tab[:icon]
       
       tab_bar_item.badgeValue = tab[:badge_number].to_s unless tab[:badge_number].nil? || tab[:badge_number] <= 0
       

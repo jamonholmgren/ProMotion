@@ -2,20 +2,77 @@ module ProMotion::MotionTable
   module SectionedTable
     # @param [Array] Array of table data
     # @returns [UITableView] delegated to self
-    def createTableViewFromData(data)
-      setTableViewData data
+    def create_table_view_from_data(data)
+      set_table_view_data data
       return table_view
     end
+    alias :createTableViewFromData :create_table_view_from_data
 
-    def updateTableViewData(data)
-      setTableViewData data
+    def update_table_view_data(data)
+      set_table_view_data data
       self.table_view.reloadData
     end
+    alias :updateTableViewData :update_table_view_data
 
-    def setTableViewData(data)
+    def set_table_view_data(data)
       @mt_table_view_groups = data
     end
+    alias :setTableViewData :set_table_view_data
 
+    def section_at_index(index)
+      if @mt_filtered
+        @mt_filtered_data.at(index)
+      else
+        @mt_table_view_groups.at(index)
+      end
+    end
+
+    def cell_at_section_and_index(section, index)
+      return section_at_index(section)[:cells].at(index) if section_at_index(section) && section_at_index(section)[:cells]
+    end
+
+    def trigger_action(action, arguments)
+      if self.respond_to?(action)
+        expected_arguments = self.method(action).arity
+        if expected_arguments == 0
+          self.send(action)
+        elsif expected_arguments == 1 || expected_arguments == -1
+          self.send(action, arguments)
+        else
+          Console.log("MotionTable warning: #{action} expects #{expected_arguments} arguments. Maximum number of required arguments for an action is 1.", withColor: MotionTable::Console::RED_COLOR)
+        end
+      else
+        Console.log(self, actionNotImplemented: action)
+      end
+    end
+  
+    def set_cell_attributes(element, args = {})
+      args.each do |k, v|
+        if v.is_a? Hash
+          v.each do
+            sub_element = element.send("#{k}")
+            set_cell_attributes(sub_element, v)
+          end
+        else
+          element.send("#{k}=", v) if element.respond_to?("#{k}=")
+        end
+      end
+      element
+    end
+
+    def accessory_toggled_switch(switch)
+      table_cell = switch.superview
+      indexPath = table_cell.superview.indexPathForCell(table_cell)
+
+      data_cell = cell_at_section_and_index(indexPath.section, indexPath.row)
+      data_cell[:arguments] = {} unless data_cell[:arguments]
+      data_cell[:arguments][:value] = switch.isOn if data_cell[:arguments].is_a? Hash
+      data_cell[:accessory_action] ||= data_cell[:accessoryAction] # For legacy support
+      
+      trigger_action(data_cell[:accessory_action], data_cell[:arguments]) if data_cell[:accessory_action]
+    end
+
+    ########## Cocoa touch methods, leave as-is #################
     def numberOfSectionsInTableView(table_view)
       if @mt_filtered
         return @mt_filtered_data.length if @mt_filtered_data
@@ -74,7 +131,7 @@ module ProMotion::MotionTable
 
       if data_cell[:accessory] && data_cell[:accessory] == :switch
         switchView = UISwitch.alloc.initWithFrame(CGRectZero)
-        switchView.addTarget(self, action: "accessoryToggledSwitch:", forControlEvents:UIControlEventValueChanged);
+        switchView.addTarget(self, action: "accessory_toggled_switch:", forControlEvents:UIControlEventValueChanged);
         switchView.on = true if data_cell[:accessoryDefault]
         table_cell.accessoryView = switchView
       end
@@ -151,65 +208,12 @@ module ProMotion::MotionTable
       return table_cell
     end
 
-    def section_at_index(index)
-      if @mt_filtered
-        @mt_filtered_data.at(index)
-      else
-        @mt_table_view_groups.at(index)
-      end
-    end
-
-    def cell_at_section_and_index(section, index)
-      return section_at_index(section)[:cells].at(index) if section_at_index(section) && section_at_index(section)[:cells]
-    end
-
     def tableView(table_view, didSelectRowAtIndexPath:indexPath)
       cell = cell_at_section_and_index(indexPath.section, indexPath.row)
       table_view.deselectRowAtIndexPath(indexPath, animated: true);
       cell[:arguments] ||= {}
       cell[:arguments][:cell] = cell if cell[:arguments].is_a?(Hash)
       trigger_action(cell[:action], cell[:arguments]) if cell[:action]
-    end
-
-    def accessoryToggledSwitch(switch)
-      table_cell = switch.superview
-      indexPath = table_cell.superview.indexPathForCell(table_cell)
-
-      data_cell = cell_at_section_and_index(indexPath.section, indexPath.row)
-      data_cell[:arguments] = {} unless data_cell[:arguments]
-      data_cell[:arguments][:value] = switch.isOn if data_cell[:arguments].is_a? Hash
-      
-      trigger_action(data_cell[:accessoryAction], data_cell[:arguments]) if data_cell[:accessoryAction]
-
-    end
-
-    def trigger_action(action, arguments)
-      if self.respond_to?(action)
-        expected_arguments = self.method(action).arity
-        if expected_arguments == 0
-          self.send(action)
-        elsif expected_arguments == 1 || expected_arguments == -1
-          self.send(action, arguments)
-        else
-          Console.log("MotionTable warning: #{action} expects #{expected_arguments} arguments. Maximum number of required arguments for an action is 1.", withColor: MotionTable::Console::RED_COLOR)
-        end
-      else
-        Console.log(self, actionNotImplemented: action)
-      end
-    end
-  
-    def set_cell_attributes(element, args = {})
-      args.each do |k, v|
-        if v.is_a? Hash
-          v.each do
-            sub_element = element.send("#{k}")
-            set_cell_attributes(sub_element, v)
-          end
-        else
-          element.send("#{k}=", v) if element.respond_to?("#{k}=")
-        end
-      end
-      element
     end
   end
 end

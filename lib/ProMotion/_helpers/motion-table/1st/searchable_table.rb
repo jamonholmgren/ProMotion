@@ -27,7 +27,9 @@ module ProMotion::MotionTable
     end
     alias :makeSearchable :make_searchable
 
-    def search_display_controller(controller, shouldReloadTableForSearchString:search_string)
+    ######### iOS methods, headless camel case #######
+    
+    def searchDisplayController(controller, shouldReloadTableForSearchString:search_string)
       @mt_filtered_data = nil
       @mt_filtered_data = []
 
@@ -46,8 +48,6 @@ module ProMotion::MotionTable
           @mt_filtered_data << new_section
         end
       end
-      alias :searchDisplayController :search_display_controller
-
       true
     end
 

@@ -21,3 +21,4 @@ build/*
 .*.0??
 .rvmrc
 .DS_Store
+.c9revisions

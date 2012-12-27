@@ -138,8 +138,8 @@ module ProMotion::MotionTable
         table_cell.accessoryView.autoresizingMask = UIViewAutoresizingFlexibleWidth
       end
 
-      if dataCell[:accessoryType]
-        tableCell.accessoryType = dataCell[:accessoryType]
+      if data_cell[:accessoryType]
+        tableCell.accessoryType = data_cell[:accessoryType]
       end
 
       if data_cell[:accessory] && data_cell[:accessory] == :switch

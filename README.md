@@ -3,6 +3,8 @@
 ProMotion introduces a new object called "Screens". Screens have a one-to-one relationship 
 with your app's designed screens.
 
+NEW video tutorial! Go watch it here: http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/
+
 Check out the tutorial here: http://www.clearsightstudio.com/insights/ruby-motion-promotion-tutorial
 
 Sample app here: https://github.com/jamonholmgren/promotion-tutorial

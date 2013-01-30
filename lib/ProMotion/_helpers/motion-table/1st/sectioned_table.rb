@@ -4,7 +4,7 @@ module ProMotion::MotionTable
       ProMotion::Console.log(" - #table_data method needed in TableScreen #{self.class.to_s}.", with_color: ProMotion::Console::RED_COLOR) unless self.respond_to?(:table_data)
 
       self.view = self.create_table_view_from_data(self.table_data)
-      if self.class.get_searchable
+      if self.class.respond_to?(:get_searchable) && self.class.get_searchable
         self.make_searchable(content_controller: self, search_bar: self.class.get_searchable_params)
       end
     end
@@ -39,6 +39,7 @@ module ProMotion::MotionTable
     def cell_at_section_and_index(section, index)
       return section_at_index(section)[:cells].at(index) if section_at_index(section) && section_at_index(section)[:cells]
     end
+    alias :cellAtSectionAndIndex :cell_at_section_and_index
 
     def trigger_action(action, arguments)
       if self.respond_to?(action)

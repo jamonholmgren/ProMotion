@@ -4,21 +4,20 @@ module ProMotion
       # Instantiate screen if given a class
       screen = screen.new if screen.respond_to?(:new)
 
-      if screen.is_a?(ProMotion::Screen || ProMotion::TableScreen)
+      if screen.is_a?(ProMotion::Screen) || screen.is_a?(ProMotion::TableScreen)
         screen.parent_screen = self if screen.respond_to?("parent_screen=")
         screen.title = args[:title] if args[:title]
 
-        screen.add_nav_bar if args[:nav_bar]
+        screen.modal = args[:modal] if args[:modal]
         
+        screen.hidesBottomBarWhenPushed = args[:hide_tab_bar] if args[:hide_tab_bar]
+
+        screen.add_nav_bar if args[:nav_bar]        
         unless args[:close_all] || args[:modal]
           screen.navigation_controller ||= self.navigation_controller
           screen.tab_bar ||= self.tab_bar
         end
 
-        screen.modal = args[:modal] if args[:modal]
-        
-        screen.hidesBottomBarWhenPushed = args[:hide_tab_bar] if args[:hide_tab_bar]
-        
         screen.send(:on_load) if screen.respond_to?(:on_load)
       end
 

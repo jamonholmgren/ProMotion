@@ -117,7 +117,7 @@ module ProMotion::MotionTable
       data_cell[:cellStyle] ||= UITableViewCellStyleDefault
       data_cell[:cellIdentifier] ||= "Cell"
       cellIdentifier = data_cell[:cellIdentifier]
-      data_cell[:cellClass] ||= PM::TableViewCell
+      data_cell[:cellClass] ||= ProMotion::TableViewCell
 
       table_cell = table_view.dequeueReusableCellWithIdentifier(cellIdentifier)
       unless table_cell

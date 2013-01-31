@@ -36,7 +36,7 @@ module ProMotion
           else
             self.tab_bar.selectedIndex = vc.tabBarItem.tag
             $stderr.puts "#{self.tab_bar.selectedIndex} is selected and should be #{vc.tabBarItem.tag}"
-            # PM::TabBar.replace_current_item(self.tab_bar, view_controller: screen.view_controller)
+            # ProMotion::TabBar.replace_current_item(self.tab_bar, view_controller: screen.view_controller)
             # TODO: This doesn't work yet.
           end
         else

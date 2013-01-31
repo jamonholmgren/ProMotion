@@ -12,6 +12,12 @@ class TestScreen < ProMotion::Screen
       backgroundColor: UIColor.whiteColor
     }
     @button.addSubview(@label)
+
+    set_nav_bar_right_button "Close", action: :close_this if self.parent_screen
+  end
+
+  def close_this
+    close
   end
 
   def hello

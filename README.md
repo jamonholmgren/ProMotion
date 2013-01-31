@@ -143,7 +143,7 @@ end
 Close a screen (modal or in a nav controller), passing back arguments to the previous screen's "on_return" method:
 
 ```ruby
-class ItemScreen
+class ItemScreen < ProMotion::Screen
   # ...
   def save_and_close
     if @model.save

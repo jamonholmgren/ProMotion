@@ -1,20 +1,23 @@
 module ProMotion
-  # Instance methods
-  class Screen
+  module ScreenModule
     include ProMotion::ScreenNavigation
     include ProMotion::ScreenElements
     include ProMotion::SystemHelper
+    include ProMotion::ScreenTabs
 
-    attr_accessor :view_controller, :navigation_controller, :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal
+    attr_accessor :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal
 
-    def initialize(args = {})
+    def on_create(args = {})
+      unless self.is_a?(UIViewController)
+        raise StandardError.new("ERROR: Screens must extend UIViewController or a subclass of UIViewController.")
+      end
+      
       args.each do |k, v|
         self.send("#{k}=", v) if self.respond_to?("#{k}=")
       end
-      self.load_view_controller
-      self.view_controller.title = self.title
 
       self.add_nav_bar if args[:nav_bar]
+      self.table_setup if self.respond_to?(:table_setup)      
       self.on_init if self.respond_to?(:on_init)
       self
     end
@@ -27,9 +30,18 @@ module ProMotion
       self.navigation_controller.nil? != true
     end
 
-    # Note: this is overridden in TableScreen
+    def navigation_controller
+      @navigation_controller ||= self.navigationController
+    end
+
+    def navigation_controller=(val)
+      @navigation_controller = val
+      val
+    end
+
+    # [DEPRECATED]
     def load_view_controller
-      self.view_controller ||= ViewController
+      warn "[DEPRECATION] `load_view_controller` is deprecated and doesn't actually do anything anymore. You can safely remove it from your code."
     end
 
     def set_tab_bar_item(args = {})
@@ -38,11 +50,11 @@ module ProMotion
     end
 
     def refresh_tab_bar_item
-      self.main_controller.tabBarItem = ProMotion::TabBar.tab_bar_item(self.tab_bar_item) if self.tab_bar_item
+      self.tabBarItem = create_tab_bar_item(self.tab_bar_item) if self.tab_bar_item
     end
 
     def add_nav_bar
-      self.navigation_controller = NavigationController.alloc.initWithRootViewController(self.view_controller)
+      self.navigation_controller = NavigationController.alloc.initWithRootViewController(self)
       self.first_screen = true
     end
 
@@ -52,7 +64,7 @@ module ProMotion
       args[:action] ||= nil
 
       right_button = UIBarButtonItem.alloc.initWithTitle(title, style: args[:style], target: args[:target], action: args[:action])
-      self.view_controller.navigationItem.rightBarButtonItem = right_button
+      self.navigationItem.rightBarButtonItem = right_button
       right_button
     end
 
@@ -62,42 +74,38 @@ module ProMotion
       args[:action] ||= nil
 
       left_button = UIBarButtonItem.alloc.initWithTitle(title, style: args[:style], target: args[:target], action: args[:action])
-      self.view_controller.navigationItem.leftBarButtonItem = left_button
+      self.navigationItem.leftBarButtonItem = left_button
       left_button
     end
 
+    # [DEPRECATED]
     def view_controller=(vc)
-      vc = vc.alloc.initWithNibName(nil, bundle:nil) if vc.respond_to?(:alloc)
-      if self.navigation_controller && self.first_screen?
-        @view_controller = vc
-        self.navigation_controller = NavigationController.alloc.initWithRootViewController(self.view_controller)
-      else
-        @view_controller = vc
-      end
-      @view_controller.screen = self if @view_controller.respond_to?("screen=")
-
-      refresh_tab_bar_item
+      set_view_controller(vc)
     end
 
     def first_screen?
       self.first_screen == true
     end
 
+    # [DEPRECATED]
     def set_view_controller(vc)
-      self.view_controller = vc
+      warn "[DEPRECATION] `set_view_controller` is deprecated and discontinued.  Please inherit from the UIViewController you wish to use and include ProMotion::ScreenViewController instead."
+      self
     end
 
     def view_did_load; end
-    def on_opened; end
+    def on_opened
+      warn "[DEPRECATION] `on_opened` is deprecated.  Please use `on_appear` instead."
+    end
 
     def view_will_appear(animated)
-      ProMotion::Screen.current_screen = self
+      # ProMotion::Screen.current_screen = self
       self.will_appear
     end
     def will_appear; end
 
     def view_did_appear(animated)
-      ProMotion::Screen.current_screen = self
+      # ProMotion::Screen.current_screen = self
       self.on_appear
     end
     def on_appear; end
@@ -108,7 +116,7 @@ module ProMotion
     def will_disappear; end
 
     def view_did_disappear(animated)
-      ProMotion::Screen.current_screen = self.parent_screen if self.parent_screen
+      # ProMotion::Screen.current_screen = self.parent_screen if self.parent_screen
       self.on_disappear
     end
     def on_disappear; end
@@ -119,12 +127,17 @@ module ProMotion
 
     def title=(new_title)
       self.class.title = new_title
-      self.view_controller.title = new_title if self.view_controller
+      super
     end
 
     def main_controller
-      return self.navigation_controller if self.navigation_controller
-      self.view_controller
+      return self.navigationController if self.navigationController
+      self
+    end
+
+    def view_controller
+      warn "[DEPRECATION] `view_controller` is deprecated, as screens are now UIViewController subclasses."
+      self
     end
 
     def should_rotate(orientation)
@@ -172,11 +185,9 @@ module ProMotion
       end
       ors
     end
-  end
 
-  # Class methods
-  class Screen
-    class << self
+    # Class methods
+    module ClassMethods
       def debug_mode
         @debug_mode
       end
@@ -202,6 +213,10 @@ module ProMotion
       def get_title
         @title ||= self.to_s
       end
+    end
+
+    def self.included(base)
+      base.extend(ClassMethods)
     end
   end
 end

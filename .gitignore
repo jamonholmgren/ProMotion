@@ -13,3 +13,4 @@ pom.xml
 *.clj
 .repl_histroy
 .rvmrc
+*.gem

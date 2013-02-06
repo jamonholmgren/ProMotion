@@ -13,14 +13,17 @@ Typical app file structure:
 
     app/
       screens/
-        photos/
-          list_photos_screen.rb
-          show_photo_screen.rb
-          edit_photo_screen.rb
+        events/
+          list_events_screen.rb
+          show_event_screen.rb
+          edit_event_screen.rb
         home_screen.rb
         settings_screen.rb
       models/
+        event.rb
       views/
+        buttons/
+          save_event_button_view.rb
       app_delegate.rb
 
 ## What's New in 0.4.0?
@@ -179,17 +182,6 @@ class MainScreen < ProMotion::Screen
 end
 ```
 
-Use a custom view controller:
-
-```ruby
-def on_load
-  set_view_controller MyCustomViewController
-  
-  # Note: on_appear will not fire when using a custom 
-  # view controller.
-end
-```
-
 The helper add_element takes any view object and adds it to the current view. You can also use
 the helper ProMotion::ViewHelper.set_attributes(view, attributes) to do the same thing without adding
 it to the current view. Screens include this helper by default.
@@ -258,6 +250,61 @@ your Rakefile and doing this:
       remoteImage: { url: "http://placekitten.com/200/300", placeholder: "some-local-image" }
     }
   ]
+```
+
+# Using your own UIViewController or Formotion
+
+Sometimes you want to inherit from a different UIViewController than that provided by ProMotion,
+such as when using Formotion. RubyMotion doesn't currently allow us to override built-in methods
+when including as a module, so there's a workaround for that.
+
+```ruby
+class EventsScreen < Formotion::FormController # Can also be < UIViewController
+  include ProMotion::ScreenModule # Not TableScreenModule since we're using Formotion for that
+
+  # Required functions for ProMotion to work properly
+
+  def viewDidLoad
+    super
+    self.view_did_load if self.respond_to?(:view_did_load)
+  end
+
+  def viewWillAppear(animated)
+    super
+    self.view_will_appear(animated) if self.respond_to?("view_will_appear:")
+  end
+
+  def viewDidAppear(animated)
+    super
+    self.view_did_appear(animated) if self.respond_to?("view_did_appear:")
+  end
+  
+  def viewWillDisappear(animated)
+    self.view_will_disappear(animated) if self.respond_to?("view_will_disappear:")
+    super
+  end
+  
+  def viewDidDisappear(animated)
+    self.view_did_disappear(animated) if self.respond_to?("view_did_disappear:")
+    super      
+  end
+
+  def shouldAutorotateToInterfaceOrientation(orientation)
+    self.should_rotate(orientation)
+  end
+
+  def shouldAutorotate
+    self.should_autorotate
+  end
+
+  def willRotateToInterfaceOrientation(orientation, duration:duration)
+    self.will_rotate(orientation, duration)
+  end
+  
+  def didRotateFromInterfaceOrientation(orientation)
+    self.on_rotate
+  end
+end
 ```
 
 # Reference

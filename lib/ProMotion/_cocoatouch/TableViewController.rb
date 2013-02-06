@@ -27,9 +27,7 @@ module ProMotion
     end
     
     def viewDidDisappear(animated)
-      if self.respond_to?("view_did_disappear:")
-        self.view_did_disappear(animated)
-      end
+      self.view_did_disappear(animated) if self.respond_to?("view_did_disappear:")
       super      
     end
 

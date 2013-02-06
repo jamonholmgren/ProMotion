@@ -12,7 +12,7 @@ module ProMotion
         if s.is_a?(ProMotion::Screen) || s.is_a?(ProMotion::TableScreen)
           s = s.new if s.respond_to?(:new)
           s.tabBarItem.tag = tag_index
-          s.parent_screen = self if self.is_a?(Screen) && s.respond_to?("parent_screen=")
+          s.parent_screen = self if self.is_a?(UIViewController) && s.respond_to?("parent_screen=")
           s.tab_bar = tab_bar_controller if s.respond_to?("tab_bar=")
           view_controllers << s.main_controller
           tag_index += 1

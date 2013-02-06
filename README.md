@@ -23,6 +23,21 @@ Typical app file structure:
       views/
       app_delegate.rb
 
+## What's New in 0.4.0?
+
+* Screens are now UIViewControllers (they used to contain UIViewControllers, but that got too funky) so you can do normal UIViewController stuff with them
+* Screen functionality can also be inherited as a module in your own UIViewController, but you need to provide your own methods for viewDidLoad and whatnot.
+* Tons of headlessCamelCaps methods are now properly_ruby_underscored (with an alias to the old name for compatibility)
+* `open_screen` and `close_screen` can now just be `open` and `close` respectively
+* Attempted to keep 100% compatibility with 0.3.x but no guarantees...report issues, please!
+* Revamped the internal folder structure of the gem...more work on this to come
+* Built in a few helpers that were external before, like `content_height(view)`
+* More consistent calling of `on_load` (sometimes doesn't get called in 0.3.x)
+* `fresh_start SomeScreen` is now `open_root_screen SomeScreen`
+* Removed `set_view_controller` as we don't need it anymore
+* Better documentation (still needs work), better error messages
+* Deprecation warnings EVERYWHERE for older apps (upgrade already!)
+
 ## Usage
 
 Loading your home screen:

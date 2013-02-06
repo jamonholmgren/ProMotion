@@ -252,10 +252,10 @@ your Rakefile and doing this:
   ]
 ```
 
-# Using your own UIViewController or Formotion
+## Using your own UIViewController or Formotion
 
 Sometimes you want to inherit from a different UIViewController than that provided by ProMotion,
-such as when using Formotion. RubyMotion doesn't currently allow us to override built-in methods
+such as when using [Formotion](https://github.com/clayallsopp/formotion). RubyMotion doesn't currently allow us to override built-in methods
 when including as a module, so there's a workaround for that.
 
 ```ruby

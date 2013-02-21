@@ -140,7 +140,7 @@ module ProMotion::MotionTable
       end
 
       if data_cell[:accessoryType]
-        tableCell.accessoryType = data_cell[:accessoryType]
+        table_cell.accessoryType = data_cell[:accessoryType]
       end
 
       if data_cell[:accessory] && data_cell[:accessory] == :switch

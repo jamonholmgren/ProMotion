@@ -14,7 +14,7 @@ module ProMotion
 
       true
     end
-
+    
     def app_delegate
       UIApplication.sharedApplication.delegate
     end

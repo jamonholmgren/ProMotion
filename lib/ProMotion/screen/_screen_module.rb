@@ -204,15 +204,19 @@ module ProMotion
         @current_screen
       end
 
-      def title(t)
-        @title = t
-      end
       def title=(t)
         @title = t
       end
+      
+      def title(t = nil)
+        self.title = t if t
+        self.class.send(:get_title)
+      end
+      
       def get_title
         @title ||= self.to_s
       end
+      
     end
 
     def self.included(base)

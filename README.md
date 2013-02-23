@@ -12,10 +12,15 @@ with your app's designed screens.
 1. **[Getting Started](#getting-started)**
   * [Setup](#setup)
 1. [What's New?](#whats-new)
-1. [Setup](#setup)
 1. [Usage](#usage)
+  * [Creating a basic screen](#creating-a-basic-screen)
   * [Loading your first screen](#loading-your-first-screen)
-  * [Using your own UIViewController or Formotion](#Using-your-own-UIViewController-or-formotion)
+  * [Creating a tab bar](#creating-a-tab-bar)
+  * [Adding navigation bar buttons](#add-navigation-bar-buttons)
+  * [Opening and closing screens](#opening-and-closing-screens)
+  * [Adding view elements](#adding-view-elements)
+  * [Table screens](#table-screens)
+  * [Using your own UIViewController](#using-your-own-uiviewcontroller)
 1. [Reference](#reference)
 1. **[Help](#help)**
 1. [Contributing](#contributing)
@@ -166,7 +171,7 @@ class AppDelegate < ProMotion::AppDelegate
 end
 ```
 
-### Tab bar
+### Creating a tab bar
 
 Creating a tabbed bar with multiple screens. This will set the tab bar as the root view controller for your app,
 so keep that in mind. It can be done from the AppDelegate#on_load or from a screen (that screen will go away, though).

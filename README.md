@@ -34,7 +34,7 @@ http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymot
 Sample app here: https://github.com/jamonholmgren/promotion-tutorial
 
 Also, check out the free [BigDay! Reminder app](https://itunes.apple.com/us/app/bigday!/id571756685?ls=1&mt=8) on the 
-App Store to see what's possible.
+App Store to see what's possible. ClearSight Studio built the app for Kijome Software, a small app investment company.
 
 ## Getting Started
 
@@ -109,7 +109,7 @@ end
 
 Run `rake`. You should now see a screen with a navigation bar like the image below. Congrats!
 
-![ProMotion Home Screen]("https://clearsightstudio.github.com/ProMotion/img/ProMotion/home-screen.png")
+![ProMotion Home Screen](https://clearsightstudio.github.com/ProMotion/img/ProMotion/home-screen.png)
 
 
 ## What's New?

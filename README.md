@@ -4,26 +4,28 @@ ProMotion introduces a new object called "Screens". Screens have a one-to-one re
 with your app's designed screens.
 
 
-## Table of contents
+**Table of Contents**
 
-1. [Tutorials](#tutorials)
-  * [Screencasts](#screencasts)
-  * [Sample Apps](#sample-apps)
-1. **[Getting Started](#getting-started)**
-  * [Setup](#setup)
-1. [What's New?](#whats-new)
-1. [Usage](#usage)
-  * [Creating a basic screen](#creating-a-basic-screen)
-  * [Loading your first screen](#loading-your-first-screen)
-  * [Creating a tab bar](#creating-a-tab-bar)
-  * [Adding navigation bar buttons](#add-navigation-bar-buttons)
-  * [Opening and closing screens](#opening-and-closing-screens)
-  * [Adding view elements](#adding-view-elements)
-  * [Table screens](#table-screens)
-  * [Using your own UIViewController](#using-your-own-uiviewcontroller)
-1. [Reference](#reference)
-1. **[Help](#help)**
-1. [Contributing](#contributing)
+- [ProMotion - A new way to easily build RubyMotion apps.](#promotion---a-new-way-to-easily-build-rubymotion-apps)
+  - [Table of contents](#table-of-contents)
+  - [Tutorials](#tutorials)
+    - [Screencasts](#screencasts)
+    - [Sample apps](#sample-apps)
+  - [Getting Started](#getting-started)
+    - [Setup](#setup)
+  - [What's New?](#whats-new)
+  - [Usage](#usage)
+    - [Creating a basic screen](#creating-a-basic-screen)
+    - [Loading your first screen](#loading-your-first-screen)
+    - [Creating a tab bar](#creating-a-tab-bar)
+    - [Add navigation bar buttons](#add-navigation-bar-buttons)
+    - [Opening and closing screens](#opening-and-closing-screens)
+    - [Adding view elements](#adding-view-elements)
+    - [Table Screens](#table-screens)
+    - [Using your own UIViewController](#using-your-own-uiviewcontroller)
+  - [Reference](#reference)
+  - [Help](#help)
+  - [Contributing](#contributing)
 
 ## Tutorials
 

@@ -111,7 +111,7 @@ end
 ```
 
 
-Run `rake`. You should now see a screen with a navigation bar like the image below. Congrats!
+Run `rake`. You should now see the simulator open with your home screen and a navigation bar like the image below. Congrats!
 
 ![ProMotion Home Screen](http://clearsightstudio.github.com/ProMotion/img/ProMotion/home-screen.png)
 
@@ -193,29 +193,20 @@ def on_load
 end
 ```
 
-### Adding view elements
-
-Any view item (UIView, UIButton, custom UIView subclasses, etc) can be added to the current view with `add_element`.
-`add_element` accepts a second argument which is a hash of attributes that get applied to the element before it is
-dropped into the view.
-
-```ruby
-@label = add_element UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
-  text: "This is awesome!",
-  font: UIFont.systemFontOfSize(18)
-}
-```
-
 ### Add navigation bar buttons
 
-These two methods add the buttons on the top of the 
+These two methods add the buttons to the top navigation bar of a screen. The `action:` lets you specify a method to
+call when that button is tapped, and you can pass in a UIBarButton style using `type:`.
 
 ```ruby
 set_nav_bar_right_button "Save", action: :save_something, type: UIBarButtonItemStyleDone
 set_nav_bar_left_button "Cancel", action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
 ```
 
-### Open a new screen
+### Opening and closing screens
+
+If the user taps something and you want to open a new screen, it's easy. Just use `open` and pass in the screen class
+or an instance of that screen.
 
 ```ruby
 def settings_button_tapped
@@ -228,10 +219,10 @@ def settings_button_tapped
 end
 ```
 
-Open a new screen as a modal:
+You can also open a screen as a modal.
 
 ```ruby
-open SettingsScreen, modal: true
+open SettingsScreen.new, modal: true
 ```
 
 You can pass in arguments to other screens if they have accessors:
@@ -255,7 +246,16 @@ end
 
 ```
 
-Close a screen (modal or in a nav controller), passing back arguments to the previous screen's "on_return" method:
+Closing a screen is as easy as can be.
+
+```ruby
+# User taps a button, indicating they want to close this screen.
+def close_screen_tapped
+  close
+end
+```
+
+You can close a screen (modal or in a nav controller) and pass back arguments to the previous screen's "on_return" method:
 
 ```ruby
 class ItemScreen < ProMotion::Screen
@@ -277,23 +277,34 @@ class MainScreen < ProMotion::Screen
 end
 ```
 
-The helper add_element takes any view object and adds it to the current view. You can also use
-the helper ProMotion::ViewHelper.set_attributes(view, attributes) to do the same thing without adding
-it to the current view. Screens include this helper by default.
+### Adding view elements
+
+Any view item (UIView, UIButton, custom UIView subclasses, etc) can be added to the current view with `add_element`.
+`add_element` accepts a second argument which is a hash of attributes that get applied to the element before it is
+dropped into the view.
 
 ```ruby
+@label = add_element UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
+  text: "This is awesome!",
+  font: UIFont.systemFontOfSize(18)
+}
+
 @element = add_element UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
   backgroundColor: UIColor.whiteColor
 }
+```
 
+The `set_attributes` method is identical to add_element except that it does not add it to the current view.
+
+```ruby
 @element = set_attributes UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
   backgroundColor: UIColor.whiteColor
 }
 ```
 
-You can create sectioned table screens easily. TableScreen, SectionedTableScreen, GroupedTableScreen.
-This is loosely based on [motion-table](https://github.com/clearsightstudio/motion-table) (there are a 
-few minor differences). We will eventually combine the two.
+### Table Screens
+
+You can create sectioned table screens easily with TableScreen, SectionedTableScreen, and GroupedTableScreen.
 
 ```ruby
 class SettingsScreen < ProMotion::GroupedTableScreen
@@ -305,7 +316,7 @@ class SettingsScreen < ProMotion::GroupedTableScreen
   end
   
   # table_data is automatically called. Use this format in the return value.
-  # Grouped tables are the same as plain tables
+  # It's an array of cell groups, each cell group consisting of a title and an array of cells.
   def table_data
     [{
       title: "Your Account",
@@ -325,12 +336,15 @@ class SettingsScreen < ProMotion::GroupedTableScreen
 
   # This method allows you to create a "jumplist", the index on the right side of the table
   def table_data_index
-    return ["A", "B", "C"]
+    # Ruby magic to make an alphabetical array of letters.
+    # Try this in Objective-C and tell me you want to go back.
+    return ("A".."Z").to_a 
   end
   
-  # Your table cells, when tapped, will execute the corresponding actions and pass in arguments:
-  def edit_profile(arguments)
-    # ...
+  # Your table cells, when tapped, will execute the corresponding actions 
+  # and pass in the specified arguments.
+  def edit_profile(args={})
+    puts args[:id] # => 3
   end
 end
 ```
@@ -347,11 +361,11 @@ your Rakefile and doing this:
   ]
 ```
 
-### Using your own UIViewController or Formotion
+### Using your own UIViewController
 
-Sometimes you want to inherit from a different UIViewController than that provided by ProMotion,
-such as when using [Formotion](https://github.com/clayallsopp/formotion). RubyMotion doesn't currently allow us to override built-in methods
-when including as a module, so there's a workaround for that.
+Sometimes you want to inherit from a different UIViewController other than that provided by ProMotion,
+such as when using [Formotion](https://github.com/clayallsopp/formotion). RubyMotion doesn't currently 
+allow us to override built-in methods when including as a module, so there's a workaround for that.
 
 ```ruby
 class EventsScreen < Formotion::FormController # Can also be < UIViewController
@@ -402,7 +416,7 @@ class EventsScreen < Formotion::FormController # Can also be < UIViewController
 end
 ```
 
-# Reference
+## Reference
 
 <table>
   <tr>

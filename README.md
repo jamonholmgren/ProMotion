@@ -707,7 +707,10 @@ end
     <td>&nbsp;</td>
     <td>table_data</td>
     <td>Method that is called to gather the table's data.<br />
-      Example format using all available options:
+      Example format using nearly all available options.<br />
+      <strong>Note...</strong>if you're getting crazy deep into styling your table cells,
+      you really should be subclassing them and specifying that new class in <code>:cell_class</code>
+      and then providing <code>:cell_class_attributes</code> to customize it.
 <pre><code>
 [{
   title: "Table cell group 1",
@@ -737,10 +740,6 @@ end
     image: { image: UIImage.imageNamed("something"), radius: 15 },
     remote_image: { url: "http://placekitten.com/200/300", placeholder: "some-local-image", size: 50, radius: 15 }, # remote image, requires SDWebImage CocoaPod
     subviews: [ @some_view, @some_other_view ] # arbitrary views added to the cell
-    
-    # Note...if you're getting this crazy deep into styling your table cells,
-    # you really should be subclassing them and specifying them in the cell_class
-    # and then providing cell_class_attributes.
   }]
 }, {
   title: "Table cell group 2",

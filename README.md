@@ -369,7 +369,7 @@ your Rakefile and doing this:
   cells: [
     {
       title: "Cell with image",
-      remoteImage: { url: "http://placekitten.com/200/300", placeholder: "some-local-image" }
+      remote_image: { url: "http://placekitten.com/200/300", placeholder: "some-local-image" }
     }
   ]
 ```
@@ -653,14 +653,14 @@ end
     <td>&nbsp;</td>
     <td>close(args = {})</td>
     <td>
-      Closes the current screen, passes args back to the previous screen's on_return method<br />
+      Closes the current screen, passes args back to the previous screen's <code>on_return</code> method<br />
     </td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td>open_root_screen(screen)</td>
     <td>
-      Closes all other open screens and opens `screen` as the root view controller.<br />
+      Closes all other open screens and opens <code>screen</code> as the root view controller.<br />
     </td>
   </tr>
   <tr>
@@ -669,13 +669,20 @@ end
     <td>
       Pushes the screen onto the navigation stack or opens in a modal<br />
       Argument options:<br />
-      `nav_bar: true|false` (note: this has no effect if you're already in a navigation controller)<br />
-      `hide_tab_bar: true|false`<br />
-      `modal: true|false`<br />
-      `close_all: true|false` (closes all open screens and opens as root)<br />
-      `animated: true:false` (currently only affects modals)<br />
-      `in_tab: "Tab name"` (if you're in a tab bar)<br />
-      any accessors in `screen`
+      <code>nav_bar: true|false</code> (note: this has no effect if you're already in a navigation controller)<br />
+      <code>hide_tab_bar: true|false</code><br />
+      <code>modal: true|false</code><br />
+      <code>close_all: true|false</code> (closes all open screens and opens as root)<br />
+      <code>animated: true:false</code> (currently only affects modals)<br />
+      <code>in_tab: "Tab name"</code> (if you're in a tab bar)<br />
+      any accessors in <code>screen</code>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>open_tab_bar(*screens)</td>
+    <td>
+      Open a UITabBarController with the specified screens as the root view controller of the current app<br />
     </td>
   </tr>
   <tr>
@@ -685,27 +692,73 @@ end
       Opens the tab where the "string" title matches the passed in tab<br />
     </td>
   </tr>
+  
+  <tr>
+    <td>TableScreen</td>
+    <td>&nbsp;</td>
+    <td>*Has all the methods of Screen*</td>
+  </tr>
   <tr>
     <td>&nbsp;</td>
-    <td>open_tab_bar(*screens)</td>
-    <td>
-      Open a UITabBarController with the specified screens as the root view controller of the current app<br />
+    <td>.searchable(placeholder: "placeholder text")</td>
+    <td>Class method to make the current table searchable.</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>table_data</td>
+    <td>Method that is called to gather the table's data.<br />
+      Example format using all available options:
+      <code>
+        [{
+          title: "Table cell group 1",
+          cells: [{
+            title: "Simple cell",
+            action: :this_cell_tapped,
+            arguments: { id: 4 }
+          }, {
+            title: "Crazy Full Featured Cell",
+            subtitle: "This is way too huge..see note at bottom"
+            arguments: { data: [ "lots", "of", "data" ] }
+            action: :tapped_cell_1,
+            cell_style: UITableViewCellStyleSubtitle, 
+            cell_identifier: "Cell",
+            cell_class: ProMotion::TableViewCell,
+            masks_to_bounds: true,
+            background_color: UIColor.whiteColor,
+            selection_style: UITableViewCellSelectionStyleGray,
+            cell_class_attributes: {
+              # any Obj-C attributes to set on the cell
+              backgroundColor: UIColor.whiteColor
+            },
+            accessory: :switch, # currently only :switch is supported
+            accessory_view: @some_accessory_view,
+            accessory_type: UITableViewCellAccessoryCheckmark,
+            accessory_checked: true, # whether it's "checked" or not
+            image: { image: UIImage.imageNamed("something"), radius: 15 },
+            remote_image: { url: "http://placekitten.com/200/300", placeholder: "some-local-image", size: 50, radius: 15 }, # remote image, requires SDWebImage CocoaPod
+            subviews: [ @some_view, @some_other_view ] # arbitrary views added to the cell
+            
+            # Note...if you're getting this crazy deep into styling your table cells,
+            # you really should be subclassing them and specifying them in the cell_class
+            # and then providing cell_class_attributes.
+          }]
+        }, {
+          title: "Table cell group 2",
+          cells: [{
+            title: "Log out",
+            action: :log_out
+          }]
+        }]
+      </code>
     </td>
   </tr>
+
   <tr>
     <td>Console</td>
     <td>log(log, with_color:color)</td>
     <td>
       Class method to output a colored console message.<br />
       Example: <code>ProMotion::Console.log("This is red!", with_color: ProMotion::Console::RED_COLOR)</code>
-    </td>
-    
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>open_tab_bar(*screens)</td>
-    <td>
-      Open a UITabBarController with the specified screens as the root view controller of the current app<br />
     </td>
   </tr>
 </table>

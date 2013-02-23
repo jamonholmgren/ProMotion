@@ -708,7 +708,7 @@ end
     <td>table_data</td>
     <td>Method that is called to gather the table's data.<br />
       Example format using all available options:
-      <code>
+      <pre><code>
         [{
           title: "Table cell group 1",
           cells: [{
@@ -749,7 +749,7 @@ end
             action: :log_out
           }]
         }]
-      </code>
+      </code></pre>
     </td>
   </tr>
 

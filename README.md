@@ -150,8 +150,8 @@ class HomeScreen < ProMotion::Screen
   end
   
   def will_appear
-    # Set up the elements in your view with add_element
-    @label = add_element UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20))
+    # Set up the elements in your view with add_view
+    @label = add_view UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20))
   end
   
   def on_appear
@@ -195,6 +195,14 @@ def on_load
   
   # or...
   set_tab_bar_item system_icon: UITabBarSystemItemContacts
+end
+```
+
+To programmatically switch to a different tab, use `open_tab`.
+
+```ruby
+def some_action
+  open_tab "Contacts"
 end
 ```
 
@@ -284,22 +292,22 @@ end
 
 ### Adding view elements
 
-Any view item (UIView, UIButton, custom UIView subclasses, etc) can be added to the current view with `add_element`.
-`add_element` accepts a second argument which is a hash of attributes that get applied to the element before it is
+Any view item (UIView, UIButton, custom UIView subclasses, etc) can be added to the current view with `add_view`.
+`add_view` accepts a second argument which is a hash of attributes that get applied to the element before it is
 dropped into the view.
 
 ```ruby
-@label = add_element UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
+@label = add_view UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
   text: "This is awesome!",
   font: UIFont.systemFontOfSize(18)
 }
 
-@element = add_element UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
+@element = add_view UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
   backgroundColor: UIColor.whiteColor
 }
 ```
 
-The `set_attributes` method is identical to add_element except that it does not add it to the current view.
+The `set_attributes` method is identical to add_view except that it does not add it to the current view.
 
 ```ruby
 @element = set_attributes UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
@@ -546,16 +554,24 @@ end
       ScreenElements<br />
       Included in Screen by default
     </td>
-    <td>add_element(view, attrs = {})</td>
+    <td>add_view(view, attrs = {})</td>
     <td>
       Adds the view to the screen after applying the attributes.<br />
+      (alias: `add_element`)<br />
+      Example:
+      <code>
+        add_view UIInputView.alloc.initWithFrame(CGRectMake(10, 10, 300, 40)), {
+          backgroundColor: UIColor.grayColor
+        }
+      </code>
     </td>
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td>remove_element</td>
+    <td>remove_view(view)</td>
     <td>
       Removes the view from the superview and sets it to nil<br />
+      (alias: `remove_element`)
     </td>
   </tr>
   <tr>
@@ -576,7 +592,7 @@ end
     <td>&nbsp;</td>
     <td>view</td>
     <td>
-      Accessor for self.view<br />
+      The main view for this screen.<br />
     </td>
   </tr>
   <tr>
@@ -644,7 +660,7 @@ end
     <td>&nbsp;</td>
     <td>open_root_screen(screen)</td>
     <td>
-      Closes all other open screens and opens `screen` at the root.<br />
+      Closes all other open screens and opens `screen` as the root view controller.<br />
     </td>
   </tr>
   <tr>
@@ -652,15 +668,38 @@ end
     <td>open(screen, args = {})</td>
     <td>
       Pushes the screen onto the navigation stack or opens in a modal<br />
-      argument options :hide_tab_bar, :modal, any accessors in `screen`
+      Argument options:<br />
+      `nav_bar: true|false` (note: this has no effect if you're already in a navigation controller)<br />
+      `hide_tab_bar: true|false`<br />
+      `modal: true|false`<br />
+      `close_all: true|false` (closes all open screens and opens as root)<br />
+      `animated: true:false` (currently only affects modals)<br />
+      `in_tab: "Tab name"` (if you're in a tab bar)<br />
+      any accessors in `screen`
     </td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td>open_tab(tab)</td>
     <td>
-      Opens the tab where the "string" title is equal to the passed in tab<br />
+      Opens the tab where the "string" title matches the passed in tab<br />
     </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>open_tab_bar(*screens)</td>
+    <td>
+      Open a UITabBarController with the specified screens as the root view controller of the current app<br />
+    </td>
+  </tr>
+  <tr>
+    <td>Console</td>
+    <td>log(log, with_color:color)</td>
+    <td>
+      Class method to output a colored console message.<br />
+      Example: <code>ProMotion::Console.log("This is red!", with_color: ProMotion::Console::RED_COLOR)</code>
+    </td>
+    
   </tr>
   <tr>
     <td>&nbsp;</td>
@@ -673,7 +712,7 @@ end
 
 ## Help
 
-Ping me on twitter @jamonholmgren or email jamon@clearsightstudio.com, or open a ticket on GitHub.
+If you need help, feel free to ping me on twitter @jamonholmgren or email jamon@clearsightstudio.com, or open a ticket on GitHub.
 
 ## Contributing
 

@@ -3,13 +3,38 @@
 ProMotion introduces a new object called "Screens". Screens have a one-to-one relationship 
 with your app's designed screens.
 
-NEW video tutorial! Go watch it here: http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/
 
-Check out the tutorial here: http://www.clearsightstudio.com/insights/ruby-motion-promotion-tutorial
+## Table of contents
+
+1. [Tutorials](#tutorials)
+  * [Screencasts](#screencasts)
+  * [Sample Apps](#sample-apps)
+1. **[Getting Started](#getting-started)**
+  * [Setup](#setup)
+1. [What's New?](#whats-new)
+1. [Setup](#setup)
+1. [Documentation](#documentation)
+1. **[Help](#help)**
+1. [Contributing](#contributing)
+
+## Tutorials
+
+Version 0.3 tutorial, will be updated soon but most still applies:
+
+http://www.clearsightstudio.com/insights/ruby-motion-promotion-tutorial
+
+### Screencasts
+
+Video tutorial with 0.4: http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/
+
+### Sample apps
 
 Sample app here: https://github.com/jamonholmgren/promotion-tutorial
 
-Typical app file structure:
+## Getting Started
+
+ProMotion is designed to be as intuitive and Ruby-like as possible. For example, here is a 
+typical app folder structure:
 
     app/
       screens/
@@ -25,8 +50,32 @@ Typical app file structure:
         buttons/
           save_event_button_view.rb
       app_delegate.rb
+      
+### Setup
 
-## What's New in 0.4.0?
+<p>Create a new RubyMotion project.</p>
+<p><code>motion create myapp</code></p>
+<p>Open it in your favorite editor, then go into your Rakefile and add the following to the top:
+<script src="https://gist.github.com/jamonholmgren/5010973.js"></script>
+</p>
+<p>
+  Create a Gemfile and add the following lines:<br />
+  <script src="https://gist.github.com/jamonholmgren/5010982.js"></script>
+</p>
+<p>Run <code>bundle install</code> in Terminal to install ProMotion.</p>
+<p>Go into your app/app_delegate.rb file and add the following:
+  <script src="https://gist.github.com/jamonholmgren/5010952.js"></script>
+</p>
+<p>Create a folder in <code>/app</code> named <code>screens</code>.</p>
+<p>Create a file in <code>/app/screens</code> named <code>home_screen.rb</code></p>
+<p>Drop in this code:
+  <script src="https://gist.github.com/jamonholmgren/5010956.js"></script>
+</p>
+<p>Run <code>rake</code>. You should now see a screen with a navigation bar like the image below. Congrats!</p>
+<img src="img/ProMotion/home-screen.png" />
+
+
+## What's New?
 
 * Screens are now UIViewControllers (they used to contain UIViewControllers, but that got too funky) so you can do normal UIViewController stuff with them
 * Screen functionality can also be inherited as a module in your own UIViewController, but you need to provide your own methods for viewDidLoad and whatnot.
@@ -40,6 +89,7 @@ Typical app file structure:
 * Removed `set_view_controller` as we don't need it anymore
 * Better documentation (still needs work), better error messages
 * Deprecation warnings EVERYWHERE for older apps (upgrade already!)
+
 
 ## Usage
 
@@ -558,13 +608,9 @@ end
   </tr>
 </table>
 
-### What about MVC?
+## Help
 
-I'm a big believer in MVC (I'm a Rails developer, too). I found that most of the time working in RubyMotion seems to happen
-in the ViewControllers and views are mainly custom elements. This pattern is probably best for navigation controller and
-tab bar based apps.
-
-Feedback welcome via twitter @jamonholmgren or email jamon@clearsightstudio.com.
+Ping me on twitter @jamonholmgren or email jamon@clearsightstudio.com, or open a ticket on GitHub.
 
 ## Contributing
 

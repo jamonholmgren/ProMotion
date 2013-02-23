@@ -14,7 +14,7 @@ with your app's designed screens.
 1. [What's New?](#whats-new)
 1. [Setup](#setup)
 1. [Usage](#usage)
-  * [Loading your first screen](#Loading-your-first-screen)
+  * [Loading your first screen](#loading-your-first-screen)
   * [Using your own UIViewController or Formotion](#Using-your-own-UIViewController-or-formotion)
 1. [Reference](#reference)
 1. **[Help](#help)**
@@ -70,6 +70,7 @@ Open it in your favorite editor, then go into your Rakefile and add the followin
 ```ruby
 # -*- coding: utf-8 -*-
 $:.unshift("/Library/RubyMotion/lib")
+require 'motion/project'
 require "rubygems"
 require 'bundler'
 Bundler.require
@@ -133,6 +134,27 @@ Run `rake`. You should now see a screen with a navigation bar like the image bel
 
 ## Usage
 
+### Creating a basic screen
+
+```ruby
+class HomeScreen < ProMotion::Screen
+  title "Home"
+
+  def on_load
+    # Load data
+  end
+  
+  def will_appear
+    # Set up the elements in your view with add_element
+    @label = add_element UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20))
+  end
+  
+  def on_appear
+    # Everything's loaded and visible
+  end
+end
+```
+
 ### Loading your first screen
 
 ```ruby
@@ -144,37 +166,18 @@ class AppDelegate < ProMotion::AppDelegate
 end
 ```
 
-Creating a basic screen:
-
-```ruby
-class HomeScreen < ProMotion::Screen
-  title "Home"
-
-  def on_load
-    # Set up the elements in your view with add_element:
-    @label = add_element UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
-      text: "This is awesome!",
-      font: UIFont.systemFontOfSize(18)
-    }
-  end
-  
-  def on_appear
-    # Refresh the data if you want
-  end
-end
-```
+### Tab bar
 
 Creating a tabbed bar with multiple screens. This will set the tab bar as the root view controller for your app,
-so keep that in mind. It can be done from the AppDelegate#on_load or from a screen.
-
-### Creating a tab bar with several screens
+so keep that in mind. It can be done from the AppDelegate#on_load or from a screen (that screen will go away, though).
 
 ```ruby
 def on_load(app, options)
   @home     = MyHomeScreen.new(nav_bar: true)
   @settings = SettingsScreen.new
   @contact  = ContactScreen.new(nav_bar: true)
-  @tab_bar  = open_tab_bar @home, @settings, @contact
+  
+  open_tab_bar @home, @settings, @contact
 end
 ```
 
@@ -186,15 +189,15 @@ def on_load
   set_tab_bar_item title: "Tab Name Goes Here", icon: "icons/tab_icon.png" # in resources/icons folder
   
   # or...
-  set_tab_bar_item title: "Contacts", system_icon: UITabBarSystemItemContacts
+  set_tab_bar_item system_icon: UITabBarSystemItemContacts
 end
 ```
 
 ### Adding view elements
 
-Any view item (UIView, UIButton, custom UIView subclasses, etc) can be used with add_element.
-The second argument is a hash of settings that get applied to the
-element before it is dropped into the view.
+Any view item (UIView, UIButton, custom UIView subclasses, etc) can be added to the current view with `add_element`.
+`add_element` accepts a second argument which is a hash of attributes that get applied to the element before it is
+dropped into the view.
 
 ```ruby
 @label = add_element UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
@@ -203,14 +206,16 @@ element before it is dropped into the view.
 }
 ```
 
-Add nav_bar buttons:
+### Add navigation bar buttons
+
+These two methods add the buttons on the top of the 
 
 ```ruby
 set_nav_bar_right_button "Save", action: :save_something, type: UIBarButtonItemStyleDone
 set_nav_bar_left_button "Cancel", action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
 ```
 
-Open a new screen:
+### Open a new screen
 
 ```ruby
 def settings_button_tapped

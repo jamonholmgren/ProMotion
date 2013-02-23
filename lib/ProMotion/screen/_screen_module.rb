@@ -159,7 +159,7 @@ module ProMotion
     end
 
     def should_autorotate
-      false
+      true
     end
 
     def on_rotate

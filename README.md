@@ -724,8 +724,8 @@ def table_data
       arguments: { id: 4 }
     }, {
       title: "Crazy Full Featured Cell",
-      subtitle: "This is way too huge..see note at bottom"
-      arguments: { data: [ "lots", "of", "data" ] }
+      subtitle: "This is way too huge..see note at bottom",
+      arguments: { data: [ "lots", "of", "data" ] },
       action: :tapped_cell_1,
       cell_style: UITableViewCellStyleSubtitle, 
       cell_identifier: "Cell",
@@ -754,6 +754,7 @@ def table_data
   }]
 end
 </code></pre>
+      <img src="http://clearsightstudio.github.com/ProMotion/img/ProMotion/full-featured-table-screen.png" />
     </td>
   </tr>
   <tr>

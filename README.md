@@ -19,17 +19,22 @@ with your app's designed screens.
 
 ## Tutorials
 
-Version 0.3 tutorial, will be updated soon but most still applies:
+Version 0.3 tutorial, will be updated soon but most of it still applies:
 
 http://www.clearsightstudio.com/insights/ruby-motion-promotion-tutorial
 
 ### Screencasts
 
-Video tutorial with 0.4: http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/
+Video tutorial with 0.4.
+
+http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/
 
 ### Sample apps
 
 Sample app here: https://github.com/jamonholmgren/promotion-tutorial
+
+Also, check out the free [BigDay! Reminder app](https://itunes.apple.com/us/app/bigday!/id571756685?ls=1&mt=8) on the 
+App Store to see what's possible.
 
 ## Getting Started
 
@@ -50,29 +55,61 @@ typical app folder structure:
         buttons/
           save_event_button_view.rb
       app_delegate.rb
-      
+
 ### Setup
 
-<p>Create a new RubyMotion project.</p>
-<p><code>motion create myapp</code></p>
-<p>Open it in your favorite editor, then go into your Rakefile and add the following to the top:
-<script src="https://gist.github.com/jamonholmgren/5010973.js"></script>
-</p>
-<p>
-  Create a Gemfile and add the following lines:<br />
-  <script src="https://gist.github.com/jamonholmgren/5010982.js"></script>
-</p>
-<p>Run <code>bundle install</code> in Terminal to install ProMotion.</p>
-<p>Go into your app/app_delegate.rb file and add the following:
-  <script src="https://gist.github.com/jamonholmgren/5010952.js"></script>
-</p>
-<p>Create a folder in <code>/app</code> named <code>screens</code>.</p>
-<p>Create a file in <code>/app/screens</code> named <code>home_screen.rb</code></p>
-<p>Drop in this code:
-  <script src="https://gist.github.com/jamonholmgren/5010956.js"></script>
-</p>
-<p>Run <code>rake</code>. You should now see a screen with a navigation bar like the image below. Congrats!</p>
-<img src="img/ProMotion/home-screen.png" />
+Create a new RubyMotion project.
+
+`motion create myapp`
+
+Open it in your favorite editor, then go into your Rakefile and add the following to the top:
+
+```ruby
+# -*- coding: utf-8 -*-
+$:.unshift("/Library/RubyMotion/lib")
+require "rubygems"
+require 'bundler'
+Bundler.require
+```
+
+
+Create a Gemfile and add the following lines:
+
+```ruby
+source 'https://rubygems.org'
+gem "ProMotion", "~> 0.4.1"
+```
+
+Run `bundle install` in Terminal to install ProMotion.
+
+Go into your app/app_delegate.rb file and add the following:
+
+```ruby
+class AppDelegate < ProMotion::AppDelegateParent
+  def on_load(app, options)
+    open HomeScreen.new(nav_bar: true)
+  end
+end
+```
+
+Create a folder in `/app` named `screens`. Create a file in that folder named `home_screen.rb`.
+
+Now drop in this code:
+
+```ruby
+class HomeScreen < ProMotion::Screen
+  title "Home"
+  
+  def on_load
+    self.view.backgroundColor = UIColor.whiteColor
+  end
+end
+```
+
+
+Run `rake`. You should now see a screen with a navigation bar like the image below. Congrats!
+
+![ProMotion Home Screen]("https://clearsightstudio.github.com/ProMotion/img/ProMotion/home-screen.png")
 
 
 ## What's New?

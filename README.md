@@ -708,48 +708,48 @@ end
     <td>table_data</td>
     <td>Method that is called to gather the table's data.<br />
       Example format using all available options:
-      <pre><code>
-        [{
-          title: "Table cell group 1",
-          cells: [{
-            title: "Simple cell",
-            action: :this_cell_tapped,
-            arguments: { id: 4 }
-          }, {
-            title: "Crazy Full Featured Cell",
-            subtitle: "This is way too huge..see note at bottom"
-            arguments: { data: [ "lots", "of", "data" ] }
-            action: :tapped_cell_1,
-            cell_style: UITableViewCellStyleSubtitle, 
-            cell_identifier: "Cell",
-            cell_class: ProMotion::TableViewCell,
-            masks_to_bounds: true,
-            background_color: UIColor.whiteColor,
-            selection_style: UITableViewCellSelectionStyleGray,
-            cell_class_attributes: {
-              # any Obj-C attributes to set on the cell
-              backgroundColor: UIColor.whiteColor
-            },
-            accessory: :switch, # currently only :switch is supported
-            accessory_view: @some_accessory_view,
-            accessory_type: UITableViewCellAccessoryCheckmark,
-            accessory_checked: true, # whether it's "checked" or not
-            image: { image: UIImage.imageNamed("something"), radius: 15 },
-            remote_image: { url: "http://placekitten.com/200/300", placeholder: "some-local-image", size: 50, radius: 15 }, # remote image, requires SDWebImage CocoaPod
-            subviews: [ @some_view, @some_other_view ] # arbitrary views added to the cell
-            
-            # Note...if you're getting this crazy deep into styling your table cells,
-            # you really should be subclassing them and specifying them in the cell_class
-            # and then providing cell_class_attributes.
-          }]
-        }, {
-          title: "Table cell group 2",
-          cells: [{
-            title: "Log out",
-            action: :log_out
-          }]
-        }]
-      </code></pre>
+<pre><code>
+[{
+  title: "Table cell group 1",
+  cells: [{
+    title: "Simple cell",
+    action: :this_cell_tapped,
+    arguments: { id: 4 }
+  }, {
+    title: "Crazy Full Featured Cell",
+    subtitle: "This is way too huge..see note at bottom"
+    arguments: { data: [ "lots", "of", "data" ] }
+    action: :tapped_cell_1,
+    cell_style: UITableViewCellStyleSubtitle, 
+    cell_identifier: "Cell",
+    cell_class: ProMotion::TableViewCell,
+    masks_to_bounds: true,
+    background_color: UIColor.whiteColor,
+    selection_style: UITableViewCellSelectionStyleGray,
+    cell_class_attributes: {
+      # any Obj-C attributes to set on the cell
+      backgroundColor: UIColor.whiteColor
+    },
+    accessory: :switch, # currently only :switch is supported
+    accessory_view: @some_accessory_view,
+    accessory_type: UITableViewCellAccessoryCheckmark,
+    accessory_checked: true, # whether it's "checked" or not
+    image: { image: UIImage.imageNamed("something"), radius: 15 },
+    remote_image: { url: "http://placekitten.com/200/300", placeholder: "some-local-image", size: 50, radius: 15 }, # remote image, requires SDWebImage CocoaPod
+    subviews: [ @some_view, @some_other_view ] # arbitrary views added to the cell
+    
+    # Note...if you're getting this crazy deep into styling your table cells,
+    # you really should be subclassing them and specifying them in the cell_class
+    # and then providing cell_class_attributes.
+  }]
+}, {
+  title: "Table cell group 2",
+  cells: [{
+    title: "Log out",
+    action: :log_out
+  }]
+}]
+</code></pre>
     </td>
   </tr>
 

@@ -13,7 +13,10 @@ with your app's designed screens.
   * [Setup](#setup)
 1. [What's New?](#whats-new)
 1. [Setup](#setup)
-1. [Documentation](#documentation)
+1. [Usage](#usage)
+  * [Loading your first screen](#Loading-your-first-screen)
+  * [Using your own UIViewController or Formotion](#Using-your-own-UIViewController-or-formotion)
+1. [Reference](#reference)
 1. **[Help](#help)**
 1. [Contributing](#contributing)
 
@@ -109,7 +112,7 @@ end
 
 Run `rake`. You should now see a screen with a navigation bar like the image below. Congrats!
 
-![ProMotion Home Screen](https://clearsightstudio.github.com/ProMotion/img/ProMotion/home-screen.png)
+![ProMotion Home Screen](http://clearsightstudio.github.com/ProMotion/img/ProMotion/home-screen.png)
 
 
 ## What's New?
@@ -130,7 +133,7 @@ Run `rake`. You should now see a screen with a navigation bar like the image bel
 
 ## Usage
 
-Loading your home screen:
+### Loading your first screen
 
 ```ruby
 # In /app/app_delegate.rb
@@ -339,7 +342,7 @@ your Rakefile and doing this:
   ]
 ```
 
-## Using your own UIViewController or Formotion
+### Using your own UIViewController or Formotion
 
 Sometimes you want to inherit from a different UIViewController than that provided by ProMotion,
 such as when using [Formotion](https://github.com/clayallsopp/formotion). RubyMotion doesn't currently allow us to override built-in methods
@@ -395,7 +398,6 @@ end
 ```
 
 # Reference
-(not comprehensive yet...working on this)
 
 <table>
   <tr>

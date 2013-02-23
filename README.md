@@ -705,12 +705,16 @@ end
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td>table_data</td>
-    <td>Method that is called to gather the table's data.<br />
+    <td colspan="2">
+      <h3>table_data</h3>
+      Method that is called to get the table's cell data and build the table.<br />
       Example format using nearly all available options.<br />
-      <strong>Note...</strong>if you're getting crazy deep into styling your table cells,
+      <strong>Note...</strong> if you're getting crazy deep into styling your table cells,
       you really should be subclassing them and specifying that new class in <code>:cell_class</code>
       and then providing <code>:cell_class_attributes</code> to customize it.
+      <strong>Performance note...</strong> It's best to build this array in a different method
+      and store it in something like <code>@table_data</code>. Then your <code>table_data</code>
+      method just returns that.
 <pre><code>
 [{
   title: "Table cell group 1",

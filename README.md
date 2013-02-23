@@ -467,6 +467,8 @@ end
     <td>will_appear</td>
     <td>
       Callback for before the screen appears.<br />
+      This is a good place to put your view constructors, but be careful that
+      you don't add things more than on subsequent screen loads.
     </td>
   </tr>
   <tr>
@@ -510,29 +512,15 @@ end
     <td>&nbsp;</td>
     <td>should_autorotate</td>
     <td>
-      iOS 5 return true/false if screen should rotate<br />
+      (iOS 6) return true/false if screen should rotate.<br />
+      Defaults to true.
     </td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td>should_rotate(orientation)</td>
     <td>
-      Return true/false for rotation to orientation.<br />
-    </td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>supported_orientation?(orientation)</td>
-    <td>
-      Returns true/false if orientation is in NSBundle.mainBundle.infoDictionary["UISupportedInterfaceOrientations"].<br />
-      Shouldn't need to override this.
-    </td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>supported_orientations</td>
-    <td>
-      Returns supported orientation mask<br />
+      (iOS 5) Return true/false for rotation to orientation.<br />
     </td>
   </tr>
   <tr>
@@ -547,6 +535,16 @@ end
     <td>title=(title)</td>
     <td>
       Sets title of current screen.<br />
+      You can also set the title like this (not in a method, though):<br />
+<pre><code>
+class SomeScreen
+  title "Some screen"
+  
+  def on_load
+    # ...
+  end
+end
+</code></pre>
     </td>
   </tr>
   <tr>
@@ -711,48 +709,59 @@ end
       Example format using nearly all available options.<br />
       <strong>Note...</strong> if you're getting crazy deep into styling your table cells,
       you really should be subclassing them and specifying that new class in <code>:cell_class</code>
-      and then providing <code>:cell_class_attributes</code> to customize it.
+      and then providing <code>:cell_class_attributes</code> to customize it.<br /><br />
       <strong>Performance note...</strong> It's best to build this array in a different method
       and store it in something like <code>@table_data</code>. Then your <code>table_data</code>
       method just returns that.
+      
 <pre><code>
-[{
-  title: "Table cell group 1",
-  cells: [{
-    title: "Simple cell",
-    action: :this_cell_tapped,
-    arguments: { id: 4 }
+def table_data
+  [{
+    title: "Table cell group 1",
+    cells: [{
+      title: "Simple cell",
+      action: :this_cell_tapped,
+      arguments: { id: 4 }
+    }, {
+      title: "Crazy Full Featured Cell",
+      subtitle: "This is way too huge..see note at bottom"
+      arguments: { data: [ "lots", "of", "data" ] }
+      action: :tapped_cell_1,
+      cell_style: UITableViewCellStyleSubtitle, 
+      cell_identifier: "Cell",
+      cell_class: ProMotion::TableViewCell,
+      masks_to_bounds: true,
+      background_color: UIColor.whiteColor,
+      selection_style: UITableViewCellSelectionStyleGray,
+      cell_class_attributes: {
+        # any Obj-C attributes to set on the cell
+        backgroundColor: UIColor.whiteColor
+      },
+      accessory: :switch, # currently only :switch is supported
+      accessory_view: @some_accessory_view,
+      accessory_type: UITableViewCellAccessoryCheckmark,
+      accessory_checked: true, # whether it's "checked" or not
+      image: { image: UIImage.imageNamed("something"), radius: 15 },
+      remote_image: { url: "http://placekitten.com/200/300", placeholder: "some-local-image", size: 50, radius: 15 }, # remote image, requires SDWebImage CocoaPod
+      subviews: [ @some_view, @some_other_view ] # arbitrary views added to the cell
+    }]
   }, {
-    title: "Crazy Full Featured Cell",
-    subtitle: "This is way too huge..see note at bottom"
-    arguments: { data: [ "lots", "of", "data" ] }
-    action: :tapped_cell_1,
-    cell_style: UITableViewCellStyleSubtitle, 
-    cell_identifier: "Cell",
-    cell_class: ProMotion::TableViewCell,
-    masks_to_bounds: true,
-    background_color: UIColor.whiteColor,
-    selection_style: UITableViewCellSelectionStyleGray,
-    cell_class_attributes: {
-      # any Obj-C attributes to set on the cell
-      backgroundColor: UIColor.whiteColor
-    },
-    accessory: :switch, # currently only :switch is supported
-    accessory_view: @some_accessory_view,
-    accessory_type: UITableViewCellAccessoryCheckmark,
-    accessory_checked: true, # whether it's "checked" or not
-    image: { image: UIImage.imageNamed("something"), radius: 15 },
-    remote_image: { url: "http://placekitten.com/200/300", placeholder: "some-local-image", size: 50, radius: 15 }, # remote image, requires SDWebImage CocoaPod
-    subviews: [ @some_view, @some_other_view ] # arbitrary views added to the cell
+    title: "Table cell group 2",
+    cells: [{
+      title: "Log out",
+      action: :log_out
+    }]
   }]
-}, {
-  title: "Table cell group 2",
-  cells: [{
-    title: "Log out",
-    action: :log_out
-  }]
-}]
+end
 </code></pre>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>update_table_data</td>
+    <td>
+      Causes the table data to be refreshed, such as when a remote data source has
+      been downloaded and processed.<br />
     </td>
   </tr>
 

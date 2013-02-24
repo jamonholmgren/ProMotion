@@ -206,11 +206,11 @@ module ProMotion
 
       def title=(t)
         @title = t
+        self.title = t
       end
       
-      def title(t = nil)
-        self.title = t if t
-        self.class.send(:get_title)
+      def title(t)
+        @title = t
       end
       
       def get_title

@@ -185,14 +185,6 @@ module ProMotion
       end
       ors
     end
-    
-    # Allow setting title from inside a method
-    def title(t)
-      self.title = t
-    end
-    def title=(t)
-      self.title = t
-    end
 
     # Class methods
     module ClassMethods

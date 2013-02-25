@@ -120,8 +120,9 @@ module ProMotion
       self.on_disappear
     end
     def on_disappear; end
-
-    def title
+    
+    def title(new_title=nil)
+      self.title = new_title if new_title
       self.class.send(:get_title)
     end
 
@@ -129,7 +130,7 @@ module ProMotion
       self.class.title = new_title
       super
     end
-
+    
     def main_controller
       return self.navigationController if self.navigationController
       self

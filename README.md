@@ -88,8 +88,11 @@ def on_load(app, options)
 end
 ```
 
-For each screen that belongs to the tab bar, you need to set the tab name and icon in the files. 
-In this example, we would need add the following to the three files (my_home_screen.rb, settings_screen.rb, contact_screen.rb):
+For each screen that belongs to the tab bar, you need to set the tab name and icon in the files. In this example, MyHomeScreen will be first screen of the tab bar.
+
+Calling `open_tab_bar` in your AppDelegate's `on_load` method will make your first controller loaded have the tab bar. Alternatively, the above code can be placed in a standard screen's method, to make the resulting screen the tab bar.
+
+In this example, we would need to add the following to the three files (my_home_screen.rb, settings_screen.rb, contact_screen.rb):
 
 ```ruby
 def on_load

@@ -61,8 +61,8 @@ class HomeScreen < ProMotion::Screen
   title "Home"
 
   def on_load
-    # Set up the elements in your view with add_element:
-    @label = add_element UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
+    # Set up the elements in your view with add_view:
+    @label = add_view UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
       text: "This is awesome!",
       font: UIFont.systemFontOfSize(18)
     }
@@ -105,12 +105,12 @@ end
 
 ### Adding view elements
 
-Any view item (UIView, UIButton, custom UIView subclasses, etc) can be used with add_element.
+Any view item (UIView, UIButton, custom UIView subclasses, etc) can be used with add_view.
 The second argument is a hash of settings that get applied to the
 element before it is dropped into the view.
 
 ```ruby
-@label = add_element UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
+@label = add_view UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
   text: "This is awesome!",
   font: UIFont.systemFontOfSize(18)
 }
@@ -185,12 +185,12 @@ class MainScreen < ProMotion::Screen
 end
 ```
 
-The helper add_element takes any view object and adds it to the current view. You can also use
+The helper add_view takes any view object and adds it to the current view. You can also use
 the helper ProMotion::ViewHelper.set_attributes(view, attributes) to do the same thing without adding
 it to the current view. Screens include this helper by default.
 
 ```ruby
-@element = add_element UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
+@element = add_view UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
   backgroundColor: UIColor.whiteColor
 }
 
@@ -436,7 +436,7 @@ end
       ScreenElements<br />
       Included in Screen by default
     </td>
-    <td>add_element(view, attrs = {})</td>
+    <td>add_view(view, attrs = {})</td>
     <td>
       Adds the view to the screen after applying the attributes.<br />
     </td>

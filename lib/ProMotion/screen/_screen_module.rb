@@ -122,6 +122,11 @@ module ProMotion
     def on_disappear; end
 
     def title(new_title)
+      self.title = new_title if new_title
+      # self.class.send(:get_title)
+    end
+
+    def title=(new_title)
       self.title = new_title
     end
     
@@ -200,7 +205,7 @@ module ProMotion
       end
 
       def title=(t)
-        self.title = t
+        @title = t
       end
       
       def title(t)

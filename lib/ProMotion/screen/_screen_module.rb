@@ -127,8 +127,7 @@ module ProMotion
     end
 
     def title=(new_title)
-      self.class.title = new_title
-      super
+      self.title = new_title
     end
     
     def main_controller
@@ -205,15 +204,18 @@ module ProMotion
         @current_screen
       end
 
-      def title(t)
-        @title = t
-      end
       def title=(t)
         @title = t
       end
+      
+      def title(t)
+        self.title = t
+      end
+      
       def get_title
         @title ||= self.to_s
       end
+      
     end
 
     def self.included(base)

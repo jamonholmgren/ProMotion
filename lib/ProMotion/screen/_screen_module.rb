@@ -200,11 +200,11 @@ module ProMotion
       end
 
       def title=(t)
-        @title = t
+        self.title = t
       end
       
       def title(t)
-        @title = t
+        self.title = t
       end
       
       def get_title

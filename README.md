@@ -418,14 +418,14 @@ end
     <td>&nbsp;</td>
     <td>title</td>
     <td>
-      Returns title of current screen.<br />
+      Returns title of current screen. Can be called from inside a method or in the class directly.<br />
     </td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td>title=(title)</td>
     <td>
-      Sets title of current screen.<br />
+      Sets title of current screen. Can be called from inside a method or in the class directly.<br />
     </td>
   </tr>
   <tr>

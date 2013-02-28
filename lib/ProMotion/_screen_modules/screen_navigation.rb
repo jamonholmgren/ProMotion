@@ -4,7 +4,7 @@ module ProMotion
       # Instantiate screen if given a class
       screen = screen.new if screen.respond_to?(:new)
 
-      if screen.is_a?(ProMotion::Screen) || screen.is_a?(ProMotion::TableScreen)
+      if screen.is_a?(ProMotion::Screen) || screen.is_a?(ProMotion::TableScreen) || screen.is_a?(ProMotion::ScreenModule)
         screen.parent_screen = self if screen.respond_to?("parent_screen=")
         screen.title = args[:title] if args[:title]
 

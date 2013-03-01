@@ -3,7 +3,6 @@
 ProMotion introduces a new object called "Screens". Screens have a one-to-one relationship 
 with your app's designed screens.
 
-
 ## Table of contents
 
 1. [Tutorials](#tutorials)
@@ -377,8 +376,11 @@ your Rakefile and doing this:
 ### Using your own UIViewController
 
 Sometimes you want to inherit from a different UIViewController other than that provided by ProMotion,
-such as when using [Formotion](https://github.com/clayallsopp/formotion). RubyMotion doesn't currently 
-allow us to override built-in methods when including as a module, so there's a workaround for that.
+such as when using [Formotion](https://github.com/clayallsopp/formotion). **RubyMotion doesn't currently 
+allow us to override built-in methods when including them as a module.** And we really need to override 
+`viewDidLoad` and others. 
+
+Fortunately, there's a workaround for that.
 
 ```ruby
 class EventsScreen < Formotion::FormController # Can also be < UIViewController

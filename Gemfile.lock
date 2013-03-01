@@ -1,10 +1,10 @@
 PATH
   remote: .
   specs:
-    ProMotion (0.4.0)
+    ProMotion (0.4.2)
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
 
 PLATFORMS

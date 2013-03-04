@@ -9,7 +9,7 @@ module ProMotion
       screens.map! { |s| s.respond_to?(:new) ? s.new : s } # Initialize any classes
 
       screens.each do |s|
-        if s.is_a?(ProMotion::Screen) || s.is_a?(ProMotion::TableScreen)
+        if s.is_a?(ProMotion::Screen) || s.is_a?(ProMotion::TableScreen) || s.is_a?(ProMotion::ScreenModule)
           s = s.new if s.respond_to?(:new)
           s.tabBarItem.tag = tag_index
           s.parent_screen = self if self.is_a?(UIViewController) && s.respond_to?("parent_screen=")

@@ -462,7 +462,7 @@ end
   <tr>
     <td>&nbsp;</td>
     <td>self</td>
-    <td>Returns the UIViewController (not UIView)</td>
+    <td>Returns the Screen which is a subclass of UIViewController or UITableViewController</td>
   </tr>
   <tr>
     <td>&nbsp;</td>

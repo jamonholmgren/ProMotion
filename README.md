@@ -124,11 +124,15 @@ Run `rake`. You should now see the simulator open with your home screen and a na
 
 ### Version 0.5.0
 
+Version 0.5.0 is mostly a documentation and consistency release. It should be backwards-compatible
+with 0.4.0.
+
 * Rearranged internal folders to make a lot more sense
 * More complete API documentation
 * Refactored camelCase methods and configs to under_score
 * Set `should_autorotate` to true by default
 * Changed `open_screen` to `open` (`open_screen` still works for backwards compatibility)
+* `add_element` is now `add` (and `remove_element` is `remove`)
 
 ### Version 0.4.0
 

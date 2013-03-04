@@ -122,6 +122,16 @@ Run `rake`. You should now see the simulator open with your home screen and a na
 
 ## What's New?
 
+### Version 0.5.0
+
+* Rearranged internal folders to make a lot more sense
+* More complete API documentation
+* Refactored camelCase methods and configs to under_score
+* Set `should_autorotate` to true by default
+* Changed `open_screen` to `open` (`open_screen` still works for backwards compatibility)
+
+### Version 0.4.0
+
 * Screens are now UIViewControllers (they used to contain UIViewControllers, but that got too funky) so you can do normal UIViewController stuff with them
 * Screen functionality can also be inherited as a module in your own UIViewController, but you need to provide your own methods for viewDidLoad and whatnot.
 * Tons of headlessCamelCaps methods are now properly_ruby_underscored (with an alias to the old name for compatibility)
@@ -554,10 +564,10 @@ end
       ScreenElements<br />
       Included in Screen by default
     </td>
-    <td>add_view(view, attrs = {})</td>
+    <td>add(view, attrs = {})</td>
     <td>
       Adds the view to the screen after applying the attributes.<br />
-      (alias: `add_element`)<br />
+      (alias: `add_element`, `add_view`)<br />
       Example:
       <code>
         add_view UIInputView.alloc.initWithFrame(CGRectMake(10, 10, 300, 40)), {
@@ -568,10 +578,10 @@ end
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td>remove_view(view)</td>
+    <td>remove(view)</td>
     <td>
       Removes the view from the superview and sets it to nil<br />
-      (alias: `remove_element`)
+      (alias: `remove_element`, `remove_view`)
     </td>
   </tr>
   <tr>

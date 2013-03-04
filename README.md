@@ -461,6 +461,11 @@ end
   </tr>
   <tr>
     <td>&nbsp;</td>
+    <td>self</td>
+    <td>Returns the UIViewController (not UIView)</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
     <td>has_nav_bar?</td>
     <td>Returns if the screen is contained in a navigation controller.</td>
   </tr>
@@ -715,7 +720,12 @@ end
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td>.searchable(placeholder: "placeholder text")</td>
+    <td>self</td>
+    <td>Returns the current UITableViewController (not UITableView)</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>searchable(placeholder: "placeholder text")</td>
     <td>Class method to make the current table searchable.</td>
   </tr>
   <tr>

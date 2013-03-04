@@ -133,6 +133,7 @@ with 0.4.0.
 * Set `should_autorotate` to true by default
 * Changed `open_screen` to `open` (`open_screen` still works for backwards compatibility)
 * `add_element` is now `add` (and `remove_element` is `remove`)
+* Removed built-in app (will release some sample apps soon, including a "Kitchen Sink" one)
 
 ### Version 0.4.0
 

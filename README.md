@@ -448,29 +448,26 @@ end
 
 ## Reference
 
+### Screen
+
 <table>
   <tr>
-    <th>Class or Module</th>
     <th>Method</th>
     <th>Description</th>
   </tr>
   <tr>
-    <td>Screen</td>
     <td>is_modal?</td>
     <td>Returns if the screen was opened in a modal window.</td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>self</td>
     <td>Returns the Screen which is a subclass of UIViewController or UITableViewController</td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>has_nav_bar?</td>
     <td>Returns if the screen is contained in a navigation controller.</td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>set_tab_bar_item(args)</td>
     <td>
       Creates the tab that is shown in a tab bar item.<br />
@@ -478,14 +475,12 @@ end
     </td>
   </tr>  
   <tr>
-    <td>&nbsp;</td>
     <td>on_appear</td>
     <td>
       Callback for when the screen appears.<br />
     </td>
   </tr> 
   <tr>
-    <td>&nbsp;</td>
     <td>will_appear</td>
     <td>
       Callback for before the screen appears.<br />
@@ -494,21 +489,18 @@ end
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>will_disappear</td>
     <td>
       Callback for before the screen disappears.<br />
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>will_rotate(orientation, duration)</td>
     <td>
       Callback for before the screen rotates.<br />
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>on_opened **Deprecated**</td>
     <td>
       Callback when screen is opened via a tab bar. Please don't use this, as it will be removed in the future<br />
@@ -516,14 +508,12 @@ end
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>set_nav_bar_left_button(title, args = {})</td>
     <td>
       Set a left nav bar button.<br />
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>set_nav_bar_right_button(title, args = {})</td>
     <td>
       Set a right nav bar button.<br />
@@ -531,7 +521,6 @@ end
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>should_autorotate</td>
     <td>
       (iOS 6) return true/false if screen should rotate.<br />
@@ -539,21 +528,18 @@ end
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>should_rotate(orientation)</td>
     <td>
       (iOS 5) Return true/false for rotation to orientation.<br />
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>title</td>
     <td>
       Returns title of current screen.<br />
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>title=(title)</td>
     <td>
       Sets title of current screen.<br />
@@ -570,10 +556,6 @@ end
     </td>
   </tr>
   <tr>
-    <td>
-      ScreenElements<br />
-      Included in Screen by default
-    </td>
     <td>add(view, attrs = {})</td>
     <td>
       Adds the view to the screen after applying the attributes.<br />
@@ -587,7 +569,6 @@ end
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>remove(view)</td>
     <td>
       Removes the view from the superview and sets it to nil<br />
@@ -595,96 +576,78 @@ end
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>bounds</td>
     <td>
       Accessor for self.view.bounds<br />
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>frame</td>
     <td>
       Accessor for self.view.frame<br />
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>view</td>
     <td>
       The main view for this screen.<br />
     </td>
   </tr>
   <tr>
-    <td>
-      SystemHelper<br />
-      Included in Screen by default
-    </td>
     <td>ios_version</td>
     <td>
       Returns the iOS version that is running on the device<br />
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>ios_version_greater?(version)</td>
     <td>
       Returns true if 'ios_version' is greater than the version passed in, false otherwise<br />
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>ios_version_greater_eq?(version)</td>
     <td>
       Returns true if 'ios_version' is greater than or equal to the version passed in, false otherwise<br />
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>ios_version_is?(version)</td>
     <td>
       Returns true if 'ios_version' is equal to the version passed in, false otherwise<br />
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>ios_version_less?(version)</td>
     <td>
       Returns true if 'ios_version' is less than the version passed in, false otherwise<br />
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>ios_version_less_eq?(version)</td>
     <td>
       Returns true if 'ios_version' is less than or equal to the version passed in, false otherwise<br />
     </td>
   </tr>
   <tr>
-    <td>ScreenNavigation<br />
-      included in Screen
-    </td>
     <td>app_delegate</td>
     <td>
       Returns the AppDelegate<br />
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>close(args = {})</td>
     <td>
       Closes the current screen, passes args back to the previous screen's <code>on_return</code> method<br />
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>open_root_screen(screen)</td>
     <td>
       Closes all other open screens and opens <code>screen</code> as the root view controller.<br />
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>open(screen, args = {})</td>
     <td>
       Pushes the screen onto the navigation stack or opens in a modal<br />
@@ -699,37 +662,37 @@ end
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>open_tab_bar(*screens)</td>
     <td>
       Open a UITabBarController with the specified screens as the root view controller of the current app<br />
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>open_tab(tab)</td>
     <td>
       Opens the tab where the "string" title matches the passed in tab<br />
     </td>
   </tr>
-  
+</table>
+
+### TableScreen
+
+*Has all the methods of Screen*
+
+<table>
   <tr>
-    <td>TableScreen</td>
-    <td>&nbsp;</td>
-    <td>*Has all the methods of Screen*</td>
+    <th>Method</th>
+    <th>Description</th>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>self</td>
     <td>Returns the current UITableViewController (not UITableView)</td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>searchable(placeholder: "placeholder text")</td>
     <td>Class method to make the current table searchable.</td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td colspan="2">
       <h3>table_data</h3>
       Method that is called to get the table's cell data and build the table.<br />
@@ -788,16 +751,22 @@ end
     </td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>update_table_data</td>
     <td>
       Causes the table data to be refreshed, such as when a remote data source has
       been downloaded and processed.<br />
     </td>
   </tr>
+</table>
 
+### Console
+
+<table>
   <tr>
-    <td>Console</td>
+    <th>Method</th>
+    <th>Description</th>
+  </tr>
+  <tr>
     <td>log(log, with_color:color)</td>
     <td>
       Class method to output a colored console message.<br />

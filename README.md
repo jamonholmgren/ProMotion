@@ -165,7 +165,7 @@ class HomeScreen < ProMotion::Screen
   
   def will_appear
     # Set up the elements in your view with add
-    @label = add UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20))
+    @label ||= add UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20))
   end
   
   def on_appear

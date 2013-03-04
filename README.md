@@ -751,7 +751,7 @@ def table_data
       arguments: { id: 4 }
     }, {
       title: "Crazy Full Featured Cell",
-      subtitle: "This is way too huge..see note at bottom",
+      subtitle: "This is way too huge..see note",
       arguments: { data: [ "lots", "of", "data" ] },
       action: :tapped_cell_1,
       cell_style: UITableViewCellStyleSubtitle, 
@@ -769,7 +769,10 @@ def table_data
       accessory_type: UITableViewCellAccessoryCheckmark,
       accessory_checked: true, # whether it's "checked" or not
       image: { image: UIImage.imageNamed("something"), radius: 15 },
-      remote_image: { url: "http://placekitten.com/200/300", placeholder: "some-local-image", size: 50, radius: 15 }, # remote image, requires SDWebImage CocoaPod
+      remote_image: {  # remote image, requires SDWebImage CocoaPod
+        url: "http://placekitten.com/200/300", placeholder: "some-local-image", 
+        size: 50, radius: 15
+      },
       subviews: [ @some_view, @some_other_view ] # arbitrary views added to the cell
     }]
   }, {

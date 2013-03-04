@@ -1,51 +1,54 @@
 module ProMotion
   module ScreenNavigation
+    # TODO: De-uglify this method.
     def open_screen(screen, args = {})
       # Instantiate screen if given a class
       screen = screen.new if screen.respond_to?(:new)
 
-      if screen.is_a?(ProMotion::Screen) || screen.is_a?(ProMotion::TableScreen) || screen.is_a?(ProMotion::ScreenModule)
-        screen.parent_screen = self if screen.respond_to?("parent_screen=")
-        screen.title = args[:title] if args[:title]
+      screen.parent_screen = self if screen.respond_to?("parent_screen=")
+      
+      screen.title = args[:title] if args[:title] && screen.respond_to?("title=")
 
-        screen.modal = args[:modal] if args[:modal]
-        
-        screen.hidesBottomBarWhenPushed = args[:hide_tab_bar] if args[:hide_tab_bar]
+      screen.modal = args[:modal] if args[:modal] && screen.respond_to?("modal=")
+      
+      screen.hidesBottomBarWhenPushed = args[:hide_tab_bar] unless args[:hide_tab_bar].nil?
 
-        screen.add_nav_bar if args[:nav_bar]        
-        unless args[:close_all] || args[:modal]
-          screen.navigation_controller ||= self.navigation_controller
-          screen.tab_bar ||= self.tab_bar
-        end
+      screen.add_nav_bar if args[:nav_bar] && screen.respond_to?(:add_nav_bar)       
 
-        screen.send(:on_load) if screen.respond_to?(:on_load)
+      unless args[:close_all] || args[:modal]
+        screen.navigation_controller ||= self.navigation_controller if screen.respond_to?("navigation_controller=")
+        screen.tab_bar ||= self.tab_bar if screen.respond_to?("tab_bar=")
       end
+
+      screen.send(:on_load) if screen.respond_to?(:on_load)
+      
+      animated = args[:animated]
+      animated ||= true
 
       if args[:close_all]
         open_root_screen(screen)
       elsif args[:modal]
         vc = screen
-        vc = screen.main_controller if screen.respond_to?(:main_controller)
-        self.presentModalViewController(vc, animated:true)
+        vc = screen.main_controller if screen.respond_to?("main_controller=")
+        self.presentModalViewController(vc, animated:animated)
       elsif args[:in_tab] && self.tab_bar
         vc = open_tab(args[:in_tab])
         if vc
           if vc.is_a?(UINavigationController)
-            screen.navigation_controller = vc
+            screen.navigation_controller = vc if screen.respond_to?("navigation_controller=")
             push_view_controller(screen, vc)
           else
             self.tab_bar.selectedIndex = vc.tabBarItem.tag
-            $stderr.puts "#{self.tab_bar.selectedIndex} is selected and should be #{vc.tabBarItem.tag}"
-            # ProMotion::TabBar.replace_current_item(self.tab_bar, view_controller: screen.view_controller)
-            # TODO: This doesn't work yet.
           end
         else
-          $stderr.puts "No tab bar item '#{args[:in_tab]}'"
+          Console.log("No tab bar item '#{args[:in_tab]}'", with_color: Console::RED_COLOR)
         end
       elsif self.navigation_controller
         push_view_controller screen
-      else
+      elsif screen.respond_to?(:main_controller)
         open_view_controller screen.main_controller
+      else
+        open_view_controller screen
       end
     end
     alias :open :open_screen
@@ -58,7 +61,8 @@ module ProMotion
     def app_delegate
       UIApplication.sharedApplication.delegate
     end
-
+    
+    # TODO: De-uglify this method.
     def close_screen(args = {})
       args ||= {}
       args[:animated] = true

@@ -3,13 +3,50 @@
 ProMotion introduces a new object called "Screens". Screens have a one-to-one relationship 
 with your app's designed screens.
 
-NEW video tutorial! Go watch it here: http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/
+## Table of contents
 
-Check out the tutorial here: http://www.clearsightstudio.com/insights/ruby-motion-promotion-tutorial
+1. [Tutorials](#tutorials)
+  * [Screencasts](#screencasts)
+  * [Sample Apps](#sample-apps)
+1. **[Getting Started](#getting-started)**
+  * [Setup](#setup)
+1. [What's New?](#whats-new)
+1. [Usage](#usage)
+  * [Creating a basic screen](#creating-a-basic-screen)
+  * [Loading your first screen](#loading-your-first-screen)
+  * [Creating a tab bar](#creating-a-tab-bar)
+  * [Adding navigation bar buttons](#add-navigation-bar-buttons)
+  * [Opening and closing screens](#opening-and-closing-screens)
+  * [Adding view elements](#adding-view-elements)
+  * [Table screens](#table-screens)
+  * [Using your own UIViewController](#using-your-own-uiviewcontroller)
+1. [Reference](#reference)
+1. **[Help](#help)**
+1. [Contributing](#contributing)
+
+## Tutorials
+
+Version 0.3 tutorial, will be updated soon but most of it still applies:
+
+http://www.clearsightstudio.com/insights/ruby-motion-promotion-tutorial
+
+### Screencasts
+
+Video tutorial with 0.4.
+
+http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/
+
+### Sample apps
 
 Sample app here: https://github.com/jamonholmgren/promotion-tutorial
 
-Typical app file structure:
+Also, check out the free [BigDay! Reminder app](https://itunes.apple.com/us/app/bigday!/id571756685?ls=1&mt=8) on the 
+App Store to see what's possible. ClearSight Studio built the app for Kijome Software, a small app investment company.
+
+## Getting Started
+
+ProMotion is designed to be as intuitive and Ruby-like as possible. For example, here is a 
+typical app folder structure:
 
     app/
       screens/
@@ -26,7 +63,79 @@ Typical app file structure:
           save_event_button_view.rb
       app_delegate.rb
 
-## What's New in 0.4.0?
+### Setup
+
+Create a new RubyMotion project.
+
+`motion create myapp`
+
+Open it in your favorite editor, then go into your Rakefile and add the following to the top:
+
+```ruby
+# -*- coding: utf-8 -*-
+$:.unshift("/Library/RubyMotion/lib")
+require 'motion/project'
+require "rubygems"
+require 'bundler'
+Bundler.require
+```
+
+
+Create a Gemfile and add the following lines:
+
+```ruby
+source 'https://rubygems.org'
+gem "ProMotion", "~> 0.4.1"
+```
+
+Run `bundle install` in Terminal to install ProMotion.
+
+Go into your app/app_delegate.rb file and add the following:
+
+```ruby
+class AppDelegate < ProMotion::AppDelegateParent
+  def on_load(app, options)
+    open HomeScreen.new(nav_bar: true)
+  end
+end
+```
+
+Create a folder in `/app` named `screens`. Create a file in that folder named `home_screen.rb`.
+
+Now drop in this code:
+
+```ruby
+class HomeScreen < ProMotion::Screen
+  title "Home"
+  
+  def on_load
+    self.view.backgroundColor = UIColor.whiteColor
+  end
+end
+```
+
+
+Run `rake`. You should now see the simulator open with your home screen and a navigation bar like the image below. Congrats!
+
+![ProMotion Home Screen](http://clearsightstudio.github.com/ProMotion/img/ProMotion/home-screen.png)
+
+
+## What's New?
+
+### Version 0.5.0
+
+Version 0.5.0 is mostly a documentation and consistency release. It should be backwards-compatible
+with 0.4.0.
+
+* Rearranged internal folders to make a lot more sense
+* More complete API documentation
+* Refactored camelCase methods and configs to under_score
+* Set `should_autorotate` to true by default
+* Changed `open_screen` to `open` (`open_screen` still works for backwards compatibility)
+* `add_element` is now `add` (and `remove_element` is `remove`)
+* Removed built-in app (will release some sample apps soon, including a "Kitchen Sink" one)
+
+### Version 0.4.0
 
 * Screens are now UIViewControllers (they used to contain UIViewControllers, but that got too funky) so you can do normal UIViewController stuff with them
 * Screen functionality can also be inherited as a module in your own UIViewController, but you need to provide your own methods for viewDidLoad and whatnot.
@@ -41,9 +150,31 @@ Typical app file structure:
 * Better documentation (still needs work), better error messages
 * Deprecation warnings EVERYWHERE for older apps (upgrade already!)
 
+
 ## Usage
 
-Loading your home screen:
+### Creating a basic screen
+
+```ruby
+class HomeScreen < ProMotion::Screen
+  title "Home"
+
+  def on_load
+    # Load data
+  end
+  
+  def will_appear
+    # Set up the elements in your view with add_view
+    @label = add_view UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20))
+  end
+  
+  def on_appear
+    # Everything's loaded and visible
+  end
+end
+```
+
+### Loading your first screen
 
 ```ruby
 # In /app/app_delegate.rb
@@ -54,37 +185,18 @@ class AppDelegate < ProMotion::AppDelegate
 end
 ```
 
-Creating a basic screen:
-
-```ruby
-class HomeScreen < ProMotion::Screen
-  title "Home"
-
-  def on_load
-    # Set up the elements in your view with add_element:
-    @label = add_element UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
-      text: "This is awesome!",
-      font: UIFont.systemFontOfSize(18)
-    }
-  end
-  
-  def on_appear
-    # Refresh the data if you want
-  end
-end
-```
+### Creating a tab bar
 
 Creating a tabbed bar with multiple screens. This will set the tab bar as the root view controller for your app,
-so keep that in mind. It can be done from the AppDelegate#on_load or from a screen.
-
-### Creating a tab bar with several screens
+so keep that in mind. It can be done from the AppDelegate#on_load or from a screen (that screen will go away, though).
 
 ```ruby
 def on_load(app, options)
   @home     = MyHomeScreen.new(nav_bar: true)
   @settings = SettingsScreen.new
   @contact  = ContactScreen.new(nav_bar: true)
-  @tab_bar  = open_tab_bar @home, @settings, @contact
+  
+  open_tab_bar @home, @settings, @contact
 end
 ```
 
@@ -96,31 +208,32 @@ def on_load
   set_tab_bar_item title: "Tab Name Goes Here", icon: "icons/tab_icon.png" # in resources/icons folder
   
   # or...
-  set_tab_bar_item title: "Contacts", system_icon: UITabBarSystemItemContacts
+  set_tab_bar_item system_icon: UITabBarSystemItemContacts
 end
 ```
 
-### Adding view elements
-
-Any view item (UIView, UIButton, custom UIView subclasses, etc) can be used with add_element.
-The second argument is a hash of settings that get applied to the
-element before it is dropped into the view.
+To programmatically switch to a different tab, use `open_tab`.
 
 ```ruby
-@label = add_element UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
-  text: "This is awesome!",
-  font: UIFont.systemFontOfSize(18)
-}
+def some_action
+  open_tab "Contacts"
+end
 ```
 
-Add nav_bar buttons:
+### Add navigation bar buttons
+
+These two methods add the buttons to the top navigation bar of a screen. The `action:` lets you specify a method to
+call when that button is tapped, and you can pass in a UIBarButton style using `type:`.
 
 ```ruby
 set_nav_bar_right_button "Save", action: :save_something, type: UIBarButtonItemStyleDone
 set_nav_bar_left_button "Cancel", action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
 ```
 
-Open a new screen:
+### Opening and closing screens
+
+If the user taps something and you want to open a new screen, it's easy. Just use `open` and pass in the screen class
+or an instance of that screen.
 
 ```ruby
 def settings_button_tapped
@@ -133,10 +246,10 @@ def settings_button_tapped
 end
 ```
 
-Open a new screen as a modal:
+You can also open a screen as a modal.
 
 ```ruby
-open SettingsScreen, modal: true
+open SettingsScreen.new, modal: true
 ```
 
 You can pass in arguments to other screens if they have accessors:
@@ -160,7 +273,16 @@ end
 
 ```
 
-Close a screen (modal or in a nav controller), passing back arguments to the previous screen's "on_return" method:
+Closing a screen is as easy as can be.
+
+```ruby
+# User taps a button, indicating they want to close this screen.
+def close_screen_tapped
+  close
+end
+```
+
+You can close a screen (modal or in a nav controller) and pass back arguments to the previous screen's "on_return" method:
 
 ```ruby
 class ItemScreen < ProMotion::Screen
@@ -182,23 +304,34 @@ class MainScreen < ProMotion::Screen
 end
 ```
 
-The helper add_element takes any view object and adds it to the current view. You can also use
-the helper ProMotion::ViewHelper.set_attributes(view, attributes) to do the same thing without adding
-it to the current view. Screens include this helper by default.
+### Adding view elements
+
+Any view item (UIView, UIButton, custom UIView subclasses, etc) can be added to the current view with `add_view`.
+`add_view` accepts a second argument which is a hash of attributes that get applied to the element before it is
+dropped into the view.
 
 ```ruby
-@element = add_element UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
-  backgroundColor: UIColor.whiteColor
+@label = add_view UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
+  text: "This is awesome!",
+  font: UIFont.systemFontOfSize(18)
 }
 
+@element = add_view UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
+  backgroundColor: UIColor.whiteColor
+}
+```
+
+The `set_attributes` method is identical to add_view except that it does not add it to the current view.
+
+```ruby
 @element = set_attributes UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
   backgroundColor: UIColor.whiteColor
 }
 ```
 
-You can create sectioned table screens easily. TableScreen, SectionedTableScreen, GroupedTableScreen.
-This is loosely based on [motion-table](https://github.com/clearsightstudio/motion-table) (there are a 
-few minor differences). We will eventually combine the two.
+### Table Screens
+
+You can create sectioned table screens easily with TableScreen, SectionedTableScreen, and GroupedTableScreen.
 
 ```ruby
 class SettingsScreen < ProMotion::GroupedTableScreen
@@ -210,7 +343,7 @@ class SettingsScreen < ProMotion::GroupedTableScreen
   end
   
   # table_data is automatically called. Use this format in the return value.
-  # Grouped tables are the same as plain tables
+  # It's an array of cell groups, each cell group consisting of a title and an array of cells.
   def table_data
     [{
       title: "Your Account",
@@ -230,12 +363,15 @@ class SettingsScreen < ProMotion::GroupedTableScreen
 
   # This method allows you to create a "jumplist", the index on the right side of the table
   def table_data_index
-    return ["A", "B", "C"]
+    # Ruby magic to make an alphabetical array of letters.
+    # Try this in Objective-C and tell me you want to go back.
+    return ("A".."Z").to_a 
   end
   
-  # Your table cells, when tapped, will execute the corresponding actions and pass in arguments:
-  def edit_profile(arguments)
-    # ...
+  # Your table cells, when tapped, will execute the corresponding actions 
+  # and pass in the specified arguments.
+  def edit_profile(args={})
+    puts args[:id] # => 3
   end
 end
 ```
@@ -247,16 +383,19 @@ your Rakefile and doing this:
   cells: [
     {
       title: "Cell with image",
-      remoteImage: { url: "http://placekitten.com/200/300", placeholder: "some-local-image" }
+      remote_image: { url: "http://placekitten.com/200/300", placeholder: "some-local-image" }
     }
   ]
 ```
 
-## Using your own UIViewController or Formotion
+### Using your own UIViewController
 
-Sometimes you want to inherit from a different UIViewController than that provided by ProMotion,
-such as when using [Formotion](https://github.com/clayallsopp/formotion). RubyMotion doesn't currently allow us to override built-in methods
-when including as a module, so there's a workaround for that.
+Sometimes you want to inherit from a different UIViewController other than that provided by ProMotion,
+such as when using [Formotion](https://github.com/clayallsopp/formotion). **RubyMotion doesn't currently 
+allow us to override built-in methods when including them as a module.** And we really need to override 
+`viewDidLoad` and others. 
+
+Fortunately, there's a workaround for that.
 
 ```ruby
 class EventsScreen < Formotion::FormController # Can also be < UIViewController
@@ -307,8 +446,7 @@ class EventsScreen < Formotion::FormController # Can also be < UIViewController
 end
 ```
 
-# Reference
-(not comprehensive yet...working on this)
+## Reference
 
 <table>
   <tr>
@@ -320,6 +458,11 @@ end
     <td>Screen</td>
     <td>is_modal?</td>
     <td>Returns if the screen was opened in a modal window.</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>self</td>
+    <td>Returns the Screen which is a subclass of UIViewController or UITableViewController</td>
   </tr>
   <tr>
     <td>&nbsp;</td>
@@ -346,6 +489,8 @@ end
     <td>will_appear</td>
     <td>
       Callback for before the screen appears.<br />
+      This is a good place to put your view constructors, but be careful that
+      you don't add things more than on subsequent screen loads.
     </td>
   </tr>
   <tr>
@@ -389,29 +534,15 @@ end
     <td>&nbsp;</td>
     <td>should_autorotate</td>
     <td>
-      iOS 5 return true/false if screen should rotate<br />
+      (iOS 6) return true/false if screen should rotate.<br />
+      Defaults to true.
     </td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td>should_rotate(orientation)</td>
     <td>
-      Return true/false for rotation to orientation.<br />
-    </td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>supported_orientation?(orientation)</td>
-    <td>
-      Returns true/false if orientation is in NSBundle.mainBundle.infoDictionary["UISupportedInterfaceOrientations"].<br />
-      Shouldn't need to override this.
-    </td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>supported_orientations</td>
-    <td>
-      Returns supported orientation mask<br />
+      (iOS 5) Return true/false for rotation to orientation.<br />
     </td>
   </tr>
   <tr>
@@ -426,6 +557,16 @@ end
     <td>title=(title)</td>
     <td>
       Sets title of current screen.<br />
+      You can also set the title like this (not in a method, though):<br />
+<pre><code>
+class SomeScreen
+  title "Some screen"
+  
+  def on_load
+    # ...
+  end
+end
+</code></pre>
     </td>
   </tr>
   <tr>
@@ -433,16 +574,24 @@ end
       ScreenElements<br />
       Included in Screen by default
     </td>
-    <td>add_element(view, attrs = {})</td>
+    <td>add(view, attrs = {})</td>
     <td>
       Adds the view to the screen after applying the attributes.<br />
+      (alias: `add_element`, `add_view`)<br />
+      Example:
+      <code>
+        add_view UIInputView.alloc.initWithFrame(CGRectMake(10, 10, 300, 40)), {
+          backgroundColor: UIColor.grayColor
+        }
+      </code>
     </td>
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td>remove_element</td>
+    <td>remove(view)</td>
     <td>
       Removes the view from the superview and sets it to nil<br />
+      (alias: `remove_element`, `remove_view`)
     </td>
   </tr>
   <tr>
@@ -463,7 +612,7 @@ end
     <td>&nbsp;</td>
     <td>view</td>
     <td>
-      Accessor for self.view<br />
+      The main view for this screen.<br />
     </td>
   </tr>
   <tr>
@@ -524,14 +673,14 @@ end
     <td>&nbsp;</td>
     <td>close(args = {})</td>
     <td>
-      Closes the current screen, passes args back to the previous screen's on_return method<br />
+      Closes the current screen, passes args back to the previous screen's <code>on_return</code> method<br />
     </td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td>open_root_screen(screen)</td>
     <td>
-      Closes all other open screens and opens `screen` at the root.<br />
+      Closes all other open screens and opens <code>screen</code> as the root view controller.<br />
     </td>
   </tr>
   <tr>
@@ -539,14 +688,14 @@ end
     <td>open(screen, args = {})</td>
     <td>
       Pushes the screen onto the navigation stack or opens in a modal<br />
-      argument options :hide_tab_bar, :modal, any accessors in `screen`
-    </td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>open_tab(tab)</td>
-    <td>
-      Opens the tab where the "string" title is equal to the passed in tab<br />
+      Argument options:<br />
+      <code>nav_bar: true|false</code> (note: this has no effect if you're already in a navigation controller)<br />
+      <code>hide_tab_bar: true|false</code><br />
+      <code>modal: true|false</code><br />
+      <code>close_all: true|false</code> (closes all open screens and opens as root)<br />
+      <code>animated: true:false</code> (currently only affects modals)<br />
+      <code>in_tab: "Tab name"</code> (if you're in a tab bar)<br />
+      any accessors in <code>screen</code>
     </td>
   </tr>
   <tr>
@@ -556,15 +705,110 @@ end
       Open a UITabBarController with the specified screens as the root view controller of the current app<br />
     </td>
   </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>open_tab(tab)</td>
+    <td>
+      Opens the tab where the "string" title matches the passed in tab<br />
+    </td>
+  </tr>
+  
+  <tr>
+    <td>TableScreen</td>
+    <td>&nbsp;</td>
+    <td>*Has all the methods of Screen*</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>self</td>
+    <td>Returns the current UITableViewController (not UITableView)</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>searchable(placeholder: "placeholder text")</td>
+    <td>Class method to make the current table searchable.</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td colspan="2">
+      <h3>table_data</h3>
+      Method that is called to get the table's cell data and build the table.<br />
+      Example format using nearly all available options.<br />
+      <strong>Note...</strong> if you're getting crazy deep into styling your table cells,
+      you really should be subclassing them and specifying that new class in <code>:cell_class</code>
+      and then providing <code>:cell_class_attributes</code> to customize it.<br /><br />
+      <strong>Performance note...</strong> It's best to build this array in a different method
+      and store it in something like <code>@table_data</code>. Then your <code>table_data</code>
+      method just returns that.
+      
+<pre><code>
+def table_data
+  [{
+    title: "Table cell group 1",
+    cells: [{
+      title: "Simple cell",
+      action: :this_cell_tapped,
+      arguments: { id: 4 }
+    }, {
+      title: "Crazy Full Featured Cell",
+      subtitle: "This is way too huge..see note",
+      arguments: { data: [ "lots", "of", "data" ] },
+      action: :tapped_cell_1,
+      cell_style: UITableViewCellStyleSubtitle, 
+      cell_identifier: "Cell",
+      cell_class: ProMotion::TableViewCell,
+      masks_to_bounds: true,
+      background_color: UIColor.whiteColor,
+      selection_style: UITableViewCellSelectionStyleGray,
+      cell_class_attributes: {
+        # any Obj-C attributes to set on the cell
+        backgroundColor: UIColor.whiteColor
+      },
+      accessory: :switch, # currently only :switch is supported
+      accessory_view: @some_accessory_view,
+      accessory_type: UITableViewCellAccessoryCheckmark,
+      accessory_checked: true, # whether it's "checked" or not
+      image: { image: UIImage.imageNamed("something"), radius: 15 },
+      remote_image: {  # remote image, requires SDWebImage CocoaPod
+        url: "http://placekitten.com/200/300", placeholder: "some-local-image", 
+        size: 50, radius: 15
+      },
+      subviews: [ @some_view, @some_other_view ] # arbitrary views added to the cell
+    }]
+  }, {
+    title: "Table cell group 2",
+    cells: [{
+      title: "Log out",
+      action: :log_out
+    }]
+  }]
+end
+</code></pre>
+      <img src="http://clearsightstudio.github.com/ProMotion/img/ProMotion/full-featured-table-screen.png" />
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>update_table_data</td>
+    <td>
+      Causes the table data to be refreshed, such as when a remote data source has
+      been downloaded and processed.<br />
+    </td>
+  </tr>
+
+  <tr>
+    <td>Console</td>
+    <td>log(log, with_color:color)</td>
+    <td>
+      Class method to output a colored console message.<br />
+      Example: <code>ProMotion::Console.log("This is red!", with_color: ProMotion::Console::RED_COLOR)</code>
+    </td>
+  </tr>
 </table>
 
-### What about MVC?
+## Help
 
-I'm a big believer in MVC (I'm a Rails developer, too). I found that most of the time working in RubyMotion seems to happen
-in the ViewControllers and views are mainly custom elements. This pattern is probably best for navigation controller and
-tab bar based apps.
-
-Feedback welcome via twitter @jamonholmgren or email jamon@clearsightstudio.com.
+If you need help, feel free to ping me on twitter @jamonholmgren or email jamon@clearsightstudio.com, or open a ticket on GitHub.
 
 ## Contributing
 

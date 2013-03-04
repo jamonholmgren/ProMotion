@@ -2,20 +2,22 @@ module ProMotion
   module ScreenElements
     include ProMotion::ViewHelper
     
-    def add_view(v, attrs = {})
+    def add(v, attrs = {})
       if attrs && attrs.length > 0
         set_attributes(v, attrs)
       end
       self.view.addSubview(v)
       v
     end
-    alias :add_element :add_view
+    alias :add_element :add
+    alias :add_view :add
 
-    def remove_view(v)
+    def remove(v)
       v.removeFromSuperview
       v = nil
     end
-    alias :remove_element :remove_view
+    alias :remove_element :remove
+    alias :remove_view :remove
 
     def bounds
       return self.view.bounds

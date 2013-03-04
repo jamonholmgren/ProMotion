@@ -108,46 +108,78 @@ module ProMotion::MotionTable
         self.table_data_index 
       end
     end
+    
+    def remap_data_cell(data_cell)
+      # Re-maps legacy data cell calls
+      mappings = { 
+        cell_style: :cellStyle, 
+        cell_identifier: :cellIdentifier,
+        cell_class: :cellClass,
+        masks_to_bounds: :masksToBounds,
+        background_color: :backgroundColor,
+        selection_style: :selectionStyle,
+        cell_class_attributes: :cellClassAttributes,
+        accessory_view: :accessoryView,
+        accessory_type: :accessoryType,
+        accessory_checked: :accessoryDefault,
+        remote_image: :remoteImage,
+        subviews: :subViews
+      }
+      mappings.each_pair do |n, old|
+        if data_cell[old]
+          warn "[DEPRECATION] `:#{old}` is deprecated in TableScreens. Use `:#{n}`"
+          data_cell[n] = data_cell[old]
+        end
+      end
+      if data_cell[:styles] && data_cell[:styles][:textLabel]
+        warn "[DEPRECATION] `:textLabel` is deprecated in TableScreens. Use `:label`"
+        data_cell[:styles][:label] = data_cell[:styles][:textLabel]
+      end
+      data_cell
+    end
 
     def tableView(table_view, cellForRowAtIndexPath:indexPath)
       # Aah, magic happens here...
 
       data_cell = cell_at_section_and_index(indexPath.section, indexPath.row)
       return UITableViewCell.alloc.init unless data_cell
-      data_cell[:cellStyle] ||= UITableViewCellStyleDefault
-      data_cell[:cellIdentifier] ||= "Cell"
-      cellIdentifier = data_cell[:cellIdentifier]
-      data_cell[:cellClass] ||= ProMotion::TableViewCell
+      
+      data_cell = self.remap_data_cell(data_cell)
+      
+      data_cell[:cell_style] ||= UITableViewCellStyleDefault
+      data_cell[:cell_identifier] ||= "Cell"
+      cell_identifier = data_cell[:cell_identifier]
+      data_cell[:cell_class] ||= ProMotion::TableViewCell
 
-      table_cell = table_view.dequeueReusableCellWithIdentifier(cellIdentifier)
+      table_cell = table_view.dequeueReusableCellWithIdentifier(cell_identifier)
       unless table_cell
-        table_cell = data_cell[:cellClass].alloc.initWithStyle(data_cell[:cellStyle], reuseIdentifier:cellIdentifier)
+        table_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:cell_identifier)
         
         # Add optimizations here
-        table_cell.layer.masksToBounds = true if data_cell[:masksToBounds]
-        table_cell.backgroundColor = data_cell[:backgroundColor] if data_cell[:backgroundColor]
-        table_cell.selectionStyle = data_cell[:selectionStyle] if data_cell[:selectionStyle]
+        table_cell.layer.masksToBounds = true if data_cell[:masks_to_bounds]
+        table_cell.backgroundColor = data_cell[:background_color] if data_cell[:background_color]
+        table_cell.selectionStyle = data_cell[:selection_style] if data_cell[:selection_style]
         table_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
       end
 
-      if data_cell[:cellClassAttributes]
-        set_cell_attributes table_cell, data_cell[:cellClassAttributes]
+      if data_cell[:cell_class_attributes]
+        set_cell_attributes table_cell, data_cell[:cell_class_attributes]
       end
       
-      if data_cell[:accessoryView]
-        table_cell.accessoryView = data_cell[:accessoryView]
+      if data_cell[:accessory_view]
+        table_cell.accessoryView = data_cell[:accessory_view]
         table_cell.accessoryView.autoresizingMask = UIViewAutoresizingFlexibleWidth
       end
 
-      if data_cell[:accessoryType]
-        table_cell.accessoryType = data_cell[:accessoryType]
+      if data_cell[:accessory_type]
+        table_cell.accessoryType = data_cell[:accessory_type]
       end
 
       if data_cell[:accessory] && data_cell[:accessory] == :switch
-        switchView = UISwitch.alloc.initWithFrame(CGRectZero)
-        switchView.addTarget(self, action: "accessory_toggled_switch:", forControlEvents:UIControlEventValueChanged);
-        switchView.on = true if data_cell[:accessoryDefault]
-        table_cell.accessoryView = switchView
+        switch_view = UISwitch.alloc.initWithFrame(CGRectZero)
+        switch_view.addTarget(self, action: "accessory_toggled_switch:", forControlEvents:UIControlEventValueChanged);
+        switch_view.on = true if data_cell[:accessory_checked]
+        table_cell.accessoryView = switch_view
       end
 
       if data_cell[:subtitle]
@@ -157,19 +189,19 @@ module ProMotion::MotionTable
 
       table_cell.selectionStyle = UITableViewCellSelectionStyleNone if data_cell[:no_select]
 
-      if data_cell[:remoteImage]
+      if data_cell[:remote_image]
         if table_cell.imageView.respond_to?("setImageWithURL:placeholderImage:")
-          url = data_cell[:remoteImage][:url]
+          url = data_cell[:remote_image][:url]
           url = NSURL.URLWithString(url) unless url.is_a?(NSURL)
-          placeholder = data_cell[:remoteImage][:placeholder]
+          placeholder = data_cell[:remote_image][:placeholder]
           placeholder = UIImage.imageNamed(placeholder) if placeholder.is_a?(String)
 
-          table_cell.image_size = data_cell[:remoteImage][:size] if data_cell[:remoteImage][:size] && table_cell.respond_to?("image_size=")
+          table_cell.image_size = data_cell[:remote_image][:size] if data_cell[:remote_image][:size] && table_cell.respond_to?("image_size=")
           table_cell.imageView.setImageWithURL(url, placeholderImage: placeholder)
           table_cell.imageView.layer.masksToBounds = true
-          table_cell.imageView.layer.cornerRadius = data_cell[:remoteImage][:radius]
+          table_cell.imageView.layer.cornerRadius = data_cell[:remote_image][:radius]
         else
-          ProMotion::Console.log("ProMotion Warning: to use remoteImage with TableScreen you need to include the CocoaPod 'SDWebImage'.", with_color: ProMotion::Console::RED_COLOR)
+          ProMotion::Console.log("ProMotion Warning: to use remote_image with TableScreen you need to include the CocoaPod 'SDWebImage'.", with_color: ProMotion::Console::RED_COLOR)
         end
       elsif data_cell[:image]
         table_cell.imageView.layer.masksToBounds = true
@@ -177,9 +209,9 @@ module ProMotion::MotionTable
         table_cell.imageView.layer.cornerRadius = data_cell[:image][:radius] if data_cell[:image][:radius]
       end
 
-      if data_cell[:subViews]
+      if data_cell[:subviews]
         tag_number = 0
-        data_cell[:subViews].each do |view|
+        data_cell[:subviews].each do |view|
           # Remove an existing view at that tag number
           tag_number += 1
           existing_view = table_cell.viewWithTag(tag_number)
@@ -197,18 +229,18 @@ module ProMotion::MotionTable
         table_cell.addSubview data_cell[:details][:image]
       end
 
-      if data_cell[:styles] && data_cell[:styles][:textLabel] && data_cell[:styles][:textLabel][:frame]
+      if data_cell[:styles] && data_cell[:styles][:label] && data_cell[:styles][:label][:frame]
         ui_label = false
         table_cell.contentView.subviews.each do |view|
           if view.is_a? UILabel
             ui_label = true
-            view.text = data_cell[:styles][:textLabel][:text]
+            view.text = data_cell[:styles][:label][:text]
           end
         end
 
         unless ui_label == true
           label ||= UILabel.alloc.initWithFrame(CGRectZero)
-          set_cell_attributes label, data_cell[:styles][:textLabel]
+          set_cell_attributes label, data_cell[:styles][:label]
           table_cell.contentView.addSubview label
         end
         # hackery

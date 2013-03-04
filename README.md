@@ -164,8 +164,8 @@ class HomeScreen < ProMotion::Screen
   end
   
   def will_appear
-    # Set up the elements in your view with add_view
-    @label = add_view UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20))
+    # Set up the elements in your view with add
+    @label = add UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20))
   end
   
   def on_appear
@@ -306,22 +306,22 @@ end
 
 ### Adding view elements
 
-Any view item (UIView, UIButton, custom UIView subclasses, etc) can be added to the current view with `add_view`.
-`add_view` accepts a second argument which is a hash of attributes that get applied to the element before it is
+Any view item (UIView, UIButton, custom UIView subclasses, etc) can be added to the current view with `add`.
+`add` accepts a second argument which is a hash of attributes that get applied to the element before it is
 dropped into the view.
 
 ```ruby
-@label = add_view UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
+@label = add UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
   text: "This is awesome!",
   font: UIFont.systemFontOfSize(18)
 }
 
-@element = add_view UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
+@element = add UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
   backgroundColor: UIColor.whiteColor
 }
 ```
 
-The `set_attributes` method is identical to add_view except that it does not add it to the current view.
+The `set_attributes` method is identical to add except that it does not add it to the current view.
 
 ```ruby
 @element = set_attributes UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
@@ -580,7 +580,7 @@ end
       (alias: `add_element`, `add_view`)<br />
       Example:
       <code>
-        add_view UIInputView.alloc.initWithFrame(CGRectMake(10, 10, 300, 40)), {
+        add UIInputView.alloc.initWithFrame(CGRectMake(10, 10, 300, 40)), {
           backgroundColor: UIColor.grayColor
         }
       </code>

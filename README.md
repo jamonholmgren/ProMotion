@@ -85,7 +85,7 @@ Create a Gemfile and add the following lines:
 
 ```ruby
 source 'https://rubygems.org'
-gem "ProMotion", "~> 0.4.1"
+gem "ProMotion", "~> 0.5.0"
 ```
 
 Run `bundle install` in Terminal to install ProMotion.

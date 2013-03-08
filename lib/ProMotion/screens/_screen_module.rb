@@ -131,7 +131,7 @@ module ProMotion
     end
 
     def main_controller
-      return self.navigationController if self.navigationController
+      return self.navigation_controller if self.navigation_controller
       self
     end
 

@@ -13,7 +13,7 @@ module ProMotion
       
       screen.hidesBottomBarWhenPushed = args[:hide_tab_bar] unless args[:hide_tab_bar].nil?
 
-      screen.add_nav_bar if args[:nav_bar] && screen.respond_to?(:add_nav_bar)       
+      screen.add_nav_bar if args[:nav_bar] && screen.respond_to?(:add_nav_bar)
 
       unless args[:close_all] || args[:modal]
         screen.navigation_controller ||= self.navigation_controller if screen.respond_to?("navigation_controller=")
@@ -29,7 +29,7 @@ module ProMotion
         open_root_screen(screen)
       elsif args[:modal]
         vc = screen
-        vc = screen.main_controller if screen.respond_to?("main_controller=")
+        vc = screen.main_controller if screen.respond_to?(:main_controller)
         self.presentModalViewController(vc, animated:animated)
       elsif args[:in_tab] && self.tab_bar
         vc = open_tab(args[:in_tab])

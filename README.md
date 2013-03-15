@@ -782,3 +782,12 @@ If you need help, feel free to ping me on twitter @jamonholmgren or email jamon@
 ## Contributing
 
 I'm really looking for feedback. Tweet me with your ideas or open a ticket (I don't mind!) and let's discuss.
+
+### Submitting a Pull Request
+
+1. Fork the project
+2. Create a feature branch
+3. Code
+4. Update or create new specs
+5. Make sure tests are passing by running `rake spec`
+6. Submit pull request

@@ -36,12 +36,17 @@ Video tutorial with 0.4.
 
 http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/
 
-### Sample apps
+### Sample Apps
 
-Sample app here: https://github.com/jamonholmgren/promotion-tutorial
+#### ProMotion Tutorial
+Sample app here: [https://github.com/jamonholmgren/promotion-tutorial](https://github.com/jamonholmgren/promotion-tutorial)
 
-Also, check out the free [BigDay! Reminder app](https://itunes.apple.com/us/app/bigday!/id571756685?ls=1&mt=8) on the 
+#### BigDay! Reminder App
+Check out the free [BigDay! Reminder app](https://itunes.apple.com/us/app/bigday!/id571756685?ls=1&mt=8) on the 
 App Store to see what's possible. ClearSight Studio built the app for Kijome Software, a small app investment company.
+
+#### TipCounter App
+[TipCounter](http://www.tipcounterapp.com) was built by [Matt Brewer](https://github.com/macfanatic/) for bartenders and servers to easily track their tips.  Used ProMotion and the development was a lot of fun!
 
 ## Getting Started
 

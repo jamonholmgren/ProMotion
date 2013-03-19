@@ -19,7 +19,7 @@ module ProMotion
 
     def frame_from_array(array)
       return CGRectMake(array[0], array[1], array[2], array[3]) if array.length == 4
-      Console.log(" - frame_from_array expects an array with four elements: [x, y, width, height]", withColor: Console::RED_COLOR)
+      Console.log(" - frame_from_array expects an array with four elements: [x, y, width, height]", with_color: Console::RED_COLOR)
       CGRectZero
     end
 

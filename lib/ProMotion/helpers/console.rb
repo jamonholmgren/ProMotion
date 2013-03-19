@@ -8,15 +8,18 @@ module ProMotion
 
     class << self
       def log(log, with_color:color)
+        return if RUBYMOTION_ENV == "test"
         puts color[0] + NAME + log + color[1]
       end
       
       def log(log, withColor:color)
+        return if RUBYMOTION_ENV == "test"
         warn "[DEPRECATION] `log(log, withColor:color)` is deprecated. Use `log(log, with_color:color)`"
         self.log(log, with_color:color)
       end
 
       def log(log)
+        return if RUBYMOTION_ENV == "test"
         log(log, with_color: DEFAULT_COLOR)
       end
     end

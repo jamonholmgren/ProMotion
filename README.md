@@ -36,12 +36,17 @@ Video tutorial with 0.4.
 
 http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/
 
-### Sample apps
+### Sample Apps
 
-Sample app here: https://github.com/jamonholmgren/promotion-tutorial
+#### ProMotion Tutorial
+Sample app here: [https://github.com/jamonholmgren/promotion-tutorial](https://github.com/jamonholmgren/promotion-tutorial)
 
-Also, check out the free [BigDay! Reminder app](https://itunes.apple.com/us/app/bigday!/id571756685?ls=1&mt=8) on the 
+#### BigDay! Reminder App
+Check out the free [BigDay! Reminder app](https://itunes.apple.com/us/app/bigday!/id571756685?ls=1&mt=8) on the 
 App Store to see what's possible. ClearSight Studio built the app for Kijome Software, a small app investment company.
+
+#### TipCounter App
+[TipCounter](http://www.tipcounterapp.com) was built by [Matt Brewer](https://github.com/macfanatic/) for bartenders and servers to easily track their tips.  Used ProMotion and the development was a lot of fun!
 
 ## Getting Started
 
@@ -782,3 +787,12 @@ If you need help, feel free to ping me on twitter @jamonholmgren or email jamon@
 ## Contributing
 
 I'm really looking for feedback. Tweet me with your ideas or open a ticket (I don't mind!) and let's discuss.
+
+### Submitting a Pull Request
+
+1. Fork the project
+2. Create a feature branch
+3. Code
+4. Update or create new specs
+5. Make sure tests are passing by running `rake spec`
+6. Submit pull request

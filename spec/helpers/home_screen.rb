@@ -1,0 +1,10 @@
+class HomeScreen < ProMotion::Screen
+
+  title "Home"
+
+  def on_load
+    set_nav_bar_right_button "Save", action: :save_something, type: UIBarButtonItemStyleDone
+    set_nav_bar_left_button "Cancel", action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
+  end
+
+end

@@ -65,33 +65,38 @@ module ProMotion
     # TODO: De-uglify this method.
     def close_screen(args = {})
       args ||= {}
-      args[:animated] = true
+      args[:animated] ||= true
       
       # Pop current view, maybe with arguments, if in navigation controller
-      previous_screen = self.parent_screen
       if self.is_modal?
-        self.parent_screen.dismissModalViewControllerAnimated(args[:animated])
+        self.parent_screen.dismissViewControllerAnimated(args[:animated], completion: lambda {
+          send_on_return(args)
+        })
       elsif self.navigation_controller
         if args[:to_screen] && args[:to_screen].is_a?(UIViewController)
+          self.parent_screen = args[:to_screen]
           self.navigation_controller.popToViewController(args[:to_screen], animated: args[:animated])
-          previous_screen = args[:to_screen]
         else
           self.navigation_controller.popViewControllerAnimated(args[:animated])
         end
+
+        send_on_return(args) # TODO: this would be better implemented in a callback or view_did_disappear.
       else
         Console.log("Tried to close #{self.to_s}; however, this screen isn't modal or in a nav bar.", withColor: Console::PURPLE_COLOR)
       end
-      
-      if previous_screen && previous_screen.respond_to?(:on_return)
-        if args
-          previous_screen.send(:on_return, args)
-        else
-          previous_screen.send(:on_return)
-        end
-        ProMotion::Screen.current_screen = previous_screen
-      end
     end
     alias :close :close_screen
+
+    def send_on_return(args = {})
+      if self.parent_screen && self.parent_screen.respond_to?(:on_return)
+        if args
+          self.parent_screen.send(:on_return, args)
+        else
+          self.parent_screen.send(:on_return)
+        end
+        ProMotion::Screen.current_screen = self.parent_screen
+      end
+    end
 
     def open_view_controller(vc)
       UIApplication.sharedApplication.delegate.load_root_view vc

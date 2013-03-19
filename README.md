@@ -796,3 +796,11 @@ I'm really looking for feedback. Tweet me with your ideas or open a ticket (I do
 4. Update or create new specs
 5. Make sure tests are passing by running `rake spec`
 6. Submit pull request
+
+### Primary Contributors
+
+* Jamon Holmgren: [@jamonholmgren](https://twitter.com/jamonholmgren)
+* Silas Matson: [@silasjmatson](https://twitter.com/silasjmatson)
+* Matt Brewer: [@macfanatic](https://twitter.com/macfanatic)
+
+

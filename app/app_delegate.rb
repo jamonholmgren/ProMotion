@@ -1,5 +1,4 @@
-class AppDelegate
-  def application(application, didFinishLaunchingWithOptions:launchOptions)
-    return true if RUBYMOTION_ENV == 'test'
+class AppDelegate < ProMotion::AppDelegateParent
+  def on_load(application, launch_options)
   end
 end

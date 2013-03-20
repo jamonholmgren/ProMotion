@@ -6,7 +6,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    motion-stump (0.2.0)
+    motion-stump (0.2.1)
 
 PLATFORMS
   ruby

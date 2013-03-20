@@ -7,4 +7,7 @@ class HomeScreen < ProMotion::Screen
     set_nav_bar_left_button "Cancel", action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
   end
 
+  def on_return(args={})
+  end
+
 end

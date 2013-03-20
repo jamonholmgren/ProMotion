@@ -1,4 +1,2 @@
-class AppDelegate < ProMotion::AppDelegateParent
-  def on_load(application, launch_options)
-  end
+class AppDelegate
 end

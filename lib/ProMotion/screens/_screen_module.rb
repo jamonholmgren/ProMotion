@@ -5,7 +5,7 @@ module ProMotion
     include ProMotion::SystemHelper
     include ProMotion::ScreenTabs
 
-    attr_accessor :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal
+    attr_accessor :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal, :split_screen
 
     def on_create(args = {})
       unless self.is_a?(UIViewController)
@@ -24,6 +24,15 @@ module ProMotion
 
     def is_modal?
       self.modal == true
+    end
+
+    def is_split_screen?
+      self.split_screen.nil? != true
+    end
+
+    def open_in_split_screen(screen)
+      a=[self.split_screen.viewControllers[0], screen.main_controller]
+      self.split_screen.viewControllers=a
     end
 
     def has_nav_bar?

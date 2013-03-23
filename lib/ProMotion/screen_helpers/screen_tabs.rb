@@ -44,9 +44,8 @@ module ProMotion
       end
       split = SplitViewController.alloc.init
       split.delegate=args[:screen2]
-      args[:screen1].view_screen=split
-      #args[:screen2].parent_screen=args[:screen1]
-      split.tabBarItem=create_tab_bar_item(title: args[:title])
+      args[:screen1].split_screen=split
+      split.tabBarItem=create_tab_bar_icon_custom(args[:title], args[:icon], 0)
       scr=[]
       [args[:screen1], args[:screen2]].each do |s|
         if s.navigation_controller

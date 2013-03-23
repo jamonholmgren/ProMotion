@@ -9,7 +9,7 @@ module ProMotion
       screens.map! { |s| s.respond_to?(:new) ? s.new : s } # Initialize any classes
 
       screens.each do |s|
-        if s.is_a?(ProMotion::Screen) || s.is_a?(ProMotion::TableScreen) || s.is_a?(ProMotion::ScreenModule)
+        if s.is_a?(ProMotion::Screen) || s.is_a?(ProMotion::TableScreen) || s.is_a?(ProMotion::ScreenModule) || s.is_a?(UISplitViewController)
           s = s.new if s.respond_to?(:new)
           s.tabBarItem.tag = tag_index
           s.parent_screen = self if self.is_a?(UIViewController) && s.respond_to?("parent_screen=")
@@ -35,6 +35,28 @@ module ProMotion
       tab_bar = tab_bar_controller(*screens)
       UIApplication.sharedApplication.delegate.load_root_screen(tab_bar)
       tab_bar
+    end
+
+    def split_screen(args)
+      if !args[:screen1] or !args[:screen2]
+        Console.log("split_screen needs exactly 2 screens.", withColor: Console::RED_COLOR)
+        return
+      end
+      split = SplitViewController.alloc.init
+      split.delegate=args[:screen2]
+      args[:screen1].view_screen=split
+      #args[:screen2].parent_screen=args[:screen1]
+      split.tabBarItem=create_tab_bar_item(title: args[:title])
+      scr=[]
+      [args[:screen1], args[:screen2]].each do |s|
+        if s.navigation_controller
+          scr<<s.navigation_controller
+        else
+          scr<<s
+        end
+      end
+      split.viewControllers=scr
+      split
     end
 
     def open_tab(tab)

@@ -32,7 +32,6 @@ module ProMotion
     end
 
     def splitViewController(svc, willHideViewController:vc, withBarButtonItem:bbi, forPopoverController:pc)
-      puts [:splitViewController_hide, self.class, self.detail_split_screen, svc, vc, bbi, pc].inspect
       bbi.title="Menu"
       self.split_screen.bbi=bbi
       self.navigationItem.setLeftBarButtonItem(bbi)
@@ -41,7 +40,6 @@ module ProMotion
     end
 
     def splitViewController(svc, willShowViewController:vc, invalidatingBarButtonItem:bbi)
-      puts [:splitViewController_show, self.detail_split_screen, svc, vc, bbi].inspect
       self.split_screen.bbi=nil
       self.split_screen.pc=nil
       self.navigationItem.setLeftBarButtonItems([], animated:false)

@@ -111,7 +111,6 @@ module ProMotion
       screen.parent_screen = self if screen.respond_to?("parent_screen=")
       screen.title = args[:title] if args[:title] && screen.respond_to?("title=")
       screen.modal = args[:modal] if args[:modal] && screen.respond_to?("modal=")
-      puts [:screen_modal, screen.modal].inspect
       
       # Hide bottom bar?
       screen.hidesBottomBarWhenPushed = args[:hide_tab_bar] == true

@@ -5,7 +5,8 @@ module ProMotion
     include ProMotion::SystemHelper
     include ProMotion::ScreenTabs
 
-    attr_accessor :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal, :split_screen
+    attr_accessor :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal
+    attr_accessor :split_screen, :detail_split_screen
 
     def on_create(args = {})
       unless self.is_a?(UIViewController)
@@ -30,9 +31,20 @@ module ProMotion
       self.split_screen.nil? != true
     end
 
-    def open_in_split_screen(screen)
-      a=[self.split_screen.viewControllers[0], screen.main_controller]
-      self.split_screen.viewControllers=a
+    def splitViewController(svc, willHideViewController:vc, withBarButtonItem:bbi, forPopoverController:pc)
+      puts [:splitViewController_hide, self.class, self.detail_split_screen, svc, vc, bbi, pc].inspect
+      bbi.title="Menu"
+      self.split_screen.bbi=bbi
+      self.navigationItem.setLeftBarButtonItem(bbi)
+      self.split_screen.pc=pc
+      self.popoverViewController = pc
+    end
+
+    def splitViewController(svc, willShowViewController:vc, invalidatingBarButtonItem:bbi)
+      puts [:splitViewController_show, self.detail_split_screen, svc, vc, bbi].inspect
+      self.split_screen.bbi=nil
+      self.split_screen.pc=nil
+      self.navigationItem.setLeftBarButtonItems([], animated:false)
     end
 
     def has_nav_bar?

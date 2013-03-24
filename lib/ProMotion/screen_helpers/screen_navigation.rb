@@ -19,6 +19,20 @@ module ProMotion
       elsif args[:in_tab] && self.tab_bar
         present_view_controller_in_tab_bar_controller screen, args[:in_tab]
 
+      elsif self.split_screen
+        puts [:split_screen_open, screen.is_modal?].inspect
+        self.split_screen.bbi||=nil
+        #-set split-menu button when needed
+        screen.navigationItem.setLeftBarButtonItem(self.split_screen.bbi) if self.split_screen.bbi and !screen.is_modal?
+        #-set split screen for new screen
+        screen.split_screen=self.split_screen
+        screen.detail_split_screen=true
+        self.split_screen.delegate=screen
+        s=screen
+        s=screen.main_controller if screen.respond_to?(:main_controller)
+        a=[self.split_screen.viewControllers[0], s]
+        self.split_screen.viewControllers=a
+        
       elsif self.navigation_controller
         push_view_controller screen
 
@@ -97,6 +111,7 @@ module ProMotion
       screen.parent_screen = self if screen.respond_to?("parent_screen=")
       screen.title = args[:title] if args[:title] && screen.respond_to?("title=")
       screen.modal = args[:modal] if args[:modal] && screen.respond_to?("modal=")
+      puts [:screen_modal, screen.modal].inspect
       
       # Hide bottom bar?
       screen.hidesBottomBarWhenPushed = args[:hide_tab_bar] == true

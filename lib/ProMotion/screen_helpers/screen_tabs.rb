@@ -38,19 +38,19 @@ module ProMotion
     end
 
     def split_screen(args)
-      if !args[:screen1] or !args[:screen2]
+      if !args[:master] or !args[:child]
         Console.log("split_screen needs exactly 2 screens.", withColor: Console::RED_COLOR)
         return
       end
       split = SplitViewController.alloc.init
-      args[:screen1].split_screen=split
-      args[:screen1].detail_split_screen=false
-      args[:screen2].split_screen=split
-      args[:screen2].detail_split_screen=true
-      split.delegate=args[:screen2]
+      args[:master].split_screen=split
+      args[:master].detail_split_screen=false
+      args[:child].split_screen=split
+      args[:child].detail_split_screen=true
+      split.delegate=args[:child]
       split.tabBarItem=create_tab_bar_icon_custom(args[:title], args[:icon], 0)
       scr=[]
-      [args[:screen1], args[:screen2]].each do |s|
+      [args[:master], args[:child]].each do |s|
         if s.navigation_controller
           scr<<s.navigation_controller
         else

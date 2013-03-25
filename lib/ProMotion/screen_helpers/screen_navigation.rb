@@ -20,10 +20,9 @@ module ProMotion
         present_view_controller_in_tab_bar_controller screen, args[:in_tab]
 
       elsif self.split_screen
-        puts [:split_screen_open, screen.is_modal?].inspect
-        self.split_screen.bbi||=nil
+        self.split_screen.bar_button_item||=nil
         #-set split-menu button when needed
-        screen.navigationItem.setLeftBarButtonItem(self.split_screen.bbi) if self.split_screen.bbi and !screen.is_modal?
+        screen.navigationItem.setLeftBarButtonItem(self.split_screen.bar_button_item) if self.split_screen.bar_button_item and !screen.is_modal?
         #-set split screen for new screen
         screen.split_screen=self.split_screen
         screen.detail_split_screen=true

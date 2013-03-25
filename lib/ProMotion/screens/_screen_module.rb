@@ -33,15 +33,15 @@ module ProMotion
 
     def splitViewController(svc, willHideViewController:vc, withBarButtonItem:bbi, forPopoverController:pc)
       bbi.title="Menu"
-      self.split_screen.bbi=bbi
+      self.split_screen.bar_button_item=bbi
       self.navigationItem.setLeftBarButtonItem(bbi)
-      self.split_screen.pc=pc
+      self.split_screen.popover_controller=pc
       self.popoverViewController = pc
     end
 
     def splitViewController(svc, willShowViewController:vc, invalidatingBarButtonItem:bbi)
-      self.split_screen.bbi=nil
-      self.split_screen.pc=nil
+      self.split_screen.bar_button_item=nil
+      self.split_screen.popover_controller=nil
       self.navigationItem.setLeftBarButtonItems([], animated:false)
     end
 

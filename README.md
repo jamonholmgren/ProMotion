@@ -8,6 +8,7 @@ with your app's designed screens.
 1. [Tutorials](#tutorials)
   * [Screencasts](#screencasts)
   * [Sample Apps](#sample-apps)
+  * [Apps Built With ProMotion](#apps-built-with-promotion)
 1. **[Getting Started](#getting-started)**
   * [Setup](#setup)
 1. [What's New?](#whats-new)
@@ -40,6 +41,8 @@ http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymot
 
 #### ProMotion Tutorial
 Sample app here: [https://github.com/jamonholmgren/promotion-tutorial](https://github.com/jamonholmgren/promotion-tutorial)
+
+### Apps Built With ProMotion
 
 #### BigDay! Reminder App
 Check out the free [BigDay! Reminder app](https://itunes.apple.com/us/app/bigday!/id571756685?ls=1&mt=8) on the 
@@ -127,11 +130,13 @@ Run `rake`. You should now see the simulator open with your home screen and a na
 
 ## What's New?
 
-### Version 0.5.0
+### Version 0.5
 
-Version 0.5.0 is mostly a documentation and consistency release. It should be backwards-compatible
-with 0.4.0.
+Version 0.5 is mostly a documentation and consistency release. It should be backwards-compatible
+with 0.4.
 
+* `on_return` fires after animation complete on modals now
+* Added tests ... run with `rake spec` (thanks [@macfanatic](http://twitter.com/macfanatic))
 * Rearranged internal folders to make a lot more sense
 * More complete API documentation
 * Refactored camelCase methods and configs to under_score
@@ -140,7 +145,7 @@ with 0.4.0.
 * `add_element` is now `add` (and `remove_element` is `remove`)
 * Removed built-in app (will release some sample apps soon, including a "Kitchen Sink" one)
 
-### Version 0.4.0
+### Version 0.4
 
 * Screens are now UIViewControllers (they used to contain UIViewControllers, but that got too funky) so you can do normal UIViewController stuff with them
 * Screen functionality can also be inherited as a module in your own UIViewController, but you need to provide your own methods for viewDidLoad and whatnot.

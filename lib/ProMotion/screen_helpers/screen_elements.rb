@@ -27,17 +27,5 @@ module ProMotion
       return self.view.frame
     end
 
-    def content_height(view)
-      height = 0
-      view.subviews.each do |subview|
-        next if subview.isHidden
-        y = subview.frame.origin.y
-        h = subview.frame.size.height
-        if (y + h) > height
-          height = y + h
-        end
-      end
-      height
-    end
   end
 end

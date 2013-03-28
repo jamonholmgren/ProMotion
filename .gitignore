@@ -10,6 +10,6 @@ pom.xml
 /build
 .DS_Store
 *.clj
-.repl_histroy
 .rvmrc
 *.gem
+.repl_history

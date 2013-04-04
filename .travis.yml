@@ -1,2 +1,2 @@
 language: objective-c
-script: rake spec
+script: bundle exec rake spec

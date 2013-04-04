@@ -1,7 +1,8 @@
-# ProMotion - A new way to easily build RubyMotion apps.
+# ProMotion ![Build Status](https://travis-ci.org/clearsightstudio/ProMotion.png)
 
-ProMotion introduces a new object called "Screens". Screens have a one-to-one relationship 
-with your app's designed screens.
+## A new way to easily build RubyMotion apps.
+
+ProMotion is a RubyMotion gem that makes iOS development more like Ruby and less like Objective-C.
 
 ## Table of contents
 

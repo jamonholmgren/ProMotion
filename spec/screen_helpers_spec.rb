@@ -79,13 +79,13 @@ describe "screen helpers" do
         @screen.send(:present_modal_view_controller, new_screen, true)
       end
 
-      it "should push screen onto nav controller stack inside a tab bar" do
-        # TODO: Implement this test
-      end
+      # it "should push screen onto nav controller stack inside a tab bar" do
+      #   # TODO: Implement this test
+      # end
 
-      it "should set the tab bar selectedIndex when opening a screen inside a tab bar" do
-        # TODO: Implement this test
-      end
+      # it "should set the tab bar selectedIndex when opening a screen inside a tab bar" do
+      #   # TODO: Implement this test
+      # end
 
       it "should open a root screen if :close_all is provided" do
         @screen.mock!(:open_root_screen) { |screen| screen.should.be.instance_of BasicScreen }

@@ -4,4 +4,5 @@ source 'https://rubygems.org'
 gemspec
 
 # Use this in development
+gem "rake"
 gem "motion-stump"

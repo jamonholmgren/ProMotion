@@ -102,7 +102,8 @@ Run `bundle install` in Terminal to install ProMotion.
 Go into your app/app_delegate.rb file and add the following:
 
 ```ruby
-class AppDelegate < ProMotion::AppDelegateParent
+# Note: ProMotion::AppDelegateParent is an alias to ProMotion::Delegate
+class AppDelegate < ProMotion::Delegate
   def on_load(app, options)
     open HomeScreen.new(nav_bar: true)
   end

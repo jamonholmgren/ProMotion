@@ -9,7 +9,7 @@ Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'ProMotionTest'
   app.version = "0.3.0"
-
+  app.redgreen_style = :focused # :focused, :full
 
   # Devices
   app.deployment_target = "5.0"

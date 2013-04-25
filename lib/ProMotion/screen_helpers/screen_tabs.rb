@@ -9,17 +9,18 @@ module ProMotion
       screens.map! { |s| s.respond_to?(:new) ? s.new : s } # Initialize any classes
 
       screens.each do |s|
-        if s.is_a?(ProMotion::Screen) || s.is_a?(ProMotion::TableScreen) || s.is_a?(ProMotion::ScreenModule)
-          s = s.new if s.respond_to?(:new)
-          s.tabBarItem.tag = tag_index
-          s.parent_screen = self if self.is_a?(UIViewController) && s.respond_to?("parent_screen=")
-          s.tab_bar = tab_bar_controller if s.respond_to?("tab_bar=")
-          view_controllers << s.main_controller
-          tag_index += 1
-        else
-          Console.log("Non-Screen passed into tab_bar_controller: #{s.to_s}", withColor: Console::RED_COLOR)
-        end
+        s = s.new if s.respond_to?(:new)
         
+        s.tabBarItem.tag = tag_index
+        
+        s.parent_screen = self if self.is_a?(UIViewController) && s.respond_to?("parent_screen=")
+        s.tab_bar = tab_bar_controller if s.respond_to?("tab_bar=")
+        
+        vc = s.respond_to?(:main_controller) ? s.main_controller : s
+        view_controllers << vc
+        
+        tag_index += 1
+  
         s.on_load if s.respond_to?(:on_load)
       end
 
@@ -33,7 +34,10 @@ module ProMotion
     # @return [UITabBarController]
     def open_tab_bar(*screens)
       tab_bar = tab_bar_controller(*screens)
-      UIApplication.sharedApplication.delegate.load_root_screen(tab_bar)
+      
+      a = self.respond_to?(:load_root_screen) ? self : UIApplication.sharedApplication.delegate
+      
+      a.load_root_screen(tab_bar)
       tab_bar
     end
 

@@ -1,0 +1,2 @@
+class SplitViewController < UISplitViewController
+end

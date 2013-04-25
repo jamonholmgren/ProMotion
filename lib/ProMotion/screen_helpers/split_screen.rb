@@ -1,18 +1,27 @@
 module ProMotion
   module SplitScreen
-    def open_split_screen(master, child, args={})
+    def create_split_screen(master, detail, args={})
       master = master.new if master.respond_to?(:new)
-      child = child.new if child.respond_to?(:new)
+      detail = detail.new if detail.respond_to?(:new)
       
       split = SplitViewController.alloc.init
-      split.viewControllers = [ master, child ]
+      split.viewControllers = [ master, detail ]
       split.delegate = self
       
-      open split
+      [master, detail].each do |s|
+        s.split_screen = split if s.respond_to?("split_screen=")
+        s.on_load if s.respond_to?(:on_load)
+      end
+
       split
     end
     
-    # This is why you're using ProMotion. You don't want to write method defs like this.
+    def open_split_screen(master, detail, args={})
+      split = create_split_screen(master, detail, args)
+      open split, args
+      split
+    end
+    
     def splitViewController(svc, willHideViewController: vc, withBarButtonItem: button, forPopoverController: pc)
       button.title = vc.title
       svc.viewControllers.last.navigationItem.leftBarButtonItem = button;

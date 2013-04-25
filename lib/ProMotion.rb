@@ -9,5 +9,4 @@ Motion::Project::App.setup do |app|
   delegate = File.join(File.dirname(__FILE__), 'ProMotion/delegate.rb')
   promotion_files = FileList[File.join(File.dirname(__FILE__), 'ProMotion/**/*.rb')].exclude(delegate).to_a
   app.files = (promotion_files << delegate) + original_files
-  abort app.files.join("\n").to_s
 end

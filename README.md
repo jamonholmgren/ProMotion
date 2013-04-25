@@ -6,25 +6,39 @@ ProMotion is a RubyMotion gem that makes iOS development more like Ruby and less
 
 ## Table of contents
 
-1. [Tutorials](#tutorials)
-  * [Screencasts](#screencasts)
-  * [Sample Apps](#sample-apps)
-  * [Apps Built With ProMotion](#apps-built-with-promotion)
-1. **[Getting Started](#getting-started)**
-  * [Setup](#setup)
-1. [What's New?](#whats-new)
-1. [Usage](#usage)
-  * [Creating a basic screen](#creating-a-basic-screen)
-  * [Loading your first screen](#loading-your-first-screen)
-  * [Creating a tab bar](#creating-a-tab-bar)
-  * [Adding navigation bar buttons](#add-navigation-bar-buttons)
-  * [Opening and closing screens](#opening-and-closing-screens)
-  * [Adding view elements](#adding-view-elements)
-  * [Table screens](#table-screens)
-  * [Using your own UIViewController](#using-your-own-uiviewcontroller)
-1. [Reference](#reference)
-1. **[Help](#help)**
-1. [Contributing](#contributing)
+*generated with [DocToc](http://doctoc.herokuapp.com/)*
+
+- [ProMotion ](#promotion-)
+  - [A new way to easily build RubyMotion apps.](#a-new-way-to-easily-build-rubymotion-apps)
+  - [Table of contents](#table-of-contents)
+  - [Tutorials](#tutorials)
+    - [Screencasts](#screencasts)
+    - [Sample Apps](#sample-apps)
+    - [Apps Built With ProMotion](#apps-built-with-promotion)
+      - [BigDay! Reminder App](#bigday-reminder-app)
+      - [TipCounter App](#tipcounter-app)
+  - [Getting Started](#getting-started)
+    - [Setup](#setup)
+  - [What's New?](#whats-new)
+    - [Version 0.6](#version-06)
+  - [Usage](#usage)
+    - [Creating a basic screen](#creating-a-basic-screen)
+    - [Loading your first screen](#loading-your-first-screen)
+    - [Creating a split screen (iPad apps only)](#creating-a-split-screen-ipad-apps-only)
+    - [Creating a tab bar](#creating-a-tab-bar)
+    - [Add navigation bar buttons](#add-navigation-bar-buttons)
+    - [Opening and closing screens](#opening-and-closing-screens)
+    - [Adding view elements](#adding-view-elements)
+    - [Table Screens](#table-screens)
+    - [Using your own UIViewController](#using-your-own-uiviewcontroller)
+  - [Reference](#reference)
+    - [Screen](#screen)
+    - [TableScreen](#tablescreen)
+    - [Console](#console)
+  - [Help](#help)
+  - [Contributing](#contributing)
+    - [Submitting a Pull Request](#submitting-a-pull-request)
+    - [Primary Contributors](#primary-contributors)
 
 ## Tutorials
 

@@ -1,5 +1,5 @@
 module ProMotion
-  class AppDelegateParent
+  class Delegate
     include ProMotion::ScreenTabs
     attr_accessor :window
     
@@ -60,4 +60,5 @@ module ProMotion
       @home_screen.nil? == false
     end
   end
+  class AppDelegateParent < Delegate; end # For backwards compatibility
 end

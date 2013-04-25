@@ -42,12 +42,10 @@ module ProMotion
       UIApplication.sharedApplication.delegate
     end
     
-    # TODO: De-uglify this method.
     def close_screen(args = {})
       args ||= {}
       args[:animated] ||= true
-      
-      # Pop current view, maybe with arguments, if in navigation controller
+
       if self.is_modal?
         close_modal_screen args
 

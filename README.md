@@ -28,20 +28,15 @@ ProMotion is a RubyMotion gem that makes iOS development more like Ruby and less
 
 ## Tutorials
 
-Version 0.3 tutorial, will be updated soon but most of it still applies:
-
 http://www.clearsightstudio.com/insights/ruby-motion-promotion-tutorial
 
 ### Screencasts
-
-Video tutorial with 0.4.
 
 http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/
 
 ### Sample Apps
 
-#### ProMotion Tutorial
-Sample app here: [https://github.com/jamonholmgren/promotion-tutorial](https://github.com/jamonholmgren/promotion-tutorial)
+[https://github.com/jamonholmgren/promotion-tutorial](https://github.com/jamonholmgren/promotion-tutorial)
 
 ### Apps Built With ProMotion
 
@@ -69,7 +64,7 @@ typical app folder structure:
         event.rb
       views/
         buttons/
-          save_event_button_view.rb
+          save_event_button.rb
       app_delegate.rb
 
 ### Setup
@@ -94,7 +89,7 @@ Create a Gemfile and add the following lines:
 
 ```ruby
 source 'https://rubygems.org'
-gem "ProMotion", "~> 0.5.0"
+gem "ProMotion", "~> 0.6.0"
 ```
 
 Run `bundle install` in Terminal to install ProMotion.
@@ -102,7 +97,6 @@ Run `bundle install` in Terminal to install ProMotion.
 Go into your app/app_delegate.rb file and add the following:
 
 ```ruby
-# Note: ProMotion::AppDelegateParent is an alias to ProMotion::Delegate
 class AppDelegate < ProMotion::Delegate
   def on_load(app, options)
     open HomeScreen.new(nav_bar: true)
@@ -118,8 +112,10 @@ Now drop in this code:
 class HomeScreen < ProMotion::Screen
   title "Home"
   
-  def on_load
-    self.view.backgroundColor = UIColor.whiteColor
+  def will_appear
+    set_attributes self.view, {
+      backgroundColor: UIColor.whiteColor
+    }
   end
 end
 ```
@@ -132,36 +128,10 @@ Run `rake`. You should now see the simulator open with your home screen and a na
 
 ## What's New?
 
-### Version 0.5
+### Version 0.6
 
-Version 0.5 is mostly a documentation and consistency release. It should be backwards-compatible
-with 0.4.
-
-* `on_return` fires after animation complete on modals now
-* Added tests ... run with `rake spec` (thanks [@macfanatic](http://twitter.com/macfanatic))
-* Rearranged internal folders to make a lot more sense
-* More complete API documentation
-* Refactored camelCase methods and configs to under_score
-* Set `should_autorotate` to true by default
-* Changed `open_screen` to `open` (`open_screen` still works for backwards compatibility)
-* `add_element` is now `add` (and `remove_element` is `remove`)
-* Removed built-in app (will release some sample apps soon, including a "Kitchen Sink" one)
-
-### Version 0.4
-
-* Screens are now UIViewControllers (they used to contain UIViewControllers, but that got too funky) so you can do normal UIViewController stuff with them
-* Screen functionality can also be inherited as a module in your own UIViewController, but you need to provide your own methods for viewDidLoad and whatnot.
-* Tons of headlessCamelCaps methods are now properly_ruby_underscored (with an alias to the old name for compatibility)
-* `open_screen` and `close_screen` can now just be `open` and `close` respectively
-* Attempted to keep 100% compatibility with 0.3.x but no guarantees...report issues, please!
-* Revamped the internal folder structure of the gem...more work on this to come
-* Built in a few helpers that were external before, like `content_height(view)`
-* More consistent calling of `on_load` (sometimes doesn't get called in 0.3.x)
-* `fresh_start SomeScreen` is now `open_root_screen SomeScreen`
-* Removed `set_view_controller` as we don't need it anymore
-* Better documentation (still needs work), better error messages
-* Deprecation warnings EVERYWHERE for older apps (upgrade already!)
-
+* Added `open_split_screen` for iPad-supported apps (thanks @rheoli for your contributions to this)
+* `ProMotion::AppDelegateParent` renamed to `ProMotion::Delegate` (`AppDelegateParent` is an alias)
 
 ## Usage
 
@@ -189,10 +159,21 @@ end
 ### Loading your first screen
 
 ```ruby
-# In /app/app_delegate.rb
-class AppDelegate < ProMotion::AppDelegate
+# In app/app_delegate.rb
+class AppDelegate < ProMotion::Delegate
   def on_load(app, options)
     open MyHomeScreen.new(nav_bar: true)
+  end
+end
+```
+
+### Creating a split screen (iPad apps only)
+
+```ruby
+# In app/app_delegate.rb
+class AppDelegate < ProMotion::Delegate
+  def on_load(app, options)
+    open_split_screen MenuScreen, DetailScreen
   end
 end
 ```
@@ -612,36 +593,6 @@ end
     </td>
   </tr>
   <tr>
-    <td>ios_version_greater?(version)</td>
-    <td>
-      Returns true if 'ios_version' is greater than the version passed in, false otherwise<br />
-    </td>
-  </tr>
-  <tr>
-    <td>ios_version_greater_eq?(version)</td>
-    <td>
-      Returns true if 'ios_version' is greater than or equal to the version passed in, false otherwise<br />
-    </td>
-  </tr>
-  <tr>
-    <td>ios_version_is?(version)</td>
-    <td>
-      Returns true if 'ios_version' is equal to the version passed in, false otherwise<br />
-    </td>
-  </tr>
-  <tr>
-    <td>ios_version_less?(version)</td>
-    <td>
-      Returns true if 'ios_version' is less than the version passed in, false otherwise<br />
-    </td>
-  </tr>
-  <tr>
-    <td>ios_version_less_eq?(version)</td>
-    <td>
-      Returns true if 'ios_version' is less than or equal to the version passed in, false otherwise<br />
-    </td>
-  </tr>
-  <tr>
     <td>app_delegate</td>
     <td>
       Returns the AppDelegate<br />
@@ -674,9 +625,16 @@ end
     </td>
   </tr>
   <tr>
+    <td>open_split_screen(master, detail)</td>
+    <td>
+      *iPad apps only*
+      Opens a UISplitScreenViewController with the specified screens as the root view controller of the current app<br />
+    </td>
+  </tr>
+  <tr>
     <td>open_tab_bar(*screens)</td>
     <td>
-      Open a UITabBarController with the specified screens as the root view controller of the current app<br />
+      Opens a UITabBarController with the specified screens as the root view controller of the current app<br />
     </td>
   </tr>
   <tr>

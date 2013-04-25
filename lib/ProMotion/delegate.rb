@@ -1,6 +1,7 @@
 module ProMotion
   class Delegate
     include ProMotion::ScreenTabs
+    include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2")
     attr_accessor :window
     
     def application(application, didFinishLaunchingWithOptions:launch_options)

@@ -1,5 +1,5 @@
 describe "screen properties" do
-    
+
   before do
 
     # Simulate AppDelegate setup of main screen

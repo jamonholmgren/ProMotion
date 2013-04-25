@@ -170,20 +170,35 @@ module ProMotion
     end
 
     def supported_orientations
-      ors = 0
+      orientations = 0
       NSBundle.mainBundle.infoDictionary["UISupportedInterfaceOrientations"].each do |ori|
         case ori
         when "UIInterfaceOrientationPortrait"
-          ors |= UIInterfaceOrientationMaskPortrait
+          orientations |= UIInterfaceOrientationMaskPortrait
         when "UIInterfaceOrientationLandscapeLeft"
-          ors |= UIInterfaceOrientationMaskLandscapeLeft
+          orientations |= UIInterfaceOrientationMaskLandscapeLeft
         when "UIInterfaceOrientationLandscapeRight"
-          ors |= UIInterfaceOrientationMaskLandscapeRight
+          orientations |= UIInterfaceOrientationMaskLandscapeRight
         when "UIInterfaceOrientationPortraitUpsideDown"
-          ors |= UIInterfaceOrientationMaskPortraitUpsideDown
+          orientations |= UIInterfaceOrientationMaskPortraitUpsideDown
         end
       end
-      ors
+      orientations
+    end
+    
+    def supported_device_families
+      NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].map do |m|
+        case m
+        when "1"
+          :iphone
+        when "2"
+          :ipad
+        end
+      end
+    end
+    
+    def supported_device_family?(family)
+      supported_device_families.include?(family)
     end
 
     # Class methods

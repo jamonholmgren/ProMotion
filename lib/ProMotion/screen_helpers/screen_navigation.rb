@@ -19,6 +19,19 @@ module ProMotion
       elsif args[:in_tab] && self.tab_bar
         present_view_controller_in_tab_bar_controller screen, args[:in_tab]
 
+      elsif self.split_screen
+        self.split_screen.bar_button_item||=nil
+        #-set split-menu button when needed
+        screen.navigationItem.setLeftBarButtonItem(self.split_screen.bar_button_item) if self.split_screen.bar_button_item and !screen.is_modal?
+        #-set split screen for new screen
+        screen.split_screen=self.split_screen
+        screen.detail_split_screen=true
+        self.split_screen.delegate=screen
+        s=screen
+        s=screen.main_controller if screen.respond_to?(:main_controller)
+        a=[self.split_screen.viewControllers[0], s]
+        self.split_screen.viewControllers=a
+        
       elsif self.navigation_controller
         push_view_controller screen
 

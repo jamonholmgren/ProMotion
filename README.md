@@ -669,10 +669,6 @@ end
     <th>Description</th>
   </tr>
   <tr>
-    <td>self</td>
-    <td>Returns the current UITableViewController (not UITableView)</td>
-  </tr>
-  <tr>
     <td>searchable(placeholder: "placeholder text")</td>
     <td>Class method to make the current table searchable.</td>
   </tr>
@@ -761,11 +757,13 @@ end
 
 ## Help
 
-If you need help, feel free to ping me on twitter @jamonholmgren or email jamon@clearsightstudio.com, or open a ticket on GitHub.
+If you need help, feel free to ping me on twitter @jamonholmgren or open a ticket on GitHub.
+Opening a ticket is usually the best and we respond to those pretty quickly.
 
 ## Contributing
 
-I'm really looking for feedback. Tweet me with your ideas or open a ticket (I don't mind!) and let's discuss.
+I'm very open to ideas. Tweet me with your ideas or open a ticket (I don't mind!) 
+and let's discuss.
 
 ### Submitting a Pull Request
 
@@ -775,6 +773,7 @@ I'm really looking for feedback. Tweet me with your ideas or open a ticket (I do
 4. Update or create new specs
 5. Make sure tests are passing by running `rake spec`
 6. Submit pull request
+7. Fame, adoration, kudos everywhere
 
 ### Primary Contributors
 

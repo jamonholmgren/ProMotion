@@ -3,11 +3,8 @@ module ProMotion
     def set_attributes(element, args = {})
       args.each do |k, v|
         if v.is_a? Hash
-          # TODO: Do this recursively
-          v.each do |k2, v2|
-            sub_element = element.send("#{k}")
-            sub_element.send("#{k2}=", v2) if sub_element.respond_to?("#{k2}=")
-          end
+          sub_element = element.send(k)
+          set_attributes sub_element, v
         elsif v.is_a? Array
           element.send("#{k}", *v) if element.respond_to?("#{k}")
         else
@@ -20,7 +17,7 @@ module ProMotion
     def frame_from_array(array)
       return CGRectMake(array[0], array[1], array[2], array[3]) if array.length == 4
       Console.log(" - frame_from_array expects an array with four elements: [x, y, width, height]", with_color: Console::RED_COLOR)
-      CGRectZero
+      CGRectZero.dup
     end
 
     def content_height(view)

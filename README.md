@@ -629,13 +629,13 @@ end
     <td>
       Pushes the screen onto the navigation stack or opens in a modal<br />
       Argument options:<br />
-      <code>nav_bar: true|false</code> (note: this has no effect if you're already in a navigation controller)<br />
+      <code>nav_bar: true|false</code><br />
       <code>hide_tab_bar: true|false</code><br />
       <code>modal: true|false</code><br />
-      <code>close_all: true|false</code> (closes all open screens and opens as root)<br />
+      <code>close_all: true|false</code> (closes all open screens and opens as root...same as open_root_screen)<br />
       <code>animated: true:false</code> (currently only affects modals)<br />
       <code>in_tab: "Tab name"</code> (if you're in a tab bar)<br />
-      any accessors in <code>screen</code>
+      Any accessors in <code>screen</code> can also be set in this hash.
     </td>
   </tr>
   <tr>

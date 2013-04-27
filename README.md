@@ -4,7 +4,7 @@
 
 ProMotion is a RubyMotion gem that makes iOS development more like Ruby and less like Objective-C.
 
-## Table of contents
+# Table of contents
 
 *generated with [DocToc](http://doctoc.herokuapp.com/)*
 
@@ -40,28 +40,28 @@ ProMotion is a RubyMotion gem that makes iOS development more like Ruby and less
     - [Submitting a Pull Request](#submitting-a-pull-request)
     - [Primary Contributors](#primary-contributors)
 
-## Tutorials
+# Tutorials
 
 http://www.clearsightstudio.com/insights/ruby-motion-promotion-tutorial
 
-### Screencasts
+## Screencasts
 
 http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/
 
-### Sample Apps
+## Sample Apps
 
 [https://github.com/jamonholmgren/promotion-tutorial](https://github.com/jamonholmgren/promotion-tutorial)
 
-### Apps Built With ProMotion
+## Apps Built With ProMotion
 
-#### BigDay! Reminder App
+### BigDay! Reminder App
 Check out the free [BigDay! Reminder app](https://itunes.apple.com/us/app/bigday!/id571756685?ls=1&mt=8) on the 
 App Store to see what's possible. ClearSight Studio built the app for Kijome Software, a small app investment company.
 
-#### TipCounter App
+### TipCounter App
 [TipCounter](http://www.tipcounterapp.com) was built by [Matt Brewer](https://github.com/macfanatic/) for bartenders and servers to easily track their tips.  Used ProMotion and the development was a lot of fun!
 
-## Getting Started
+# Getting Started
 
 ProMotion is designed to be as intuitive and Ruby-like as possible. For example, here is a 
 typical app folder structure:
@@ -81,7 +81,7 @@ typical app folder structure:
           save_event_button.rb
       app_delegate.rb
 
-### Setup
+## Setup
 
 Create a new RubyMotion project.
 
@@ -140,16 +140,16 @@ Run `rake`. You should now see the simulator open with your home screen and a na
 ![ProMotion Home Screen](http://clearsightstudio.github.com/ProMotion/img/ProMotion/home-screen.png)
 
 
-## What's New?
+# What's New?
 
-### Version 0.6
+## Version 0.6
 
 * Added `open_split_screen` for iPad-supported apps (thanks @rheoli for your contributions to this)
 * `ProMotion::AppDelegateParent` renamed to `ProMotion::Delegate` (`AppDelegateParent` is an alias)
 
-## Usage
+# Usage
 
-### Creating a basic screen
+## Creating a basic screen
 
 ```ruby
 class HomeScreen < ProMotion::Screen
@@ -170,7 +170,7 @@ class HomeScreen < ProMotion::Screen
 end
 ```
 
-### Loading your first screen
+## Loading your first screen
 
 ```ruby
 # In app/app_delegate.rb
@@ -181,7 +181,7 @@ class AppDelegate < ProMotion::Delegate
 end
 ```
 
-### Creating a split screen (iPad apps only)
+## Creating a split screen (iPad apps only)
 
 ```ruby
 # In app/app_delegate.rb
@@ -192,7 +192,7 @@ class AppDelegate < ProMotion::Delegate
 end
 ```
 
-### Creating a tab bar
+## Creating a tab bar
 
 Creating a tabbed bar with multiple screens. This will set the tab bar as the root view controller for your app,
 so keep that in mind. It can be done from the AppDelegate#on_load or from a screen (that screen will go away, though).
@@ -227,7 +227,7 @@ def some_action
 end
 ```
 
-### Add navigation bar buttons
+## Add navigation bar buttons
 
 These two methods add the buttons to the top navigation bar of a screen. The `action:` lets you specify a method to
 call when that button is tapped, and you can pass in a UIBarButton style using `type:`.
@@ -237,7 +237,7 @@ set_nav_bar_right_button "Save", action: :save_something, type: UIBarButtonItemS
 set_nav_bar_left_button "Cancel", action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
 ```
 
-### Opening and closing screens
+## Opening and closing screens
 
 If the user taps something and you want to open a new screen, it's easy. Just use `open` and pass in the screen class
 or an instance of that screen.
@@ -311,7 +311,7 @@ class MainScreen < ProMotion::Screen
 end
 ```
 
-### Adding view elements
+## Adding view elements
 
 Any view item (UIView, UIButton, custom UIView subclasses, etc) can be added to the current view with `add`.
 `add` accepts a second argument which is a hash of attributes that get applied to the element before it is
@@ -336,7 +336,7 @@ The `set_attributes` method is identical to add except that it does not add it t
 }
 ```
 
-### Table Screens
+## Table Screens
 
 You can create sectioned table screens easily with TableScreen, SectionedTableScreen, and GroupedTableScreen.
 
@@ -395,7 +395,7 @@ your Rakefile and doing this:
   ]
 ```
 
-### Using your own UIViewController
+## Using your own UIViewController
 
 Sometimes you want to inherit from a different UIViewController other than that provided by ProMotion,
 such as when using [Formotion](https://github.com/clayallsopp/formotion). **RubyMotion doesn't currently 
@@ -453,9 +453,9 @@ class EventsScreen < Formotion::FormController # Can also be < UIViewController
 end
 ```
 
-## Reference
+# Reference
 
-### Screen
+## Screen
 
 <table>
   <tr>
@@ -659,7 +659,7 @@ end
   </tr>
 </table>
 
-### TableScreen
+## TableScreen
 
 *Has all the methods of Screen*
 
@@ -739,7 +739,7 @@ end
   </tr>
 </table>
 
-### Console
+## Console
 
 <table>
   <tr>
@@ -755,17 +755,17 @@ end
   </tr>
 </table>
 
-## Help
+# Help
 
 If you need help, feel free to ping me on twitter @jamonholmgren or open a ticket on GitHub.
 Opening a ticket is usually the best and we respond to those pretty quickly.
 
-## Contributing
+# Contributing
 
 I'm very open to ideas. Tweet me with your ideas or open a ticket (I don't mind!) 
 and let's discuss.
 
-### Submitting a Pull Request
+## Submitting a Pull Request
 
 1. Fork the project
 2. Create a feature branch
@@ -775,7 +775,7 @@ and let's discuss.
 6. Submit pull request
 7. Fame, adoration, kudos everywhere
 
-### Primary Contributors
+## Primary Contributors
 
 * Jamon Holmgren: [@jamonholmgren](https://twitter.com/jamonholmgren)
 * Silas Matson: [@silasjmatson](https://twitter.com/silasjmatson)

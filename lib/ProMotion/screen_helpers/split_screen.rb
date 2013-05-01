@@ -5,7 +5,14 @@ module ProMotion
       detail = detail.new if detail.respond_to?(:new)
       
       split = SplitViewController.alloc.init
-      split.viewControllers = [ master, detail ]
+      
+      split.viewControllers = [ master, detail ].collect { |vc|
+        if vc.navigation_controller
+          vc.navigation_controller
+        else
+          vc
+        end
+      }
       split.delegate = self
       
       [master, detail].each do |s|
@@ -24,11 +31,21 @@ module ProMotion
     
     def splitViewController(svc, willHideViewController: vc, withBarButtonItem: button, forPopoverController: pc)
       button.title = vc.title
-      svc.viewControllers.last.navigationItem.leftBarButtonItem = button;
+      nav_vc=svc.viewControllers.last
+      # screen in a navcontroller?
+      if nav_vc.is_a?(ProMotion::NavigationController)
+        nav_vc=nav_vc.childViewControllers[0]
+      end
+      nav_vc.navigationItem.leftBarButtonItem = button
     end
 
     def splitViewController(svc, willShowViewController: vc, invalidatingBarButtonItem: barButtonItem)
-      svc.viewControllers.last.navigationItem.leftBarButtonItem = nil
+      nav_vc=svc.viewControllers.last
+      # screen in a navcontroller?
+      if nav_vc.is_a?(ProMotion::NavigationController)
+        nav_vc=nav_vc.childViewControllers[0]
+      end
+      nav_vc.navigationItem.leftBarButtonItem = nil
     end
   end
 end

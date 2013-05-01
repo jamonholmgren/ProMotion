@@ -18,6 +18,26 @@ module ProMotion
 
       elsif args[:in_tab] && self.tab_bar
         present_view_controller_in_tab_bar_controller screen, args[:in_tab]
+        
+      elsif self.split_screen
+        # get the button of the old detail screen
+        nav_vc=self.split_screen.viewControllers.last
+        # screen in a navcontroller?
+        if nav_vc.is_a?(ProMotion::NavigationController)
+          nav_vc=nav_vc.childViewControllers[0]
+        end
+        button=nav_vc.navigationItem.leftBarButtonItem
+        #-set split-menu button when needed
+        if button and !screen.is_modal?
+          screen.navigationItem.leftBarButtonItem=button
+        end
+        #-set split screen for new screen
+        screen.split_screen=self.split_screen
+        self.split_screen.delegate=screen
+        s=screen
+        s=screen.main_controller if screen.respond_to?(:main_controller)
+        a=[self.split_screen.viewControllers[0], s]
+        self.split_screen.viewControllers=a
 
       elsif self.navigation_controller
         push_view_controller screen

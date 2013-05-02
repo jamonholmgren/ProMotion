@@ -8,10 +8,10 @@ class SplitViewController < UISplitViewController
     s.respond_to?(:visibleViewController) ? s.visibleViewController : s
   end
   def master_screen=(s)
-    self.viewControllers = [s.main_controller, detail_screen]
+    self.viewControllers = [s.main_controller, self.viewControllers.last]
   end
   def detail_screen=(s)
-    self.viewControllers = [master_screen, s.main_controller]
+    self.viewControllers = [self.viewControllers.first, s.main_controller]
   end
   def screens=(s_array)
     self.viewControllers = s_array

@@ -306,6 +306,23 @@ class MainScreen < ProMotion::Screen
 end
 ```
 
+### Note about split screens and universal apps
+
+It's common to want to open a screen in the same navigation controller if on iPhone but
+in a separate detail view when on iPad. Here's a good way to do that.
+
+```ruby
+class MenuScreen < ProMotion::TableScreen
+  # ...
+  def some_action
+    open SomeScreen.new, in_detail: true
+  end
+end
+```
+
+The `in_detail` option tells ProMotion to look for a split screen and open in the detail screen
+if it's available. If not, open normally. This also works for `in_master:`.
+
 ## Adding view elements
 
 Any view item (UIView, UIButton, custom UIView subclasses, etc) can be added to the current view with `add`.

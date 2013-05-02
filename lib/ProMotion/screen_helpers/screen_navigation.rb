@@ -10,9 +10,12 @@ module ProMotion
       screen.send(:on_load) if screen.respond_to?(:on_load)      
       animated = args[:animated] || true
 
+      return self.split_screen.detail_screen = screen if args[:in_detail] && self.split_screen
+      return self.split_screen.master_screen = screen if args[:in_master] && self.split_screen
+      
       if args[:close_all]
         open_root_screen screen
-
+        
       elsif args[:modal]
         present_modal_view_controller screen, animated
 

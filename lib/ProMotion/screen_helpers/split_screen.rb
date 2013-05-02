@@ -1,12 +1,21 @@
 module ProMotion
   module SplitScreen
+    def split_screen_controller(master, detail)
+      master_main = master.navigationController ? master.navigationController : master
+      detail_main = detail.navigationController ? detail.navigationController : detail
+      
+      split = SplitViewController.alloc.init
+      split.viewControllers = [ master_main, detail_main ]
+      split.delegate = self
+      
+      split
+    end
+    
     def create_split_screen(master, detail, args={})
       master = master.new if master.respond_to?(:new)
       detail = detail.new if detail.respond_to?(:new)
       
-      split = SplitViewController.alloc.init
-      split.viewControllers = [ master, detail ]
-      split.delegate = self
+      split = split_screen_controller(master, detail)
       
       [master, detail].each do |s|
         s.split_screen = split if s.respond_to?("split_screen=")
@@ -21,6 +30,8 @@ module ProMotion
       open split, args
       split
     end
+    
+    # UISplitViewControllerDelegate methods
     
     def splitViewController(svc, willHideViewController: vc, withBarButtonItem: button, forPopoverController: pc)
       button.title = vc.title

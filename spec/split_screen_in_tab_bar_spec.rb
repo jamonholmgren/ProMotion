@@ -4,9 +4,9 @@ describe "split screen in tab bar functionality" do
     @app = TestDelegate.new
     
     @master_screen = HomeScreen.new nav_bar: true
-    @child_screen = BasicScreen.new nav_bar: true
+    @detail_screen = BasicScreen.new nav_bar: true
     
-    @split_screen = @app.create_split_screen @master_screen, @child_screen
+    @split_screen = @app.create_split_screen @master_screen, @detail_screen
     @tab = @app.open_tab_bar @split_screen, HomeScreen, BasicScreen
   end
   
@@ -22,12 +22,24 @@ describe "split screen in tab bar functionality" do
     @app.window.rootViewController.should == @tab
   end
   
-  it "should set the first viewController to HomeScreen" do
-    @split_screen.viewControllers.first.should == @master_screen
+  it "should return screens for the master_screen and detail_screen methods" do 
+    @split_screen.master_screen.is_a?(PM::Screen).should == true
+    @split_screen.detail_screen.is_a?(PM::Screen).should == true
   end
   
-  it "should set the second viewController to BasicScreen" do
-    @split_screen.viewControllers.last.should == @child_screen
+  it "should return navigationControllers" do 
+    @split_screen.viewControllers.first.is_a?(UINavigationController).should == true
+    @split_screen.viewControllers.last.is_a?(UINavigationController).should == true
+  end
+  
+  it "should set the first viewController to HomeScreen's main controller" do
+    @split_screen.master_screen.should == @master_screen
+    @split_screen.viewControllers.first.should == @master_screen.main_controller
+  end
+  
+  it "should set the second viewController to BasicScreen's main controller" do
+    @split_screen.detail_screen.should == @detail_screen
+    @split_screen.viewControllers.last.should == @detail_screen.main_controller
   end
   
   it "should set the tab bar first viewController to the split screen" do 

@@ -35,11 +35,11 @@ module ProMotion
     
     def splitViewController(svc, willHideViewController: vc, withBarButtonItem: button, forPopoverController: pc)
       button.title = vc.title
-      svc.viewControllers.last.navigationItem.leftBarButtonItem = button;
+      svc.detail_screen.navigationItem.leftBarButtonItem = button;
     end
 
     def splitViewController(svc, willShowViewController: vc, invalidatingBarButtonItem: barButtonItem)
-      svc.viewControllers.last.navigationItem.leftBarButtonItem = nil
+      svc.detail_screen.navigationItem.leftBarButtonItem = nil
     end
   end
 end

@@ -3,7 +3,7 @@ module ProMotion
     include MotionTable::PlainTable
     include MotionTable::SearchableTable
     include ProMotion::ScreenModule
-    
+
     def update_table_data
       self.update_table_view_data(table_data)
     end

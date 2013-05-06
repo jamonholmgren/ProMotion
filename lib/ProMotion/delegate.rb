@@ -3,7 +3,7 @@ module ProMotion
     include ProMotion::ScreenTabs
     include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2")
     attr_accessor :window
-    
+
     def application(application, didFinishLaunchingWithOptions:launch_options)
       return true if RUBYMOTION_ENV == "test"
 
@@ -15,7 +15,7 @@ module ProMotion
 
       true
     end
-    
+
     def app_delegate
       UIApplication.sharedApplication.delegate
     end
@@ -50,7 +50,7 @@ module ProMotion
       get_home_screen.send(:on_load) if get_home_screen.respond_to?(:on_load)
       load_root_screen get_home_screen
     end
-    
+
     def get_home_screen
       @home_screen
     end

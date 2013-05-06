@@ -685,6 +685,14 @@ end
     <td>Class method to make the current table searchable.</td>
   </tr>
   <tr>
+    <td>refreshable</td>
+    <td>Class method to make the current table refreshable.<p>You must also specify the following block in your <code>will_appear</code> method:</p>
+    <code>on_refresh do<br />
+      # Code to start the refresh</br>
+    end</code>
+    <p>And after you're done refreshing everything, call <code>end_refreshing</code> and your tableview will refresh the data automatically.</p></td>
+  </tr>
+  <tr>
     <td colspan="2">
       <h3>table_data</h3>
       Method that is called to get the table's cell data and build the table.<br />

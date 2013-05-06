@@ -199,7 +199,7 @@ module ProMotion::MotionTable
           table_cell.image_size = data_cell[:remote_image][:size] if data_cell[:remote_image][:size] && table_cell.respond_to?("image_size=")
           table_cell.imageView.setImageWithURL(url, placeholderImage: placeholder)
           table_cell.imageView.layer.masksToBounds = true
-          table_cell.imageView.layer.cornerRadius = data_cell[:remote_image][:radius]
+          table_cell.imageView.layer.cornerRadius = data_cell[:remote_image][:radius] if data_cell[:remote_image].has_key?(:radius)
         else
           ProMotion::Console.log("ProMotion Warning: to use remote_image with TableScreen you need to include the CocoaPod 'SDWebImage'.", with_color: ProMotion::Console::RED_COLOR)
         end

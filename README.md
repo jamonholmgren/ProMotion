@@ -685,12 +685,19 @@ end
     <td>Class method to make the current table searchable.</td>
   </tr>
   <tr>
-    <td>refreshable</td>
-    <td>Class method to make the current table refreshable.<p>You must also specify the following block in your <code>will_appear</code> method:</p>
-    <pre><code>on_refresh do
+    <td><pre><code>refreshable(
+  callback: :on_refresh,
+  pull_message: "Pull to refresh", 
+  refreshing: "Refreshing data…", 
+  updated_format: "Last updated at %s", 
+  updated_time_format: "%l:%M %p"
+)</code></pre></td>
+    <td>Class method to make the current table refreshable.
+    	<p>All parameters are optional. If you do not specify a a callback, it will assume you've implemented an <code>on_refresh</code> method in your tableview.</p>
+    <pre><code>def on_refresh
   # Code to start the refresh
 end</code></pre>
-    <p>And after you're done refreshing everything, call <code>end_refreshing</code> and your tableview will refresh the data automatically.</p></td>
+    <p>And after you're done with your asyncronous process, call <code>end_refreshing</code> to collapse the refresh  view and update the last refreshed time and then <code>update_table_data</code>.</p></td>
   </tr>
   <tr>
     <td colspan="2">

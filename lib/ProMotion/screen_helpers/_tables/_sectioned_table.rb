@@ -8,7 +8,7 @@ module ProMotion::MotionTable
         self.make_searchable(content_controller: self, search_bar: self.class.get_searchable_params)
       end
       if ios_version_greater_eq?("6.0") && self.class.respond_to?(:get_refreshable) && self.class.get_refreshable
-        self.make_refreshable
+        self.make_refreshable(self.class.get_refreshable_params)
       end
     end
 

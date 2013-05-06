@@ -1,8 +1,14 @@
 module ProMotion::MotionTable
   module RefreshableTable
-    def make_refreshable
+    def make_refreshable(params={})
+      pull_message = params[:pull_message] || "Pull to refresh"
+      @refreshing = params[:refreshing] || "Refreshing data..."
+      @updated_format = params[:updated_format] || "Last updated at %s"
+      @updated_time_format = params[:updated_time_format] || "%l:%M %p"
+      @refreshable_callback = params[:callback]
+
       @refresh = UIRefreshControl.alloc.init
-      @refresh.attributedTitle = NSAttributedString.alloc.initWithString("Pull to Refresh")
+      @refresh.attributedTitle = NSAttributedString.alloc.initWithString(pull_message)
       @refresh.addTarget(self, action:'refreshView:', forControlEvents:UIControlEventValueChanged)
       self.refreshControl = @refresh
     end
@@ -12,20 +18,21 @@ module ProMotion::MotionTable
 
     # UIRefreshControl Delegates
     def refreshView(refresh)
-      refresh.attributedTitle = NSAttributedString.alloc.initWithString("Refreshing data...")
-      @on_refresh.call if @on_refresh
+      refresh.attributedTitle = NSAttributedString.alloc.initWithString(@refreshing)
+      self.send(@refreshable_callback) if @refreshable_callback
     end
 
-    def on_refresh(&block)
-      @on_refresh = block
+    def start_refreshing
+      return unless @refresh
+
+      @refresh.beginRefreshing
     end
 
     def end_refreshing
       return unless @refresh
 
-      @refresh.attributedTitle = NSAttributedString.alloc.initWithString("Last updated on #{Time.now.strftime("%H:%M:%S")}")
+      @refresh.attributedTitle = NSAttributedString.alloc.initWithString(sprintf(@updated_format, Time.now.strftime(@updated_time_format)))
       @refresh.endRefreshing
-      self.update_table_data
     end
   end
 end

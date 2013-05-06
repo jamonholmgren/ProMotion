@@ -25,13 +25,19 @@ module ProMotion
       end
 
       # Refreshable
-      def refreshable(&block)
-        @refreshable_block = block
+      def refreshable(params = {})
+        params[:callback] = :on_refresh unless params[:callback]
+
+        @refreshable_params = params
         @refreshable = true
       end
 
       def get_refreshable
         @refreshable ||= false
+      end
+
+      def get_refreshable_params
+        @refreshable_params ||= nil
       end
 
     end

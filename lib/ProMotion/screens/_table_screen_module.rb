@@ -2,6 +2,7 @@ module ProMotion
   module TableScreenModule
     include MotionTable::PlainTable
     include MotionTable::SearchableTable
+    include MotionTable::RefreshableTable
     include ProMotion::ScreenModule
 
     def update_table_data
@@ -9,6 +10,7 @@ module ProMotion
     end
 
     module TableClassMethods
+      # Searchable
       def searchable(params={})
         @searchable_params = params
         @searchable = true
@@ -21,6 +23,17 @@ module ProMotion
       def get_searchable
         @searchable ||= false
       end
+
+      # Refreshable
+      def refreshable(&block)
+        @refreshable_block = block
+        @refreshable = true
+      end
+
+      def get_refreshable
+        @refreshable ||= false
+      end
+
     end
     def self.included(base)
       base.extend(ClassMethods)

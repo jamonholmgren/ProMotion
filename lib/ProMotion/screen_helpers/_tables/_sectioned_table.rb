@@ -7,6 +7,9 @@ module ProMotion::MotionTable
       if self.class.respond_to?(:get_searchable) && self.class.get_searchable
         self.make_searchable(content_controller: self, search_bar: self.class.get_searchable_params)
       end
+      if self.class.respond_to?(:get_refreshable) && self.class.get_refreshable
+        self.make_refreshable
+      end
     end
 
     # @param [Array] Array of table data

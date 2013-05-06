@@ -19,7 +19,11 @@ module ProMotion::MotionTable
     # UIRefreshControl Delegates
     def refreshView(refresh)
       refresh.attributedTitle = NSAttributedString.alloc.initWithString(@refreshing)
-      self.send(@refreshable_callback) if @refreshable_callback
+      if @refreshable_callback && self.respondsToSelector(@refreshable_callback)
+        self.send(@refreshable_callback)
+      else
+          ProMotion::Console.log("ProMotion Warning: you must implement an on_refresh method in your TableScreen.", with_color: ProMotion::Console::RED_COLOR)
+      end
     end
 
     def start_refreshing

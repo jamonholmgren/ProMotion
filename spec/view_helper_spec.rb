@@ -3,7 +3,7 @@ describe "view helpers" do
   def equal_rect(rect)
     ->(obj) { CGRectEqualToRect obj, rect }
   end
-  
+
   before do
     @dummy = UIView.alloc.initWithFrame CGRectZero
     @dummy.extend ProMotion::ViewHelper
@@ -14,7 +14,7 @@ describe "view helpers" do
   end
 
   it "#frame_from_array should return a valid CGRect" do
-    @dummy.frame_from_array([0,0,320,480]).should equal_rect(CGRectMake(0,0,320,480)) 
+    @dummy.frame_from_array([0,0,320,480]).should equal_rect(CGRectMake(0,0,320,480))
   end
 
   it "should allow you to set attributes" do
@@ -24,16 +24,16 @@ describe "view helpers" do
 
   it "should allow you to set nested attributes" do
     layered_view = UIView.alloc.initWithFrame(CGRectMake(0, 0, 10, 10))
-    
+
     @dummy.set_attributes layered_view, {
       layer: {
         backgroundColor: UIColor.redColor.CGColor
       }
     }
-    
+
     layered_view.layer.backgroundColor.should == UIColor.redColor.CGColor
   end
-  
+
   it "should allow you to set multiple nested attributes" do
     mask_layer = CAShapeLayer.layer
     layered_view = UIView.alloc.initWithFrame(CGRectMake(0, 0, 10, 10))
@@ -45,10 +45,10 @@ describe "view helpers" do
         }
       }
     }
-    
+
     layered_view.layer.mask.backgroundColor.should == UIColor.redColor.CGColor
   end
-  
+
   describe "content height" do
 
     before do

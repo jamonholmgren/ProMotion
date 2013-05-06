@@ -55,7 +55,7 @@ module ProMotion::MotionTable
         ProMotion::Console.log("Action not implemented: #{action.to_s}", with_color: ProMotion::Console::RED_COLOR)
       end
     end
-  
+
     def set_cell_attributes(element, args = {})
       args.each do |k, v|
         if v.is_a? Hash
@@ -78,7 +78,7 @@ module ProMotion::MotionTable
       data_cell[:arguments] = {} unless data_cell[:arguments]
       data_cell[:arguments][:value] = switch.isOn if data_cell[:arguments].is_a? Hash
       data_cell[:accessory_action] ||= data_cell[:accessoryAction] # For legacy support
-      
+
       trigger_action(data_cell[:accessory_action], data_cell[:arguments]) if data_cell[:accessory_action]
     end
 
@@ -105,14 +105,14 @@ module ProMotion::MotionTable
     # Set table_data_index if you want the right hand index column (jumplist)
     def sectionIndexTitlesForTableView(table_view)
       if self.respond_to?(:table_data_index)
-        self.table_data_index 
+        self.table_data_index
       end
     end
-    
+
     def remap_data_cell(data_cell)
       # Re-maps legacy data cell calls
-      mappings = { 
-        cell_style: :cellStyle, 
+      mappings = {
+        cell_style: :cellStyle,
         cell_identifier: :cellIdentifier,
         cell_class: :cellClass,
         masks_to_bounds: :masksToBounds,
@@ -143,9 +143,9 @@ module ProMotion::MotionTable
 
       data_cell = cell_at_section_and_index(indexPath.section, indexPath.row)
       return UITableViewCell.alloc.init unless data_cell
-      
+
       data_cell = self.remap_data_cell(data_cell)
-      
+
       data_cell[:cell_style] ||= UITableViewCellStyleDefault
       data_cell[:cell_identifier] ||= "Cell"
       cell_identifier = data_cell[:cell_identifier]
@@ -154,7 +154,7 @@ module ProMotion::MotionTable
       table_cell = table_view.dequeueReusableCellWithIdentifier(cell_identifier)
       unless table_cell
         table_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:cell_identifier)
-        
+
         # Add optimizations here
         table_cell.layer.masksToBounds = true if data_cell[:masks_to_bounds]
         table_cell.backgroundColor = data_cell[:background_color] if data_cell[:background_color]
@@ -165,7 +165,7 @@ module ProMotion::MotionTable
       if data_cell[:cell_class_attributes]
         set_cell_attributes table_cell, data_cell[:cell_class_attributes]
       end
-      
+
       if data_cell[:accessory_view]
         table_cell.accessoryView = data_cell[:accessory_view]
         table_cell.accessoryView.autoresizingMask = UIViewAutoresizingFlexibleWidth

@@ -1,7 +1,7 @@
 module ProMotion
   module ScreenElements
     include ProMotion::ViewHelper
-    
+
     def add(v, attrs = {})
       if attrs && attrs.length > 0
         set_attributes(v, attrs)
@@ -22,7 +22,7 @@ module ProMotion
     def bounds
       return self.view.bounds
     end
-    
+
     def frame
       return self.view.frame
     end

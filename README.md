@@ -688,7 +688,7 @@ end
     <td>refreshable</td>
     <td>Class method to make the current table refreshable.<p>You must also specify the following block in your <code>will_appear</code> method:</p>
     <code>on_refresh do<br />
-      # Code to start the refresh</br>
+      # Code to start the refresh<br />
     end</code>
     <p>And after you're done refreshing everything, call <code>end_refreshing</code> and your tableview will refresh the data automatically.</p></td>
   </tr>

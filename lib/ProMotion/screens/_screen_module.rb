@@ -12,13 +12,13 @@ module ProMotion
       unless self.is_a?(UIViewController)
         raise StandardError.new("ERROR: Screens must extend UIViewController or a subclass of UIViewController.")
       end
-      
+
       args.each do |k, v|
         self.send("#{k}=", v) if self.respond_to?("#{k}=")
       end
 
       self.add_nav_bar if args[:nav_bar]
-      self.table_setup if self.respond_to?(:table_setup)      
+      self.table_setup if self.respond_to?(:table_setup)
       self.on_init if self.respond_to?(:on_init)
       self
     end
@@ -186,7 +186,7 @@ module ProMotion
       end
       orientations
     end
-    
+
     def supported_device_families
       NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].map do |m|
         case m
@@ -197,7 +197,7 @@ module ProMotion
         end
       end
     end
-    
+
     def supported_device_family?(family)
       supported_device_families.include?(family)
     end

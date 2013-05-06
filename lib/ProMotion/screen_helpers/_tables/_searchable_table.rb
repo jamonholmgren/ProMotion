@@ -22,13 +22,13 @@ module ProMotion::MotionTable
       @contacts_search_display_controller.delegate = params[:delegate]
       @contacts_search_display_controller.searchResultsDataSource = params[:data_source]
       @contacts_search_display_controller.searchResultsDelegate = params[:search_results_delegate]
-      
+
       self.table_view.tableHeaderView = search_bar
     end
     alias :makeSearchable :make_searchable
 
     ######### iOS methods, headless camel case #######
-    
+
     def searchDisplayController(controller, shouldReloadTableForSearchString:search_string)
       @mt_filtered_data = nil
       @mt_filtered_data = []

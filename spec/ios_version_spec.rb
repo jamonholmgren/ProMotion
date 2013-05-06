@@ -24,5 +24,5 @@ describe "ios version" do
   it "#ios_version_less_eq?" do
     @dummy.ios_version_less_eq?(@dummy.ios_version).should == true
   end
-    
+
 end

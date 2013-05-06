@@ -777,6 +777,15 @@ Opening a ticket is usually the best and we respond to those pretty quickly.
 I'm very open to ideas. Tweet me with your ideas or open a ticket (I don't mind!) 
 and let's discuss.
 
+## Working on Features
+
+1. Clone the repos into `Your-Project/Vendor/ProMotion`
+2. Update your `Gemfile`to reference the project as `gem 'ProMotion', :path => "vendor/ProMotion/"`
+3. If you're also using [BubbleWrap](http://www.bubblewrap.io), add this line to your `Rakefile`: `app.detect_dependencies = false` *(This is a RubyMotion bug that should be resolved soon)*
+4. Run `bundle`
+5. Run `rake clean` and then `rake`
+6. Contribute!
+
 ## Submitting a Pull Request
 
 1. Fork the project

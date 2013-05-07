@@ -26,8 +26,6 @@ module ProMotion
 
       # Refreshable
       def refreshable(params = {})
-        params[:callback] = :on_refresh unless params[:callback]
-
         @refreshable_params = params
         @refreshable = true
       end

@@ -5,7 +5,7 @@ module ProMotion::MotionTable
       @refreshing = params[:refreshing] || "Refreshing data..."
       @updated_format = params[:updated_format] || "Last updated at %s"
       @updated_time_format = params[:updated_time_format] || "%l:%M %p"
-      @refreshable_callback = params[:callback]
+      @refreshable_callback = params[:callback]|| :on_refresh
 
       @refresh = UIRefreshControl.alloc.init
       @refresh.attributedTitle = NSAttributedString.alloc.initWithString(pull_message)

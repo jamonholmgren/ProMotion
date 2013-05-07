@@ -24,6 +24,18 @@ describe "screen helpers" do
       @screen.view.subviews.count.should == 0
     end
 
+    it "should add a subview to another element" do
+      sub_subview = UIView.alloc.initWithFrame CGRectZero
+      @screen.add_to @subview, sub_subview
+      @subview.subviews.include?(sub_subview).should == true
+    end
+
+    it "should add a subview to another element with attributes" do
+      sub_subview = UIView.alloc.initWithFrame CGRectZero
+      @screen.add_to @subview, sub_subview, { backgroundColor: UIColor.redColor }
+      @subview.subviews.last.backgroundColor.should == UIColor.redColor
+    end
+
   end
 
 

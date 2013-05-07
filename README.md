@@ -141,6 +141,7 @@ Run `rake`. You should now see the simulator open with your home screen and a na
 
 * Added `open_split_screen` for iPad-supported apps (thanks @rheoli for your contributions to this)
 * `ProMotion::AppDelegateParent` renamed to `ProMotion::Delegate` (`AppDelegateParent` is an alias)
+* Added `add_to` method for adding views to any parent view. `remove` works with this normally.
 
 # Usage
 
@@ -329,6 +330,8 @@ Any view item (UIView, UIButton, custom UIView subclasses, etc) can be added to 
 `add` accepts a second argument which is a hash of attributes that get applied to the element before it is
 dropped into the view.
 
+`add(view, attr={})`
+
 ```ruby
 @label = add UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
   text: "This is awesome!",
@@ -342,8 +345,20 @@ dropped into the view.
 
 The `set_attributes` method is identical to add except that it does not add it to the current view.
 
+`set_attributes(view, attr={})`
+
 ```ruby
 @element = set_attributes UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
+  backgroundColor: UIColor.whiteColor
+}
+```
+
+You can use `add_to` to add a view to any other view, not just the main view.
+
+`add_to(parent_view, new_view, attr={})`
+
+```ruby
+add_to @some_parent_view, UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
   backgroundColor: UIColor.whiteColor
 }
 ```

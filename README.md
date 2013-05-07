@@ -333,9 +333,14 @@ dropped into the view.
 `add(view, attr={})`
 
 ```ruby
-@label = add UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
+@label = add UILabel.new, {
   text: "This is awesome!",
-  font: UIFont.systemFontOfSize(18)
+  font: UIFont.systemFontOfSize(18),
+  resize: [ :left, :right, :top, :bottom, :width, :height ], # autoresizingMask
+  left: 5, # These four attributes are used with CGRectMake
+  top: 5,
+  width: 20,
+  height: 20
 }
 
 @element = add UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {

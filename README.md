@@ -349,12 +349,15 @@ dropped into the view.
 ```
 
 The `set_attributes` method is identical to add except that it does not add it to the current view.
+If you use snake_case and there isn't an existing method, it'll try camelCase. This allows you to
+use snake_case for Objective-C methods.
 
 `set_attributes(view, attr={})`
 
 ```ruby
 @element = set_attributes UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
-  backgroundColor: UIColor.whiteColor
+  # `background_color` is translated to `backgroundColor` automatically.
+  background_color: UIColor.whiteColor
 }
 ```
 

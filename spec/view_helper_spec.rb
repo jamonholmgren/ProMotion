@@ -49,6 +49,21 @@ describe "view helpers" do
     layered_view.layer.mask.backgroundColor.should == UIColor.redColor.CGColor
   end
 
+  it "should allow you to set snake_case attributes" do
+    layered_view = UIView.alloc.initWithFrame(CGRectMake(0, 0, 10, 10))
+
+    @dummy.set_attributes layered_view, {
+      layer: {
+        background_color: UIColor.redColor.CGColor
+      },
+      content_mode: UIViewContentModeBottom
+    }
+
+    layered_view.contentMode.should == UIViewContentModeBottom
+    layered_view.layer.backgroundColor.should == UIColor.redColor.CGColor
+  end
+
+
   describe "content height" do
 
     before do

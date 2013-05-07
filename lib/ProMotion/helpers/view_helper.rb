@@ -11,6 +11,28 @@ module ProMotion
           element.send("#{k}=", v) if element.respond_to?("#{k}=")
         end
       end
+
+      element
+    end
+
+    def set_easy_attributes(parent, element, args={})
+      attributes = {}
+
+      if args[:resize]
+        attributes[:autoresizingMask]  = UIViewAutoresizingNone
+        attributes[:autoresizingMask] |= UIViewAutoresizingFlexibleLeftMargin   if args[:resize].include?(:left)
+        attributes[:autoresizingMask] |= UIViewAutoresizingFlexibleRightMargin  if args[:resize].include?(:right)
+        attributes[:autoresizingMask] |= UIViewAutoresizingFlexibleTopMargin    if args[:resize].include?(:top)
+        attributes[:autoresizingMask] |= UIViewAutoresizingFlexibleBottomMargin if args[:resize].include?(:bottom)
+        attributes[:autoresizingMask] |= UIViewAutoresizingFlexibleWidth        if args[:resize].include?(:width)
+        attributes[:autoresizingMask] |= UIViewAutoresizingFlexibleHeight       if args[:resize].include?(:height)
+      end
+
+      if [:left, :top, :width, :height].select{ |a| args[a] && args[a] != :auto }.length == 4
+        attributes[:frame] = CGRectMake(args[:left], args[:top], args[:width], args[:height])
+      end
+
+      set_attributes element, attributes
       element
     end
 
@@ -31,6 +53,10 @@ module ProMotion
         end
       end
       height
+    end
+
+    def positioning_attributes(attr={})
+
     end
   end
 end

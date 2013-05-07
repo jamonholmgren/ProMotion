@@ -19,6 +19,7 @@ module ProMotion
           set_attribute(element, objective_c_method_name(k), v)
         end
       end
+      element
     end
 
     def objective_c_method_name(meth)

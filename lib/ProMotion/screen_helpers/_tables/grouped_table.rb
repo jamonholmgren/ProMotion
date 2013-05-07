@@ -1,6 +1,7 @@
 module ProMotion::MotionTable
   module GroupedTable
     include SectionedTable
+    include RefreshableTable
 
     def table_view
       @table_view ||= UITableView.alloc.initWithFrame(self.view.frame, style:UITableViewStyleGrouped)

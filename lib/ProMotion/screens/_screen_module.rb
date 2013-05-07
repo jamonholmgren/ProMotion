@@ -60,23 +60,26 @@ module ProMotion
     end
 
     def set_nav_bar_right_button(title, args={})
-      args[:style]  ||= UIBarButtonItemStyleBordered
-      args[:target] ||= self
-      args[:action] ||= nil
-
-      right_button = UIBarButtonItem.alloc.initWithTitle(title, style: args[:style], target: args[:target], action: args[:action])
-      self.navigationItem.rightBarButtonItem = right_button
-      right_button
+      args[:title] = title
+      set_nav_bar_button :right, args
     end
 
     def set_nav_bar_left_button(title, args={})
+      args[:title] = title
+      set_nav_bar_button :left, args
+    end
+    
+    def set_nav_bar_button(side, args={})
       args[:style]  ||= UIBarButtonItemStyleBordered
       args[:target] ||= self
       args[:action] ||= nil
 
-      left_button = UIBarButtonItem.alloc.initWithTitle(title, style: args[:style], target: args[:target], action: args[:action])
-      self.navigationItem.leftBarButtonItem = left_button
-      left_button
+      button = UIBarButtonItem.alloc.initWithTitle(title, style: args[:style], target: args[:target], action: args[:action])
+
+      self.navigationItem.leftBarButtonItem = button if side == :left
+      self.navigationItem.rightBarButtonItem = button if side == :right
+
+      button
     end
 
     # [DEPRECATED]
@@ -132,8 +135,7 @@ module ProMotion
     end
 
     def main_controller
-      return self.navigation_controller if self.navigation_controller
-      self
+      self.navigation_controller || self
     end
 
     def view_controller

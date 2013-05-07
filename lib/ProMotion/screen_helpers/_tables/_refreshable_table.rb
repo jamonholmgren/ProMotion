@@ -7,10 +7,10 @@ module ProMotion::MotionTable
       @updated_time_format = params[:updated_time_format] || "%l:%M %p"
       @refreshable_callback = params[:callback]|| :on_refresh
 
-      @refresh = UIRefreshControl.alloc.init
-      @refresh.attributedTitle = NSAttributedString.alloc.initWithString(pull_message)
-      @refresh.addTarget(self, action:'refreshView:', forControlEvents:UIControlEventValueChanged)
-      self.refreshControl = @refresh
+      @refresh_control = UIRefreshControl.alloc.init
+      @refresh_control.attributedTitle = NSAttributedString.alloc.initWithString(pull_message)
+      @refresh_control.addTarget(self, action:'refreshView:', forControlEvents:UIControlEventValueChanged)
+      self.refreshControl = @refresh_control
     end
     alias :makeRefreshable :make_refreshable
 
@@ -27,16 +27,16 @@ module ProMotion::MotionTable
     end
 
     def start_refreshing
-      return unless @refresh
+      return unless @refresh_control
 
-      @refresh.beginRefreshing
+      @refresh_control.beginRefreshing
     end
 
     def end_refreshing
-      return unless @refresh
+      return unless @refresh_control
 
-      @refresh.attributedTitle = NSAttributedString.alloc.initWithString(sprintf(@updated_format, Time.now.strftime(@updated_time_format)))
-      @refresh.endRefreshing
+      @refresh_control.attributedTitle = NSAttributedString.alloc.initWithString(sprintf(@updated_format, Time.now.strftime(@updated_time_format)))
+      @refresh_control.endRefreshing
     end
   end
 end

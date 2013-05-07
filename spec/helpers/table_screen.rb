@@ -1,11 +1,11 @@
 class TableScreen < ProMotion::SectionedTableScreen
 
   def on_load
-  	@tap_counter ||= 0
+    @tap_counter ||= 0
   end
 
   def table_data
-		[{
+    [{
       title: "Your Account",
       cells: [
         { title: "Increment", action: :increment_counter_by, arguments: { number: 3 } },
@@ -26,18 +26,22 @@ class TableScreen < ProMotion::SectionedTableScreen
   end
 
   def add_tableview_row
-  	@data[0][:cells] << {
-  		title: "Dynamically Added"
-  	}
-  	update_table_data
+    @data[0][:cells] << {
+      title: "Dynamically Added"
+    }
+    update_table_data
   end
 
   def increment_counter
-  	@tap_counter = @tap_counter + 1
+    @tap_counter += 1
   end
 
   def increment_counter_by(args)
-  	@tap_counter = @tap_counter + args[:number]
+    @tap_counter = @tap_counter + args[:number]
+  end
+  
+  def tap_counter
+    @tap_counter
   end
 
 

@@ -1,38 +1,72 @@
-describe "table screen basic functionality" do
+describe "table screens" do
+  
+  describe "basic functionality" do
 
-  before do
-    @screen = TableScreen.new
-    @screen.on_load
+    before do
+      UIView.setAnimationsEnabled false # avoid animation issues
+
+      @screen = TableScreen.new
+      @screen.on_load
+    end
+    
+    it "should display 2 sections" do
+      @screen.tableView.numberOfSections.should == 2
+    end
+
+    it "should have proper cell numbers" do
+      @screen.tableView.numberOfRowsInSection(0).should == 3
+      @screen.tableView.numberOfRowsInSection(1).should == 2
+    end
+
+    it "should have a placeholder image in the last cell" do
+      index_path = NSIndexPath.indexPathForRow(1, inSection: 1)
+      
+      @screen.tableView(@screen.tableView, cellForRowAtIndexPath: index_path).imageView.class.should == UIImageView
+    end
+  
+  end
+  
+  describe "search functionality" do
+    
+    before do
+      @screen = TableScreenSearchable.new
+      @screen.on_load
+    end
+    
+    it "should be searchable" do
+      @screen.class.get_searchable.should == true
+    end
+    
+    it "should create a search header" do
+      @screen.table_view.tableHeaderView.class.should == UISearchBar
+    end
+    
   end
 
-  tests TableScreen
-
-  it "should display have 2 sections" do
-    @screen.tableView.numberOfSections.should == 2
+  describe "refresh functionality" do
+    
+    # Note this test only works if on iOS 6+ or when using CKRefreshControl.
+    
+    before do
+      @screen = TableScreenRefreshable.new
+      @screen.on_load
+    end
+    
+    it "should be refreshable" do
+      @screen.class.get_refreshable.should == true
+    end
+    
+    it "should create a refresh object" do
+      @screen.instance_variable_get("@refresh_control").class.should == UIRefreshControl
+    end
+    
+    it "should respond to start_refreshing and end_refreshing" do
+      @screen.respond_to?(:start_refreshing).should == true
+      @screen.respond_to?(:end_refreshing).should == true
+    end
+    
+    # Animations cause the refresh object to fail when tested. Test manually.
+    
   end
-
-  it "should have prope r cell numbers" do
-    @screen.tableView.numberOfRowsInSection(0).should == 3
-    @screen.tableView.numberOfRowsInSection(1).should == 2
-  end
-
-  # it "should run methods without arguments when tapping cell" do
-  #   #cell = @screen.cell_at_section_and_index(0, 0)
-  #   [1..10].each do |index|
-  #     @screen.instance_variable_get("@tap_counter").should == index
-  #     tap view("Increment")
-  #   end
-  # end
-
-  # it "should have a placeholder image in the last cell" do
-  #   @screen.cell_at_section_and_index(1,1).imageView.should.be.a UIImage
-  # end
-
-  # it "should add a new cell to first section" do
-  #   tap "Add New Row"
-  #   wait 0.2 do
-  #     @screen.tableView.numberOfRowsInSection(0).should == 4
-  #   end
-  # end
 
 end

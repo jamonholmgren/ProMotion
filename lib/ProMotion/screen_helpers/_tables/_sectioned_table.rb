@@ -7,6 +7,11 @@ module ProMotion::MotionTable
       if self.class.respond_to?(:get_searchable) && self.class.get_searchable
         self.make_searchable(content_controller: self, search_bar: self.class.get_searchable_params)
       end
+      if defined?(UIRefreshControl) && self.class.respond_to?(:get_refreshable) && self.class.get_refreshable
+        self.make_refreshable(self.class.get_refreshable_params)
+      else
+        ProMotion::Console.log("ProMotion Warning: to use the refresh control on < iOS 6, you need to include the Cocoapod 'CKRefreshControl'.", with_color: ProMotion::Console::RED_COLOR)
+      end
     end
 
     # @param [Array] Array of table data

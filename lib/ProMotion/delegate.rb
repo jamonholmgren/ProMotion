@@ -1,7 +1,7 @@
 module ProMotion
   class Delegate
     include ProMotion::ScreenTabs
-    include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2")
+    include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2") # Only with iPad
     attr_accessor :window
 
     def application(application, didFinishLaunchingWithOptions:launch_options)
@@ -10,8 +10,6 @@ module ProMotion
       Console.log(" Your AppDelegate (usually in app_delegate.rb) needs an on_load(application, options) method.", with_color: Console::RED_COLOR) unless self.respond_to?("on_load:")
 
       on_load(application, launch_options)
-
-      open_home_screen if has_home_screen && self.window.nil?
 
       true
     end

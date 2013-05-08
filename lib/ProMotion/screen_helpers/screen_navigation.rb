@@ -81,6 +81,7 @@ module ProMotion
     def push_view_controller(vc, nav_controller=nil)
       Console.log(" You need a nav_bar if you are going to push #{vc.to_s} onto it.", withColor: Console::RED_COLOR) unless self.navigation_controller
       nav_controller ||= self.navigation_controller
+      vc.first_screen = false if vc.respond_to?(:first_screen=)
       nav_controller.pushViewController(vc, animated: true)
     end
 

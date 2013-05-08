@@ -747,6 +747,7 @@ def table_data
       subtitle: "This is way too huge..see note",
       arguments: { data: [ "lots", "of", "data" ] },
       action: :tapped_cell_1,
+      height: 50, # manually changes the cell's height
       cell_style: UITableViewCellStyleSubtitle, 
       cell_identifier: "Cell",
       cell_class: ProMotion::TableViewCell,

@@ -261,6 +261,15 @@ module ProMotion::MotionTable
       return table_cell
     end
 
+    def tableView(tableView, heightForRowAtIndexPath:indexPath)
+      cell = cell_at_section_and_index(indexPath.section, indexPath.row)
+      if cell[:height]
+        cell[:height].to_f
+      else
+        tableView.rowHeight
+      end
+    end
+
     def tableView(table_view, didSelectRowAtIndexPath:indexPath)
       cell = cell_at_section_and_index(indexPath.section, indexPath.row)
       table_view.deselectRowAtIndexPath(indexPath, animated: true);

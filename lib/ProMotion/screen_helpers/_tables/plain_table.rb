@@ -2,6 +2,7 @@ module ProMotion::MotionTable
   module PlainTable
     include SectionedTable
     include SearchableTable
+    include RefreshableTable
 
     def table_view
       @table_view ||= UITableView.alloc.initWithFrame(self.view.frame, style:UITableViewStylePlain)

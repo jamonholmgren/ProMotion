@@ -2,20 +2,20 @@ module ProMotion
   module ScreenNavigation
 
     def open_screen(screen, args = {})
-      
+
       # Apply properties to instance
       screen = setup_screen_for_open(screen, args)
       ensure_wrapper_controller_in_place(screen, args)
 
-      screen.send(:on_load) if screen.respond_to?(:on_load)      
+      screen.send(:on_load) if screen.respond_to?(:on_load)
       animated = args[:animated] || true
 
       return self.split_screen.detail_screen = screen if args[:in_detail] && self.split_screen
       return self.split_screen.master_screen = screen if args[:in_master] && self.split_screen
-      
+
       if args[:close_all]
         open_root_screen screen
-        
+
       elsif args[:modal]
         present_modal_view_controller screen, animated
 
@@ -44,7 +44,7 @@ module ProMotion
     def app_delegate
       UIApplication.sharedApplication.delegate
     end
-    
+
     def close_screen(args = {})
       args ||= {}
       args[:animated] ||= true
@@ -58,7 +58,7 @@ module ProMotion
 
       else
         Console.log("Tried to close #{self.to_s}; however, this screen isn't modal or in a nav bar.", withColor: Console::PURPLE_COLOR)
-        
+
       end
     end
     alias :close :close_screen
@@ -95,7 +95,7 @@ module ProMotion
       screen.parent_screen = self if screen.respond_to?("parent_screen=")
       screen.title = args[:title] if args[:title] && screen.respond_to?("title=")
       screen.modal = args[:modal] if args[:modal] && screen.respond_to?("modal=")
-      
+
       # Hide bottom bar?
       screen.hidesBottomBarWhenPushed = args[:hide_tab_bar] == true
 

@@ -141,6 +141,7 @@ Run `rake`. You should now see the simulator open with your home screen and a na
 
 * Added `open_split_screen` for iPad-supported apps (thanks @rheoli for your contributions to this)
 * `ProMotion::AppDelegateParent` renamed to `ProMotion::Delegate` (`AppDelegateParent` is an alias)
+* Added `add_to` method for adding views to any parent view. `remove` works with this normally.
 
 # Usage
 
@@ -329,10 +330,17 @@ Any view item (UIView, UIButton, custom UIView subclasses, etc) can be added to 
 `add` accepts a second argument which is a hash of attributes that get applied to the element before it is
 dropped into the view.
 
+`add(view, attr={})`
+
 ```ruby
-@label = add UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
+@label = add UILabel.new, {
   text: "This is awesome!",
-  font: UIFont.systemFontOfSize(18)
+  font: UIFont.systemFontOfSize(18),
+  resize: [ :left, :right, :top, :bottom, :width, :height ], # autoresizingMask
+  left: 5, # These four attributes are used with CGRectMake
+  top: 5,
+  width: 20,
+  height: 20
 }
 
 @element = add UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
@@ -341,9 +349,24 @@ dropped into the view.
 ```
 
 The `set_attributes` method is identical to add except that it does not add it to the current view.
+If you use snake_case and there isn't an existing method, it'll try camelCase. This allows you to
+use snake_case for Objective-C methods.
+
+`set_attributes(view, attr={})`
 
 ```ruby
 @element = set_attributes UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
+  # `background_color` is translated to `backgroundColor` automatically.
+  background_color: UIColor.whiteColor
+}
+```
+
+You can use `add_to` to add a view to any other view, not just the main view.
+
+`add_to(parent_view, new_view, attr={})`
+
+```ruby
+add_to @some_parent_view, UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
   backgroundColor: UIColor.whiteColor
 }
 ```
@@ -685,6 +708,21 @@ end
     <td>Class method to make the current table searchable.</td>
   </tr>
   <tr>
+    <td><pre><code>refreshable(
+  callback: :on_refresh,
+  pull_message: "Pull to refresh", 
+  refreshing: "Refreshing data…", 
+  updated_format: "Last updated at %s", 
+  updated_time_format: "%l:%M %p"
+)</code></pre></td>
+    <td>Class method to make the current table refreshable.
+    	<p>All parameters are optional. If you do not specify a a callback, it will assume you've implemented an <code>on_refresh</code> method in your tableview.</p>
+    <pre><code>def on_refresh
+  # Code to start the refresh
+end</code></pre>
+    <p>And after you're done with your asyncronous process, call <code>end_refreshing</code> to collapse the refresh  view and update the last refreshed time and then <code>update_table_data</code>.</p></td>
+  </tr>
+  <tr>
     <td colspan="2">
       <h3>table_data</h3>
       Method that is called to get the table's cell data and build the table.<br />
@@ -709,6 +747,7 @@ def table_data
       subtitle: "This is way too huge..see note",
       arguments: { data: [ "lots", "of", "data" ] },
       action: :tapped_cell_1,
+      height: 50, # manually changes the cell's height
       cell_style: UITableViewCellStyleSubtitle, 
       cell_identifier: "Cell",
       cell_class: ProMotion::TableViewCell,
@@ -776,6 +815,15 @@ Opening a ticket is usually the best and we respond to those pretty quickly.
 
 I'm very open to ideas. Tweet me with your ideas or open a ticket (I don't mind!) 
 and let's discuss.
+
+## Working on Features
+
+1. Clone the repos into `Your-Project/Vendor/ProMotion`
+2. Update your `Gemfile`to reference the project as `gem 'ProMotion', :path => "vendor/ProMotion/"`
+3. If you're also using [BubbleWrap](http://www.bubblewrap.io), add this line to your `Rakefile`: `app.detect_dependencies = false` *(This is a RubyMotion bug that should be resolved soon)*
+4. Run `bundle`
+5. Run `rake clean` and then `rake`
+6. Contribute!
 
 ## Submitting a Pull Request
 

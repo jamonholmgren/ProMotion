@@ -12,13 +12,13 @@ module ProMotion
       unless self.is_a?(UIViewController)
         raise StandardError.new("ERROR: Screens must extend UIViewController or a subclass of UIViewController.")
       end
-      
+
       args.each do |k, v|
         self.send("#{k}=", v) if self.respond_to?("#{k}=")
       end
 
       self.add_nav_bar if args[:nav_bar]
-      self.table_setup if self.respond_to?(:table_setup)      
+      self.table_setup if self.respond_to?(:table_setup)
       self.on_init if self.respond_to?(:on_init)
       self
     end
@@ -60,23 +60,26 @@ module ProMotion
     end
 
     def set_nav_bar_right_button(title, args={})
-      args[:style]  ||= UIBarButtonItemStyleBordered
-      args[:target] ||= self
-      args[:action] ||= nil
-
-      right_button = UIBarButtonItem.alloc.initWithTitle(title, style: args[:style], target: args[:target], action: args[:action])
-      self.navigationItem.rightBarButtonItem = right_button
-      right_button
+      args[:title] = title
+      set_nav_bar_button :right, args
     end
 
     def set_nav_bar_left_button(title, args={})
+      args[:title] = title
+      set_nav_bar_button :left, args
+    end
+    
+    def set_nav_bar_button(side, args={})
       args[:style]  ||= UIBarButtonItemStyleBordered
       args[:target] ||= self
       args[:action] ||= nil
 
-      left_button = UIBarButtonItem.alloc.initWithTitle(title, style: args[:style], target: args[:target], action: args[:action])
-      self.navigationItem.leftBarButtonItem = left_button
-      left_button
+      button = UIBarButtonItem.alloc.initWithTitle(args[:title], style: args[:style], target: args[:target], action: args[:action])
+
+      self.navigationItem.leftBarButtonItem = button if side == :left
+      self.navigationItem.rightBarButtonItem = button if side == :right
+
+      button
     end
 
     # [DEPRECATED]
@@ -132,8 +135,7 @@ module ProMotion
     end
 
     def main_controller
-      return self.navigation_controller if self.navigation_controller
-      self
+      self.navigation_controller || self
     end
 
     def view_controller
@@ -186,7 +188,7 @@ module ProMotion
       end
       orientations
     end
-    
+
     def supported_device_families
       NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].map do |m|
         case m
@@ -197,7 +199,7 @@ module ProMotion
         end
       end
     end
-    
+
     def supported_device_family?(family)
       supported_device_families.include?(family)
     end

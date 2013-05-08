@@ -10,33 +10,33 @@ module ProMotion
 
       screens.each do |s|
         s = s.new if s.respond_to?(:new)
-        
+
         s.tabBarItem.tag = tag_index
-        
+
         s.parent_screen = self if self.is_a?(UIViewController) && s.respond_to?("parent_screen=")
         s.tab_bar = tab_bar_controller if s.respond_to?("tab_bar=")
-        
+
         vc = s.respond_to?(:main_controller) ? s.main_controller : s
         view_controllers << vc
-        
+
         tag_index += 1
-  
+
         s.on_load if s.respond_to?(:on_load)
       end
 
       tab_bar_controller.viewControllers = view_controllers
       tab_bar_controller
     end
-    
+
     # Open a UITabBarController with the specified screens as the
     # root view controller of the current app.
     # @param [Array] A comma-delimited list of screen classes or instances.
     # @return [UITabBarController]
     def open_tab_bar(*screens)
       tab_bar = tab_bar_controller(*screens)
-      
+
       a = self.respond_to?(:load_root_screen) ? self : UIApplication.sharedApplication.delegate
-      
+
       a.load_root_screen(tab_bar)
       tab_bar
     end
@@ -66,12 +66,12 @@ module ProMotion
       title = tab[:title] if tab[:title]
       tab[:tag] ||= @current_tag ||= 0
       @current_tag = tab[:tag] + 1
-      
+
       tab_bar_item = create_tab_bar_icon(tab[:system_icon], tab[:tag]) if tab[:system_icon]
       tab_bar_item = create_tab_bar_icon_custom(title, tab[:icon], tab[:tag]) if tab[:icon]
-      
+
       tab_bar_item.badgeValue = tab[:badge_number].to_s unless tab[:badge_number].nil? || tab[:badge_number] <= 0
-      
+
       return tab_bar_item
     end
 

@@ -5,9 +5,9 @@ module ProMotion
     attr_accessor :window
 
     def application(application, didFinishLaunchingWithOptions:launch_options)
-      return true if RUBYMOTION_ENV == "test"
-
-      Console.log(" Your AppDelegate (usually in app_delegate.rb) needs an on_load(application, options) method.", with_color: Console::RED_COLOR) unless self.respond_to?("on_load:")
+      unless self.respond_to?(:on_load)
+        PM.logger.error "Your AppDelegate (usually in app_delegate.rb) needs an on_load(application, options) method."
+      end
 
       on_load(application, launch_options)
 
@@ -39,10 +39,8 @@ module ProMotion
       home(screen)
       open_home_screen
     end
-    # TODO: This is ridiculous.
     alias :open :open_screen
     alias :open_root_screen :open_screen
-    alias :fresh_start :open_screen
 
     def open_home_screen
       get_home_screen.send(:on_load) if get_home_screen.respond_to?(:on_load)

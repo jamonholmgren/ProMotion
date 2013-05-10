@@ -880,10 +880,9 @@ and let's discuss.
 
 1. Clone the repos into `Your-Project/Vendor/ProMotion`
 2. Update your `Gemfile`to reference the project as `gem 'ProMotion', :path => "vendor/ProMotion/"`
-3. If you're running RubyMotion < 2.0 and also using [BubbleWrap](http://www.bubblewrap.io), add this line to your `Rakefile`: `app.detect_dependencies = false`
-4. Run `bundle`
-5. Run `rake clean` and then `rake`
-6. Contribute!
+3. Run `bundle`
+4. Run `rake clean` and then `rake`
+5. Contribute!
 
 ## Submitting a Pull Request
 

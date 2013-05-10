@@ -8,6 +8,8 @@ module ProMotion
       split.viewControllers = [ master_main, detail_main ]
       split.delegate = self
 
+      [ master, detail ].map { |s| s.split_screen = split if s.respond_to?(:split_screen=) }
+
       split
     end
 
@@ -15,14 +17,9 @@ module ProMotion
       master = master.new if master.respond_to?(:new)
       detail = detail.new if detail.respond_to?(:new)
 
-      split = split_screen_controller(master, detail)
+      [ master, detail ].map { |s| s.on_load if s.respond_to?(:on_load) }
 
-      [master, detail].each do |s|
-        s.split_screen = split if s.respond_to?("split_screen=")
-        s.on_load if s.respond_to?(:on_load)
-      end
-
-      split
+      split_screen_controller master, detail
     end
 
     def open_split_screen(master, detail, args={})

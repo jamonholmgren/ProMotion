@@ -83,6 +83,7 @@ module ProMotion
         PM.logger.error "You need a nav_bar if you are going to push #{vc.to_s} onto it."
       end
       nav_controller ||= self.navigation_controller
+      vc.first_screen = false if vc.respond_to?(:first_screen=)
       nav_controller.pushViewController(vc, animated: true)
     end
 

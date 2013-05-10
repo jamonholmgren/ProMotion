@@ -18,8 +18,8 @@ module ProMotion
       end
 
       self.add_nav_bar if args[:nav_bar]
-      self.table_setup if self.respond_to?(:table_setup)
       self.on_init if self.respond_to?(:on_init)
+      self.table_setup if self.respond_to?(:table_setup)
       self
     end
 
@@ -55,8 +55,10 @@ module ProMotion
     end
 
     def add_nav_bar
-      self.navigation_controller = NavigationController.alloc.initWithRootViewController(self)
-      self.first_screen = true
+      self.navigation_controller ||= begin
+        self.first_screen = true if self.respond_to?(:first_screen=)
+        NavigationController.alloc.initWithRootViewController(self)
+      end
     end
 
     def set_nav_bar_right_button(title, args={})
@@ -74,7 +76,7 @@ module ProMotion
       args[:target] ||= self
       args[:action] ||= nil
 
-      button = UIBarButtonItem.alloc.initWithTitle(title, style: args[:style], target: args[:target], action: args[:action])
+      button = UIBarButtonItem.alloc.initWithTitle(args[:title], style: args[:style], target: args[:target], action: args[:action])
 
       self.navigationItem.leftBarButtonItem = button if side == :left
       self.navigationItem.rightBarButtonItem = button if side == :right

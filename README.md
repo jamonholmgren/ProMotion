@@ -338,9 +338,14 @@ dropped into the view.
 `add(view, attr={})`
 
 ```ruby
-@label = add UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
+@label = add UILabel.new, {
   text: "This is awesome!",
-  font: UIFont.systemFontOfSize(18)
+  font: UIFont.systemFontOfSize(18),
+  resize: [ :left, :right, :top, :bottom, :width, :height ], # autoresizingMask
+  left: 5, # These four attributes are used with CGRectMake
+  top: 5,
+  width: 20,
+  height: 20
 }
 
 @element = add UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
@@ -349,12 +354,15 @@ dropped into the view.
 ```
 
 The `set_attributes` method is identical to add except that it does not add it to the current view.
+If you use snake_case and there isn't an existing method, it'll try camelCase. This allows you to
+use snake_case for Objective-C methods.
 
 `set_attributes(view, attr={})`
 
 ```ruby
 @element = set_attributes UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
-  backgroundColor: UIColor.whiteColor
+  # `background_color` is translated to `backgroundColor` automatically.
+  background_color: UIColor.whiteColor
 }
 ```
 
@@ -744,6 +752,7 @@ def table_data
       subtitle: "This is way too huge..see note",
       arguments: { data: [ "lots", "of", "data" ] },
       action: :tapped_cell_1,
+      height: 50, # manually changes the cell's height
       cell_style: UITableViewCellStyleSubtitle, 
       cell_identifier: "Cell",
       cell_class: ProMotion::TableViewCell,
@@ -871,7 +880,7 @@ and let's discuss.
 
 1. Clone the repos into `Your-Project/Vendor/ProMotion`
 2. Update your `Gemfile`to reference the project as `gem 'ProMotion', :path => "vendor/ProMotion/"`
-3. If you're also using [BubbleWrap](http://www.bubblewrap.io), add this line to your `Rakefile`: `app.detect_dependencies = false` *(This is a RubyMotion bug that should be resolved soon)*
+3. If you're running RubyMotion < 2.0 and also using [BubbleWrap](http://www.bubblewrap.io), add this line to your `Rakefile`: `app.detect_dependencies = false`
 4. Run `bundle`
 5. Run `rake clean` and then `rake`
 6. Contribute!

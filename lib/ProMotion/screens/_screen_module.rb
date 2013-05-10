@@ -105,13 +105,11 @@ module ProMotion
     end
 
     def view_will_appear(animated)
-      # ProMotion::Screen.current_screen = self
       self.will_appear
     end
     def will_appear; end
 
     def view_did_appear(animated)
-      # ProMotion::Screen.current_screen = self
       self.on_appear
     end
     def on_appear; end
@@ -122,7 +120,6 @@ module ProMotion
     def will_disappear; end
 
     def view_did_disappear(animated)
-      # ProMotion::Screen.current_screen = self.parent_screen if self.parent_screen
       self.on_disappear
     end
     def on_disappear; end
@@ -214,14 +211,6 @@ module ProMotion
 
       def debug_mode=(v)
         @debug_mode = v
-      end
-
-      def current_screen=(s)
-        @current_screen = s
-      end
-
-      def current_screen
-        @current_screen
       end
 
       def title(t)

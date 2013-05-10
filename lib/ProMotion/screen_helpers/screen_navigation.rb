@@ -69,7 +69,6 @@ module ProMotion
         else
           self.parent_screen.send(:on_return)
         end
-        ProMotion::Screen.current_screen = self.parent_screen
       end
     end
 

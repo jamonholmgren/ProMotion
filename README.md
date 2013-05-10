@@ -140,8 +140,13 @@ Run `rake`. You should now see the simulator open with your home screen and a na
 ## Version 0.6
 
 * Added `open_split_screen` for iPad-supported apps (thanks @rheoli for your contributions to this)
+* Added `refreshable` to TableScreens (thanks to @markrickert) for pull-to-refresh support.
 * `ProMotion::AppDelegateParent` renamed to `ProMotion::Delegate` (`AppDelegateParent` is an alias)
+* `set_attributes` and `add` now apply nested attributes recursively
+* `set_attributes` and `add` now accept snake_case instead of camelCase methods (e.g., background_color)
 * Added `add_to` method for adding views to any parent view. `remove` works with this normally.
+* Deprecated Console.log and replaced with PM::Logger
+* Many improvements to how screens and navigation controllers are loaded, tests
 
 # Usage
 
@@ -781,7 +786,9 @@ end
   </tr>
 </table>
 
-## Console
+## Logger
+
+*Accessible from ProMotion.logger or PM.logger ... you can also set a new logger by setting `PM.logger = MyLogger.new`*
 
 <table>
   <tr>
@@ -789,7 +796,60 @@ end
     <th>Description</th>
   </tr>
   <tr>
-    <td>log(log, with_color:color)</td>
+    <td>log(label, message_text, color)</td>
+    <td>
+      Output a colored console message.<br />
+      Example: <code>PM.logger.log("TESTING", "This is red!", :red)</code>
+    </td>
+  </tr>
+  <tr>
+    <td>error(message)</td>
+    <td>
+      Output a red colored console error.<br />
+      Example: <code>PM.logger.error("This is an error")</code>
+    </td>
+  </tr>
+  <tr>
+    <td>deprecated(message)</td>
+    <td>
+      Output a yellow colored console deprecated.<br />
+      Example: <code>PM.logger.deprecated("This is a deprecation warning.")</code>
+    </td>
+  </tr>
+  <tr>
+    <td>warn(message)</td>
+    <td>
+      Output a yellow colored console warning.<br />
+      Example: <code>PM.logger.warn("This is a warning")</code>
+    </td>
+  </tr>
+  <tr>
+    <td>debug(message)</td>
+    <td>
+      Output a purple colored console debug message.<br />
+      Example: <code>PM.logger.debug(@some_var)</code>
+    </td>
+  </tr>
+  <tr>
+    <td>info(message)</td>
+    <td>
+      Output a green colored console info message.<br />
+      Example: <code>PM.logger.info("This is an info message")</code>
+    </td>
+  </tr>
+</table>
+
+## Console [deprecated]
+
+<table>
+  <tr>
+    <th>Method</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>log(log, with_color:color)<br />
+        [DEPRECATED] -- use Logger
+      </td>
     <td>
       Class method to output a colored console message.<br />
       Example: <code>ProMotion::Console.log("This is red!", with_color: ProMotion::Console::RED_COLOR)</code>

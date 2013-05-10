@@ -39,7 +39,6 @@ module ProMotion
     def open_root_screen(screen)
       app_delegate.open_root_screen(screen)
     end
-    alias :fresh_start :open_root_screen
 
     def app_delegate
       UIApplication.sharedApplication.delegate

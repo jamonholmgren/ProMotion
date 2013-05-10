@@ -70,9 +70,9 @@ module ProMotion::MotionTable
 
     def accessory_toggled_switch(switch)
       table_cell = switch.superview
-      indexPath = table_cell.superview.indexPathForCell(table_cell)
+      index_path = table_cell.superview.indexPathForCell(table_cell)
 
-      data_cell = cell_at_section_and_index(indexPath.section, indexPath.row)
+      data_cell = cell_at_section_and_index(index_path.section, index_path.row)
       data_cell[:arguments] = {} unless data_cell[:arguments]
       data_cell[:arguments][:value] = switch.isOn if data_cell[:arguments].is_a? Hash
       data_cell[:accessory_action] ||= data_cell[:accessoryAction] # For legacy support
@@ -250,8 +250,8 @@ module ProMotion::MotionTable
       return table_cell
     end
 
-    def tableView(tableView, heightForRowAtIndexPath:indexPath)
-      cell = cell_at_section_and_index(indexPath.section, indexPath.row)
+    def tableView(tableView, heightForRowAtIndexPath:index_path)
+      cell = cell_at_section_and_index(index_path.section, index_path.row)
       if cell[:height]
         cell[:height].to_f
       else

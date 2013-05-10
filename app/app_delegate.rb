@@ -1,5 +1,5 @@
 class AppDelegate
-  def application(application, didFinishLaunchingWithOptions:launchOptions)
-    return true if RUBYMOTION_ENV == 'test'
+  def on_load(app, options)
+    open BasicScreen
   end
 end

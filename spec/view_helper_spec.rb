@@ -9,14 +9,6 @@ describe "view helpers" do
     @dummy.extend ProMotion::ViewHelper
   end
 
-  it "#frame_from_array should return zero rect for bad input" do
-    @dummy.frame_from_array([]).should equal_rect(CGRectZero)
-  end
-
-  it "#frame_from_array should return a valid CGRect" do
-    @dummy.frame_from_array([0,0,320,480]).should equal_rect(CGRectMake(0,0,320,480))
-  end
-
   it "should allow you to set attributes" do
     @dummy.set_attributes @dummy, backgroundColor: UIColor.redColor
     @dummy.backgroundColor.should == UIColor.redColor

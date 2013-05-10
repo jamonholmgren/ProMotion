@@ -60,12 +60,14 @@ module ProMotion
 
   end
   
-  
+  module_function
+
   def logger
     @logger ||= Logger.new
   end
-  def logger=(l)
-    @logger = l
+
+  def logger=(log)
+    @logger = log
   end
-  module_function :logger
+
 end

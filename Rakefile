@@ -1,5 +1,5 @@
 $:.unshift("/Library/RubyMotion/lib")
-require 'motion/project/template/ios'
+require 'motion/project'
 require 'bundler/gem_tasks'
 Bundler.setup
 Bundler.require

@@ -13,3 +13,4 @@ pom.xml
 .rvmrc
 *.gem
 .repl_history
+.dat*

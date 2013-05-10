@@ -5,8 +5,6 @@ module ProMotion
     attr_accessor :window
 
     def application(application, didFinishLaunchingWithOptions:launch_options)
-      return true if RUBYMOTION_ENV == "test"
-
       unless self.respond_to?(:on_load)
         PM.logger.error "Your AppDelegate (usually in app_delegate.rb) needs an on_load(application, options) method."
       end

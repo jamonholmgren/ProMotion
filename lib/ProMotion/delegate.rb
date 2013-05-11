@@ -36,7 +36,7 @@ module ProMotion
     end
     
     def ui_window
-      defined? Motion::Xray::XrayWindow ? Motion::Xray::XrayWindow : UIWindow
+      (defined?(Motion) && defined?(Motion::Xray) && defined?(Motion::Xray::XrayWindow)) ? Motion::Xray::XrayWindow : UIWindow
     end
 
     def open_screen(screen, args={})

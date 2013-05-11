@@ -139,6 +139,7 @@ Run `rake`. You should now see the simulator open with your home screen and a na
 
 ## Version 0.6
 
+* Will auto-detect if you've loaded [motion-xray](https://github.com/colinta/motion-xray) and enable it.
 * Added `open_split_screen` for iPad-supported apps (thanks @rheoli for your contributions to this)
 * Added `refreshable` to TableScreens (thanks to @markrickert) for pull-to-refresh support.
 * `ProMotion::AppDelegateParent` renamed to `ProMotion::Delegate` (`AppDelegateParent` is an alias)

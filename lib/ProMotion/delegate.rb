@@ -30,9 +30,13 @@ module ProMotion
     def load_root_screen(new_screen)
       new_screen = new_screen.main_controller if new_screen.respond_to?(:main_controller)
 
-      self.window ||= UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
+      self.window ||= self.ui_window.alloc.initWithFrame(UIScreen.mainScreen.bounds)
       self.window.rootViewController = new_screen
       self.window.makeKeyAndVisible
+    end
+    
+    def ui_window
+      defined? Motion::Xray::XrayWindow ? Motion::Xray::XrayWindow : UIWindow
     end
 
     def open_screen(screen, args={})

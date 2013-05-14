@@ -1,4 +1,4 @@
-# ProMotion ![Build Status](https://travis-ci.org/clearsightstudio/ProMotion.png)
+# ProMotion [![Build Status](https://travis-ci.org/clearsightstudio/ProMotion.png)](https://travis-ci.org/clearsightstudio/ProMotion)
 
 ## A new way to easily build RubyMotion apps.
 
@@ -727,6 +727,7 @@ end
   # Code to start the refresh
 end</code></pre>
     <p>And after you're done with your asyncronous process, call <code>end_refreshing</code> to collapse the refresh  view and update the last refreshed time and then <code>update_table_data</code>.</p></td>
+    <img src="https://f.cloud.github.com/assets/139261/472574/af268e52-b735-11e2-8b9b-a9245b421715.gif" />
   </tr>
   <tr>
     <td colspan="2">

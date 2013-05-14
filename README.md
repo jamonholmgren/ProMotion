@@ -6,6 +6,8 @@ ProMotion is a RubyMotion gem that makes iOS development more like Ruby and less
 
 **Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
 
+- [ProMotion ](#promotion-)
+  - [A new way to easily build RubyMotion apps.](#a-new-way-to-easily-build-rubymotion-apps)
 - [Tutorials](#tutorials)
   - [Screencasts](#screencasts)
   - [Sample Apps](#sample-apps)
@@ -23,15 +25,18 @@ ProMotion is a RubyMotion gem that makes iOS development more like Ruby and less
   - [Creating a tab bar](#creating-a-tab-bar)
   - [Add navigation bar buttons](#add-navigation-bar-buttons)
   - [Opening and closing screens](#opening-and-closing-screens)
+    - [Note about split screens and universal apps](#note-about-split-screens-and-universal-apps)
   - [Adding view elements](#adding-view-elements)
   - [Table Screens](#table-screens)
   - [Using your own UIViewController](#using-your-own-uiviewcontroller)
 - [Reference](#reference)
   - [Screen](#screen)
   - [TableScreen](#tablescreen)
-  - [Console](#console)
+  - [Logger](#logger)
+  - [Console [deprecated]](#console-deprecated)
 - [Help](#help)
 - [Contributing](#contributing)
+  - [Working on Features](#working-on-features)
   - [Submitting a Pull Request](#submitting-a-pull-request)
   - [Primary Contributors](#primary-contributors)
   

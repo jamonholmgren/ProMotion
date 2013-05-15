@@ -6,3 +6,4 @@ gemspec
 # Use this in development
 gem "rake"
 gem "motion-stump"
+gem 'motion-redgreen'

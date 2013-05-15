@@ -1,11 +1,21 @@
 module ProMotion::MotionTable
   module SectionedTable
+    include ProMotion::ViewHelper
+    
     def table_setup
-      ProMotion::Console.log(" - #table_data method needed in TableScreen #{self.class.to_s}.", with_color: ProMotion::Console::RED_COLOR) unless self.respond_to?(:table_data)
+      PM.logger.error "Missing #table_data method in TableScreen #{self.class.to_s}." unless self.respond_to?(:table_data)
 
       self.view = self.create_table_view_from_data(self.table_data)
+      
       if self.class.respond_to?(:get_searchable) && self.class.get_searchable
         self.make_searchable(content_controller: self, search_bar: self.class.get_searchable_params)
+      end
+      if self.class.respond_to?(:get_refreshable) && self.class.get_refreshable
+        if defined?(UIRefreshControl)
+          self.make_refreshable(self.class.get_refreshable_params)
+        else
+          PM.logger.warn "To use the refresh control on < iOS 6, you need to include the CocoaPod 'CKRefreshControl'."
+        end
       end
     end
 
@@ -37,7 +47,9 @@ module ProMotion::MotionTable
     end
 
     def cell_at_section_and_index(section, index)
-      return section_at_index(section)[:cells].at(index) if section_at_index(section) && section_at_index(section)[:cells]
+      if section_at_index(section) && section_at_index(section)[:cells]
+        return section_at_index(section)[:cells].at(index)
+      end
     end
     alias :cellAtSectionAndIndex :cell_at_section_and_index
 
@@ -49,36 +61,22 @@ module ProMotion::MotionTable
         elsif expected_arguments == 1 || expected_arguments == -1
           self.send(action, arguments)
         else
-          ProMotion::Console.log("MotionTable warning: #{action} expects #{expected_arguments} arguments. Maximum number of required arguments for an action is 1.", with_color: MotionTable::ProMotion::Console::RED_COLOR)
+          PM.logger.warn "#{action} expects #{expected_arguments} arguments. Maximum number of required arguments for an action is 1."
         end
       else
-        ProMotion::Console.log("Action not implemented: #{action.to_s}", with_color: ProMotion::Console::RED_COLOR)
+        PM.logger.info "Action not implemented: #{action.to_s}"
       end
-    end
-  
-    def set_cell_attributes(element, args = {})
-      args.each do |k, v|
-        if v.is_a? Hash
-          v.each do
-            sub_element = element.send("#{k}")
-            set_cell_attributes(sub_element, v)
-          end
-        else
-          element.send("#{k}=", v) if element.respond_to?("#{k}=")
-        end
-      end
-      element
     end
 
     def accessory_toggled_switch(switch)
       table_cell = switch.superview
-      indexPath = table_cell.superview.indexPathForCell(table_cell)
+      index_path = table_cell.superview.indexPathForCell(table_cell)
 
-      data_cell = cell_at_section_and_index(indexPath.section, indexPath.row)
+      data_cell = cell_at_section_and_index(index_path.section, index_path.row)
       data_cell[:arguments] = {} unless data_cell[:arguments]
       data_cell[:arguments][:value] = switch.isOn if data_cell[:arguments].is_a? Hash
       data_cell[:accessory_action] ||= data_cell[:accessoryAction] # For legacy support
-      
+
       trigger_action(data_cell[:accessory_action], data_cell[:arguments]) if data_cell[:accessory_action]
     end
 
@@ -105,14 +103,14 @@ module ProMotion::MotionTable
     # Set table_data_index if you want the right hand index column (jumplist)
     def sectionIndexTitlesForTableView(table_view)
       if self.respond_to?(:table_data_index)
-        self.table_data_index 
+        self.table_data_index
       end
     end
-    
+
     def remap_data_cell(data_cell)
       # Re-maps legacy data cell calls
-      mappings = { 
-        cell_style: :cellStyle, 
+      mappings = {
+        cell_style: :cellStyle,
         cell_identifier: :cellIdentifier,
         cell_class: :cellClass,
         masks_to_bounds: :masksToBounds,
@@ -138,14 +136,12 @@ module ProMotion::MotionTable
       data_cell
     end
 
-    def tableView(table_view, cellForRowAtIndexPath:indexPath)
-      # Aah, magic happens here...
-
-      data_cell = cell_at_section_and_index(indexPath.section, indexPath.row)
+    def tableView(table_view, cellForRowAtIndexPath:index_path)
+      data_cell = cell_at_section_and_index(index_path.section, index_path.row)
       return UITableViewCell.alloc.init unless data_cell
-      
+
       data_cell = self.remap_data_cell(data_cell)
-      
+
       data_cell[:cell_style] ||= UITableViewCellStyleDefault
       data_cell[:cell_identifier] ||= "Cell"
       cell_identifier = data_cell[:cell_identifier]
@@ -154,7 +150,7 @@ module ProMotion::MotionTable
       table_cell = table_view.dequeueReusableCellWithIdentifier(cell_identifier)
       unless table_cell
         table_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:cell_identifier)
-        
+
         # Add optimizations here
         table_cell.layer.masksToBounds = true if data_cell[:masks_to_bounds]
         table_cell.backgroundColor = data_cell[:background_color] if data_cell[:background_color]
@@ -163,9 +159,9 @@ module ProMotion::MotionTable
       end
 
       if data_cell[:cell_class_attributes]
-        set_cell_attributes table_cell, data_cell[:cell_class_attributes]
+        set_attributes table_cell, data_cell[:cell_class_attributes]
       end
-      
+
       if data_cell[:accessory_view]
         table_cell.accessoryView = data_cell[:accessory_view]
         table_cell.accessoryView.autoresizingMask = UIViewAutoresizingFlexibleWidth
@@ -177,7 +173,7 @@ module ProMotion::MotionTable
 
       if data_cell[:accessory] && data_cell[:accessory] == :switch
         switch_view = UISwitch.alloc.initWithFrame(CGRectZero)
-        switch_view.addTarget(self, action: "accessory_toggled_switch:", forControlEvents:UIControlEventValueChanged);
+        switch_view.addTarget(self, action: "accessory_toggled_switch:", forControlEvents:UIControlEventValueChanged)
         switch_view.on = true if data_cell[:accessory_checked]
         table_cell.accessoryView = switch_view
       end
@@ -199,9 +195,9 @@ module ProMotion::MotionTable
           table_cell.image_size = data_cell[:remote_image][:size] if data_cell[:remote_image][:size] && table_cell.respond_to?("image_size=")
           table_cell.imageView.setImageWithURL(url, placeholderImage: placeholder)
           table_cell.imageView.layer.masksToBounds = true
-          table_cell.imageView.layer.cornerRadius = data_cell[:remote_image][:radius]
+          table_cell.imageView.layer.cornerRadius = data_cell[:remote_image][:radius] if data_cell[:remote_image].has_key?(:radius)
         else
-          ProMotion::Console.log("ProMotion Warning: to use remote_image with TableScreen you need to include the CocoaPod 'SDWebImage'.", with_color: ProMotion::Console::RED_COLOR)
+          PM.logger.error "ProMotion Warning: to use remote_image with TableScreen you need to include the CocoaPod 'SDWebImage'."
         end
       elsif data_cell[:image]
         table_cell.imageView.layer.masksToBounds = true
@@ -240,7 +236,7 @@ module ProMotion::MotionTable
 
         unless ui_label == true
           label ||= UILabel.alloc.initWithFrame(CGRectZero)
-          set_cell_attributes label, data_cell[:styles][:label]
+          set_attributes label, data_cell[:styles][:label]
           table_cell.contentView.addSubview label
         end
         # hackery
@@ -254,9 +250,18 @@ module ProMotion::MotionTable
       return table_cell
     end
 
-    def tableView(table_view, didSelectRowAtIndexPath:indexPath)
-      cell = cell_at_section_and_index(indexPath.section, indexPath.row)
-      table_view.deselectRowAtIndexPath(indexPath, animated: true);
+    def tableView(tableView, heightForRowAtIndexPath:index_path)
+      cell = cell_at_section_and_index(index_path.section, index_path.row)
+      if cell[:height]
+        cell[:height].to_f
+      else
+        tableView.rowHeight
+      end
+    end
+
+    def tableView(table_view, didSelectRowAtIndexPath:index_path)
+      cell = cell_at_section_and_index(index_path.section, index_path.row)
+      table_view.deselectRowAtIndexPath(index_path, animated: true)
       cell[:arguments] ||= {}
       cell[:arguments][:cell] = cell if cell[:arguments].is_a?(Hash)
       trigger_action(cell[:action], cell[:arguments]) if cell[:action]

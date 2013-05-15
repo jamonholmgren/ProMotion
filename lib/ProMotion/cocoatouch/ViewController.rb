@@ -20,17 +20,17 @@ module ProMotion
       super
       self.view_did_appear(animated) if self.respond_to?("view_did_appear:")
     end
-    
+
     def viewWillDisappear(animated)
       self.view_will_disappear(animated) if self.respond_to?("view_will_disappear:")
-      super      
+      super
     end
-    
+
     def viewDidDisappear(animated)
       if self.respond_to?("view_did_disappear:")
         self.view_did_disappear(animated)
       end
-      super      
+      super
     end
 
     def shouldAutorotateToInterfaceOrientation(orientation)
@@ -44,7 +44,7 @@ module ProMotion
     def willRotateToInterfaceOrientation(orientation, duration:duration)
       self.will_rotate(orientation, duration)
     end
-    
+
     def didRotateFromInterfaceOrientation(orientation)
       self.on_rotate
     end

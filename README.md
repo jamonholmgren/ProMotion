@@ -1,58 +1,67 @@
-# ProMotion ![Build Status](https://travis-ci.org/clearsightstudio/ProMotion.png)
+# ProMotion [![Build Status](https://travis-ci.org/clearsightstudio/ProMotion.png)](https://travis-ci.org/clearsightstudio/ProMotion)
 
 ## A new way to easily build RubyMotion apps.
 
 ProMotion is a RubyMotion gem that makes iOS development more like Ruby and less like Objective-C.
 
-## Table of contents
+**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
 
-1. [Tutorials](#tutorials)
-  * [Screencasts](#screencasts)
-  * [Sample Apps](#sample-apps)
-  * [Apps Built With ProMotion](#apps-built-with-promotion)
-1. **[Getting Started](#getting-started)**
-  * [Setup](#setup)
-1. [What's New?](#whats-new)
-1. [Usage](#usage)
-  * [Creating a basic screen](#creating-a-basic-screen)
-  * [Loading your first screen](#loading-your-first-screen)
-  * [Creating a tab bar](#creating-a-tab-bar)
-  * [Adding navigation bar buttons](#add-navigation-bar-buttons)
-  * [Opening and closing screens](#opening-and-closing-screens)
-  * [Adding view elements](#adding-view-elements)
-  * [Table screens](#table-screens)
-  * [Using your own UIViewController](#using-your-own-uiviewcontroller)
-1. [Reference](#reference)
-1. **[Help](#help)**
-1. [Contributing](#contributing)
-
-## Tutorials
-
-Version 0.3 tutorial, will be updated soon but most of it still applies:
+- [ProMotion ](#promotion-)
+  - [A new way to easily build RubyMotion apps.](#a-new-way-to-easily-build-rubymotion-apps)
+- [Tutorials](#tutorials)
+  - [Screencasts](#screencasts)
+  - [Sample Apps](#sample-apps)
+  - [Apps Built With ProMotion](#apps-built-with-promotion)
+    - [BigDay! Reminder App](#bigday-reminder-app)
+    - [TipCounter App](#tipcounter-app)
+- [Getting Started](#getting-started)
+  - [Setup](#setup)
+- [What's New?](#whats-new)
+  - [Version 0.6](#version-06)
+- [Usage](#usage)
+  - [Creating a basic screen](#creating-a-basic-screen)
+  - [Loading your first screen](#loading-your-first-screen)
+  - [Creating a split screen (iPad apps only)](#creating-a-split-screen-ipad-apps-only)
+  - [Creating a tab bar](#creating-a-tab-bar)
+  - [Add navigation bar buttons](#add-navigation-bar-buttons)
+  - [Opening and closing screens](#opening-and-closing-screens)
+    - [Note about split screens and universal apps](#note-about-split-screens-and-universal-apps)
+  - [Adding view elements](#adding-view-elements)
+  - [Table Screens](#table-screens)
+  - [Using your own UIViewController](#using-your-own-uiviewcontroller)
+- [Reference](#reference)
+  - [Screen](#screen)
+  - [TableScreen](#tablescreen)
+  - [Logger](#logger)
+  - [Console [deprecated]](#console-deprecated)
+- [Help](#help)
+- [Contributing](#contributing)
+  - [Working on Features](#working-on-features)
+  - [Submitting a Pull Request](#submitting-a-pull-request)
+  - [Primary Contributors](#primary-contributors)
+  
+# Tutorials
 
 http://www.clearsightstudio.com/insights/ruby-motion-promotion-tutorial
 
-### Screencasts
-
-Video tutorial with 0.4.
+## Screencasts
 
 http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/
 
-### Sample Apps
+## Sample Apps
 
-#### ProMotion Tutorial
-Sample app here: [https://github.com/jamonholmgren/promotion-tutorial](https://github.com/jamonholmgren/promotion-tutorial)
+[https://github.com/jamonholmgren/promotion-tutorial](https://github.com/jamonholmgren/promotion-tutorial)
 
-### Apps Built With ProMotion
+## Apps Built With ProMotion
 
-#### BigDay! Reminder App
+### BigDay! Reminder App
 Check out the free [BigDay! Reminder app](https://itunes.apple.com/us/app/bigday!/id571756685?ls=1&mt=8) on the 
 App Store to see what's possible. ClearSight Studio built the app for Kijome Software, a small app investment company.
 
-#### TipCounter App
+### TipCounter App
 [TipCounter](http://www.tipcounterapp.com) was built by [Matt Brewer](https://github.com/macfanatic/) for bartenders and servers to easily track their tips.  Used ProMotion and the development was a lot of fun!
 
-## Getting Started
+# Getting Started
 
 ProMotion is designed to be as intuitive and Ruby-like as possible. For example, here is a 
 typical app folder structure:
@@ -69,10 +78,10 @@ typical app folder structure:
         event.rb
       views/
         buttons/
-          save_event_button_view.rb
+          save_event_button.rb
       app_delegate.rb
 
-### Setup
+## Setup
 
 Create a new RubyMotion project.
 
@@ -94,7 +103,7 @@ Create a Gemfile and add the following lines:
 
 ```ruby
 source 'https://rubygems.org'
-gem "ProMotion", "~> 0.5.0"
+gem "ProMotion", "~> 0.6.0"
 ```
 
 Run `bundle install` in Terminal to install ProMotion.
@@ -102,7 +111,7 @@ Run `bundle install` in Terminal to install ProMotion.
 Go into your app/app_delegate.rb file and add the following:
 
 ```ruby
-class AppDelegate < ProMotion::AppDelegateParent
+class AppDelegate < ProMotion::Delegate
   def on_load(app, options)
     open HomeScreen.new(nav_bar: true)
   end
@@ -117,8 +126,10 @@ Now drop in this code:
 class HomeScreen < ProMotion::Screen
   title "Home"
   
-  def on_load
-    self.view.backgroundColor = UIColor.whiteColor
+  def will_appear
+    set_attributes self.view, {
+      backgroundColor: UIColor.whiteColor
+    }
   end
 end
 ```
@@ -129,42 +140,23 @@ Run `rake`. You should now see the simulator open with your home screen and a na
 ![ProMotion Home Screen](http://clearsightstudio.github.com/ProMotion/img/ProMotion/home-screen.png)
 
 
-## What's New?
+# What's New?
 
-### Version 0.5
+## Version 0.6
 
-Version 0.5 is mostly a documentation and consistency release. It should be backwards-compatible
-with 0.4.
+* Will auto-detect if you've loaded [motion-xray](https://github.com/colinta/motion-xray) and enable it.
+* Added `open_split_screen` for iPad-supported apps (thanks @rheoli for your contributions to this)
+* Added `refreshable` to TableScreens (thanks to @markrickert) for pull-to-refresh support.
+* `ProMotion::AppDelegateParent` renamed to `ProMotion::Delegate` (`AppDelegateParent` is an alias)
+* `set_attributes` and `add` now apply nested attributes recursively
+* `set_attributes` and `add` now accept snake_case instead of camelCase methods (e.g., background_color)
+* Added `add_to` method for adding views to any parent view. `remove` works with this normally.
+* Deprecated Console.log and replaced with PM::Logger
+* Many improvements to how screens and navigation controllers are loaded, tests
 
-* `on_return` fires after animation complete on modals now
-* Added tests ... run with `rake spec` (thanks [@macfanatic](http://twitter.com/macfanatic))
-* Rearranged internal folders to make a lot more sense
-* More complete API documentation
-* Refactored camelCase methods and configs to under_score
-* Set `should_autorotate` to true by default
-* Changed `open_screen` to `open` (`open_screen` still works for backwards compatibility)
-* `add_element` is now `add` (and `remove_element` is `remove`)
-* Removed built-in app (will release some sample apps soon, including a "Kitchen Sink" one)
+# Usage
 
-### Version 0.4
-
-* Screens are now UIViewControllers (they used to contain UIViewControllers, but that got too funky) so you can do normal UIViewController stuff with them
-* Screen functionality can also be inherited as a module in your own UIViewController, but you need to provide your own methods for viewDidLoad and whatnot.
-* Tons of headlessCamelCaps methods are now properly_ruby_underscored (with an alias to the old name for compatibility)
-* `open_screen` and `close_screen` can now just be `open` and `close` respectively
-* Attempted to keep 100% compatibility with 0.3.x but no guarantees...report issues, please!
-* Revamped the internal folder structure of the gem...more work on this to come
-* Built in a few helpers that were external before, like `content_height(view)`
-* More consistent calling of `on_load` (sometimes doesn't get called in 0.3.x)
-* `fresh_start SomeScreen` is now `open_root_screen SomeScreen`
-* Removed `set_view_controller` as we don't need it anymore
-* Better documentation (still needs work), better error messages
-* Deprecation warnings EVERYWHERE for older apps (upgrade already!)
-
-
-## Usage
-
-### Creating a basic screen
+## Creating a basic screen
 
 ```ruby
 class HomeScreen < ProMotion::Screen
@@ -185,18 +177,29 @@ class HomeScreen < ProMotion::Screen
 end
 ```
 
-### Loading your first screen
+## Loading your first screen
 
 ```ruby
-# In /app/app_delegate.rb
-class AppDelegate < ProMotion::AppDelegate
+# In app/app_delegate.rb
+class AppDelegate < ProMotion::Delegate
   def on_load(app, options)
     open MyHomeScreen.new(nav_bar: true)
   end
 end
 ```
 
-### Creating a tab bar
+## Creating a split screen (iPad apps only)
+
+```ruby
+# In app/app_delegate.rb
+class AppDelegate < ProMotion::Delegate
+  def on_load(app, options)
+    open_split_screen MenuScreen, DetailScreen
+  end
+end
+```
+
+## Creating a tab bar
 
 Creating a tabbed bar with multiple screens. This will set the tab bar as the root view controller for your app,
 so keep that in mind. It can be done from the AppDelegate#on_load or from a screen (that screen will go away, though).
@@ -231,7 +234,7 @@ def some_action
 end
 ```
 
-### Add navigation bar buttons
+## Add navigation bar buttons
 
 These two methods add the buttons to the top navigation bar of a screen. The `action:` lets you specify a method to
 call when that button is tapped, and you can pass in a UIBarButton style using `type:`.
@@ -241,7 +244,7 @@ set_nav_bar_right_button "Save", action: :save_something, type: UIBarButtonItemS
 set_nav_bar_left_button "Cancel", action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
 ```
 
-### Opening and closing screens
+## Opening and closing screens
 
 If the user taps something and you want to open a new screen, it's easy. Just use `open` and pass in the screen class
 or an instance of that screen.
@@ -315,16 +318,40 @@ class MainScreen < ProMotion::Screen
 end
 ```
 
-### Adding view elements
+### Note about split screens and universal apps
+
+It's common to want to open a screen in the same navigation controller if on iPhone but
+in a separate detail view when on iPad. Here's a good way to do that.
+
+```ruby
+class MenuScreen < ProMotion::TableScreen
+  # ...
+  def some_action
+    open SomeScreen.new, in_detail: true
+  end
+end
+```
+
+The `in_detail` option tells ProMotion to look for a split screen and open in the detail screen
+if it's available. If not, open normally. This also works for `in_master:`.
+
+## Adding view elements
 
 Any view item (UIView, UIButton, custom UIView subclasses, etc) can be added to the current view with `add`.
 `add` accepts a second argument which is a hash of attributes that get applied to the element before it is
 dropped into the view.
 
+`add(view, attr={})`
+
 ```ruby
-@label = add UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20)), {
+@label = add UILabel.new, {
   text: "This is awesome!",
-  font: UIFont.systemFontOfSize(18)
+  font: UIFont.systemFontOfSize(18),
+  resize: [ :left, :right, :top, :bottom, :width, :height ], # autoresizingMask
+  left: 5, # These four attributes are used with CGRectMake
+  top: 5,
+  width: 20,
+  height: 20
 }
 
 @element = add UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
@@ -333,14 +360,29 @@ dropped into the view.
 ```
 
 The `set_attributes` method is identical to add except that it does not add it to the current view.
+If you use snake_case and there isn't an existing method, it'll try camelCase. This allows you to
+use snake_case for Objective-C methods.
+
+`set_attributes(view, attr={})`
 
 ```ruby
 @element = set_attributes UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
+  # `background_color` is translated to `backgroundColor` automatically.
+  background_color: UIColor.whiteColor
+}
+```
+
+You can use `add_to` to add a view to any other view, not just the main view.
+
+`add_to(parent_view, new_view, attr={})`
+
+```ruby
+add_to @some_parent_view, UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
   backgroundColor: UIColor.whiteColor
 }
 ```
 
-### Table Screens
+## Table Screens
 
 You can create sectioned table screens easily with TableScreen, SectionedTableScreen, and GroupedTableScreen.
 
@@ -399,7 +441,7 @@ your Rakefile and doing this:
   ]
 ```
 
-### Using your own UIViewController
+## Using your own UIViewController
 
 Sometimes you want to inherit from a different UIViewController other than that provided by ProMotion,
 such as when using [Formotion](https://github.com/clayallsopp/formotion). **RubyMotion doesn't currently 
@@ -457,9 +499,9 @@ class EventsScreen < Formotion::FormController # Can also be < UIViewController
 end
 ```
 
-## Reference
+# Reference
 
-### Screen
+## Screen
 
 <table>
   <tr>
@@ -611,36 +653,6 @@ end
     </td>
   </tr>
   <tr>
-    <td>ios_version_greater?(version)</td>
-    <td>
-      Returns true if 'ios_version' is greater than the version passed in, false otherwise<br />
-    </td>
-  </tr>
-  <tr>
-    <td>ios_version_greater_eq?(version)</td>
-    <td>
-      Returns true if 'ios_version' is greater than or equal to the version passed in, false otherwise<br />
-    </td>
-  </tr>
-  <tr>
-    <td>ios_version_is?(version)</td>
-    <td>
-      Returns true if 'ios_version' is equal to the version passed in, false otherwise<br />
-    </td>
-  </tr>
-  <tr>
-    <td>ios_version_less?(version)</td>
-    <td>
-      Returns true if 'ios_version' is less than the version passed in, false otherwise<br />
-    </td>
-  </tr>
-  <tr>
-    <td>ios_version_less_eq?(version)</td>
-    <td>
-      Returns true if 'ios_version' is less than or equal to the version passed in, false otherwise<br />
-    </td>
-  </tr>
-  <tr>
     <td>app_delegate</td>
     <td>
       Returns the AppDelegate<br />
@@ -663,19 +675,26 @@ end
     <td>
       Pushes the screen onto the navigation stack or opens in a modal<br />
       Argument options:<br />
-      <code>nav_bar: true|false</code> (note: this has no effect if you're already in a navigation controller)<br />
+      <code>nav_bar: true|false</code><br />
       <code>hide_tab_bar: true|false</code><br />
       <code>modal: true|false</code><br />
-      <code>close_all: true|false</code> (closes all open screens and opens as root)<br />
+      <code>close_all: true|false</code> (closes all open screens and opens as root...same as open_root_screen)<br />
       <code>animated: true:false</code> (currently only affects modals)<br />
       <code>in_tab: "Tab name"</code> (if you're in a tab bar)<br />
-      any accessors in <code>screen</code>
+      Any accessors in <code>screen</code> can also be set in this hash.
+    </td>
+  </tr>
+  <tr>
+    <td>open_split_screen(master, detail)</td>
+    <td>
+      *iPad apps only*
+      Opens a UISplitScreenViewController with the specified screens as the root view controller of the current app<br />
     </td>
   </tr>
   <tr>
     <td>open_tab_bar(*screens)</td>
     <td>
-      Open a UITabBarController with the specified screens as the root view controller of the current app<br />
+      Opens a UITabBarController with the specified screens as the root view controller of the current app<br />
     </td>
   </tr>
   <tr>
@@ -686,7 +705,7 @@ end
   </tr>
 </table>
 
-### TableScreen
+## TableScreen
 
 *Has all the methods of Screen*
 
@@ -696,12 +715,24 @@ end
     <th>Description</th>
   </tr>
   <tr>
-    <td>self</td>
-    <td>Returns the current UITableViewController (not UITableView)</td>
-  </tr>
-  <tr>
     <td>searchable(placeholder: "placeholder text")</td>
     <td>Class method to make the current table searchable.</td>
+  </tr>
+  <tr>
+    <td><pre><code>refreshable(
+  callback: :on_refresh,
+  pull_message: "Pull to refresh", 
+  refreshing: "Refreshing data…", 
+  updated_format: "Last updated at %s", 
+  updated_time_format: "%l:%M %p"
+)</code></pre></td>
+    <td>Class method to make the current table refreshable.
+    	<p>All parameters are optional. If you do not specify a a callback, it will assume you've implemented an <code>on_refresh</code> method in your tableview.</p>
+    <pre><code>def on_refresh
+  # Code to start the refresh
+end</code></pre>
+    <p>And after you're done with your asyncronous process, call <code>end_refreshing</code> to collapse the refresh  view and update the last refreshed time and then <code>update_table_data</code>.</p></td>
+    <img src="https://f.cloud.github.com/assets/139261/472574/af268e52-b735-11e2-8b9b-a9245b421715.gif" />
   </tr>
   <tr>
     <td colspan="2">
@@ -728,6 +759,7 @@ def table_data
       subtitle: "This is way too huge..see note",
       arguments: { data: [ "lots", "of", "data" ] },
       action: :tapped_cell_1,
+      height: 50, # manually changes the cell's height
       cell_style: UITableViewCellStyleSubtitle, 
       cell_identifier: "Cell",
       cell_class: ProMotion::TableViewCell,
@@ -770,7 +802,9 @@ end
   </tr>
 </table>
 
-### Console
+## Logger
+
+*Accessible from ProMotion.logger or PM.logger ... you can also set a new logger by setting `PM.logger = MyLogger.new`*
 
 <table>
   <tr>
@@ -778,7 +812,60 @@ end
     <th>Description</th>
   </tr>
   <tr>
-    <td>log(log, with_color:color)</td>
+    <td>log(label, message_text, color)</td>
+    <td>
+      Output a colored console message.<br />
+      Example: <code>PM.logger.log("TESTING", "This is red!", :red)</code>
+    </td>
+  </tr>
+  <tr>
+    <td>error(message)</td>
+    <td>
+      Output a red colored console error.<br />
+      Example: <code>PM.logger.error("This is an error")</code>
+    </td>
+  </tr>
+  <tr>
+    <td>deprecated(message)</td>
+    <td>
+      Output a yellow colored console deprecated.<br />
+      Example: <code>PM.logger.deprecated("This is a deprecation warning.")</code>
+    </td>
+  </tr>
+  <tr>
+    <td>warn(message)</td>
+    <td>
+      Output a yellow colored console warning.<br />
+      Example: <code>PM.logger.warn("This is a warning")</code>
+    </td>
+  </tr>
+  <tr>
+    <td>debug(message)</td>
+    <td>
+      Output a purple colored console debug message.<br />
+      Example: <code>PM.logger.debug(@some_var)</code>
+    </td>
+  </tr>
+  <tr>
+    <td>info(message)</td>
+    <td>
+      Output a green colored console info message.<br />
+      Example: <code>PM.logger.info("This is an info message")</code>
+    </td>
+  </tr>
+</table>
+
+## Console [deprecated]
+
+<table>
+  <tr>
+    <th>Method</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>log(log, with_color:color)<br />
+        [DEPRECATED] -- use Logger
+      </td>
     <td>
       Class method to output a colored console message.<br />
       Example: <code>ProMotion::Console.log("This is red!", with_color: ProMotion::Console::RED_COLOR)</code>
@@ -786,15 +873,25 @@ end
   </tr>
 </table>
 
-## Help
+# Help
 
-If you need help, feel free to ping me on twitter @jamonholmgren or email jamon@clearsightstudio.com, or open a ticket on GitHub.
+If you need help, feel free to ping me on twitter @jamonholmgren or open a ticket on GitHub.
+Opening a ticket is usually the best and we respond to those pretty quickly.
 
-## Contributing
+# Contributing
 
-I'm really looking for feedback. Tweet me with your ideas or open a ticket (I don't mind!) and let's discuss.
+I'm very open to ideas. Tweet me with your ideas or open a ticket (I don't mind!) 
+and let's discuss.
 
-### Submitting a Pull Request
+## Working on Features
+
+1. Clone the repos into `Your-Project/Vendor/ProMotion`
+2. Update your `Gemfile`to reference the project as `gem 'ProMotion', :path => "vendor/ProMotion/"`
+3. Run `bundle`
+4. Run `rake clean` and then `rake`
+5. Contribute!
+
+## Submitting a Pull Request
 
 1. Fork the project
 2. Create a feature branch
@@ -802,8 +899,9 @@ I'm really looking for feedback. Tweet me with your ideas or open a ticket (I do
 4. Update or create new specs
 5. Make sure tests are passing by running `rake spec`
 6. Submit pull request
+7. Fame, adoration, kudos everywhere
 
-### Primary Contributors
+## Primary Contributors
 
 * Jamon Holmgren: [@jamonholmgren](https://twitter.com/jamonholmgren)
 * Silas Matson: [@silasjmatson](https://twitter.com/silasjmatson)

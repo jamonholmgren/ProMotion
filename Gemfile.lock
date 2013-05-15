@@ -1,18 +1,20 @@
 PATH
   remote: .
   specs:
-    ProMotion (0.5.2)
+    ProMotion (0.6.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
+    motion-redgreen (0.1.0)
     motion-stump (0.2.1)
-    rake (10.0.3)
+    rake (10.0.4)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   ProMotion!
+  motion-redgreen
   motion-stump
   rake

@@ -4,21 +4,22 @@ module ProMotion
     include ProMotion::ScreenElements
     include ProMotion::SystemHelper
     include ProMotion::ScreenTabs
+    include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2")
 
-    attr_accessor :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal
+    attr_accessor :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal, :split_screen
 
     def on_create(args = {})
       unless self.is_a?(UIViewController)
         raise StandardError.new("ERROR: Screens must extend UIViewController or a subclass of UIViewController.")
       end
-      
+
       args.each do |k, v|
         self.send("#{k}=", v) if self.respond_to?("#{k}=")
       end
 
       self.add_nav_bar if args[:nav_bar]
-      self.table_setup if self.respond_to?(:table_setup)      
       self.on_init if self.respond_to?(:on_init)
+      self.table_setup if self.respond_to?(:table_setup)
       self
     end
 
@@ -54,28 +55,33 @@ module ProMotion
     end
 
     def add_nav_bar
-      self.navigation_controller = NavigationController.alloc.initWithRootViewController(self)
-      self.first_screen = true
+      self.navigation_controller ||= begin
+        self.first_screen = true if self.respond_to?(:first_screen=)
+        NavigationController.alloc.initWithRootViewController(self)
+      end
     end
 
     def set_nav_bar_right_button(title, args={})
-      args[:style]  ||= UIBarButtonItemStyleBordered
-      args[:target] ||= self
-      args[:action] ||= nil
-
-      right_button = UIBarButtonItem.alloc.initWithTitle(title, style: args[:style], target: args[:target], action: args[:action])
-      self.navigationItem.rightBarButtonItem = right_button
-      right_button
+      args[:title] = title
+      set_nav_bar_button :right, args
     end
 
     def set_nav_bar_left_button(title, args={})
+      args[:title] = title
+      set_nav_bar_button :left, args
+    end
+    
+    def set_nav_bar_button(side, args={})
       args[:style]  ||= UIBarButtonItemStyleBordered
       args[:target] ||= self
       args[:action] ||= nil
 
-      left_button = UIBarButtonItem.alloc.initWithTitle(title, style: args[:style], target: args[:target], action: args[:action])
-      self.navigationItem.leftBarButtonItem = left_button
-      left_button
+      button = UIBarButtonItem.alloc.initWithTitle(args[:title], style: args[:style], target: args[:target], action: args[:action])
+
+      self.navigationItem.leftBarButtonItem = button if side == :left
+      self.navigationItem.rightBarButtonItem = button if side == :right
+
+      button
     end
 
     # [DEPRECATED]
@@ -99,13 +105,11 @@ module ProMotion
     end
 
     def view_will_appear(animated)
-      # ProMotion::Screen.current_screen = self
       self.will_appear
     end
     def will_appear; end
 
     def view_did_appear(animated)
-      # ProMotion::Screen.current_screen = self
       self.on_appear
     end
     def on_appear; end
@@ -116,7 +120,6 @@ module ProMotion
     def will_disappear; end
 
     def view_did_disappear(animated)
-      # ProMotion::Screen.current_screen = self.parent_screen if self.parent_screen
       self.on_disappear
     end
     def on_disappear; end
@@ -131,8 +134,7 @@ module ProMotion
     end
 
     def main_controller
-      return self.navigation_controller if self.navigation_controller
-      self
+      self.navigation_controller || self
     end
 
     def view_controller
@@ -170,20 +172,35 @@ module ProMotion
     end
 
     def supported_orientations
-      ors = 0
+      orientations = 0
       NSBundle.mainBundle.infoDictionary["UISupportedInterfaceOrientations"].each do |ori|
         case ori
         when "UIInterfaceOrientationPortrait"
-          ors |= UIInterfaceOrientationMaskPortrait
+          orientations |= UIInterfaceOrientationMaskPortrait
         when "UIInterfaceOrientationLandscapeLeft"
-          ors |= UIInterfaceOrientationMaskLandscapeLeft
+          orientations |= UIInterfaceOrientationMaskLandscapeLeft
         when "UIInterfaceOrientationLandscapeRight"
-          ors |= UIInterfaceOrientationMaskLandscapeRight
+          orientations |= UIInterfaceOrientationMaskLandscapeRight
         when "UIInterfaceOrientationPortraitUpsideDown"
-          ors |= UIInterfaceOrientationMaskPortraitUpsideDown
+          orientations |= UIInterfaceOrientationMaskPortraitUpsideDown
         end
       end
-      ors
+      orientations
+    end
+
+    def supported_device_families
+      NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].map do |m|
+        case m
+        when "1"
+          :iphone
+        when "2"
+          :ipad
+        end
+      end
+    end
+
+    def supported_device_family?(family)
+      supported_device_families.include?(family)
     end
 
     # Class methods
@@ -194,14 +211,6 @@ module ProMotion
 
       def debug_mode=(v)
         @debug_mode = v
-      end
-
-      def current_screen=(s)
-        @current_screen = s
-      end
-
-      def current_screen
-        @current_screen
       end
 
       def title(t)

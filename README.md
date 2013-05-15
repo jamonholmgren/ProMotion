@@ -264,6 +264,10 @@ You can also open a screen as a modal.
 
 ```ruby
 open SettingsScreen.new, modal: true
+
+# Or... (this is equivalent)
+
+open_modal SettingsScreen.new
 ```
 
 You can pass in arguments to other screens if they have accessors:
@@ -682,6 +686,12 @@ end
       <code>animated: true:false</code> (currently only affects modals)<br />
       <code>in_tab: "Tab name"</code> (if you're in a tab bar)<br />
       Any accessors in <code>screen</code> can also be set in this hash.
+    </td>
+  </tr>
+  <tr>
+    <td>open_modal(screen, args = {})</td>
+    <td>
+      Same as <code>open HomeScreen, modal: true</code>
     </td>
   </tr>
   <tr>

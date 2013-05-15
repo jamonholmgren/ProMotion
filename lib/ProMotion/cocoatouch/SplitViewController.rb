@@ -14,8 +14,10 @@ class SplitViewController < UISplitViewController
     # set the button from the old detail screen to the new one
     button = detail_screen.navigationItem.leftBarButtonItem
     s.navigationItem.leftBarButtonItem = button
+    
+    vc = s.respond_to?(:main_controller) ? s.main_controller : s
 
-    self.viewControllers = [self.viewControllers.first, s.main_controller]
+    self.viewControllers = [self.viewControllers.first, vc]
   end
   def screens=(s_array)
     self.viewControllers = s_array

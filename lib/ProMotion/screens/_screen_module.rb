@@ -70,11 +70,15 @@ module ProMotion
       args[:title] = title
       set_nav_bar_button :left, args
     end
-
+    
+    # If you call set_nav_bar_button with a nil title and system_icon: UIBarButtonSystemItemAdd (or any other
+    # system icon), the button is initialized with a barButtonSystemItem instead of a title.
     def set_nav_bar_button(side, args={})
       args[:style]  ||= UIBarButtonItemStyleBordered
       args[:target] ||= self
       args[:action] ||= nil
+      
+      button = UIBarButtonItem.alloc.initWithBarButtonSystemItem(args[:system_icon], target: args[:target], action: args[:action]) if args[:system_icon]
 
       if args[:title].is_a?(UIImage)
         button = UIBarButtonItem.alloc.initWithImage(args[:title], style: args[:style], target: args[:target], action: args[:action])

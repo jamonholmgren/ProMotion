@@ -39,7 +39,7 @@ ProMotion is a RubyMotion gem that makes iOS development more like Ruby and less
   - [Working on Features](#working-on-features)
   - [Submitting a Pull Request](#submitting-a-pull-request)
   - [Primary Contributors](#primary-contributors)
-  
+
 # Tutorials
 
 http://www.clearsightstudio.com/insights/ruby-motion-promotion-tutorial
@@ -57,7 +57,7 @@ This is pretty bare-bones, but we'll be building it out as we go along.
 ## Apps Built With ProMotion
 
 ### BigDay! Reminder App
-Check out the free [BigDay! Reminder app](https://itunes.apple.com/us/app/bigday!/id571756685?ls=1&mt=8) on the 
+Check out the free [BigDay! Reminder app](https://itunes.apple.com/us/app/bigday!/id571756685?ls=1&mt=8) on the
 App Store to see what's possible. ClearSight Studio built the app for Kijome Software, a small app investment company.
 
 ### TipCounter App
@@ -68,7 +68,7 @@ Have an interest in crime statistics and locations? Live in Winston-Salem, NC? T
 
 # Getting Started
 
-ProMotion is designed to be as intuitive and Ruby-like as possible. For example, here is a 
+ProMotion is designed to be as intuitive and Ruby-like as possible. For example, here is a
 typical app folder structure:
 
     app/
@@ -133,7 +133,7 @@ Now drop in this code:
 ```ruby
 class HomeScreen < ProMotion::Screen
   title "Home"
-  
+
   def will_appear
     set_attributes self.view, {
       backgroundColor: UIColor.whiteColor
@@ -173,12 +173,12 @@ class HomeScreen < ProMotion::Screen
   def on_load
     # Load data
   end
-  
+
   def will_appear
     # Set up the elements in your view with add
     @label ||= add UILabel.alloc.initWithFrame(CGRectMake(5, 5, 20, 20))
   end
-  
+
   def on_appear
     # Everything's loaded and visible
   end
@@ -217,18 +217,18 @@ def on_load(app, options)
   @home     = MyHomeScreen.new(nav_bar: true)
   @settings = SettingsScreen.new
   @contact  = ContactScreen.new(nav_bar: true)
-  
+
   open_tab_bar @home, @settings, @contact
 end
 ```
 
-For each screen that belongs to the tab bar, you need to set the tab name and icon in the files. 
+For each screen that belongs to the tab bar, you need to set the tab name and icon in the files.
 In this example, we would need add the following to the three files (my_home_screen.rb, settings_screen.rb, contact_screen.rb):
 
 ```ruby
 def on_load
   set_tab_bar_item title: "Tab Name Goes Here", icon: "icons/tab_icon.png" # in resources/icons folder
-  
+
   # or...
   set_tab_bar_item system_icon: UITabBarSystemItemContacts
 end
@@ -253,6 +253,12 @@ set_nav_bar_left_button "Cancel", action: :return_to_some_other_screen, type: UI
 ```
 
 If you pass an instance of a `UIImage`, the `UIBarButton` will automatically display with that image instead of text. *Don't forget retina and landscape versions of your image!*
+
+If you pass `:system` for the title, then you can get a system item. E.g.:
+
+```ruby
+set_nav_bar_right_button nil, action: :add_something, system_icon: UIBarButtonSystemItemAdd
+```
 
 ## Opening and closing screens
 
@@ -403,7 +409,7 @@ class SettingsScreen < ProMotion::GroupedTableScreen
     add_right_nav_button(label: "Save", action: :save)
     set_tab_bar_item(title: "Settings", icon: "settings.png")
   end
-  
+
   # table_data is automatically called. Use this format in the return value.
   # It's an array of cell groups, each cell group consisting of a title and an array of cells.
   def table_data
@@ -427,10 +433,10 @@ class SettingsScreen < ProMotion::GroupedTableScreen
   def table_data_index
     # Ruby magic to make an alphabetical array of letters.
     # Try this in Objective-C and tell me you want to go back.
-    return ("A".."Z").to_a 
+    return ("A".."Z").to_a
   end
-  
-  # Your table cells, when tapped, will execute the corresponding actions 
+
+  # Your table cells, when tapped, will execute the corresponding actions
   # and pass in the specified arguments.
   def edit_profile(args={})
     puts args[:id] # => 3
@@ -438,7 +444,7 @@ class SettingsScreen < ProMotion::GroupedTableScreen
 end
 ```
 
-You can provide remotely downloaded images for cells by including the CocoaPod "SDWebImage" in 
+You can provide remotely downloaded images for cells by including the CocoaPod "SDWebImage" in
 your Rakefile and doing this:
 
 ```ruby
@@ -453,9 +459,9 @@ your Rakefile and doing this:
 ## Using your own UIViewController
 
 Sometimes you want to inherit from a different UIViewController other than that provided by ProMotion,
-such as when using [Formotion](https://github.com/clayallsopp/formotion). **RubyMotion doesn't currently 
-allow us to override built-in methods when including them as a module.** And we really need to override 
-`viewDidLoad` and others. 
+such as when using [Formotion](https://github.com/clayallsopp/formotion). **RubyMotion doesn't currently
+allow us to override built-in methods when including them as a module.** And we really need to override
+`viewDidLoad` and others.
 
 Fortunately, there's a workaround for that.
 
@@ -479,15 +485,15 @@ class EventsScreen < Formotion::FormController # Can also be < UIViewController
     super
     self.view_did_appear(animated) if self.respond_to?("view_did_appear:")
   end
-  
+
   def viewWillDisappear(animated)
     self.view_will_disappear(animated) if self.respond_to?("view_will_disappear:")
     super
   end
-  
+
   def viewDidDisappear(animated)
     self.view_did_disappear(animated) if self.respond_to?("view_did_disappear:")
-    super      
+    super
   end
 
   def shouldAutorotateToInterfaceOrientation(orientation)
@@ -501,7 +507,7 @@ class EventsScreen < Formotion::FormController # Can also be < UIViewController
   def willRotateToInterfaceOrientation(orientation, duration:duration)
     self.will_rotate(orientation, duration)
   end
-  
+
   def didRotateFromInterfaceOrientation(orientation)
     self.on_rotate
   end
@@ -535,13 +541,13 @@ end
       Creates the tab that is shown in a tab bar item.<br />
       Arguments: <code>{ icon: "imagename", systemIcon: UISystemIconContacts, title: "tabtitle" }</code>
     </td>
-  </tr>  
+  </tr>
   <tr>
     <td>on_appear</td>
     <td>
       Callback for when the screen appears.<br />
     </td>
-  </tr> 
+  </tr>
   <tr>
     <td>will_appear</td>
     <td>
@@ -611,7 +617,7 @@ end
 <pre><code>
 class SomeScreen
   title "Some screen"
-  
+
   def on_load
     # ...
   end
@@ -732,9 +738,9 @@ end
   <tr>
     <td><pre><code>refreshable(
   callback: :on_refresh,
-  pull_message: "Pull to refresh", 
-  refreshing: "Refreshing data…", 
-  updated_format: "Last updated at %s", 
+  pull_message: "Pull to refresh",
+  refreshing: "Refreshing data…",
+  updated_format: "Last updated at %s",
   updated_time_format: "%l:%M %p"
 )</code></pre></td>
     <td>Class method to make the current table refreshable.
@@ -756,7 +762,7 @@ end</code></pre>
       <strong>Performance note...</strong> It's best to build this array in a different method
       and store it in something like <code>@table_data</code>. Then your <code>table_data</code>
       method just returns that.
-      
+
 <pre><code>
 def table_data
   [{
@@ -771,7 +777,7 @@ def table_data
       arguments: { data: [ "lots", "of", "data" ] },
       action: :tapped_cell_1,
       height: 50, # manually changes the cell's height
-      cell_style: UITableViewCellStyleSubtitle, 
+      cell_style: UITableViewCellStyleSubtitle,
       cell_identifier: "Cell",
       cell_class: ProMotion::TableViewCell,
       masks_to_bounds: true,
@@ -787,7 +793,7 @@ def table_data
       accessory_checked: true, # whether it's "checked" or not
       image: { image: UIImage.imageNamed("something"), radius: 15 },
       remote_image: {  # remote image, requires SDWebImage CocoaPod
-        url: "http://placekitten.com/200/300", placeholder: "some-local-image", 
+        url: "http://placekitten.com/200/300", placeholder: "some-local-image",
         size: 50, radius: 15
       },
       subviews: [ @some_view, @some_other_view ] # arbitrary views added to the cell
@@ -891,7 +897,7 @@ Opening a ticket is usually the best and we respond to those pretty quickly.
 
 # Contributing
 
-I'm very open to ideas. Tweet me with your ideas or open a ticket (I don't mind!) 
+I'm very open to ideas. Tweet me with your ideas or open a ticket (I don't mind!)
 and let's discuss.
 
 ## Working on Features

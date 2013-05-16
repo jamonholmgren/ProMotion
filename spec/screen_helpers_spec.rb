@@ -61,6 +61,13 @@ describe "screen helpers" do
       @screen.navigationItem.rightBarButtonItem.image.should == image
     end
 
+    it "should add an image left nav bar button" do
+      image = UIImage.imageNamed("list.png")
+      @screen.set_nav_bar_left_button image, action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
+      @screen.navigationItem.leftBarButtonItem.image.class.should == UIImage
+      @screen.navigationItem.leftBarButtonItem.image.should == image
+    end
+
   end
 
   describe "screen navigation" do

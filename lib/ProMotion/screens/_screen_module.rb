@@ -70,13 +70,17 @@ module ProMotion
       args[:title] = title
       set_nav_bar_button :left, args
     end
-    
+
     def set_nav_bar_button(side, args={})
       args[:style]  ||= UIBarButtonItemStyleBordered
       args[:target] ||= self
       args[:action] ||= nil
 
-      button = UIBarButtonItem.alloc.initWithTitle(args[:title], style: args[:style], target: args[:target], action: args[:action])
+      if args[:title].is_a?(UIImage)
+        button = UIBarButtonItem.alloc.initWithImage(args[:title], style: args[:style], target: args[:target], action: args[:action])
+      else
+        button = UIBarButtonItem.alloc.initWithTitle(args[:title], style: args[:style], target: args[:target], action: args[:action])
+      end
 
       self.navigationItem.leftBarButtonItem = button if side == :left
       self.navigationItem.rightBarButtonItem = button if side == :right

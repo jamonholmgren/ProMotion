@@ -111,7 +111,7 @@ gem "ProMotion", "~> 0.6.0"
 
 Run `bundle install` in Terminal to install ProMotion.
 
-Go into your app/app_delegate.rb file and add the following:
+Go into your app/app_delegate.rb file and replace everything with the following:
 
 ```ruby
 class AppDelegate < ProMotion::Delegate
@@ -120,6 +120,9 @@ class AppDelegate < ProMotion::Delegate
   end
 end
 ```
+
+Make sure you remove the `didFinishLoadingWithOptions` method or call `super` in it. Otherwise
+ProMotion won't get set up and `on_load` won't be called.
 
 Create a folder in `/app` named `screens`. Create a file in that folder named `home_screen.rb`.
 

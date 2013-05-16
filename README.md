@@ -580,7 +580,7 @@ end
     <td>set_nav_bar_right_button(title, args = {})</td>
     <td>
       Set a right nav bar button.<br />
-      `title` can be a `String` or a `UIImage`.
+      `title` can be a `String` or a `UIImage`.<br />
       <img src="http://i.imgur.com/whbkc.png" />
     </td>
   </tr>

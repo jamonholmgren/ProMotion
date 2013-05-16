@@ -108,4 +108,18 @@ describe "screen properties" do
 
   end
 
+  describe "bar button behavior" do
+    before do
+      @screen.set_nav_bar_right_button nil, action: :add_something, system_icon: UIBarButtonSystemItemAdd
+    end
+
+    it "has a right bar button item of the correct type" do
+      @screen.navigationItem.rightBarButtonItem.should.be.instance_of UIBarButtonItem
+    end
+
+    it "is an add button" do
+      @screen.navigationItem.rightBarButtonItem.action.should == :add_something
+    end
+  end
+
 end

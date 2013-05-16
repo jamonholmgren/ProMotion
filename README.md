@@ -50,7 +50,9 @@ http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymot
 
 ## Sample Apps
 
-[https://github.com/jamonholmgren/promotion-tutorial](https://github.com/jamonholmgren/promotion-tutorial)
+This is pretty bare-bones, but we'll be building it out as we go along.
+
+[https://github.com/jamonholmgren/promotion-demo](https://github.com/jamonholmgren/promotion-demo)
 
 ## Apps Built With ProMotion
 

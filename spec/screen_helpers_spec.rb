@@ -35,25 +35,30 @@ describe "screen helpers" do
       @screen.add_to @subview, sub_subview, { backgroundColor: UIColor.redColor }
       @subview.subviews.last.backgroundColor.should == UIColor.redColor
     end
-    
+
   end
 
   describe "nav bar buttons" do
-    
+
     before do
       @screen = HomeScreen.new(nav_bar: true)
     end
-    
+
     it "should add a left nav bar button" do
       @screen.set_nav_bar_left_button "Save", action: :save_something, type: UIBarButtonItemStyleDone
       @screen.navigationItem.leftBarButtonItem.class.should == UIBarButtonItem
     end
-    
+
     it "should add a right nav bar button" do
       @screen.set_nav_bar_right_button "Cancel", action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
       @screen.navigationItem.rightBarButtonItem.class.should == UIBarButtonItem
     end
-    
+
+    it "should add an image right nav bar button" do
+      @screen.set_nav_bar_right_button UIImage.imageNamed("list.png"), action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
+      @screen.navigationItem.rightBarButtonItem.image.class.should == UIImage
+    end
+
   end
 
   describe "screen navigation" do

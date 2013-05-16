@@ -159,3 +159,21 @@ describe "screen properties" do
   end
 
 end
+
+describe "screen with toolbar" do
+
+  it "showing" do
+    # Simulate AppDelegate setup of main screen
+    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen.on_load
+    screen.navigationController.toolbarHidden?.should == false
+  end
+
+  it "hidden" do
+    # Simulate AppDelegate setup of main screen
+    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: false
+    screen.on_load
+    screen.navigationController.toolbarHidden?.should == true
+  end
+
+end

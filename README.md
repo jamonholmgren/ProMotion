@@ -123,6 +123,11 @@ class AppDelegate < ProMotion::Delegate
 end
 ```
 
+Note: You can use other keysin `on_load` when you open a new screen:
+
+* `modal:  ` [`true` | `false`]
+* `toolbar:` [`true` | `false`]
+
 Make sure you remove the `didFinishLoadingWithOptions` method or call `super` in it. Otherwise
 ProMotion won't get set up and `on_load` won't be called.
 

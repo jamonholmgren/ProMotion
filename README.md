@@ -244,6 +244,8 @@ set_nav_bar_right_button "Save", action: :save_something, type: UIBarButtonItemS
 set_nav_bar_left_button "Cancel", action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
 ```
 
+If you pass an instance of a `UIImage`, the `UIBarButton` will automatically display with that image instead of text. *Don't forget retina and landscape versions of your image!*
+
 ## Opening and closing screens
 
 If the user taps something and you want to open a new screen, it's easy. Just use `open` and pass in the screen class
@@ -284,7 +286,6 @@ class ProfileScreen < ProMotion::Screen
     self.user # => some_user instance
   end
 end
-
 ```
 
 Closing a screen is as easy as can be.
@@ -564,12 +565,14 @@ end
     <td>set_nav_bar_left_button(title, args = {})</td>
     <td>
       Set a left nav bar button.<br />
+      `title` can be a `String` or a `UIImage`.
     </td>
   </tr>
   <tr>
     <td>set_nav_bar_right_button(title, args = {})</td>
     <td>
       Set a right nav bar button.<br />
+      `title` can be a `String` or a `UIImage`.
       <img src="http://i.imgur.com/whbkc.png" />
     </td>
   </tr>

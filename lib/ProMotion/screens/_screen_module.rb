@@ -78,8 +78,10 @@ module ProMotion
       args[:target] ||= self
       args[:action] ||= nil
       
-      if args[:system_icon]
-        button = UIBarButtonItem.alloc.initWithBarButtonSystemItem(args[:system_icon], target: args[:target], action: args[:action])
+      button = UIBarButtonItem.alloc.initWithBarButtonSystemItem(args[:system_icon], target: args[:target], action: args[:action]) if args[:system_icon]
+
+      if args[:title].is_a?(UIImage)
+        button = UIBarButtonItem.alloc.initWithImage(args[:title], style: args[:style], target: args[:target], action: args[:action])
       else
         button = UIBarButtonItem.alloc.initWithTitle(args[:title], style: args[:style], target: args[:target], action: args[:action])
       end

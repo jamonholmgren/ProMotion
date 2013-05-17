@@ -19,7 +19,11 @@ module ProMotion
 
       [ master, detail ].map { |s| s.on_load if s.respond_to?(:on_load) }
 
-      split_screen_controller master, detail
+      split = split_screen_controller master, detail
+      if args.has_key?(:icon) or args.has_key?(:title)
+        split.tabBarItem = create_tab_bar_item(args)
+      end
+      split
     end
 
     def open_split_screen(master, detail, args={})

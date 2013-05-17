@@ -10,6 +10,10 @@ describe "split screen in tab bar functionality" do
     @tab = @app.open_tab_bar @split_screen, HomeScreen, BasicScreen
   end
 
+  after do
+    @split_screen.delegate = nil # dereference to avoid memory issue
+  end
+
   it "should create a UISplitViewController" do
     @split_screen.is_a?(UISplitViewController).should == true
   end

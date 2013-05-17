@@ -6,12 +6,15 @@ module ProMotion
     include ProMotion::ScreenTabs
     include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2")
 
-    attr_accessor :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal, :split_screen
+    attr_accessor :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal, :split_screen, :title
 
     def on_create(args = {})
       unless self.is_a?(UIViewController)
         raise StandardError.new("ERROR: Screens must extend UIViewController or a subclass of UIViewController.")
       end
+
+
+      self.title = self.class.send(:get_title)
 
       args.each do |k, v|
         self.send("#{k}=", v) if self.respond_to?("#{k}=")
@@ -134,15 +137,6 @@ module ProMotion
       self.on_disappear
     end
     def on_disappear; end
-
-    def title
-      self.class.send(:get_title)
-    end
-
-    def title=(new_title)
-      self.class.title = new_title
-      super
-    end
 
     def main_controller
       self.navigation_controller || self

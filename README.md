@@ -123,7 +123,7 @@ class AppDelegate < ProMotion::Delegate
 end
 ```
 
-Note: You can use other keysin `on_load` when you open a new screen:
+Note: You can use other keys in `on_load` when you open a new screen:
 
 * `modal:  ` [`true` | `false`]
 * `toolbar:` [`true` | `false`]
@@ -786,7 +786,7 @@ end</code></pre>
       <strong>Performance note...</strong> It's best to build this array in a different method
       and store it in something like <code>@table_data</code>. Then your <code>table_data</code>
       method just returns that.
-      
+
       It's common to add labels to a subclassed tableview cell, so ProMotion finds any attributes
       that end in `_label` in your input hash and tries to assign to them without going through the
       hoop-jumping of using `:cell_class_attributes`. This only applies to tables cells where you have

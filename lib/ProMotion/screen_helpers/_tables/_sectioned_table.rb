@@ -161,7 +161,9 @@ module ProMotion::MotionTable
       ### Catch any custom class labels ###
       if data_cell[:cell_class]
         data_cell.select{|k| k =~ /_label$/}.each_pair do |k, v|
-          table_cell.send(k).setText v
+          cell = table_cell.send(k)
+          cell.setText v
+          cell.autoresizingMask = UIViewAutoresizingFlexibleWidth
         end
       end
 

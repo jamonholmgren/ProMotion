@@ -157,20 +157,10 @@ describe "screen helpers" do
         @screen.open_screen BasicScreen
       end
 
-      it "should open the main controller if no options are provided" do
-        parent_screen = HomeScreen.new
-        nav_controller = ProMotion::NavigationController.new
-        new_screen = BasicScreen.new
-        new_screen.stub! :main_controller, return: nav_controller
-
-        parent_screen.mock!(:open_view_controller) { |vc| vc.should.be == nav_controller  }
-        parent_screen.open_screen new_screen
-      end
-
-      it "should open the provided view controller if no other conditions are met" do
+      it "should open the provided view controller as root view if no other conditions are met" do
         parent_screen = HomeScreen.new
         new_screen = BasicScreen.new
-        parent_screen.mock!(:open_view_controller) { |vc| vc.should.be == new_screen }
+        parent_screen.mock!(:open_root_screen) { |vc| vc.should.be == new_screen }
         parent_screen.open_screen new_screen
       end
 

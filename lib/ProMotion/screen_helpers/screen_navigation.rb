@@ -10,10 +10,13 @@ module ProMotion
       screen.send(:on_load) if screen.respond_to?(:on_load)
       animated = args[:animated] || true
 
-      return self.split_screen.detail_screen = screen if args[:in_detail] && self.split_screen
-      return self.split_screen.master_screen = screen if args[:in_master] && self.split_screen
+      if args[:in_detail] && self.split_screen
+        self.split_screen.detail_screen = screen
 
-      if args[:close_all]
+      elsif args[:in_master] && self.split_screen
+        self.split_screen.master_screen = screen 
+
+      elsif args[:close_all]
         open_root_screen screen
 
       elsif args[:modal]
@@ -25,11 +28,8 @@ module ProMotion
       elsif self.navigation_controller
         push_view_controller screen
 
-      elsif screen.respond_to?(:main_controller)
-        open_view_controller screen.main_controller
-
       else
-        open_view_controller screen
+        open_root_screen screen
 
       end
 
@@ -72,8 +72,9 @@ module ProMotion
       end
     end
 
-    def open_view_controller(vc)
-      app_delegate.load_root_view vc
+    def open_view_controller(screen)
+      PM.logger.deprecated "Use `open_root_screen` instead of the more ambiguous `open_view_controller`."
+      open_root_screen screen
     end
 
     def push_view_controller(vc, nav_controller=nil)
@@ -129,6 +130,8 @@ module ProMotion
           screen.navigation_controller = vc if screen.respond_to?("navigation_controller=")
           push_view_controller(screen, vc)
         else
+          # TODO: This should probably open the vc, shouldn't it?
+          # This isn't well tested and needs to work better.
           self.tab_bar.selectedIndex = vc.tabBarItem.tag
         end
 

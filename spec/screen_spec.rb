@@ -12,6 +12,10 @@ describe "screen properties" do
     HomeScreen.get_title.should == 'Home'
   end
 
+  it "should set title on new instances" do
+    @screen.title.should == "Home"
+  end
+
   it "should let the instance reset the title" do
     @screen.title = "instance method"
     HomeScreen.get_title.should == 'instance method'

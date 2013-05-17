@@ -12,13 +12,18 @@ describe "screen properties" do
     HomeScreen.get_title.should == 'Home'
   end
 
-  it "should set title on new instances" do
+  it "should set default title on new instances" do
     @screen.title.should == "Home"
   end
 
-  it "should let the instance reset the title" do
+  it "should let the instance set its title" do
     @screen.title = "instance method"
-    HomeScreen.get_title.should == 'instance method'
+    @screen.title.should == 'instance method'
+  end
+
+  it "should not let the instance reset the default title" do
+    @screen.title = "instance method"
+    HomeScreen.get_title.should != 'instance method'
   end
 
   it "should store debug mode" do

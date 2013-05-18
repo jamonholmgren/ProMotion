@@ -88,6 +88,8 @@ module ProMotion
           UIBarButtonItem.alloc.initWithImage(args[:title], style: args[:style], target: args[:target], action: args[:action])
         when Symbol, NilClass
           UIBarButtonItem.alloc.initWithBarButtonSystemItem(args[:system_icon], target: args[:target], action: args[:action]) if args[:system_icon]
+        when UIBarButtonItem
+          args[:title]
         else
           PM.logger.error("Please supply a title string, a UIImage or :system.")
       end

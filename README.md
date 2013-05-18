@@ -465,19 +465,21 @@ A note about table screens. You may not want a sectioned table. In that case,
 use only one section and set its value to `nil`. For example:
 
 ```ruby
-[ {:title=>nil,
-    :cells=>[
-      {:title=>"37th Annual Grammy Awards", :subtitle=>"Nokia Theater"}
+[{
+  title: nil,
+  cells: [
+      {title: "37th Annual Grammy Awards", subtitle: "Nokia Theater"}
     ]
-  },
-  {:title=>nil,
-    :cells=>[
-      {:title=>"87th Academy Awards", :subtitle=>"Nokia Theater"}
-    ]
-  },
-  {:title=>nil,
-    :cells=>[{:title=>"Golden Globe Awards", :subtitle=>"Beverly Hilton"}]}
-]
+  }, {
+  title: nil,
+  cells: [
+    {title: "87th Academy Awards", subtitle: "Nokia Theater"}
+  ]}, {
+  title: nil,
+  cells: [
+    {title: "Golden Globe Awards", subtitle: "Beverly Hilton"}
+  ]
+}]
 ```
 
 ## Using your own UIViewController

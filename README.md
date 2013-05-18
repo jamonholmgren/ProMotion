@@ -56,15 +56,7 @@ This is pretty bare-bones, but we'll be building it out as we go along.
 
 ## Apps Built With ProMotion
 
-### BigDay! Reminder App
-Check out the free [BigDay! Reminder app](https://itunes.apple.com/us/app/bigday!/id571756685?ls=1&mt=8) on the
-App Store to see what's possible. ClearSight Studio built the app for Kijome Software, a small app investment company.
-
-### TipCounter App
-[TipCounter](http://www.tipcounterapp.com) was built by [Matt Brewer](https://github.com/macfanatic/) for bartenders and servers to easily track their tips.  Used ProMotion and the development was a lot of fun!
-
-### Winston-Salem Crime Map
-Have an interest in crime statistics and locations? Live in Winston-Salem, NC? This hyper-local and [open source](https://github.com/markrickert/WSCrime) RubyMotion app uses a mixture custom UIViewControllers and ProMotion for ease of attribute setting and adding views. Check it out [on the App Store](http://www.mohawkapps.com/winston-salem-crime-map/download/) or [fork it and contribute](https://github.com/markrickert/WSCrime)!
+[View apps built with ProMotion (feel free to submit yours in a pull request!)](https://github.com/clearsightstudio/ProMotion/blob/master/PROMOTION_APPS.md)
 
 # Getting Started
 
@@ -116,7 +108,7 @@ Run `bundle install` in Terminal to install ProMotion.
 Go into your app/app_delegate.rb file and replace everything with the following:
 
 ```ruby
-class AppDelegate < ProMotion::Delegate
+class AppDelegate < PM::Delegate
   def on_load(app, options)
     open HomeScreen.new(nav_bar: true)
   end
@@ -131,7 +123,7 @@ Create a folder in `/app` named `screens`. Create a file in that folder named `h
 Now drop in this code:
 
 ```ruby
-class HomeScreen < ProMotion::Screen
+class HomeScreen < PM::Screen
   title "Home"
 
   def will_appear
@@ -155,7 +147,7 @@ Run `rake`. You should now see the simulator open with your home screen and a na
 * Will auto-detect if you've loaded [motion-xray](https://github.com/colinta/motion-xray) and enable it.
 * Added `open_split_screen` for iPad-supported apps (thanks @rheoli for your contributions to this)
 * Added `refreshable` to TableScreens (thanks to @markrickert) for pull-to-refresh support.
-* `ProMotion::AppDelegateParent` renamed to `ProMotion::Delegate` (`AppDelegateParent` is an alias)
+* `PM::AppDelegateParent` renamed to `PM::Delegate` (`AppDelegateParent` is an alias)
 * `set_attributes` and `add` now apply nested attributes recursively
 * `set_attributes` and `add` now accept snake_case instead of camelCase methods (e.g., background_color)
 * Added `add_to` method for adding views to any parent view. `remove` works with this normally.
@@ -167,7 +159,7 @@ Run `rake`. You should now see the simulator open with your home screen and a na
 ## Creating a basic screen
 
 ```ruby
-class HomeScreen < ProMotion::Screen
+class HomeScreen < PM::Screen
   title "Home"
 
   def on_load
@@ -189,7 +181,7 @@ end
 
 ```ruby
 # In app/app_delegate.rb
-class AppDelegate < ProMotion::Delegate
+class AppDelegate < PM::Delegate
   def on_load(app, options)
     open MyHomeScreen.new(nav_bar: true)
   end
@@ -200,7 +192,7 @@ end
 
 ```ruby
 # In app/app_delegate.rb
-class AppDelegate < ProMotion::Delegate
+class AppDelegate < PM::Delegate
   def on_load(app, options)
     open_split_screen MenuScreen, DetailScreen
   end
@@ -295,7 +287,7 @@ open_modal SettingsScreen.new
 You can pass in arguments to other screens if they have accessors:
 
 ```ruby
-class HomeScreen < ProMotion::Screen
+class HomeScreen < PM::Screen
   # ...
 
   def settings_button_tapped
@@ -303,7 +295,7 @@ class HomeScreen < ProMotion::Screen
   end
 end
 
-class ProfileScreen < ProMotion::Screen
+class ProfileScreen < PM::Screen
   attr_accessor :user
 
   def on_load
@@ -324,7 +316,7 @@ end
 You can close a screen (modal or in a nav controller) and pass back arguments to the previous screen's "on_return" method:
 
 ```ruby
-class ItemScreen < ProMotion::Screen
+class ItemScreen < PM::Screen
   # ...
   def save_and_close
     if @model.save
@@ -333,7 +325,7 @@ class ItemScreen < ProMotion::Screen
   end
 end
 
-class MainScreen < ProMotion::Screen
+class MainScreen < PM::Screen
   # ...
   def on_return(args = {})
     if args[:model_saved]
@@ -349,7 +341,7 @@ It's common to want to open a screen in the same navigation controller if on iPh
 in a separate detail view when on iPad. Here's a good way to do that.
 
 ```ruby
-class MenuScreen < ProMotion::TableScreen
+class MenuScreen < PM::TableScreen
   # ...
   def some_action
     open SomeScreen.new, in_detail: true
@@ -412,7 +404,7 @@ add_to @some_parent_view, UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), 
 You can create sectioned table screens easily with TableScreen, SectionedTableScreen, and GroupedTableScreen.
 
 ```ruby
-class SettingsScreen < ProMotion::GroupedTableScreen
+class SettingsScreen < PM::GroupedTableScreen
   title "Settings"
 
   def on_load
@@ -468,61 +460,7 @@ your Rakefile and doing this:
 
 ## Using your own UIViewController
 
-Sometimes you want to inherit from a different UIViewController other than that provided by ProMotion,
-such as when using [Formotion](https://github.com/clayallsopp/formotion). **RubyMotion doesn't currently
-allow us to override built-in methods when including them as a module.** And we really need to override
-`viewDidLoad` and others.
-
-Fortunately, there's a workaround for that.
-
-```ruby
-class EventsScreen < Formotion::FormController # Can also be < UIViewController
-  include ProMotion::ScreenModule # Not TableScreenModule since we're using Formotion for that
-
-  # Required functions for ProMotion to work properly
-
-  def viewDidLoad
-    super
-    self.view_did_load if self.respond_to?(:view_did_load)
-  end
-
-  def viewWillAppear(animated)
-    super
-    self.view_will_appear(animated) if self.respond_to?("view_will_appear:")
-  end
-
-  def viewDidAppear(animated)
-    super
-    self.view_did_appear(animated) if self.respond_to?("view_did_appear:")
-  end
-
-  def viewWillDisappear(animated)
-    self.view_will_disappear(animated) if self.respond_to?("view_will_disappear:")
-    super
-  end
-
-  def viewDidDisappear(animated)
-    self.view_did_disappear(animated) if self.respond_to?("view_did_disappear:")
-    super
-  end
-
-  def shouldAutorotateToInterfaceOrientation(orientation)
-    self.should_rotate(orientation)
-  end
-
-  def shouldAutorotate
-    self.should_autorotate
-  end
-
-  def willRotateToInterfaceOrientation(orientation, duration:duration)
-    self.will_rotate(orientation, duration)
-  end
-
-  def didRotateFromInterfaceOrientation(orientation)
-    self.on_rotate
-  end
-end
-```
+[Using your own UIViewController with ProMotion](https://github.com/clearsightstudio/ProMotion/blob/master/CUSTOM_VIEW_CONTROLLERS.md)
 
 # Reference
 
@@ -795,7 +733,7 @@ def table_data
       height: 50, # manually changes the cell's height
       cell_style: UITableViewCellStyleSubtitle,
       cell_identifier: "Cell",
-      cell_class: ProMotion::TableViewCell,
+      cell_class: PM::TableViewCell,
       masks_to_bounds: true,
       background_color: UIColor.whiteColor,
       selection_style: UITableViewCellSelectionStyleGray,
@@ -901,7 +839,7 @@ end
       </td>
     <td>
       Class method to output a colored console message.<br />
-      Example: <code>ProMotion::Console.log("This is red!", with_color: ProMotion::Console::RED_COLOR)</code>
+      Example: <code>PM::Console.log("This is red!", with_color: PM::Console::RED_COLOR)</code>
     </td>
   </tr>
 </table>

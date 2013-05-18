@@ -68,6 +68,15 @@ describe "screen helpers" do
       @screen.navigationItem.leftBarButtonItem.image.should == image
     end
 
+    it "should add a left UIBarButtonItem" do
+      @screen.set_nav_bar_left_button @screen.editButtonItem
+      @screen.navigationItem.leftBarButtonItem.class.should == UIBarButtonItem
+    end
+
+    it "should add a right UIBarButtonItem" do
+      @screen.set_nav_bar_right_button @screen.editButtonItem
+      @screen.navigationItem.rightBarButtonItem.class.should == UIBarButtonItem
+    end
   end
 
   describe "screen navigation" do

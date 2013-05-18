@@ -260,6 +260,12 @@ If you pass `:system` for the title, then you can get a system item. E.g.:
 set_nav_bar_right_button nil, action: :add_something, system_icon: UIBarButtonSystemItemAdd
 ```
 
+Additionally, if you pass an instance of a `UIBarButtonItem`, the `UIBarButton` will automatically display that particular button item.
+
+```ruby
+set_nav_bar_left_button self.editButtonItem
+```
+
 ## Opening and closing screens
 
 If the user taps something and you want to open a new screen, it's easy. Just use `open` and pass in the screen class

@@ -10,6 +10,10 @@ describe "split screen `open` functionality" do
     @split_screen = @app.open_split_screen @master_screen, @detail_screen_1
   end
 
+  after do
+    @split_screen.delegate = nil # dereference to avoid memory issue
+  end
+
   it "should open a new screen in the detail view" do
     @master_screen.open @detail_screen_2, in_detail: true
     @split_screen.detail_screen.should == @detail_screen_2

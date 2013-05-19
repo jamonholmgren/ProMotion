@@ -6,12 +6,15 @@ module ProMotion
     include ProMotion::ScreenTabs
     include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2")
 
-    attr_accessor :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal, :split_screen
+    attr_accessor :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal, :split_screen, :title
 
     def on_create(args = {})
       unless self.is_a?(UIViewController)
         raise StandardError.new("ERROR: Screens must extend UIViewController or a subclass of UIViewController.")
       end
+
+
+      self.title = self.class.send(:get_title)
 
       args.each do |k, v|
         self.send("#{k}=", v) if self.respond_to?("#{k}=")
@@ -72,28 +75,35 @@ module ProMotion
       set_nav_bar_button :left, args
     end
 
-    # If you call set_nav_bar_button with a nil title and system_icon: UIBarButtonSystemItemAdd (or any other
-    # system icon), the button is initialized with a barButtonSystemItem instead of a title.
     def set_nav_bar_button(side, args={})
       args[:style]  ||= UIBarButtonItemStyleBordered
       args[:target] ||= self
       args[:action] ||= nil
+      button_type = args[:image] || args[:button] || args[:system_icon] || args[:title] || "Button"
 
-      button = case args[:title]
-        when String
-          UIBarButtonItem.alloc.initWithTitle(args[:title], style: args[:style], target: args[:target], action: args[:action])
-        when UIImage
-          UIBarButtonItem.alloc.initWithImage(args[:title], style: args[:style], target: args[:target], action: args[:action])
-        when Symbol, NilClass
-          UIBarButtonItem.alloc.initWithBarButtonSystemItem(args[:system_icon], target: args[:target], action: args[:action]) if args[:system_icon]
-        else
-          PM.logger.error("Please supply a title string, a UIImage or :system.")
-      end
+      button = bar_button_item button_type, args
 
       self.navigationItem.leftBarButtonItem = button if side == :left
       self.navigationItem.rightBarButtonItem = button if side == :right
 
       button
+    end
+    
+    def bar_button_item(button_type, args)
+      case button_type
+        when UIBarButtonItem
+          button_type
+        when UIImage
+          UIBarButtonItem.alloc.initWithImage(button_type, style: args[:style], target: args[:target], action: args[:action])
+        when String
+          UIBarButtonItem.alloc.initWithTitle(button_type, style: args[:style], target: args[:target], action: args[:action])
+        else
+          if args[:system_icon]
+            UIBarButtonItem.alloc.initWithBarButtonSystemItem(args[:system_icon], target: args[:target], action: args[:action])
+          else
+            PM.logger.error("Please supply a title string, a UIImage or :system.")
+          end
+      end
     end
 
     # [DEPRECATED]
@@ -135,15 +145,6 @@ module ProMotion
       self.on_disappear
     end
     def on_disappear; end
-
-    def title
-      self.class.send(:get_title)
-    end
-
-    def title=(new_title)
-      self.class.title = new_title
-      super
-    end
 
     def main_controller
       self.navigation_controller || self

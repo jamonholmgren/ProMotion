@@ -6,8 +6,12 @@ describe "split screen in tab bar functionality" do
     @master_screen = HomeScreen.new nav_bar: true
     @detail_screen = BasicScreen.new nav_bar: true
 
-    @split_screen = @app.create_split_screen @master_screen, @detail_screen
+    @split_screen = @app.create_split_screen @master_screen, @detail_screen, icon: "list", title: "Spec"
     @tab = @app.open_tab_bar @split_screen, HomeScreen, BasicScreen
+  end
+
+  after do
+    @split_screen.delegate = nil # dereference to avoid memory issue
   end
 
   it "should create a UISplitViewController" do
@@ -44,6 +48,19 @@ describe "split screen in tab bar functionality" do
 
   it "should set the tab bar first viewController to the split screen" do
     @tab.viewControllers.first.should == @split_screen
+  end
+  
+  it "should set the bar bar item for the split screen" do
+    @split_screen.tabBarItem.is_a?(UITabBarItem).should == true
+  end
+  
+  it "should set the tab bar icon of the split screen" do
+    @split_screen.tabBarItem.image.is_a?(UIImage).should == true
+  end
+  
+  it "should set the tab bar title of the split screen" do
+    @split_screen.tabBarItem.title.is_a?(String).should == true
+    @split_screen.tabBarItem.title.should == "Spec"
   end
 
 end

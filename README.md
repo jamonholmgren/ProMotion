@@ -115,6 +115,11 @@ class AppDelegate < PM::Delegate
 end
 ```
 
+Note: You can use other keys in `on_load` when you open a new screen:
+
+* `modal:  ` [`true` | `false`]
+* `toolbar:` [`true` | `false`]
+
 Make sure you remove the `didFinishLoadingWithOptions` method or call `super` in it. Otherwise
 ProMotion won't get set up and `on_load` won't be called.
 
@@ -462,6 +467,27 @@ your Rakefile and doing this:
   ]
 ```
 
+A note about table screens. You may not want a sectioned table. In that case,
+use only one section and set its value to `nil`. For example:
+
+```ruby
+[{
+  title: nil,
+  cells: [
+      {title: "37th Annual Grammy Awards", subtitle: "Nokia Theater"}
+    ]
+  }, {
+  title: nil,
+  cells: [
+    {title: "87th Academy Awards", subtitle: "Nokia Theater"}
+  ]}, {
+  title: nil,
+  cells: [
+    {title: "Golden Globe Awards", subtitle: "Beverly Hilton"}
+  ]
+}]
+```
+
 ## Using your own UIViewController
 
 [Using your own UIViewController with ProMotion](https://github.com/clearsightstudio/ProMotion/blob/master/CUSTOM_VIEW_CONTROLLERS.md)
@@ -717,6 +743,11 @@ end</code></pre>
       <strong>Performance note...</strong> It's best to build this array in a different method
       and store it in something like <code>@table_data</code>. Then your <code>table_data</code>
       method just returns that.
+
+      It's common to add labels to a subclassed tableview cell, so ProMotion finds any attributes
+      that end in `_label` in your input hash and tries to assign to them without going through the
+      hoop-jumping of using `:cell_class_attributes`. This only applies to tables cells where you have
+      declared a `:cell_class`.
 
 <pre><code>
 def table_data

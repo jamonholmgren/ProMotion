@@ -236,26 +236,30 @@ end
 
 ## Add navigation bar buttons
 
-These two methods add the buttons to the top navigation bar of a screen. The `action:` lets you specify a method to
+This method adds the buttons to the top navigation bar of a screen. The `action:` lets you specify a method to
 call when that button is tapped, and you can pass in a UIBarButton style using `type:`.
 
 ```ruby
-set_nav_bar_right_button "Save", action: :save_something, type: UIBarButtonItemStyleDone
-set_nav_bar_left_button "Cancel", action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
+set_nav_bar_button :right, title: "Save", action: :save_something, type: UIBarButtonItemStyleDone
+set_nav_bar_button :left, title: "Cancel", action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
 ```
 
-If you pass an instance of a `UIImage`, the `UIBarButton` will automatically display with that image instead of text. *Don't forget retina and landscape versions of your image!*
-
-If you pass `:system` for the title, then you can get a system item. E.g.:
+You can pass in an image with `image:`. *Don't forget retina and landscape versions of your image!*
 
 ```ruby
-set_nav_bar_right_button nil, action: :add_something, system_icon: UIBarButtonSystemItemAdd
+set_nav_bar_button :left, image: UIImage.imageNamed("cancel-button"), action: :cancel_something
+```
+
+You can also pass in a `system_icon` instead.
+
+```ruby
+set_nav_bar_button :right, system_icon: UIBarButtonSystemItemAdd, action: :add_something
 ```
 
 Additionally, if you pass an instance of a `UIBarButtonItem`, the `UIBarButton` will automatically display that particular button item.
 
 ```ruby
-set_nav_bar_left_button self.editButtonItem
+set_nav_bar_button :left, button: UIBarButtonItem.alloc.initWithCustomView(button)
 ```
 
 ## Opening and closing screens
@@ -524,18 +528,15 @@ your Rakefile and doing this:
     </td>
   </tr>
   <tr>
-    <td>set_nav_bar_left_button(title, args = {})</td>
+    <td>set_nav_bar_button(side, args = {})</td>
     <td>
-      Set a left nav bar button.<br />
-      `title` can be a `String` or a `UIImage`.
-    </td>
-  </tr>
-  <tr>
-    <td>set_nav_bar_right_button(title, args = {})</td>
-    <td>
-      Set a right nav bar button.<br />
-      `title` can be a `String` or a `UIImage`.<br />
-      <img src="http://i.imgur.com/whbkc.png" />
+      Set a nav bar button.<br />
+      `side` can be :left or :right. `args` can include the following:<br />
+      title: "Button Title"<br />
+      image: (UIImage)<br />
+      system_icon: (UIBarButtonSystemItem)<br />
+      button: (UIBarButtonItem)<br />
+      
     </td>
   </tr>
   <tr>

@@ -852,7 +852,9 @@ Opening a ticket is usually the best and we respond to those pretty quickly.
 # Contributing
 
 I'm very open to ideas. Tweet me with your ideas or open a ticket (I don't mind!)
-and let's discuss.
+and let's discuss. **It's a good idea to run your idea by the committers before creating
+a pull request.** We'll always consider your ideas carefully but not all ideas will be
+incorporated.
 
 ## Working on Features
 
@@ -867,15 +869,16 @@ and let's discuss.
 1. Fork the project
 2. Create a feature branch
 3. Code
-4. Update or create new specs
+4. Update or create new specs ** NOTE: your PR is far more likely to be merged if you include comprehensive tests! **
 5. Make sure tests are passing by running `rake spec`
 6. Submit pull request
-7. Fame, adoration, kudos everywhere
+7. Make a million little nitpicky changes that @jamonholmgren wants
+8. Merged, then fame, adoration, kudos everywhere
 
 ## Primary Contributors
 
 * Jamon Holmgren: [@jamonholmgren](https://twitter.com/jamonholmgren)
 * Silas Matson: [@silasjmatson](https://twitter.com/silasjmatson)
 * Matt Brewer: [@macfanatic](https://twitter.com/macfanatic)
-
+* [Many others](https://github.com/clearsightstudio/ProMotion/graphs/contributors)
 

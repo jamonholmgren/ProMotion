@@ -92,13 +92,12 @@ Create a new RubyMotion project.
 
 `motion create myapp`
 
-Open it in your favorite editor, then go into your Rakefile and add the following to the top:
+Open it in your favorite editor, then go into your Rakefile and modify the top to look like the following:
 
 ```ruby
 # -*- coding: utf-8 -*-
 $:.unshift("/Library/RubyMotion/lib")
-require 'motion/project'
-require "rubygems"
+require 'motion/project/template/ios'
 require 'bundler'
 Bundler.require
 ```
@@ -108,7 +107,7 @@ Create a Gemfile and add the following lines:
 
 ```ruby
 source 'https://rubygems.org'
-gem "ProMotion", "~> 0.6.0"
+gem "ProMotion", "~> 0.6.2"
 ```
 
 Run `bundle install` in Terminal to install ProMotion.

@@ -1,12 +1,12 @@
 module ProMotion::MotionTable
   module SectionedTable
     include ProMotion::ViewHelper
-    
+
     def table_setup
       PM.logger.error "Missing #table_data method in TableScreen #{self.class.to_s}." unless self.respond_to?(:table_data)
 
       self.view = self.create_table_view_from_data(self.table_data)
-      
+
       if self.class.respond_to?(:get_searchable) && self.class.get_searchable
         self.make_searchable(content_controller: self, search_bar: self.class.get_searchable_params)
       end
@@ -156,6 +156,15 @@ module ProMotion::MotionTable
         table_cell.backgroundColor = data_cell[:background_color] if data_cell[:background_color]
         table_cell.selectionStyle = data_cell[:selection_style] if data_cell[:selection_style]
         table_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
+      end
+
+      ### Catch any custom class labels ###
+      if data_cell[:cell_class]
+        data_cell.select{|k| k =~ /_label$/}.each_pair do |k, v|
+          cell = table_cell.send(k)
+          cell.setText v
+          cell.autoresizingMask = UIViewAutoresizingFlexibleWidth
+        end
       end
 
       if data_cell[:cell_class_attributes]

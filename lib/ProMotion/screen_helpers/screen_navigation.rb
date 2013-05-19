@@ -40,6 +40,10 @@ module ProMotion
       app_delegate.open_root_screen(screen)
     end
 
+    def open_modal(screen, args = {})
+      open screen, args.merge({ modal: true })
+    end
+
     def app_delegate
       UIApplication.sharedApplication.delegate
     end

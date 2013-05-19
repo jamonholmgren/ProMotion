@@ -56,15 +56,7 @@ This is pretty bare-bones, but we'll be building it out as we go along.
 
 ## Apps Built With ProMotion
 
-### BigDay! Reminder App
-Check out the free [BigDay! Reminder app](https://itunes.apple.com/us/app/bigday!/id571756685?ls=1&mt=8) on the
-App Store to see what's possible. ClearSight Studio built the app for Kijome Software, a small app investment company.
-
-### TipCounter App
-[TipCounter](http://www.tipcounterapp.com) was built by [Matt Brewer](https://github.com/macfanatic/) for bartenders and servers to easily track their tips.  Used ProMotion and the development was a lot of fun!
-
-### Winston-Salem Crime Map
-Have an interest in crime statistics and locations? Live in Winston-Salem, NC? This hyper-local and [open source](https://github.com/markrickert/WSCrime) RubyMotion app uses a mixture custom UIViewControllers and ProMotion for ease of attribute setting and adding views. Check it out [on the App Store](http://www.mohawkapps.com/winston-salem-crime-map/download/) or [fork it and contribute](https://github.com/markrickert/WSCrime)!
+[View apps built with ProMotion (feel free to submit yours in a pull request!)](https://github.com/clearsightstudio/ProMotion/blob/master/PROMOTION_APPS.md)
 
 # Getting Started
 
@@ -115,12 +107,17 @@ Run `bundle install` in Terminal to install ProMotion.
 Go into your app/app_delegate.rb file and replace everything with the following:
 
 ```ruby
-class AppDelegate < ProMotion::Delegate
+class AppDelegate < PM::Delegate
   def on_load(app, options)
     open HomeScreen.new(nav_bar: true)
   end
 end
 ```
+
+Note: You can use other keys in `on_load` when you open a new screen:
+
+* `modal:  ` [`true` | `false`]
+* `toolbar:` [`true` | `false`]
 
 Make sure you remove the `didFinishLoadingWithOptions` method or call `super` in it. Otherwise
 ProMotion won't get set up and `on_load` won't be called.
@@ -130,7 +127,7 @@ Create a folder in `/app` named `screens`. Create a file in that folder named `h
 Now drop in this code:
 
 ```ruby
-class HomeScreen < ProMotion::Screen
+class HomeScreen < PM::Screen
   title "Home"
 
   def will_appear
@@ -154,7 +151,7 @@ Run `rake`. You should now see the simulator open with your home screen and a na
 * Will auto-detect if you've loaded [motion-xray](https://github.com/colinta/motion-xray) and enable it.
 * Added `open_split_screen` for iPad-supported apps (thanks @rheoli for your contributions to this)
 * Added `refreshable` to TableScreens (thanks to @markrickert) for pull-to-refresh support.
-* `ProMotion::AppDelegateParent` renamed to `ProMotion::Delegate` (`AppDelegateParent` is an alias)
+* `PM::AppDelegateParent` renamed to `PM::Delegate` (`AppDelegateParent` is an alias)
 * `set_attributes` and `add` now apply nested attributes recursively
 * `set_attributes` and `add` now accept snake_case instead of camelCase methods (e.g., background_color)
 * Added `add_to` method for adding views to any parent view. `remove` works with this normally.
@@ -166,7 +163,7 @@ Run `rake`. You should now see the simulator open with your home screen and a na
 ## Creating a basic screen
 
 ```ruby
-class HomeScreen < ProMotion::Screen
+class HomeScreen < PM::Screen
   title "Home"
 
   def on_load
@@ -188,7 +185,7 @@ end
 
 ```ruby
 # In app/app_delegate.rb
-class AppDelegate < ProMotion::Delegate
+class AppDelegate < PM::Delegate
   def on_load(app, options)
     open MyHomeScreen.new(nav_bar: true)
   end
@@ -199,7 +196,7 @@ end
 
 ```ruby
 # In app/app_delegate.rb
-class AppDelegate < ProMotion::Delegate
+class AppDelegate < PM::Delegate
   def on_load(app, options)
     open_split_screen MenuScreen, DetailScreen
   end
@@ -243,26 +240,30 @@ end
 
 ## Add navigation bar buttons
 
-These two methods add the buttons to the top navigation bar of a screen. The `action:` lets you specify a method to
+This method adds the buttons to the top navigation bar of a screen. The `action:` lets you specify a method to
 call when that button is tapped, and you can pass in a UIBarButton style using `type:`.
 
 ```ruby
-set_nav_bar_right_button "Save", action: :save_something, type: UIBarButtonItemStyleDone
-set_nav_bar_left_button "Cancel", action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
+set_nav_bar_button :right, title: "Save", action: :save_something, type: UIBarButtonItemStyleDone
+set_nav_bar_button :left, title: "Cancel", action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
 ```
 
-If you pass an instance of a `UIImage`, the `UIBarButton` will automatically display with that image instead of text. *Don't forget retina and landscape versions of your image!*
-
-If you pass `:system` for the title, then you can get a system item. E.g.:
+You can pass in an image with `image:`. *Don't forget retina and landscape versions of your image!*
 
 ```ruby
-set_nav_bar_right_button nil, action: :add_something, system_icon: UIBarButtonSystemItemAdd
+set_nav_bar_button :left, image: UIImage.imageNamed("cancel-button"), action: :cancel_something
+```
+
+You can also pass in a `system_icon` instead.
+
+```ruby
+set_nav_bar_button :right, system_icon: UIBarButtonSystemItemAdd, action: :add_something
 ```
 
 Additionally, if you pass an instance of a `UIBarButtonItem`, the `UIBarButton` will automatically display that particular button item.
 
 ```ruby
-set_nav_bar_left_button self.editButtonItem
+set_nav_bar_button :left, button: UIBarButtonItem.alloc.initWithCustomView(button)
 ```
 
 ## Opening and closing screens
@@ -285,12 +286,16 @@ You can also open a screen as a modal.
 
 ```ruby
 open SettingsScreen.new, modal: true
+
+# Or... (this is equivalent)
+
+open_modal SettingsScreen.new
 ```
 
 You can pass in arguments to other screens if they have accessors:
 
 ```ruby
-class HomeScreen < ProMotion::Screen
+class HomeScreen < PM::Screen
   # ...
 
   def settings_button_tapped
@@ -298,7 +303,7 @@ class HomeScreen < ProMotion::Screen
   end
 end
 
-class ProfileScreen < ProMotion::Screen
+class ProfileScreen < PM::Screen
   attr_accessor :user
 
   def on_load
@@ -319,7 +324,7 @@ end
 You can close a screen (modal or in a nav controller) and pass back arguments to the previous screen's "on_return" method:
 
 ```ruby
-class ItemScreen < ProMotion::Screen
+class ItemScreen < PM::Screen
   # ...
   def save_and_close
     if @model.save
@@ -328,7 +333,7 @@ class ItemScreen < ProMotion::Screen
   end
 end
 
-class MainScreen < ProMotion::Screen
+class MainScreen < PM::Screen
   # ...
   def on_return(args = {})
     if args[:model_saved]
@@ -344,7 +349,7 @@ It's common to want to open a screen in the same navigation controller if on iPh
 in a separate detail view when on iPad. Here's a good way to do that.
 
 ```ruby
-class MenuScreen < ProMotion::TableScreen
+class MenuScreen < PM::TableScreen
   # ...
   def some_action
     open SomeScreen.new, in_detail: true
@@ -407,7 +412,7 @@ add_to @some_parent_view, UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), 
 You can create sectioned table screens easily with TableScreen, SectionedTableScreen, and GroupedTableScreen.
 
 ```ruby
-class SettingsScreen < ProMotion::GroupedTableScreen
+class SettingsScreen < PM::GroupedTableScreen
   title "Settings"
 
   def on_load
@@ -461,63 +466,30 @@ your Rakefile and doing this:
   ]
 ```
 
-## Using your own UIViewController
-
-Sometimes you want to inherit from a different UIViewController other than that provided by ProMotion,
-such as when using [Formotion](https://github.com/clayallsopp/formotion). **RubyMotion doesn't currently
-allow us to override built-in methods when including them as a module.** And we really need to override
-`viewDidLoad` and others.
-
-Fortunately, there's a workaround for that.
+A note about table screens. You may not want a sectioned table. In that case,
+use only one section and set its value to `nil`. For example:
 
 ```ruby
-class EventsScreen < Formotion::FormController # Can also be < UIViewController
-  include ProMotion::ScreenModule # Not TableScreenModule since we're using Formotion for that
-
-  # Required functions for ProMotion to work properly
-
-  def viewDidLoad
-    super
-    self.view_did_load if self.respond_to?(:view_did_load)
-  end
-
-  def viewWillAppear(animated)
-    super
-    self.view_will_appear(animated) if self.respond_to?("view_will_appear:")
-  end
-
-  def viewDidAppear(animated)
-    super
-    self.view_did_appear(animated) if self.respond_to?("view_did_appear:")
-  end
-
-  def viewWillDisappear(animated)
-    self.view_will_disappear(animated) if self.respond_to?("view_will_disappear:")
-    super
-  end
-
-  def viewDidDisappear(animated)
-    self.view_did_disappear(animated) if self.respond_to?("view_did_disappear:")
-    super
-  end
-
-  def shouldAutorotateToInterfaceOrientation(orientation)
-    self.should_rotate(orientation)
-  end
-
-  def shouldAutorotate
-    self.should_autorotate
-  end
-
-  def willRotateToInterfaceOrientation(orientation, duration:duration)
-    self.will_rotate(orientation, duration)
-  end
-
-  def didRotateFromInterfaceOrientation(orientation)
-    self.on_rotate
-  end
-end
+[{
+  title: nil,
+  cells: [
+      {title: "37th Annual Grammy Awards", subtitle: "Nokia Theater"}
+    ]
+  }, {
+  title: nil,
+  cells: [
+    {title: "87th Academy Awards", subtitle: "Nokia Theater"}
+  ]}, {
+  title: nil,
+  cells: [
+    {title: "Golden Globe Awards", subtitle: "Beverly Hilton"}
+  ]
+}]
 ```
+
+## Using your own UIViewController
+
+[Using your own UIViewController with ProMotion](https://github.com/clearsightstudio/ProMotion/blob/master/CUSTOM_VIEW_CONTROLLERS.md)
 
 # Reference
 
@@ -581,18 +553,15 @@ end
     </td>
   </tr>
   <tr>
-    <td>set_nav_bar_left_button(title, args = {})</td>
+    <td>set_nav_bar_button(side, args = {})</td>
     <td>
-      Set a left nav bar button.<br />
-      `title` can be a `String` or a `UIImage`.
-    </td>
-  </tr>
-  <tr>
-    <td>set_nav_bar_right_button(title, args = {})</td>
-    <td>
-      Set a right nav bar button.<br />
-      `title` can be a `String` or a `UIImage`.<br />
-      <img src="http://i.imgur.com/whbkc.png" />
+      Set a nav bar button.<br />
+      `side` can be :left or :right. `args` can include the following:<br />
+      title: "Button Title"<br />
+      image: (UIImage)<br />
+      system_icon: (UIBarButtonSystemItem)<br />
+      button: (UIBarButtonItem)<br />
+      
     </td>
   </tr>
   <tr>
@@ -707,6 +676,12 @@ end
     </td>
   </tr>
   <tr>
+    <td>open_modal(screen, args = {})</td>
+    <td>
+      Same as <code>open HomeScreen, modal: true</code>
+    </td>
+  </tr>
+  <tr>
     <td>open_split_screen(master, detail)</td>
     <td>
       *iPad apps only*
@@ -768,6 +743,11 @@ end</code></pre>
       and store it in something like <code>@table_data</code>. Then your <code>table_data</code>
       method just returns that.
 
+      It's common to add labels to a subclassed tableview cell, so ProMotion finds any attributes
+      that end in `_label` in your input hash and tries to assign to them without going through the
+      hoop-jumping of using `:cell_class_attributes`. This only applies to tables cells where you have
+      declared a `:cell_class`.
+
 <pre><code>
 def table_data
   [{
@@ -784,7 +764,7 @@ def table_data
       height: 50, # manually changes the cell's height
       cell_style: UITableViewCellStyleSubtitle,
       cell_identifier: "Cell",
-      cell_class: ProMotion::TableViewCell,
+      cell_class: PM::TableViewCell,
       masks_to_bounds: true,
       background_color: UIColor.whiteColor,
       selection_style: UITableViewCellSelectionStyleGray,
@@ -890,7 +870,7 @@ end
       </td>
     <td>
       Class method to output a colored console message.<br />
-      Example: <code>ProMotion::Console.log("This is red!", with_color: ProMotion::Console::RED_COLOR)</code>
+      Example: <code>PM::Console.log("This is red!", with_color: PM::Console::RED_COLOR)</code>
     </td>
   </tr>
 </table>
@@ -903,7 +883,9 @@ Opening a ticket is usually the best and we respond to those pretty quickly.
 # Contributing
 
 I'm very open to ideas. Tweet me with your ideas or open a ticket (I don't mind!)
-and let's discuss.
+and let's discuss. **It's a good idea to run your idea by the committers before creating
+a pull request.** We'll always consider your ideas carefully but not all ideas will be
+incorporated.
 
 ## Working on Features
 
@@ -918,15 +900,16 @@ and let's discuss.
 1. Fork the project
 2. Create a feature branch
 3. Code
-4. Update or create new specs
+4. Update or create new specs ** NOTE: your PR is far more likely to be merged if you include comprehensive tests! **
 5. Make sure tests are passing by running `rake spec`
 6. Submit pull request
-7. Fame, adoration, kudos everywhere
+7. Make a million little nitpicky changes that @jamonholmgren wants
+8. Merged, then fame, adoration, kudos everywhere
 
 ## Primary Contributors
 
 * Jamon Holmgren: [@jamonholmgren](https://twitter.com/jamonholmgren)
 * Silas Matson: [@silasjmatson](https://twitter.com/silasjmatson)
 * Matt Brewer: [@macfanatic](https://twitter.com/macfanatic)
-
+* [Many others](https://github.com/clearsightstudio/ProMotion/graphs/contributors)
 

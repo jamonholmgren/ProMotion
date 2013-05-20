@@ -16,8 +16,7 @@ module ProMotion
         s.parent_screen = self if self.is_a?(UIViewController) && s.respond_to?("parent_screen=")
         s.tab_bar = tab_bar_controller if s.respond_to?("tab_bar=")
 
-        vc = s.respond_to?(:main_controller) ? s.main_controller : s
-        view_controllers << vc
+        view_controllers << s.pm_main_controller
 
         tag_index += 1
 

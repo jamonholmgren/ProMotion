@@ -97,6 +97,21 @@ describe "screen properties" do
   end
 
 
+  describe "pm_main_controller" do
+
+    it "should return the navigation controller wrapper" do
+      @screen.pm_main_controller.should.be.instance_of ProMotion::NavigationController
+    end
+
+    it "should return itself when screen is a plain UIViewController" do
+      vc = UIViewController.alloc.initWithNibName(nil, bundle: nil)
+      vc.respond_to?(:pm_main_controller).should == true
+      vc.pm_main_controller.should == vc
+    end
+
+  end
+
+
   describe "navigation controller behavior" do
 
     it "should have a nav bar" do

@@ -140,10 +140,6 @@ module ProMotion
     end
     def on_disappear; end
 
-    def main_controller
-      self.navigation_controller || self
-    end
-
     def view_controller
       warn "[DEPRECATION] `view_controller` is deprecated, as screens are now UIViewController subclasses."
       self

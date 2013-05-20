@@ -902,7 +902,7 @@ incorporated.
 2. Create a feature branch
 3. Code
 4. Update or create new specs ** NOTE: your PR is far more likely to be merged if you include comprehensive tests! **
-5. Make sure tests are passing by running `rake spec`
+5. Make sure tests are passing by running `rake spec` *(you can run functional and unit specs separately with `rake spec:functional` and `rake spec:unit`)*
 6. Submit pull request
 7. Make a million little nitpicky changes that @jamonholmgren wants
 8. Merged, then fame, adoration, kudos everywhere

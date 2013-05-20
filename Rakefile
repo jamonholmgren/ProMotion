@@ -15,3 +15,33 @@ Motion::Project::App.setup do |app|
 
   app.detect_dependencies = true
 end
+
+def all_files
+  App.config.spec_files
+end
+
+def functional_files
+  Dir.glob('./spec/functional/*.rb')
+end
+
+def unit_files
+  Dir.glob('./spec/unit/*.rb')
+end
+
+namespace :spec do
+  task :unit do
+    App.config.spec_mode = true
+    spec_files = all_files
+    spec_files -= functional_files
+    App.config.instance_variable_set("@spec_files", spec_files)
+    Rake::Task["simulator"].invoke
+  end
+
+  task :functional do
+    App.config.spec_mode = true
+    spec_files = all_files
+    spec_files -= unit_files
+    App.config.instance_variable_set("@spec_files", spec_files)
+    Rake::Task["simulator"].invoke
+  end
+end

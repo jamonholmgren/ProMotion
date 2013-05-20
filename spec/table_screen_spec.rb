@@ -3,8 +3,6 @@ describe "table screens" do
   describe "basic functionality" do
 
     before do
-      UIView.setAnimationsEnabled false # avoid animation issues
-
       @screen = TableScreen.new
       @screen.on_load
     end
@@ -21,7 +19,7 @@ describe "table screens" do
     it "should have a placeholder image in the last cell" do
       index_path = NSIndexPath.indexPathForRow(1, inSection: 1)
       
-      @screen.tableView(@screen.tableView, cellForRowAtIndexPath: index_path).imageView.class.should == UIImageView
+      @screen.tableView(@screen.tableView, cellForRowAtIndexPath: index_path).imageView.should.be.kind_of UIImageView
     end
   
   end
@@ -38,7 +36,7 @@ describe "table screens" do
     end
     
     it "should create a search header" do
-      @screen.table_view.tableHeaderView.class.should == UISearchBar
+      @screen.table_view.tableHeaderView.should.be.kind_of UISearchBar
     end
     
   end
@@ -57,7 +55,7 @@ describe "table screens" do
     end
     
     it "should create a refresh object" do
-      @screen.instance_variable_get("@refresh_control").class.should == UIRefreshControl
+      @screen.instance_variable_get("@refresh_control").should.be.kind_of UIRefreshControl
     end
     
     it "should respond to start_refreshing and end_refreshing" do

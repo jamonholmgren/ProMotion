@@ -122,9 +122,6 @@ module ProMotion
     end
 
     def view_did_load; end
-    def on_opened
-      warn "[DEPRECATION] `on_opened` is deprecated.  Please use `on_appear` instead."
-    end
 
     def view_will_appear(animated)
       self.will_appear

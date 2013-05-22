@@ -494,11 +494,11 @@ use only one section and set its value to `nil`. For example:
 
 ## Using your own UIViewController
 
-[Using your own UIViewController with ProMotion](https://github.com/clearsightstudio/ProMotion/blob/master/CUSTOM_VIEW_CONTROLLERS.md)
+[Using your own UIViewController with ProMotion](https://github.com/clearsightstudio/ProMotion/wiki/Using-your-own-UIViewController-with-ProMotion)
 
-# Reference
+# API Reference
 
-[REFERENCE.md](https://github.com/clearsightstudio/ProMotion/blob/master/REFERENCE.md)
+[Full ProMotion API Reference](https://github.com/clearsightstudio/ProMotion/wiki/_pages)
 
 # Help
 

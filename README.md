@@ -369,7 +369,7 @@ dropped into the view.
 `add(view, attr={})`
 
 ```ruby
-@label = add UILabel.new, {
+add UILabel.new, {
   text: "This is awesome!",
   font: UIFont.systemFontOfSize(18),
   resize: [ :left, :right, :top, :bottom, :width, :height ], # autoresizingMask
@@ -394,9 +394,10 @@ use snake_case for Objective-C methods.
 `set_attributes(view, attr={})`
 
 ```ruby
-@element = set_attributes UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
+set_attributes UIView.new, {
   # `background_color` is translated to `backgroundColor` automatically.
-  background_color: UIColor.whiteColor
+  background_color: UIColor.whiteColor,
+  frame: CGRectMake(0, 0, 20, 20)
 }
 ```
 
@@ -405,7 +406,8 @@ You can use `add_to` to add a view to any other view, not just the main view.
 `add_to(parent_view, new_view, attr={})`
 
 ```ruby
-add_to @some_parent_view, UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
+add_to @some_parent_view, UIView.new, {
+  frame: CGRectMake(0, 0, 20, 20),
   backgroundColor: UIColor.whiteColor
 }
 ```

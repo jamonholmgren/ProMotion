@@ -363,7 +363,7 @@ if it's available. If not, open normally. This also works for `in_master:`.
 ## Adding view elements
 
 Any view item (UIView, UIButton, custom UIView subclasses, etc) can be added to the current view with `add`.
-`add` accepts a second argument which is a hash of attributes that get applied to the element before it is
+`add` accepts a second argument which is a hash of attributes that get applied to the element right after it is
 dropped into the view.
 
 `add(view, attr={})`
@@ -378,10 +378,13 @@ dropped into the view.
   width: 20,
   height: 20
 }
+```
 
-@element = add UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20)), {
-  backgroundColor: UIColor.whiteColor
-}
+Using Teacup? Just provide a `stylename`.
+
+```ruby
+@element = UIView.alloc.initWithFrame(CGRectMake(0, 0, 20, 20))
+add @element, stylename: :my_custom_view
 ```
 
 The `set_attributes` method is identical to add except that it does not add it to the current view.

@@ -151,8 +151,9 @@ module ProMotion::MotionTable
       unless table_cell
         table_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:cell_identifier)
 
-        # Add optimizations here
-        data_cell[:layer] ||= { masksToBounds: data_cell[:masks_to_bounds] }
+        data_cell[:layer] ||= {}
+        data_cell[:layer][:masksToBounds] = data_cell[:masks_to_bounds] # TODO: Deprecate and then remove this.
+
         table_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
         set_attributes table_cell, data_cell
       end

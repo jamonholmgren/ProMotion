@@ -1,12 +1,12 @@
 module ProMotion::MotionTable
   module SectionedTable
     include ProMotion::ViewHelper
-    
+
     def table_setup
       PM.logger.error "Missing #table_data method in TableScreen #{self.class.to_s}." unless self.respond_to?(:table_data)
 
       self.view = self.create_table_view_from_data(self.table_data)
-      
+
       if self.class.respond_to?(:get_searchable) && self.class.get_searchable
         self.make_searchable(content_controller: self, search_bar: self.class.get_searchable_params)
       end
@@ -246,7 +246,15 @@ module ProMotion::MotionTable
         cell_title ||= ""
         table_cell.textLabel.text = cell_title
       end
-
+      if data_cell[:custom]
+        if data_cell.is_a?(Hash)
+          data_cell[:custom].each_pair do |k, v|
+            table_cell.send("#{k}=".to_sym, v)
+          end
+        else
+          PM.logger.error "ProMotion Warning: custom attribute need to be a hash."
+        end
+      end
       return table_cell
     end
 

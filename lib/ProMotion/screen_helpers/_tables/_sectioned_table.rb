@@ -178,7 +178,7 @@ module ProMotion::MotionTable
         table_cell.accessoryView = switch_view
       end
 
-      if data_cell[:subtitle]
+      if data_cell[:subtitle] and table_cell.detailTextLabel
         table_cell.detailTextLabel.text = data_cell[:subtitle]
         table_cell.detailTextLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth
       end

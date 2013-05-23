@@ -152,10 +152,9 @@ module ProMotion::MotionTable
         table_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:cell_identifier)
 
         # Add optimizations here
-        table_cell.layer.masksToBounds = true if data_cell[:masks_to_bounds]
-        table_cell.backgroundColor = data_cell[:background_color] if data_cell[:background_color]
-        table_cell.selectionStyle = data_cell[:selection_style] if data_cell[:selection_style]
+        data_cell[:layer] ||= { masksToBounds: data_cell[:masks_to_bounds] }
         table_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
+        set_attributes table_cell, data_cell
       end
 
       ### Catch any custom class labels ###

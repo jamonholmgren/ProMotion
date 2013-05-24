@@ -249,7 +249,11 @@ module ProMotion::MotionTable
       if data_cell[:custom]
         if data_cell.is_a?(Hash)
           data_cell[:custom].each_pair do |k, v|
-            table_cell.send("#{k}=".to_sym, v)
+            if table_cell.respond_to?("#{k}=".to_sym)
+              table_cell.send("#{k}=".to_sym, v)
+            else
+              PM.logger.error "ProMotion Warning: #{table_cell.class.to_s} doesn't respond to #{k}="
+            end
           end
         else
           PM.logger.error "ProMotion Warning: custom attribute need to be a hash."

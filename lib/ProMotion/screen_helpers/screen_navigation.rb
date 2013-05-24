@@ -52,6 +52,8 @@ module ProMotion
       args ||= {}
       args[:animated] ||= true
 
+      post_notifications(args[:notify])
+      notification_center_teardown if self.respond_to?(:notification_center_teardown)
       if self.is_modal?
         close_modal_screen args
 

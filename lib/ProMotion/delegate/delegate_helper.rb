@@ -18,6 +18,8 @@ module ProMotion
       screen = screen.new if screen.respond_to?(:new)
       screen.send(:on_load) if screen.respond_to?(:on_load)
       
+      @home_screen = screen
+      
       self.window ||= self.ui_window.alloc.initWithFrame(UIScreen.mainScreen.bounds)
       self.window.rootViewController = screen.pm_main_controller
       self.window.makeKeyAndVisible
@@ -27,10 +29,25 @@ module ProMotion
     alias :open_root_screen :open_screen
     alias :home :open_screen
     
+    def apply_status_bar
+      self.class.send(:apply_status_bar)
+    end
+    
+    def status_bar?
+      UIApplication.sharedApplication.statusBarHidden
+    end
+    
     module ClassMethods
     
       def status_bar(visible = true, opts={})
-        UIApplication.sharedApplication.setStatusBarHidden(!visible, withAnimation:status_bar_animation(opts[:animation]))
+        @status_bar_visible = visible
+        @status_bar_opts = opts
+      end
+      
+      def apply_status_bar
+        @status_bar_visible ||= true
+        @status_bar_opts ||= :none
+        UIApplication.sharedApplication.setStatusBarHidden(!@apply_status_bar, withAnimation:status_bar_animation(@status_bar_opts[:animation]))
       end
       
       def status_bar_animation(opt)

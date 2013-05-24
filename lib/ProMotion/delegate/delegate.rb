@@ -10,7 +10,7 @@ module ProMotion
 
     def application(application, didFinishLaunchingWithOptions:launch_options)
       
-      check_on_load
+      apply_status_bar
       
       on_load application, launch_options
 

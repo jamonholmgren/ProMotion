@@ -115,7 +115,7 @@ describe "screen properties" do
   describe "navigation controller behavior" do
 
     it "should have a nav bar" do
-      @screen.has_nav_bar?.should == true
+      @screen.nav_bar?.should == true
     end
 
     it "#main_controller should return a navigation controller" do

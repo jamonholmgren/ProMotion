@@ -19,6 +19,12 @@ module ProMotion
       true
       
     end
+    
+    def applicationWillTerminate(application)
+      
+      on_unload if respond_to?(:on_unload)
+      
+    end
 
   end
   

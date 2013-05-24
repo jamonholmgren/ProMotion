@@ -15,6 +15,22 @@ module ProMotion
       PM.logger.warn "PM::PushNotification.to_json not implemented yet."
     end
     
+    def aps
+      self.notification["aps"]
+    end
+    
+    def alert
+      aps["alert"] if aps
+    end
+    
+    def badge
+      aps["badge"] if aps
+    end
+    
+    def sound
+      aps["sound"] if aps
+    end
+    
     # For testing from the REPL
     # > PM::PushNotification.simulate alert: "My test message", badge: 4
     def self.simulate(args = {})

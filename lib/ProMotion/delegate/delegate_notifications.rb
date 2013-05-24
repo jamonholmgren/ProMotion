@@ -39,7 +39,7 @@ module ProMotion
     end
     
     def received_notification(notification)
-      @aps_notification = PM::Notification.new(notification)
+      @aps_notification = PM::PushNotification.new(notification)
       on_notification(@aps_notification) if respond_to?(:on_notification)
     end
     

@@ -5,6 +5,7 @@ module ProMotion
     include ProMotion::SystemHelper
     include ProMotion::ScreenTabs
     include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2")
+    include ProMotion::NotificationCenterHelper
 
     attr_accessor :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal, :split_screen, :title
 
@@ -24,6 +25,7 @@ module ProMotion
       self.navigationController.toolbarHidden = !args[:toolbar] unless args[:toolbar].nil?
       self.on_init if self.respond_to?(:on_init)
       self.table_setup if self.respond_to?(:table_setup)
+      self.notification_center_setup if self.respond_to?(:notification_center_setup)
       self
     end
 

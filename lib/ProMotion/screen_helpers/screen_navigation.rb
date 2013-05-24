@@ -52,7 +52,7 @@ module ProMotion
       args ||= {}
       args[:animated] ||= true
 
-      if self.is_modal?
+      if self.modal?
         close_modal_screen args
 
       elsif self.navigation_controller

@@ -28,6 +28,11 @@ module ProMotion
     end
 
     def is_modal?
+      PM.logger.deprecated "`is_modal?` is deprecated. Use `modal?`."
+      modal?
+    end
+    
+    def modal?
       self.modal == true
     end
 

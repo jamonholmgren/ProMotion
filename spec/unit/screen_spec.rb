@@ -31,8 +31,8 @@ describe "screen properties" do
     HomeScreen.debug_mode.should == true
   end
 
-  it "#is_modal? should be true" do
-    @screen.is_modal?.should == true
+  it "#modal? should be true" do
+    @screen.modal?.should == true
   end
 
   it "should know it is the first screen" do

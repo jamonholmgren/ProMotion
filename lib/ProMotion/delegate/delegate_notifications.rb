@@ -46,11 +46,11 @@ module ProMotion
     # CocoaTouch
     
     def application(application, didRegisterForRemoteNotificationsWithDeviceToken:device_token)
-      on_register(device_token, nil) if respond_to?(:on_register)
+      on_registration(device_token, nil) if respond_to?(:on_registration)
     end
     
     def application(application, didFailToRegisterForRemoteNotificationsWithError:error)
-      on_register(nil, error) if respond_to?(:on_register)
+      on_registration(nil, error) if respond_to?(:on_registration)
     end
     
     def application(application, didReceiveRemoteNotification:notification)

@@ -247,7 +247,7 @@ module ProMotion::MotionTable
         table_cell.textLabel.text = cell_title
       end
       if data_cell[:custom]
-        if data_cell.is_a?(Hash)
+        if data_cell[:custom].is_a?(Hash)
           data_cell[:custom].each_pair do |k, v|
             if table_cell.respond_to?("#{k}=".to_sym)
               table_cell.send("#{k}=".to_sym, v)
@@ -256,7 +256,7 @@ module ProMotion::MotionTable
             end
           end
         else
-          PM.logger.error "ProMotion Warning: custom attribute need to be a hash."
+          PM.logger.error "ProMotion Warning: custom attributes need to be a hash."
         end
       end
       return table_cell

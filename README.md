@@ -411,7 +411,7 @@ class SettingsScreen < ProMotion::GroupedTableScreen
   title "Settings"
 
   def on_load
-    add_right_nav_button(label: "Save", action: :save)
+    set_nav_bar_right_button("Save", action: :save)
     set_tab_bar_item(title: "Settings", icon: "settings.png")
   end
 
@@ -749,7 +749,7 @@ end
   updated_time_format: "%l:%M %p"
 )</code></pre></td>
     <td>Class method to make the current table refreshable.
-    	<p>All parameters are optional. If you do not specify a a callback, it will assume you've implemented an <code>on_refresh</code> method in your tableview.</p>
+      <p>All parameters are optional. If you do not specify a a callback, it will assume you've implemented an <code>on_refresh</code> method in your tableview.</p>
     <pre><code>def on_refresh
   # Code to start the refresh
 end</code></pre>

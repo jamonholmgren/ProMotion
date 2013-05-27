@@ -135,6 +135,12 @@ module ProMotion::MotionTable
       end
       data_cell
     end
+       
+    def tableView(table_view, willDisplayCell:cell, forRowAtIndexPath:index_path)
+      data_cell = cell_at_section_and_index(index_path.section, index_path.row)
+      return unless data_cell
+      cell.backgroundColor = data_cell[:background_color] if data_cell[:background_color]
+    end
 
     def tableView(table_view, cellForRowAtIndexPath:index_path)
       data_cell = cell_at_section_and_index(index_path.section, index_path.row)
@@ -153,7 +159,6 @@ module ProMotion::MotionTable
 
         # Add optimizations here
         table_cell.layer.masksToBounds = true if data_cell[:masks_to_bounds]
-        table_cell.backgroundColor = data_cell[:background_color] if data_cell[:background_color]
         table_cell.selectionStyle = data_cell[:selection_style] if data_cell[:selection_style]
         table_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
       end

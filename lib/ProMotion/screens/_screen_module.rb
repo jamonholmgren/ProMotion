@@ -196,6 +196,7 @@ module ProMotion
 
     def supported_device_families
       NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].map do |m|
+        # TODO: What about universal apps?
         case m
         when "1"
           :iphone

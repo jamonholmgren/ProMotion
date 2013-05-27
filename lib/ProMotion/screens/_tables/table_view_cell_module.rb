@@ -22,6 +22,11 @@ module ProMotion
       self
     end
     
+    def set_cell_attributes
+      set_attributes self, data_cell
+      self
+    end
+    
     def set_class_attributes
       if data_cell[:cell_class_attributes]
         PM.logger.deprecated "`cell_class_attributes` is deprecated. Just add the attributes you want to set right into your cell hash."

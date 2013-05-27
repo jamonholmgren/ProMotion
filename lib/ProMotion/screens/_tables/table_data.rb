@@ -1,9 +1,10 @@
 module ProMotion
   class TableData
-    attr_accessor :data, :filtered_data, :filtered
+    attr_accessor :data, :filtered_data, :filtered, :table_view
     
-    def initialize(data)
+    def initialize(data, table_view)
       self.data = data
+      self.table_view = table_view
     end
     
     def section(index)
@@ -58,8 +59,13 @@ module ProMotion
       self.filtered = false
     end
     
-    def table_view_cell(index_path)
-      data_cell = self.cell(section: index_path.section, index: index_path.row)
+    def table_view_cell(params={})
+      if params[:index_path]
+        params[:section] = params[:index_path].section
+        params[:index] = params[:index_path].row
+      end
+      
+      data_cell = self.cell(section: params[:section], index: params[:index])
       return UITableViewCell.alloc.init unless data_cell # No data?
 
       data_cell = self.remap_data_cell(data_cell) # TODO: Deprecated, remove in version 1.0
@@ -67,7 +73,7 @@ module ProMotion
 
       table_cell = self.create_table_cell(data_cell)
       
-      return table_cell
+      table_cell
     end
     
     def set_data_cell_defaults(data_cell)

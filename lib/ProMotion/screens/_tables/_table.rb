@@ -34,8 +34,8 @@ module ProMotion
     end
 
     def create_table_view_from_data(data)
-      # @promotion_table_data = TableData.new(data)
-      # table_view
+      @promotion_table_data = TableData.new(data, table_view)
+      table_view
     end
 
     def update_table_view_data(data)
@@ -82,7 +82,7 @@ module ProMotion
 
     ########## Cocoa touch methods #################
     def numberOfSectionsInTableView(table_view)
-      return Array(@promotion_table_filtered_data.data).length
+      return Array(@promotion_table_data.data).length
     end
 
     # Number of cells
@@ -101,15 +101,15 @@ module ProMotion
     end
 
     def tableView(table_view, cellForRowAtIndexPath:index_path)
-      @promotion_table_data.cell(index_path: index_path)
+      @promotion_table_data.table_view_cell(index_path: index_path)
     end
 
     def tableView(table_view, heightForRowAtIndexPath:index_path)
-      (@promotion_table_data.cell(index_path)[:height] || table_view.rowHeight).to_f
+      (@promotion_table_data.cell(index_path: index_path)[:height] || table_view.rowHeight).to_f
     end
 
     def tableView(table_view, didSelectRowAtIndexPath:index_path)
-      cell = @promotion_table_data.cell(index_path)
+      cell = @promotion_table_data.cell(index_path: index_path)
       table_view.deselectRowAtIndexPath(index_path, animated: true)
       
       cell[:arguments] ||= {}

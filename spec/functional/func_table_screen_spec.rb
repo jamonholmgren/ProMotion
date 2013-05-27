@@ -1,10 +1,10 @@
-describe "ProMotion::TableScreen functionality" do
-  tests PM::TableScreen
+describe "ProMotion::TestTableScreen functionality" do
+  tests PM::TestTableScreen
   
   # Override controller to properly instantiate
   def controller
     rotate_device to: :portrait, button: :bottom
-    @controller ||= TableScreen.new(nav_bar: true)
+    @controller ||= TestTableScreen.new(nav_bar: true)
     @controller.on_load
     @controller.main_controller
   end
@@ -14,7 +14,7 @@ describe "ProMotion::TableScreen functionality" do
   end
   
   it "should have a navigation bar" do
-    @controller.navigationController.is_a?(UINavigationController).should == true
+    @controller.navigationController.should.be.kind_of(UINavigationController)
   end
   
   it "should increment the tap counter on tap" do

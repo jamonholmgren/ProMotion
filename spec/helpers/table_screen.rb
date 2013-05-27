@@ -1,4 +1,4 @@
-class TableScreen < ProMotion::SectionedTableScreen
+class TestTableScreen < ProMotion::SectionedTableScreen
   
   def promotion_table_data
     @promotion_table_data

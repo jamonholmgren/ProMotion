@@ -9,6 +9,7 @@ module ProMotion
         t = UITableView.alloc.initWithFrame(self.view.frame, style:UITableViewStylePlain)
         t.dataSource = self
         t.delegate = self
+        t
       end
     end
     alias :tableView :table_view

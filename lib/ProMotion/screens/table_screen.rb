@@ -6,10 +6,10 @@ module ProMotion
   end
 
   class GroupedTableScreen < TableScreen
-    include ProMotion::MotionTable::GroupedTable
+    include ProMotion::GroupedTable
   end
 
   class SectionedTableScreen < TableScreen
-    include ProMotion::MotionTable::SectionedTable
+    include ProMotion::SectionedTable
   end
 end

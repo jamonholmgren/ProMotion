@@ -1,4 +1,4 @@
-module ProMotion::MotionTable
+module ProMotion
   module RefreshableTable
     def make_refreshable(params={})
       pull_message = params[:pull_message] || "Pull to refresh"

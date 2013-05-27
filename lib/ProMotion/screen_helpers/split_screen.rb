@@ -1,5 +1,7 @@
 module ProMotion
   module SplitScreen
+    attr_reader :popover_controller
+
     def split_screen_controller(master, detail)
       master_main = master.navigationController ? master.navigationController : master
       detail_main = detail.navigationController ? detail.navigationController : detail
@@ -32,15 +34,29 @@ module ProMotion
       split
     end
 
+    def dismiss_popover
+      puts "trying to dismiss popover for #{@popover} : #{@popover.class}"
+      _dismiss_popover if @popover_controller
+    end
+
+    private
+    def _dismiss_popover
+      @popover_controller.dismissPopoverAnimated(@popover_controller)
+    end
+
     # UISplitViewControllerDelegate methods
 
     def splitViewController(svc, willHideViewController: vc, withBarButtonItem: button, forPopoverController: pc)
+      puts "willHideViewController: #{vc}"
       button.title = vc.title
       svc.detail_screen.navigationItem.leftBarButtonItem = button;
+      @popover_controller = pc
     end
 
     def splitViewController(svc, willShowViewController: vc, invalidatingBarButtonItem: barButtonItem)
+      puts "willShowViewController: #{vc}"
       svc.detail_screen.navigationItem.leftBarButtonItem = nil
+      @popover_controller = nil
     end
   end
 end

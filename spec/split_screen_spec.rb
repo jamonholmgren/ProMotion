@@ -28,12 +28,12 @@ describe "split screen functionality" do
 
   it "should set the first viewController to MasterScreen" do
     @split_screen.master_screen.should == @master_screen
-    @split_screen.viewControllers.first.should == @master_screen.main_controller
+    @split_screen.viewControllers.first.should == @master_screen.pm_main_controller
   end
 
   it "should set the second viewController to DetailScreen" do
     @split_screen.detail_screen.should == @detail_screen
-    @split_screen.viewControllers.last.should == @detail_screen.main_controller
+    @split_screen.viewControllers.last.should == @detail_screen.pm_main_controller
   end
 
   it "should set the title on both screens" do

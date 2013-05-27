@@ -28,7 +28,7 @@ module ProMotion
     end
 
     def load_root_screen(new_screen)
-      new_screen = new_screen.main_controller if new_screen.respond_to?(:main_controller)
+      new_screen = new_screen.pm_main_controller
 
       self.window ||= self.ui_window.alloc.initWithFrame(UIScreen.mainScreen.bounds)
       self.window.rootViewController = new_screen

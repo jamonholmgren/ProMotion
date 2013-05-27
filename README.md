@@ -50,7 +50,8 @@ http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymot
 
 ## Sample Apps
 
-This is pretty bare-bones, but we'll be building it out as we go along.
+Here's a demo app that is used to test new functionality. You might have to change the Gemfile
+source to pull from Github.
 
 [https://github.com/jamonholmgren/promotion-demo](https://github.com/jamonholmgren/promotion-demo)
 

@@ -1,9 +1,9 @@
 module ProMotion
   module TableScreenModule
-    include MotionTable::PlainTable
-    include MotionTable::SearchableTable
-    include MotionTable::RefreshableTable
-    include ProMotion::ScreenModule
+    include PlainTable
+    include SearchableTable
+    include RefreshableTable
+    include ScreenModule
 
     def update_table_data
       self.update_table_view_data(table_data)

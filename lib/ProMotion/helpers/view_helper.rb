@@ -11,10 +11,10 @@ module ProMotion
       if v.is_a?(Hash) && element.respond_to?(k)
         sub_element = element.send(k)
         set_attributes(sub_element, v) if sub_element
-      elsif v.is_a?(Array) && element.respond_to?("#{k}")
-        element.send("#{k}", *v)
       elsif element.respond_to?("#{k}=")
         element.send("#{k}=", v)
+      elsif v.is_a?(Array) && element.respond_to?("#{k}") && element.method("#{k}").arity == v.length
+        element.send("#{k}", *v)
       else
         # Doesn't respond. Check if snake case.
         if k.to_s.include?("_")

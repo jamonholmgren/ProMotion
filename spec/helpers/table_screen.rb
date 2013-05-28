@@ -1,4 +1,8 @@
-class TableScreen < ProMotion::SectionedTableScreen
+class TestTableScreen < ProMotion::SectionedTableScreen
+  
+  def promotion_table_data
+    @promotion_table_data
+  end
 
   def on_load
     @tap_counter ||= 0

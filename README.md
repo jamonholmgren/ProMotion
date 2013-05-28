@@ -747,7 +747,8 @@ end
   pull_message: "Pull to refresh",
   refreshing: "Refreshing data…",
   updated_format: "Last updated at %s",
-  updated_time_format: "%l:%M %p"
+  updated_time_format: "%l:%M %p",
+  results_background_color: UIColor.redColor
 )</code></pre></td>
     <td>Class method to make the current table refreshable.
       <p>All parameters are optional. If you do not specify a a callback, it will assume you've implemented an <code>on_refresh</code> method in your tableview.</p>
@@ -802,7 +803,11 @@ def table_data
         url: "http://placekitten.com/200/300", placeholder: "some-local-image",
         size: 50, radius: 15
       },
-      subviews: [ @some_view, @some_other_view ] # arbitrary views added to the cell
+      subviews: [ @some_view, @some_other_view ] # arbitrary views added to the cell,
+      custom: {
+        arg1: "Value1", #Cell must respond to arg1= and arg2=
+        arg2: "Value2"
+      }
     }]
   }, {
     title: "Table cell group 2",

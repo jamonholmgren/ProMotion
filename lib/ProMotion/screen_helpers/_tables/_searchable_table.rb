@@ -23,6 +23,9 @@ module ProMotion::MotionTable
       @contacts_search_display_controller.searchResultsDataSource = params[:data_source]
       @contacts_search_display_controller.searchResultsDelegate = params[:search_results_delegate]
 
+      if params[:search_bar] && params[:search_bar][:results_background_color]
+        @contacts_search_display_controller.searchResultsTableView.backgroundColor = params[:search_bar][:results_background_color]
+      end
       self.table_view.tableHeaderView = search_bar
     end
     alias :makeSearchable :make_searchable

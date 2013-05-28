@@ -1,6 +1,6 @@
 module ProMotion
   module PlainTable
-    include SectionedTable
+    include Table
     include SearchableTable
     include RefreshableTable
 

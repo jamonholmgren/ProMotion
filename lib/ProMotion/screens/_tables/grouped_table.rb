@@ -1,6 +1,6 @@
 module ProMotion
   module GroupedTable
-    include SectionedTable
+    include Table
     include RefreshableTable
 
     def table_view

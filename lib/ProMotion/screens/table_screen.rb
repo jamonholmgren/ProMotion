@@ -3,6 +3,7 @@ module ProMotion
   # Just make sure to implement the Obj-C methods in cocoatouch/TableViewController.rb.
   class TableScreen < TableViewController
     include ProMotion::TableScreenModule
+    # Includes PM::PlainTable already
   end
 
   class GroupedTableScreen < TableScreen

@@ -1,4 +1,4 @@
-class TableScreenRefreshable < TableScreen
+class TableScreenRefreshable < TestTableScreen
   attr_accessor :on_refresh_called
 
   refreshable

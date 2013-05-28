@@ -3,19 +3,25 @@ describe "table screens" do
   describe "basic functionality" do
 
     before do
-      @screen = TableScreen.new
+      @screen = TestTableScreen.new
       @screen.on_load
     end
     
     it "should display 2 sections" do
-      @screen.tableView.numberOfSections.should == 2
+      @screen.promotion_table_data.sections.should.be.kind_of(Array)
     end
 
     it "should have proper cell numbers" do
-      @screen.tableView.numberOfRowsInSection(0).should == 3
-      @screen.tableView.numberOfRowsInSection(1).should == 2
+      @screen.tableView(@screen.tableView, numberOfRowsInSection:0).should == 3
+      @screen.tableView(@screen.tableView, numberOfRowsInSection:1).should == 2
     end
 
+    it "should return a UITableViewCell" do
+      index_path = NSIndexPath.indexPathForRow(1, inSection: 1)
+      
+      @screen.tableView(@screen.tableView, cellForRowAtIndexPath: index_path).should.be.kind_of UITableViewCell
+    end
+  
     it "should have a placeholder image in the last cell" do
       index_path = NSIndexPath.indexPathForRow(1, inSection: 1)
       

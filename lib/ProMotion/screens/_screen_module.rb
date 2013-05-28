@@ -6,13 +6,12 @@ module ProMotion
     include ProMotion::ScreenTabs
     include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2")
 
-    attr_accessor :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal, :split_screen, :title
+    attr_accessor :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal, :split_screen
 
     def on_create(args = {})
       unless self.is_a?(UIViewController)
         raise StandardError.new("ERROR: Screens must extend UIViewController or a subclass of UIViewController.")
       end
-
 
       self.title = self.class.send(:get_title)
 
@@ -206,6 +205,7 @@ module ProMotion
 
     def supported_device_families
       NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].map do |m|
+        # TODO: What about universal apps?
         case m
         when "1"
           :iphone

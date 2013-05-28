@@ -1,76 +1,106 @@
-describe "PM::TableViewCell" do
+describe "PM::TableViewCellModule" do
+  
+  def custom_cell
+    {
+      title: "Crazy Full Featured Cell",
+      subtitle: "This is way too huge...",
+      arguments: { data: [ "lots", "of", "data" ] },
+      action: :tapped_cell_1,
+      height: 50, # manually changes the cell's height
+      cell_style: UITableViewCellStyleSubtitle,
+      cell_identifier: "Cell",
+      cell_class: PM::TableViewCell,
+      layer: { masks_to_bounds: true },
+      background_color: UIColor.redColor,
+      selection_style: UITableViewCellSelectionStyleGray,
+      accessory: :switch, # currently only :switch is supported
+      accessory_checked: true, # whether it's "checked" or not
+      image: { image: UIImage.imageNamed("list"), radius: 15 },
+      subviews: [ UIView.alloc.initWithFrame(CGRectZero), UILabel.alloc.initWithFrame(CGRectZero) ] # arbitrary views added to the cell
+    }
+  end
   
   before do
-    @subject = TestTableScreen.new
-    @subject.on_load
-    @basic_cell = { title: "Basic", action: :basic_cell_tapped, arguments: { id: 1 } }
-  end
-  
-  it "should do nothing" do
-    1.should == 1
-  end
-  
-  it "should set the section title" do
-    @subject.mock! :table_data do
-      [{
-        title: "Table cell group 1",
-        cells: [ @basic_cell.dup ]
-      },{
-        title: "Table cell group 2",
-        cells: [ @basic_cell.dup ]
-      },{
-        title: "Table cell group 3",
-        cells: [ @basic_cell.dup ]
-      }]
+    @screen = TestTableScreen.new
+    button = UIButton.buttonWithType(UIButtonTypeRoundedRect).tap{|b| b.titleLabel.text = "ACC" }
+    @screen.mock! :table_data do
+      [
+        { title: "", cells: [] },
+        { title: "", cells: [
+          {title: "Test 1", accessory_type: UITableViewCellStateShowingEditControlMask },
+          custom_cell,
+          { title: "Test2", accessory_view: button } ] }
+      ]
     end
     
-    @subject.update_table_data
-    @subject.tableView(@subject.table_view, titleForHeaderInSection:0).should == "Table cell group 1"
-    @subject.tableView(@subject.table_view, titleForHeaderInSection:1).should == "Table cell group 2"
-    @subject.tableView(@subject.table_view, titleForHeaderInSection:2).should == "Table cell group 3"
+    @screen.on_load
+    
+    custom_ip = NSIndexPath.indexPathForRow(1, inSection: 1) # Cell "Crazy Full Featured Cell"
+    
+    @screen.update_table_data
+    
+    @subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: custom_ip)
   end
+  
+  it "should be a PM::TableViewCell" do
+    @subject.should.be.kind_of(PM::TableViewCell)
+  end
+  
+  it "should have the right title" do
+    @subject.textLabel.text.should == "Crazy Full Featured Cell"
+  end
+  
+  it "should have the right subtitle" do
+    @subject.detailTextLabel.text.should == "This is way too huge..."
+  end
+  
+  it "should have the right re-use identifier" do
+    @subject.reuseIdentifier.should == "Cell"
+  end
+  
+  it "should set the layer.masksToBounds" do
+    @subject.layer.masksToBounds.should == true
+  end
+  
+  it "should set the background color" do
+    @subject.backgroundView.backgroundColor.should == UIColor.redColor
+  end
+  
+  it "should set the selection color style" do
+    @subject.selectionStyle.should == UITableViewCellSelectionStyleGray
+  end
+  
+  it "should set the accessory view to a switch" do
+    @subject.accessoryView.should.be.kind_of(UISwitch)
+  end
+
+  it "should set the accessory view to a button" do
+    ip = NSIndexPath.indexPathForRow(2, inSection: 1)
+    subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: ip)
+    subject.accessoryView.should.be.kind_of(UIRoundedRectButton)
+  end
+  
+  it "should set the accessory type to edit" do
+    ip = NSIndexPath.indexPathForRow(0, inSection: 1)
+    subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: ip)
+    subject.accessoryView.should.be.nil
+    subject.accessoryType.should == UITableViewCellStateShowingEditControlMask
+  end
+  
+  it "should set an image with a radius" do
+    @subject.imageView.should.be.kind_of(UIImageView)
+    @subject.imageView.image.should == UIImage.imageNamed("list")
+    @subject.imageView.layer.cornerRadius.should == 15.0
+  end
+
+  it "should create two extra subviews" do
+    @subject.subviews.length.should == 4
+    @subject.subviews[2].class.should == UIView
+    @subject.subviews[3].class.should == UILabel
+  end
+  
+  
   
 end
 
-# def table_data
-#   [{
-#     title: "Table cell group 1",
-#     cells: [{
-#       title: "Simple cell",
-#       action: :this_cell_tapped,
-#       arguments: { id: 4 }
-#     }, {
-#       title: "Crazy Full Featured Cell",
-#       subtitle: "This is way too huge..see note",
-#       arguments: { data: [ "lots", "of", "data" ] },
-#       action: :tapped_cell_1,
-#       height: 50, # manually changes the cell's height
-#       cell_style: UITableViewCellStyleSubtitle,
-#       cell_identifier: "Cell",
-#       cell_class: PM::TableViewCell,
-#       masks_to_bounds: true,
-#       background_color: UIColor.whiteColor,
-#       selection_style: UITableViewCellSelectionStyleGray,
-#       cell_class_attributes: {
-#         # any Obj-C attributes to set on the cell
-#         backgroundColor: UIColor.whiteColor
-#       },
-#       accessory: :switch, # currently only :switch is supported
-#       accessory_view: @some_accessory_view,
-#       accessory_type: UITableViewCellAccessoryCheckmark,
-#       accessory_checked: true, # whether it's "checked" or not
-#       image: { image: UIImage.imageNamed("something"), radius: 15 },
-#       remote_image: {  # remote image, requires SDWebImage CocoaPod
-#         url: "http://placekitten.com/200/300", placeholder: "some-local-image",
-#         size: 50, radius: 15
-#       },
-#       subviews: [ @some_view, @some_other_view ] # arbitrary views added to the cell
-#     }]
-#   }, {
-#     title: "Table cell group 2",
-#     cells: [{
-#       title: "Log out",
-#       action: :log_out
-#     }]
-#   }]
-# end
+

@@ -9,9 +9,10 @@ module ProMotion
       
       # TODO: Some of these need to go away. Unnecessary overhead.
       set_cell_attributes
+      set_background_color
       set_class_attributes
       set_accessory_view
-      set_label
+      set_subtitle
       set_image
       set_remote_image
       set_subviews
@@ -25,6 +26,10 @@ module ProMotion
     def set_cell_attributes
       set_attributes self, data_cell
       self
+    end
+    
+    def set_background_color
+      self.backgroundView = UIView.new.tap{|v| v.backgroundColor = data_cell[:background_color]} if data_cell[:background_color]
     end
     
     def set_class_attributes
@@ -51,7 +56,7 @@ module ProMotion
       self
     end
     
-    def set_label
+    def set_subtitle
       if data_cell[:subtitle] && self.detailTextLabel
         self.detailTextLabel.text = data_cell[:subtitle]
         self.detailTextLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth

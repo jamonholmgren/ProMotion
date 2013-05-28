@@ -13,7 +13,6 @@ module ProMotion
         raise StandardError.new("ERROR: Screens must extend UIViewController or a subclass of UIViewController.")
       end
 
-
       self.title = self.class.send(:get_title)
 
       args.each do |k, v|

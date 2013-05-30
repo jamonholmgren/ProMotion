@@ -116,9 +116,9 @@ describe "screen helpers" do
 
         new_screen.parent_screen.should == @screen
         new_screen.title.should == 'Some Title'
-        new_screen.is_modal?.should == true
+        new_screen.modal?.should == true
         new_screen.hidesBottomBarWhenPushed.should == true
-        new_screen.has_nav_bar?.should == true
+        new_screen.nav_bar?.should == true
       end
 
       it "should present the #main_controller when showing a modal screen" do

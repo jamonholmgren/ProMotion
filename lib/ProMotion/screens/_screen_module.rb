@@ -27,13 +27,23 @@ module ProMotion
     end
 
     def is_modal?
+      PM.logger.deprecated "`is_modal?` is deprecated. Use `modal?`."
+      modal?
+    end
+    
+    def modal?
       self.modal == true
     end
 
     def has_nav_bar?
-      self.navigation_controller.nil? != true
+      PM.logger.deprecated "`has_nav_bar? is deprecated. Use `nav_bar?`."
+      nav_bar?
     end
-
+    
+    def nav_bar?
+      !!self.navigation_controller
+    end
+    
     def navigation_controller
       @navigation_controller ||= self.navigationController
     end
@@ -45,7 +55,7 @@ module ProMotion
 
     # [DEPRECATED]
     def load_view_controller
-      warn "[DEPRECATION] `load_view_controller` is deprecated and doesn't actually do anything anymore. You can safely remove it from your code."
+      PM.logger.deprecated  "`load_view_controller` is deprecated and doesn't actually do anything anymore. You can safely remove it from your code."
     end
 
     def set_tab_bar_item(args = {})

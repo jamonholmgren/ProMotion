@@ -52,8 +52,6 @@ module ProMotion
     end
 
     def searchDisplayControllerWillBeginSearch(controller)
-      @promotion_table_data = true
-      @motion_table_filtered_data = []
       self.table_view.setScrollEnabled false
     end
     

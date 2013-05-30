@@ -24,7 +24,7 @@ module ProMotion
     end
 
     def set_cell_attributes
-      set_attributes self, data_cell
+      set_attributes self, data_cell.dup.tap{ |h| h.delete(:image) }
       self
     end
 
@@ -87,15 +87,12 @@ module ProMotion
     def set_image
       if data_cell[:image]
 
-        unless data_cell[:image].is_a? Hash
-          data_cell[:image] = {:image => data_cell[:image]}
-        end
-
-        data_cell[:image][:image] = UIImage.imageNamed(data_cell[:image][:image]) if data_cell[:image][:image].is_a? String
+        cell_image = data_cell[:image].is_a?(Hash) ? data_cell[:image][:image] : data_cell[:image]
+        cell_image = UIImage.imageNamed(cell_image) if cell_image.is_a?(String)
 
         self.imageView.layer.masksToBounds = true
-        self.imageView.image = data_cell[:image][:image]
-        self.imageView.layer.cornerRadius = data_cell[:image][:radius] if data_cell[:image][:radius]
+        self.imageView.image = cell_image
+        self.imageView.layer.cornerRadius = data_cell[:image][:radius] if data_cell[:image].is_a?(Hash) && data_cell[:image][:radius]
       end
       self
     end

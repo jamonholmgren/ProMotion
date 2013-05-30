@@ -15,7 +15,7 @@ ProMotion is a RubyMotion gem that makes iOS development more like Ruby and less
 - [Getting Started](#getting-started)
   - [Setup](#setup)
 - [What's New?](#whats-new)
-  - [Version 0.6](#version-06)
+  - [Version 0.7](#version-07)
 - [Usage](#usage)
   - [Creating a basic screen](#creating-a-basic-screen)
   - [Loading your first screen](#loading-your-first-screen)
@@ -94,7 +94,7 @@ Create a Gemfile and add the following lines:
 
 ```ruby
 source 'https://rubygems.org'
-gem "ProMotion", "~> 0.6.2"
+gem "ProMotion", "~> 0.7.0"
 ```
 
 Run `bundle install` in Terminal to install ProMotion.
@@ -141,17 +141,21 @@ Run `rake`. You should now see the simulator open with your home screen and a na
 
 # What's New?
 
-## Version 0.6
+## Version 0.7
 
-* Will auto-detect if you've loaded [motion-xray](https://github.com/colinta/motion-xray) and enable it.
-* Added `open_split_screen` for iPad-supported apps (thanks @rheoli for your contributions to this)
-* Added `refreshable` to TableScreens (thanks to @markrickert) for pull-to-refresh support.
-* `PM::AppDelegateParent` renamed to `PM::Delegate` (`AppDelegateParent` is an alias)
-* `set_attributes` and `add` now apply nested attributes recursively
-* `set_attributes` and `add` now accept snake_case instead of camelCase methods (e.g., background_color)
-* Added `add_to` method for adding views to any parent view. `remove` works with this normally.
-* Deprecated Console.log and replaced with PM::Logger
-* Many improvements to how screens and navigation controllers are loaded, tests
+* Added [Teacup](https://github.com/rubymotion/teacup) support! Just specify `stylename:` in your `add:` or `set_attributes:` property hash.
+* Added `PM::FormotionScreen` for easy [Formotion](https://github.com/clayallsopp/formotion) compatibility.
+* Massive refactor of `PM::TableScreen` to make it more reliable and testable. Deprecated some old stuff in there.
+* Made a new `TableViewCellModule` that makes it easy to set up custom cells.
+* Refactored the `PM::Delegate` class to make it cleaner and more testable.
+* Added `PM::PushNotification` class (this needs more work and testing) and some nice `PM::Delegate` methods for registering and handling them.
+* `set_nav_bar_left_button` and `set_nav_bar_right_button` are now just `set_nav_bar_button`. See API reference.
+* Speaking of API reference, [we now have one](https://github.com/clearsightstudio/ProMotion/wiki/_pages). We've moved the bulk of the info to the wiki.
+* Added `open_modal` alias for `open @screen, modal: true`
+* Added functional (interactive) tests and lots of unit tests. Run `rake spec:functional` or `rake spec:unit` to run them individually.
+* Renamed `is_modal?` to `modal?`, `has_nav_bar?` to `nav_bar?` in screens.
+* Removed MotionTable references.
+* Lots of small improvements and bugfixes.
 
 # Usage
 
@@ -454,51 +458,20 @@ class SettingsScreen < PM::GroupedTableScreen
 end
 ```
 
-You can provide remotely downloaded images for cells by including the CocoaPod "SDWebImage" in
-your Rakefile and doing this:
-
-```ruby
-  cells: [
-    {
-      title: "Cell with image",
-      remote_image: { url: "http://placekitten.com/200/300", placeholder: "some-local-image" }
-    }
-  ]
-```
-
-A note about table screens. You may not want a sectioned table. In that case,
-use only one section and set its value to `nil`. For example:
-
-```ruby
-[{
-  title: nil,
-  cells: [
-      {title: "37th Annual Grammy Awards", subtitle: "Nokia Theater"}
-    ]
-  }, {
-  title: nil,
-  cells: [
-    {title: "87th Academy Awards", subtitle: "Nokia Theater"}
-  ]}, {
-  title: nil,
-  cells: [
-    {title: "Golden Globe Awards", subtitle: "Beverly Hilton"}
-  ]
-}]
-```
-
 ## Using your own UIViewController
 
-[Using your own UIViewController with ProMotion](https://github.com/clearsightstudio/ProMotion/wiki/Using-your-own-UIViewController-with-ProMotion)
+### [Usage: Formotion or other custom UIViewControllers](https://github.com/clearsightstudio/ProMotion/wiki/Usage:-Formotion-or-other-custom-UIViewControllers)
 
 # API Reference
 
-[Full ProMotion API Reference](https://github.com/clearsightstudio/ProMotion/wiki/_pages)
+We've created a fairly comprehensive wiki with code examples, usage examples, and API reference.
+
+### [ProMotion API Reference](https://github.com/clearsightstudio/ProMotion/wiki/_pages)
 
 # Help
 
-If you need help, feel free to ping me on twitter @jamonholmgren or open a ticket on GitHub.
-Opening a ticket is usually the best and we respond to those pretty quickly.
+If you need help, feel free to ping me on twitter [@jamonholmgren](http://twitter.com/jamonholmgren)
+or open an issue on GitHub. Opening an issue is usually the best and we respond to those pretty quickly.
 
 # Contributing
 

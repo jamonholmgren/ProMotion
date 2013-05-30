@@ -14,7 +14,7 @@ module ProMotion
       
       on_load application, launch_options
 
-      check_for_notification launch_options
+      check_for_push_notification launch_options
       
       true
       

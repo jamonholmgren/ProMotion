@@ -34,7 +34,7 @@ module ProMotion
     # For testing from the REPL
     # > PM::PushNotification.simulate alert: "My test message", badge: 4
     def self.simulate(args = {})
-      UIApplication.sharedApplication.delegate.on_notification self.fake_notification(args)
+      UIApplication.sharedApplication.delegate.on_push_notification self.fake_notification(args)
     end
     
     def self.fake_notification(args = {})

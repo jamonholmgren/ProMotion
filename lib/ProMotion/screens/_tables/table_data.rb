@@ -42,7 +42,11 @@ module ProMotion
         new_section[:cells] = []
 
         new_section[:cells] = section[:cells].map do |cell|
-          cell[:title].to_s.downcase.strip.include?(search_string) ? cell : nil
+          if cell[:searchable] == false
+            nil
+          else
+            cell[:title].to_s.downcase.strip.include?(search_string) || cell[:search_text].to_s.downcase.strip.include?(search_string) ? cell : nil
+          end
         end.compact
 
         if new_section[:cells] && new_section[:cells].length > 0

@@ -1,6 +1,6 @@
 module ProMotion
   module SearchableTable
-    
+
     def make_searchable(params={})
       params = set_searchable_param_defaults(params)
 
@@ -18,7 +18,7 @@ module ProMotion
       self.table_view.tableHeaderView = search_bar
     end
     alias :makeSearchable :make_searchable
-    
+
     def set_searchable_param_defaults(params)
       params[:content_controller] ||= params[:contentController]
       params[:data_source] ||= params[:searchResultsDataSource]
@@ -31,7 +31,7 @@ module ProMotion
       params[:search_results_delegate] ||= self
       params
     end
-    
+
     def create_search_bar(params)
       search_bar = UISearchBar.alloc.initWithFrame(params[:frame])
       search_bar.autoresizingMask = UIViewAutoresizingFlexibleWidth
@@ -54,6 +54,6 @@ module ProMotion
     def searchDisplayControllerWillBeginSearch(controller)
       self.table_view.setScrollEnabled false
     end
-    
+
   end
 end

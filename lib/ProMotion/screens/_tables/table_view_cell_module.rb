@@ -86,6 +86,9 @@ module ProMotion
     
     def set_image
       if data_cell[:image]
+        unless data_cell[:image].is_a? Hash
+          data_cell[:image] = {:image => data_cell[:image]}
+        end
         self.imageView.layer.masksToBounds = true
         self.imageView.image = data_cell[:image][:image]
         self.imageView.layer.cornerRadius = data_cell[:image][:radius] if data_cell[:image][:radius]

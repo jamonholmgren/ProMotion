@@ -50,7 +50,7 @@ module ProMotion
     end
 
     def frame_from_array(array)
-      PM.logger.deprecated "`frame_from_array` is deprecated and will be removed. Use RubyMotion's built-in [[x, y], [width, height]]."
+      PM.logger.deprecated "`frame_from_array` is deprecated and will be removed. Use RubyMotion's built-in [[x, y], [width, height]] or CGRectMake(x, y, w, h)."
       return CGRectMake(array[0], array[1], array[2], array[3]) if array.length == 4
       PM.logger.error "frame_from_array expects an array with four elements: [x, y, width, height]"
       CGRectZero.dup

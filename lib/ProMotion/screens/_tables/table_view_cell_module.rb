@@ -59,6 +59,7 @@ module ProMotion
     def set_subtitle
       if data_cell[:subtitle] && self.detailTextLabel
         self.detailTextLabel.text = data_cell[:subtitle]
+        self.detailTextLabel.backgroundColor = UIColor.clearColor
         self.detailTextLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth
       end
       self
@@ -137,6 +138,7 @@ module ProMotion
       else
         cell_title = data_cell[:title]
         cell_title ||= ""
+        self.textLabel.backgroundColor = UIColor.clearColor
         self.textLabel.text = cell_title
       end
       

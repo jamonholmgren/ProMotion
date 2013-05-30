@@ -30,7 +30,7 @@ module ProMotion
       PM.logger.deprecated "`is_modal?` is deprecated. Use `modal?`."
       modal?
     end
-    
+
     def modal?
       self.modal == true
     end
@@ -39,11 +39,11 @@ module ProMotion
       PM.logger.deprecated "`has_nav_bar? is deprecated. Use `nav_bar?`."
       nav_bar?
     end
-    
+
     def nav_bar?
       !!self.navigation_controller
     end
-    
+
     def navigation_controller
       @navigation_controller ||= self.navigationController
     end
@@ -97,7 +97,7 @@ module ProMotion
 
       button
     end
-    
+
     def bar_button_item(button_type, args)
       case button_type
         when UIBarButtonItem

@@ -2,11 +2,11 @@ module ProMotion
   if defined?(Formotion) && defined?(Formotion::FormController)
     class FormotionScreen < Formotion::FormController
       include ProMotion::ScreenModule
-      
+
       def self.new(args = {})
         s = self.alloc.initWithStyle(UITableViewStyleGrouped)
         s.on_create(args) if s.respond_to?(:on_create)
-        
+
         if s.respond_to?(:table_data)
           s.form = s.table_data
         elsif args[:form]
@@ -14,12 +14,12 @@ module ProMotion
         else
           PM.logger.error "PM::FormotionScreen requires a `table_data` method or form: to be passed into `new`."
         end
-        
+
         s.tableView.allowsSelectionDuringEditing = true
-        
+
         s
       end
-      
+
       def viewDidLoad
         super
         self.view_did_load if self.respond_to?(:view_did_load)

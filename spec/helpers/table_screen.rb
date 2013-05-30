@@ -1,5 +1,5 @@
 class TestTableScreen < ProMotion::SectionedTableScreen
-  
+
   def promotion_table_data
     @promotion_table_data
   end
@@ -22,6 +22,14 @@ class TestTableScreen < ProMotion::SectionedTableScreen
         { title: "Increment One", action: :increment_counter },
         { title: "Feedback", remote_image: { url: "http://placekitten.com/100/100", placeholder: "some-local-image", size: 50, radius: 15 } }
       ]
+    }, {
+      title: "Image Tests",
+      cells: [
+        { title: "Image Test 1", image: {image: UIImage.imageNamed("list.png"), radius: 10} },
+        { title: "Image Test 2", image: {image: "list.png"} },
+        { title: "Image Test 3", image: UIImage.imageNamed("list.png") },
+        { title: "Image Test 4", image: "list.png" },
+      ]
     }]
   end
 
@@ -43,7 +51,7 @@ class TestTableScreen < ProMotion::SectionedTableScreen
   def increment_counter_by(args={})
     @tap_counter = @tap_counter + args[:number]
   end
-  
+
   def tap_counter
     @tap_counter
   end

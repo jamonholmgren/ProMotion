@@ -1,6 +1,27 @@
 module ProMotion
   module DelegateHelper
+
+    attr_accessor :window, :aps_notification, :home_screen
+
+    def application(application, didFinishLaunchingWithOptions:launch_options)
+      
+      apply_status_bar
+      
+      on_load application, launch_options
+
+      check_for_push_notification launch_options
+      
+      true
+      
+    end
     
+    def applicationWillTerminate(application)
+      
+      on_unload if respond_to?(:on_unload)
+      
+    end
+
+
     def app_delegate
       self
     end
@@ -18,7 +39,7 @@ module ProMotion
       screen = screen.new if screen.respond_to?(:new)
       screen.send(:on_load) if screen.respond_to?(:on_load)
       
-      @home_screen = screen
+      self.home_screen = screen
       
       self.window ||= self.ui_window.alloc.initWithFrame(UIScreen.mainScreen.bounds)
       self.window.rootViewController = screen.pm_main_controller

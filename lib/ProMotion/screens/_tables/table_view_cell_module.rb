@@ -1,12 +1,12 @@
 module ProMotion
   module TableViewCellModule
     include ViewHelper
-    
+
     attr_accessor :data_cell
-    
+
     def setup(data_cell)
       self.data_cell = data_cell
-      
+
       # TODO: Some of these need to go away. Unnecessary overhead.
       set_cell_attributes
       set_background_color
@@ -19,19 +19,19 @@ module ProMotion
       set_details
       set_styles
       set_selection_style
-      
+
       self
     end
-    
+
     def set_cell_attributes
-      set_attributes self, data_cell
+      set_attributes self, data_cell.dup.tap{ |h| h.delete(:image) }
       self
     end
-    
+
     def set_background_color
       self.backgroundView = UIView.new.tap{|v| v.backgroundColor = data_cell[:background_color]} if data_cell[:background_color]
     end
-    
+
     def set_class_attributes
       if data_cell[:cell_class_attributes]
         PM.logger.deprecated "`cell_class_attributes` is deprecated. Just add the attributes you want to set right into your cell hash."
@@ -39,7 +39,7 @@ module ProMotion
       end
       self
     end
-    
+
     def set_accessory_view
       if data_cell[:accessory_view]
         self.accessoryView = data_cell[:accessory_view]
@@ -52,10 +52,10 @@ module ProMotion
         switch_view.on = true if data_cell[:accessory_checked]
         self.accessoryView = switch_view
       end
-      
+
       self
     end
-    
+
     def set_subtitle
       if data_cell[:subtitle] && self.detailTextLabel
         self.detailTextLabel.text = data_cell[:subtitle]
@@ -64,7 +64,7 @@ module ProMotion
       end
       self
     end
-    
+
     def set_remote_image
       if data_cell[:remote_image]
         if self.imageView.respond_to?("setImageWithURL:placeholderImage:")
@@ -83,16 +83,20 @@ module ProMotion
       end
       self
     end
-    
+
     def set_image
       if data_cell[:image]
+
+        cell_image = data_cell[:image].is_a?(Hash) ? data_cell[:image][:image] : data_cell[:image]
+        cell_image = UIImage.imageNamed(cell_image) if cell_image.is_a?(String)
+
         self.imageView.layer.masksToBounds = true
-        self.imageView.image = data_cell[:image][:image]
-        self.imageView.layer.cornerRadius = data_cell[:image][:radius] if data_cell[:image][:radius]
+        self.imageView.image = cell_image
+        self.imageView.layer.cornerRadius = data_cell[:image][:radius] if data_cell[:image].is_a?(Hash) && data_cell[:image][:radius]
       end
       self
     end
-    
+
     def set_subviews
       tag_number = 0
       Array(data_cell[:subviews]).each do |view|
@@ -109,14 +113,14 @@ module ProMotion
       end
       self
     end
-    
+
     def set_details
       if data_cell[:details]
         self.addSubview data_cell[:details][:image]
       end
       self
     end
-    
+
     def set_styles
       if data_cell[:styles] && data_cell[:styles][:label] && data_cell[:styles][:label][:frame]
         ui_label = false
@@ -132,7 +136,7 @@ module ProMotion
           set_attributes label, data_cell[:styles][:label]
           self.contentView.addSubview label
         end
-        
+
         # TODO: What is this and why is it necessary?
         self.textLabel.textColor = UIColor.clearColor
       else
@@ -141,10 +145,10 @@ module ProMotion
         self.textLabel.backgroundColor = UIColor.clearColor
         self.textLabel.text = cell_title
       end
-      
+
       self
     end
-    
+
     def set_selection_style
       self.selectionStyle = UITableViewCellSelectionStyleNone if data_cell[:no_select]
     end

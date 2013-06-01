@@ -14,7 +14,7 @@ module ProMotion
     end
     alias :remove_element :remove
     alias :remove_view :remove
-    
+
     def add_to(parent_element, element, attrs = {})
       parent_element.addSubview element
       if attrs && attrs.length > 0

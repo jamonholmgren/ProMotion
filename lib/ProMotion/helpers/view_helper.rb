@@ -7,7 +7,7 @@ module ProMotion
 
     def set_attribute(element, k, v)
       return element unless element
-      
+
       if v.is_a?(Hash) && element.respond_to?(k)
         sub_element = element.send(k)
         set_attributes(sub_element, v) if sub_element

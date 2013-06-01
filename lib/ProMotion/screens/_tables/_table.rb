@@ -8,21 +8,21 @@ module ProMotion
       set_up_searchable
       set_up_refreshable
     end
-    
+
     def check_table_data
       PM.logger.error "Missing #table_data method in TableScreen #{self.class.to_s}." unless self.respond_to?(:table_data)
     end
-    
+
     def set_up_table_view
       self.view = self.create_table_view_from_data(self.table_data)
     end
-    
+
     def set_up_searchable
       if self.class.respond_to?(:get_searchable) && self.class.get_searchable
         self.make_searchable(content_controller: self, search_bar: self.class.get_searchable_params)
       end
     end
-    
+
     def set_up_refreshable
       if self.class.respond_to?(:get_refreshable) && self.class.get_refreshable
         if defined?(UIRefreshControl)
@@ -111,19 +111,19 @@ module ProMotion
     def tableView(table_view, didSelectRowAtIndexPath:index_path)
       cell = @promotion_table_data.cell(index_path: index_path)
       table_view.deselectRowAtIndexPath(index_path, animated: true)
-      
+
       cell[:arguments] ||= {}
       cell[:arguments][:cell] = cell if cell[:arguments].is_a?(Hash) # TODO: Should we really do this?
-      
+
       trigger_action(cell[:action], cell[:arguments]) if cell[:action]
     end
-    
-    
-    
+
+
+
     # Old aliases, deprecated, will be removed
     alias :createTableViewFromData :create_table_view_from_data
     alias :updateTableViewData :update_table_view_data
-    alias :cellAtSectionAndIndex :cell_at_section_and_index    
-    
+    alias :cellAtSectionAndIndex :cell_at_section_and_index
+
   end
 end

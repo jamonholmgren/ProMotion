@@ -12,7 +12,7 @@ describe "table screens" do
     end
 
     it "should have proper cell numbers" do
-      @screen.tableView(@screen.tableView, numberOfRowsInSection:0).should == 4
+      @screen.tableView(@screen.tableView, numberOfRowsInSection:0).should == 6
       @screen.tableView(@screen.tableView, numberOfRowsInSection:1).should == 2
       @screen.tableView(@screen.tableView, numberOfRowsInSection:2).should == 4
     end

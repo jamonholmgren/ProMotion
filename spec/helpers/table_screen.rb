@@ -14,7 +14,9 @@ class TestTableScreen < ProMotion::SectionedTableScreen
       cells: [
         { title: "Increment", action: :increment_counter_by, arguments: { number: 3 } },
         { title: "Add New Row", action: :add_tableview_row },
-        { title: "Delete the row below", action: :delete_row, arguments: {section: 0, row:3 } },
+        { title: "Delete the row below", action: :delete_cell, arguments: {section: 0, row:3 } },
+        { title: "Just another blank row" },
+        { title: "Delete the row below with an animation", action: :delete_cell, arguments: {animated: true, section: 0, row:5 } },
         { title: "Just another blank row" }
       ]
     }, {
@@ -45,10 +47,14 @@ class TestTableScreen < ProMotion::SectionedTableScreen
     update_table_data
   end
 
-  def delete_row(args={})
-    @data[args[:section]][:cells].delete_at args[:row]
-    update_table_data
-end
+  def delete_cell(args={})
+    if args[:animated]
+      delete_row(NSIndexPath.indexPathForRow(args[:row], inSection:args[:section]))
+    else
+      @data[args[:section]][:cells].delete_at args[:row]
+      update_table_data
+    end
+  end
 
   def increment_counter(args={})
     @tap_counter += 1

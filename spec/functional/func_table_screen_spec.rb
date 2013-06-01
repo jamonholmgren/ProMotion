@@ -38,9 +38,15 @@ describe "ProMotion::TestTableScreen functionality" do
   end
 
   it "should delete the specified row from the table view on tap" do
-    @controller.tableView(@controller.tableView, numberOfRowsInSection:0).should == 4
+    @controller.tableView(@controller.tableView, numberOfRowsInSection:0).should == 6
     tap("Delete the row below")
-    @controller.tableView(@controller.tableView, numberOfRowsInSection:0).should == 3
+    @controller.tableView(@controller.tableView, numberOfRowsInSection:0).should == 5
+  end
+
+  it "should delete the specified row from the table view on tap with an animation" do
+    @controller.tableView(@controller.tableView, numberOfRowsInSection:0).should == 6
+    tap("Delete the row below with an animation")
+    @controller.tableView(@controller.tableView, numberOfRowsInSection:0).should == 5
   end
 
 end

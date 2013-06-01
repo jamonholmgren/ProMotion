@@ -14,6 +14,7 @@ class TestTableScreen < ProMotion::SectionedTableScreen
       cells: [
         { title: "Increment", action: :increment_counter_by, arguments: { number: 3 } },
         { title: "Add New Row", action: :add_tableview_row, accessibilityLabel: "Add New Row" },
+        { title: "Delete the row below", action: :delete_row, arguments: {section: 0, row:3 }, accessibilityLabel: "Delete the row below" },
         { title: "Just another blank row" }
       ]
     }, {
@@ -43,6 +44,11 @@ class TestTableScreen < ProMotion::SectionedTableScreen
     }
     update_table_data
   end
+
+  def delete_row(args={})
+    @data[args[:section]][:cells].delete_at args[:row]
+    update_table_data
+end
 
   def increment_counter(args={})
     @tap_counter += 1

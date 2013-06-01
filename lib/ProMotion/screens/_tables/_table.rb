@@ -80,6 +80,16 @@ module ProMotion
       trigger_action(data_cell[:accessory_action], data_cell[:arguments]) if data_cell[:accessory_action]
     end
 
+    def delete_row(index_paths, animation = nil)
+      animation ||= UITableViewRowAnimationAutomatic
+      index_paths = [index_paths] unless index_paths.is_a? Array
+
+      index_paths.each do |index_path|
+        @promotion_table_data.delete_cell(index_path: index_path)
+      end
+      table_view.deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)
+    end
+
     ########## Cocoa touch methods #################
     def numberOfSectionsInTableView(table_view)
       return Array(@promotion_table_data.data).length
@@ -117,8 +127,6 @@ module ProMotion
 
       trigger_action(cell[:action], cell[:arguments]) if cell[:action]
     end
-
-
 
     # Old aliases, deprecated, will be removed
     alias :createTableViewFromData :create_table_view_from_data

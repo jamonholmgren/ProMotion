@@ -31,6 +31,17 @@ module ProMotion
       nil
     end
 
+    def delete_cell(params={})
+      if params[:index_path]
+        params[:section] = params[:index_path].section
+        params[:index] = params[:index_path].row
+      end
+
+      table_section = self.section(params[:section])
+      return table_section[:cells].delete_at(params[:index].to_i)
+      nil
+    end
+
     def search(search_string)
       self.filtered_data = []
       self.filtered = true

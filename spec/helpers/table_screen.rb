@@ -13,8 +13,8 @@ class TestTableScreen < ProMotion::SectionedTableScreen
       title: "Your Account",
       cells: [
         { title: "Increment", action: :increment_counter_by, arguments: { number: 3 } },
-        { title: "Add New Row", action: :add_tableview_row, accessibilityLabel: "Add New Row" },
-        { title: "Delete the row below", action: :delete_row, arguments: {section: 0, row:3 }, accessibilityLabel: "Delete the row below" },
+        { title: "Add New Row", action: :add_tableview_row },
+        { title: "Delete the row below", action: :delete_row, arguments: {section: 0, row:3 } },
         { title: "Just another blank row" }
       ]
     }, {

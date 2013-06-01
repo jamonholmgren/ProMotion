@@ -128,6 +128,12 @@ module ProMotion
       trigger_action(cell[:action], cell[:arguments]) if cell[:action]
     end
 
+    def tableView(tableView, commitEditingStyle:editing_style, forRowAtIndexPath:index_path)
+      if editing_style == UITableViewCellEditingStyleDelete
+        delete_cell(index_path)
+      end
+    end
+
     def deleteRowsAtIndexPaths(indexPaths, withRowAnimation:animation)
       PM.logger.warn "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(indexPaths, withRowAnimation:animation)'."
       delete_cell(indexPaths, animation)

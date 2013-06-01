@@ -128,6 +128,12 @@ module ProMotion
       trigger_action(cell[:action], cell[:arguments]) if cell[:action]
     end
 
+    def deleteRowsAtIndexPaths(indexPaths, withRowAnimation:animation)
+      PM.logger.warn "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(indexPaths, withRowAnimation:animation)'."
+      delete_cell(indexPaths, animation)
+    end
+
+
     # Old aliases, deprecated, will be removed
     alias :createTableViewFromData :create_table_view_from_data
     alias :updateTableViewData :update_table_view_data

@@ -26,4 +26,13 @@ describe "PM::Delegate" do
     
   end
 
+  it "should set home_screen when opening a new screen" do
+
+    @subject.application(UIApplication.sharedApplication, didFinishLaunchingWithOptions: nil)
+    @subject.open BasicScreen.new(nav_bar: true)
+    @subject.home_screen.should.be.kind_of BasicScreen
+    @subject.window.rootViewController.should.be.kind_of UINavigationController
+
+  end
+
 end

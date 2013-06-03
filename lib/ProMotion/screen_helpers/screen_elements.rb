@@ -14,13 +14,13 @@ module ProMotion
     end
     alias :remove_element :remove
     alias :remove_view :remove
-    
+
     def add_to(parent_element, element, attrs = {})
+      parent_element.addSubview element
       if attrs && attrs.length > 0
         set_attributes(element, attrs)
         set_easy_attributes(parent_element, element, attrs)
       end
-      parent_element.addSubview element
       element
     end
 

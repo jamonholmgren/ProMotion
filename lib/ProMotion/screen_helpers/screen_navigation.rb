@@ -40,6 +40,10 @@ module ProMotion
       app_delegate.open_root_screen(screen)
     end
 
+    def open_modal(screen, args = {})
+      open screen, args.merge({ modal: true })
+    end
+
     def app_delegate
       UIApplication.sharedApplication.delegate
     end
@@ -48,7 +52,7 @@ module ProMotion
       args ||= {}
       args[:animated] ||= true
 
-      if self.is_modal?
+      if self.modal?
         close_modal_screen args
 
       elsif self.navigation_controller

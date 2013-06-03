@@ -34,9 +34,9 @@ module ProMotion
     def open_tab_bar(*screens)
       tab_bar = tab_bar_controller(*screens)
 
-      a = self.respond_to?(:load_root_screen) ? self : UIApplication.sharedApplication.delegate
+      a = self.respond_to?(:open_root_screen) ? self : UIApplication.sharedApplication.delegate
 
-      a.load_root_screen(tab_bar)
+      a.open_root_screen(tab_bar)
       tab_bar
     end
 

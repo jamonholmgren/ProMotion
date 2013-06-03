@@ -1,4 +1,4 @@
-class TableScreenSearchable < TableScreen
+class TableScreenSearchable < TestTableScreen
 
   searchable
 

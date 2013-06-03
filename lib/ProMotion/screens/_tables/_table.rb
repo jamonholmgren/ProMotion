@@ -82,7 +82,7 @@ module ProMotion
 
     def delete_row(index_paths, animation = nil)
       animation ||= UITableViewRowAnimationAutomatic
-      index_paths = [index_paths] unless index_paths.is_a? Array
+      index_paths = Array(index_paths)
 
       index_paths.each do |index_path|
         @promotion_table_data.delete_cell(index_path: index_path)

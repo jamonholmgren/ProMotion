@@ -11,8 +11,11 @@ module ProMotion
 
       check_for_push_notification launch_options
       
-      true
-      
+      # This will work when RubyMotion fixes a bug.
+      # defined?(super) ? super : true
+
+      # Workaround for now. Will display a NoMethodError, but ignore.
+      super rescue true
     end
     
     def applicationWillTerminate(application)

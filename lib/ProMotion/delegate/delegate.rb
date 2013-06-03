@@ -3,8 +3,8 @@ module ProMotion
 
     include ProMotion::ScreenTabs
     include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2") # Only with iPad
-    include DelegateHelper
-    include DelegateNotifications
+    include ProMotion::DelegateHelper
+    include ProMotion::DelegateNotifications
 
   end
 

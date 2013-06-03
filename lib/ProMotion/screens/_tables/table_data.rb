@@ -27,8 +27,7 @@ module ProMotion
       end
 
       table_section = self.section(params[:section])
-      return table_section[:cells].at(params[:index].to_i)
-      nil
+      table_section[:cells].at(params[:index].to_i)
     end
 
     def delete_cell(params={})
@@ -38,8 +37,7 @@ module ProMotion
       end
 
       table_section = self.section(params[:section])
-      return table_section[:cells].delete_at(params[:index].to_i)
-      nil
+      table_section[:cells].delete_at(params[:index].to_i)
     end
 
     def search(search_string)

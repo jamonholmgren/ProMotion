@@ -19,5 +19,8 @@ Gem::Specification.new do |gem|
   gem.name          = "ProMotion"
   gem.require_paths = ["lib"]
   gem.version       = ProMotion::VERSION
-  # gem.add_dependency("motion-table", "~> 0.1.6")
+
+  gem.add_development_dependency("motion-stump")
+  gem.add_development_dependency("motion-redgreen")
+  gem.add_development_dependency("rake")
 end

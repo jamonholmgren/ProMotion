@@ -4,6 +4,8 @@
 
 ProMotion is a RubyMotion gem that makes iOS development more like Ruby and less like Objective-C.
 
+Featured on the RubyMotion blog: [http://blog.rubymotion.com/post/50523137515/introducing-promotion-a-full-featured-rubymotion](http://blog.rubymotion.com/post/50523137515/introducing-promotion-a-full-featured-rubymotion)
+
 **Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
 
 - [ProMotion ](#promotion-)

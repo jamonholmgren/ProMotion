@@ -80,6 +80,16 @@ module ProMotion
       trigger_action(data_cell[:accessory_action], data_cell[:arguments]) if data_cell[:accessory_action]
     end
 
+    def delete_row(index_paths, animation = nil)
+      animation ||= UITableViewRowAnimationAutomatic
+      index_paths = Array(index_paths)
+
+      index_paths.each do |index_path|
+        @promotion_table_data.delete_cell(index_path: index_path)
+      end
+      table_view.deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)
+    end
+
     ########## Cocoa touch methods #################
     def numberOfSectionsInTableView(table_view)
       return Array(@promotion_table_data.data).length
@@ -118,6 +128,16 @@ module ProMotion
       trigger_action(cell[:action], cell[:arguments]) if cell[:action]
     end
 
+    def tableView(tableView, commitEditingStyle:editing_style, forRowAtIndexPath:index_path)
+      if editing_style == UITableViewCellEditingStyleDelete
+        delete_cell(index_path)
+      end
+    end
+
+    def deleteRowsAtIndexPaths(indexPaths, withRowAnimation:animation)
+      PM.logger.warn "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(indexPaths, withRowAnimation:animation)'."
+      delete_cell(indexPaths, animation)
+    end
 
 
     # Old aliases, deprecated, will be removed

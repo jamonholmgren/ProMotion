@@ -1,3 +1,3 @@
 module ProMotion
-  VERSION = "0.6.5" unless defined?(ProMotion::VERSION)
+  VERSION = "0.7.0" unless defined?(ProMotion::VERSION)
 end

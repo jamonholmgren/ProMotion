@@ -31,8 +31,8 @@ describe "screen properties" do
     HomeScreen.debug_mode.should == true
   end
 
-  it "#is_modal? should be true" do
-    @screen.is_modal?.should == true
+  it "#modal? should be true" do
+    @screen.modal?.should == true
   end
 
   it "should know it is the first screen" do
@@ -115,7 +115,7 @@ describe "screen properties" do
   describe "navigation controller behavior" do
 
     it "should have a nav bar" do
-      @screen.has_nav_bar?.should == true
+      @screen.nav_bar?.should == true
     end
 
     it "#main_controller should return a navigation controller" do
@@ -180,6 +180,24 @@ describe "screen properties" do
       end
     end
 
+  end
+
+end
+
+describe "screen with toolbar" do
+
+  it "showing" do
+    # Simulate AppDelegate setup of main screen
+    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen.on_load
+    screen.navigationController.toolbarHidden?.should == false
+  end
+
+  it "hidden" do
+    # Simulate AppDelegate setup of main screen
+    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: false
+    screen.on_load
+    screen.navigationController.toolbarHidden?.should == true
   end
 
 end

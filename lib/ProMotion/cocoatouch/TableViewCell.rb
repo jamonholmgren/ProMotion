@@ -1,7 +1,10 @@
 module ProMotion
   class TableViewCell < UITableViewCell
+    include TableViewCellModule
+
     attr_accessor :image_size
 
+    # TODO: Is this necessary?
     def layoutSubviews
       super
 
@@ -12,5 +15,6 @@ module ProMotion
         self.imageView.frame = CGRectInset(f, size_inset_x, size_inset_y)
       end
     end
+
   end
 end

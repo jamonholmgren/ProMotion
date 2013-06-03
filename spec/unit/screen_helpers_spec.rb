@@ -116,9 +116,9 @@ describe "screen helpers" do
 
         new_screen.parent_screen.should == @screen
         new_screen.title.should == 'Some Title'
-        new_screen.is_modal?.should == true
+        new_screen.modal?.should == true
         new_screen.hidesBottomBarWhenPushed.should == true
-        new_screen.has_nav_bar?.should == true
+        new_screen.nav_bar?.should == true
       end
 
       it "should present the #main_controller when showing a modal screen" do
@@ -141,7 +141,7 @@ describe "screen helpers" do
 
       it "should open a root screen if :close_all is provided" do
         @screen.mock!(:open_root_screen) { |screen| screen.should.be.instance_of BasicScreen }
-        @screen.open_screen BasicScreen, close_all: true
+        @screen.open BasicScreen, close_all: true
       end
 
       it "should present a modal screen if :modal is provided" do
@@ -149,7 +149,15 @@ describe "screen helpers" do
           screen.should.be.instance_of BasicScreen
           animated.should == true
         end
-        @screen.open_screen BasicScreen, modal: true
+        @screen.open BasicScreen, modal: true
+      end
+
+      it "should present a modal screen if open_modal is used" do
+        @screen.mock!(:present_modal_view_controller) do |screen, animated|
+          screen.should.be.instance_of BasicScreen
+          animated.should == true
+        end
+        @screen.open_modal BasicScreen
       end
 
       it "should open screen in tab bar if :in_tab is provided" do
@@ -158,12 +166,12 @@ describe "screen helpers" do
           screen.should.be.instance_of BasicScreen
           tab_name.should == 'my_tab'
         end
-        @screen.open_screen BasicScreen, in_tab: 'my_tab'
+        @screen.open BasicScreen, in_tab: 'my_tab'
       end
 
       it "should pop onto navigation controller if current screen is on nav stack already" do
         @screen.mock!(:push_view_controller) { |vc| vc.should.be.instance_of BasicScreen }
-        @screen.open_screen BasicScreen
+        @screen.open BasicScreen
       end
 
       it "should open the provided view controller as root view if no other conditions are met" do

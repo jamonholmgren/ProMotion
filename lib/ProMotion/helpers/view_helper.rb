@@ -6,13 +6,15 @@ module ProMotion
     end
 
     def set_attribute(element, k, v)
+      return element unless element
+
       if v.is_a?(Hash) && element.respond_to?(k)
         sub_element = element.send(k)
-        set_attributes sub_element, v
-      elsif v.is_a?(Array) && element.respond_to?("#{k}")
-        element.send("#{k}", *v)
+        set_attributes(sub_element, v) if sub_element
       elsif element.respond_to?("#{k}=")
         element.send("#{k}=", v)
+      elsif v.is_a?(Array) && element.respond_to?("#{k}") && element.method("#{k}").arity == v.length
+        element.send("#{k}", *v)
       else
         # Doesn't respond. Check if snake case.
         if k.to_s.include?("_")
@@ -48,7 +50,7 @@ module ProMotion
     end
 
     def frame_from_array(array)
-      PM.logger.deprecated "`frame_from_array` is deprecated and will be removed. Use RubyMotion's built-in [[x, y], [width, height]]."
+      PM.logger.deprecated "`frame_from_array` is deprecated and will be removed. Use RubyMotion's built-in [[x, y], [width, height]] or CGRectMake(x, y, w, h)."
       return CGRectMake(array[0], array[1], array[2], array[3]) if array.length == 4
       PM.logger.error "frame_from_array expects an array with four elements: [x, y, width, height]"
       CGRectZero.dup

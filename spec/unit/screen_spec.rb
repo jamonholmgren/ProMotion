@@ -43,6 +43,19 @@ describe "screen properties" do
     @screen.should_autorotate.should == true
   end
 
+  # Issue https://github.com/clearsightstudio/ProMotion/issues/109
+  it "#should_autorotate should fire when shouldAutorotate fires when in a navigation bar" do
+    parent_screen = BasicScreen.new(nav_bar: true)
+    parent_screen.open @screen
+    @screen.mock!(:should_autorotate) { true.should == true }
+    parent_screen.navigationController.shouldAutorotate
+  end
+
+  # <= iOS 5 only
+  it "#should_rotate(orientation) should fire when shouldAutorotateToInterfaceOrientation(orientation) fires" do
+    @screen.mock!(:should_rotate) { |orientation| orientation.should == UIInterfaceOrientationMaskPortrait }
+    @screen.shouldAutorotateToInterfaceOrientation(UIInterfaceOrientationMaskPortrait)
+  end
 
   describe "iOS lifecycle methods" do
 

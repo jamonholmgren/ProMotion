@@ -19,6 +19,13 @@ module ProMotion
 
         s
       end
+      
+      # emulate the ProMotion table update for formotion
+      def update_table_data
+        self.form            = table_data
+        self.form.controller = self
+        self.tableView.reloadData
+      end
 
       def viewDidLoad
         super

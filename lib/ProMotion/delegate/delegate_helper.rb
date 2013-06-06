@@ -16,6 +16,7 @@ module ProMotion
 
       # Workaround for now. Will display a NoMethodError, but ignore.
       super rescue true
+      PM.logger.info "You can ignore the NoMethodError -- this is a RubyMotion bug that should be fixed soon."
     end
     
     def applicationWillTerminate(application)

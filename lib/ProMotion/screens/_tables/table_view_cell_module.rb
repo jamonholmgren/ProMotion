@@ -44,9 +44,7 @@ module ProMotion
       if data_cell[:accessory_view]
         self.accessoryView = data_cell[:accessory_view]
         self.accessoryView.autoresizingMask = UIViewAutoresizingFlexibleWidth
-      end
-
-      if data_cell[:accessory] && data_cell[:accessory] == :switch
+      elsif data_cell[:accessory] && data_cell[:accessory] == :switch
         switch_view = UISwitch.alloc.initWithFrame(CGRectZero)
         switch_view.addTarget(self, action: "accessory_toggled_switch:", forControlEvents:UIControlEventValueChanged)
         switch_view.on = true if data_cell[:accessory_checked]

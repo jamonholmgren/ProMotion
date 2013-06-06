@@ -104,6 +104,7 @@ module ProMotion
         cell_class_attributes: :cellClassAttributes,
         accessory_view: :accessoryView,
         accessory_type: :accessoryType,
+        accessory_action: :accessoryAction,
         accessory_checked: :accessoryDefault,
         remote_image: :remoteImage,
         subviews: :subViews

@@ -2,7 +2,7 @@ module ProMotion
   class MeasureHelper
     class << self
       def content_height(view)
-        warn "[DEPRECATION] `MeasureHelper.content_height` is deprecated. Include the module `ScreenElements` to get access to this method (already included in Screen)."
+        PM.logger.deprecated "`MeasureHelper.content_height` is deprecated. Include the module `ScreenElements` to get access to this method (already included in Screen)."
 
         height = 0
         view.subviews.each do |subview|

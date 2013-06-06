@@ -50,6 +50,7 @@ module ProMotion
 
     def close_screen(args = {})
       args ||= {}
+      args = { sender: args } unless args.is_a?(Hash)
       args[:animated] ||= true
 
       if self.modal?

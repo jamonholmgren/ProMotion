@@ -24,7 +24,9 @@ module ProMotion
     end
 
     def set_cell_attributes
-      set_attributes self, data_cell.dup.tap{ |h| h.delete(:image) }
+      data_cell_attributes = data_cell.dup
+      [:image, :accessory_action].each { |k| data_cell_attributes.delete(k) }
+      set_attributes self, data_cell_attributes
       self
     end
 

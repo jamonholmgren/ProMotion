@@ -23,14 +23,14 @@ class TestTableScreen < ProMotion::SectionedTableScreen
       title: "App Stuff",
       cells: [
         { title: "Increment One", action: :increment_counter },
-        { title: "Feedback", remote_image: { url: "http://placekitten.com/100/100", placeholder: "some-local-image", size: 50, radius: 15 } }
+        { title: "Feedback", cell_identifier: "ImagedCell", remote_image: { url: "http://placekitten.com/100/100", placeholder: "some-local-image", size: 50, radius: 15 } }
       ]
     }, {
       title: "Image Tests",
       cells: [
-        { title: "Image Test 1", image: {image: UIImage.imageNamed("list.png"), radius: 10} },
-        { title: "Image Test 2", image: {image: "list.png"} },
-        { title: "Image Test 3", image: UIImage.imageNamed("list.png") },
+        { title: "Image Test 1", cell_identifier: "ImagedCell", image: {image: UIImage.imageNamed("list.png"), radius: 10} },
+        { title: "Image Test 2", cell_identifier: "ImagedCell", image: {image: "list.png"} },
+        { title: "Image Test 3", cell_identifier: "ImagedCell", cell_identifier: "ImagedCell", image: UIImage.imageNamed("list.png") },
         { title: "Image Test 4", image: "list.png" },
       ]
     }]

@@ -46,7 +46,7 @@ module ProMotion
         self.accessoryView.autoresizingMask = UIViewAutoresizingFlexibleWidth
       elsif data_cell[:accessory] && data_cell[:accessory] == :switch
         switch_view = UISwitch.alloc.initWithFrame(CGRectZero)
-        switch_view.addTarget(self, action: "accessory_toggled_switch:", forControlEvents:UIControlEventValueChanged)
+        switch_view.addTarget(cell_table_view, action: "accessory_toggled_switch:", forControlEvents:UIControlEventValueChanged)
         switch_view.on = true if data_cell[:accessory_checked]
         self.accessoryView = switch_view
       end
@@ -149,6 +149,18 @@ module ProMotion
 
     def set_selection_style
       self.selectionStyle = UITableViewCellSelectionStyleNone if data_cell[:no_select]
+    end
+
+    def cell_table_view
+      @cell_tableview ||= begin
+        # iterate up the view hierarchy to find the table containing this cell/view
+        this_view = self.superview
+        while this_view != nil do
+            return this_view if this_view.is_a? UITableView
+            this_view = this_view.superview
+        end
+        nil # this view is not within a tableView
+      end
     end
   end
 end

@@ -1,5 +1,5 @@
 describe "PM::TableViewCellModule" do
-  
+
   def custom_cell
     {
       title: "Crazy Full Featured Cell",
@@ -19,7 +19,7 @@ describe "PM::TableViewCellModule" do
       subviews: [ UIView.alloc.initWithFrame(CGRectZero), UILabel.alloc.initWithFrame(CGRectZero) ] # arbitrary views added to the cell
     }
   end
-  
+
   before do
     @screen = TestTableScreen.new
     button = UIButton.buttonWithType(UIButtonTypeRoundedRect).tap{|b| b.titleLabel.text = "ACC" }
@@ -29,47 +29,47 @@ describe "PM::TableViewCellModule" do
         { title: "", cells: [
           {title: "Test 1", accessory_type: UITableViewCellStateShowingEditControlMask },
           custom_cell,
-          { title: "Test2", accessory_view: button } ] }
+          { title: "Test2", accessory: button } ] }
       ]
     end
-    
+
     @screen.on_load
-    
+
     custom_ip = NSIndexPath.indexPathForRow(1, inSection: 1) # Cell "Crazy Full Featured Cell"
-    
+
     @screen.update_table_data
-    
+
     @subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: custom_ip)
   end
-  
+
   it "should be a PM::TableViewCell" do
     @subject.should.be.kind_of(PM::TableViewCell)
   end
-  
+
   it "should have the right title" do
     @subject.textLabel.text.should == "Crazy Full Featured Cell"
   end
-  
+
   it "should have the right subtitle" do
     @subject.detailTextLabel.text.should == "This is way too huge..."
   end
-  
+
   it "should have the right re-use identifier" do
     @subject.reuseIdentifier.should == "Cell"
   end
-  
+
   it "should set the layer.masksToBounds" do
     @subject.layer.masksToBounds.should == true
   end
-  
+
   it "should set the background color" do
     @subject.backgroundView.backgroundColor.should == UIColor.redColor
   end
-  
+
   it "should set the selection color style" do
     @subject.selectionStyle.should == UITableViewCellSelectionStyleGray
   end
-  
+
   it "should set the accessory view to a switch" do
     @subject.accessoryView.should.be.kind_of(UISwitch)
   end
@@ -79,14 +79,14 @@ describe "PM::TableViewCellModule" do
     subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: ip)
     subject.accessoryView.should.be.kind_of(UIRoundedRectButton)
   end
-  
+
   it "should set the accessory type to edit" do
     ip = NSIndexPath.indexPathForRow(0, inSection: 1)
     subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: ip)
     subject.accessoryView.should.be.nil
     subject.accessoryType.should == UITableViewCellStateShowingEditControlMask
   end
-  
+
   it "should set an image with a radius" do
     @subject.imageView.should.be.kind_of(UIImageView)
     @subject.imageView.image.should == UIImage.imageNamed("list")
@@ -98,9 +98,9 @@ describe "PM::TableViewCellModule" do
     @subject.subviews[2].class.should == UIView
     @subject.subviews[3].class.should == UILabel
   end
-  
-  
-  
+
+
+
 end
 
 

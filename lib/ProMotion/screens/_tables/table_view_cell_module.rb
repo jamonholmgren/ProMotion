@@ -43,15 +43,23 @@ module ProMotion
     end
 
     def set_accessory_view
+       # Legacy Support < 0.7.4
       data_cell[:accessory] ||= data_cell[:accessory_view]
+      data_cell[:accessory] = {
+        view: data_cell[:accessory],
+        value: data_cell[:accessory_value],
+        action: data_cell[:accessory_action],
+        arguments: data_cell[:accessory_arguments]
+      } unless data_cell[:accessory].is_a? Hash
+      # End Legacy Support
 
-      if data_cell[:accessory] == :switch
+      if data_cell[:accessory][:view] == :switch
         switch_view = UISwitch.alloc.initWithFrame(CGRectZero)
         switch_view.addTarget(self.closest_parent(UITableView), action: "accessory_toggled_switch:", forControlEvents:UIControlEventValueChanged)
-        switch_view.on = true if data_cell[:accessory_checked]
+        switch_view.on = true if data_cell[:accessory][:value]
         self.accessoryView = switch_view
-      elsif data_cell[:accessory]
-        self.accessoryView = data_cell[:accessory]
+      elsif data_cell[:accessory][:view]
+        self.accessoryView = data_cell[:accessory][:view]
         self.accessoryView.autoresizingMask = UIViewAutoresizingFlexibleWidth
       end
 

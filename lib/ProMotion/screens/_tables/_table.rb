@@ -73,10 +73,10 @@ module ProMotion
       index_path = table_cell.superview.indexPathForCell(table_cell)
 
       data_cell = cell_at_section_and_index(index_path.section, index_path.row)
-      data_cell[:arguments] = {} unless data_cell[:arguments]
-      data_cell[:arguments][:value] = switch.isOn if data_cell[:arguments].is_a? Hash
+      data_cell[:accessory][:arguments] = {} unless data_cell[:accessory][:arguments]
+      data_cell[:accessory][:arguments][:value] = switch.isOn if data_cell[:accessory][:arguments].is_a? Hash
 
-      trigger_action(data_cell[:accessory_action], data_cell[:arguments]) if data_cell[:accessory_action]
+      trigger_action(data_cell[:accessory][:action], data_cell[:accessory][:arguments]) if data_cell[:accessory][:action]
     end
 
     def delete_row(index_paths, animation = nil)

@@ -34,17 +34,43 @@ class TestTableScreen < ProMotion::SectionedTableScreen
         { title: "Image Test 4", image: "list.png" },
       ]
     }, {
-      title: "Cell Accessory",
-      cells: [
-        { title: "Basic Switch", accessory: :switch },
-        { title: "Switch With Action", accessory: :switch, accessory_action: :tap_counter },
-        { title: "Switch With Action And Parameters", accessory: :switch, accessory_action: :increment_counter_by, arguments: { number: 3 } },
-        { title: "Custom View", accessory: custom_accessory_view },
-        { title: "Custom View With Action", accessory: custom_accessory_view, accessory_action: :tap_counter },
-        { title: "Custom View With Action And Parameters", accessory: :switch, accessory_action: :increment_counter_by, arguments: { number: 3 } },
-        { title: "Switch With Cell Tap, Switch Action And Parameters", accessory: :switch, accessory_action: :increment_counter_by, arguments: { number: 3 }, action: :increment_counter_by, accessory_arguments: { number: 10 } },
-        { title: "Switch With Cell Tap, Switch Action And No Parameters", accessory: :switch, accessory_action: :increment_counter_by, arguments: { number: 3 }, action: :increment_counter_by },
-      ]
+      title: "Cell Accessory Tests",
+      cells: [{
+          title: "Basic Switch",
+          accessory: :switch
+        }, {
+          title: "Switch With Action",
+          accessory: :switch,
+          accessory_action: :tap_counter
+        }, {
+          title: "Switch With Action And Parameters",
+          accessory: :switch,
+          accessory_action: :increment_counter_by,
+          arguments: { number: 3 }
+        }, {
+          title: "Custom View",
+          accessory: custom_accessory_view
+        }, {
+          title: "Custom View With Action",
+          accessory: custom_accessory_view,
+          accessory_action: :tap_counter
+        }, {
+          title: "Custom View With Action And Parameters",
+          accessory: :switch,
+          accessory_action: :increment_counter_by,
+          arguments: { number: 3 }
+        }, {
+          title: "Switch With Cell Tap, Switch Action And Parameters",
+          accessory: :switch,
+          accessory_action: :increment_counter_by, arguments: { number: 3 },
+          action: :increment_counter_by, accessory_arguments: { number: 10 }
+        }, {
+          title: "Switch With Cell Tap, Switch Action And No Parameters",
+          accessory: :switch,
+          accessory_action: :increment_counter_by,
+          arguments: { number: 3 },
+          action: :increment_counter_by
+        }]
     }]
   end
 

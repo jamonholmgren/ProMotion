@@ -14,6 +14,21 @@ module ProMotion
     end
     alias :makeRefreshable :make_refreshable
 
+    def start_refreshing
+      return unless @refresh_control
+
+      @refresh_control.beginRefreshing
+    end
+    alias :begin_refreshing :start_refreshing
+
+    def end_refreshing
+      return unless @refresh_control
+
+      @refresh_control.attributedTitle = NSAttributedString.alloc.initWithString(sprintf(@updated_format, Time.now.strftime(@updated_time_format)))
+      @refresh_control.endRefreshing
+    end
+    alias :stop_refreshing :end_refreshing
+    
     ######### iOS methods, headless camel case #######
 
     # UIRefreshControl Delegates
@@ -26,17 +41,5 @@ module ProMotion
       end
     end
 
-    def start_refreshing
-      return unless @refresh_control
-
-      @refresh_control.beginRefreshing
-    end
-
-    def end_refreshing
-      return unless @refresh_control
-
-      @refresh_control.attributedTitle = NSAttributedString.alloc.initWithString(sprintf(@updated_format, Time.now.strftime(@updated_time_format)))
-      @refresh_control.endRefreshing
-    end
   end
 end

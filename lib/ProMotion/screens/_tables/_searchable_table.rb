@@ -49,6 +49,7 @@ module ProMotion
       @promotion_table_data.stop_searching
       @promotion_table_data_data = nil
       self.table_view.setScrollEnabled true
+      self.table_view.reloadData
     end
 
     def searchDisplayControllerWillBeginSearch(controller)

@@ -69,5 +69,14 @@ module ProMotion
       height
     end
 
+    def closest_parent(type)
+      # iterate up the view hierarchy to find the parent element of "type" containing this view
+      this_view = self.superview
+      while this_view != nil do
+        return this_view if this_view.is_a? type
+        this_view = this_view.superview
+      end
+      nil
+    end
   end
 end

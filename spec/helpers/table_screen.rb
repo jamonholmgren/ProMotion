@@ -1,20 +1,22 @@
 class TestTableScreen < ProMotion::SectionedTableScreen
 
+  attr_accessor :tap_counter
+
   def promotion_table_data
     @promotion_table_data
   end
 
   def on_load
-    @tap_counter ||= 0
+    self.tap_counter = 0
   end
 
   def table_data
     @data ||= [{
       title: "Your Account",
       cells: [
-        { title: "Increment", action: :increment_counter_by, arguments: { number: 3 } },
+        { title: "Increment", action: :increment_counter_by, arguments: {number: 3} },
         { title: "Add New Row", action: :add_tableview_row },
-        { title: "Delete the row below", action: :delete_cell, arguments: {section: 0, row:3 } },
+        { title: "Delete the row below", action: :delete_cell, arguments: {section: 0, row:3} },
         { title: "Just another blank row" },
         { title: "Delete the row below with an animation", action: :delete_cell, arguments: {animated: true, section: 0, row:5 } },
         { title: "Just another blank row" }
@@ -23,16 +25,44 @@ class TestTableScreen < ProMotion::SectionedTableScreen
       title: "App Stuff",
       cells: [
         { title: "Increment One", action: :increment_counter },
-        { title: "Feedback", remote_image: { url: "http://placekitten.com/100/100", placeholder: "some-local-image", size: 50, radius: 15 } }
+        { title: "Feedback", cell_identifier: "ImagedCell", remote_image: { url: "http://placekitten.com/100/100", placeholder: "some-local-image", size: 50, radius: 15 } }
       ]
     }, {
       title: "Image Tests",
       cells: [
-        { title: "Image Test 1", image: {image: UIImage.imageNamed("list.png"), radius: 10} },
-        { title: "Image Test 2", image: {image: "list.png"} },
-        { title: "Image Test 3", image: UIImage.imageNamed("list.png") },
+        { title: "Image Test 1", cell_identifier: "ImagedCell", image: {image: UIImage.imageNamed("list.png"), radius: 10} },
+        { title: "Image Test 2", cell_identifier: "ImagedCell", image: {image: "list.png"} },
+        { title: "Image Test 3", cell_identifier: "ImagedCell", cell_identifier: "ImagedCell", image: UIImage.imageNamed("list.png") },
         { title: "Image Test 4", image: "list.png" },
       ]
+    }, {
+      title: "Cell Accessory Tests",
+      cells: [{
+          title: "Switch With Action",
+          accessory: {
+              view: :switch,
+              action: :increment_counter,
+              accessibility_label: "switch_1"
+            } ,
+        }, {
+          title: "Switch With Action And Parameters",
+          accessory: {
+            view: :switch,
+            action: :increment_counter_by,
+            arguments: { number: 3 },
+            accessibility_label: "switch_2"
+          } ,
+        }, {
+          title: "Switch With Cell Tap, Switch Action And Parameters",
+          accessory:{
+            view: :switch,
+            action: :increment_counter_by,
+            arguments: { number: 3 },
+            accessibility_label: "switch_3"
+          },
+          action: :increment_counter_by,
+          arguments: { number: 10 }
+        }]
     }]
   end
 
@@ -56,17 +86,25 @@ class TestTableScreen < ProMotion::SectionedTableScreen
     end
   end
 
-  def increment_counter(args={})
-    @tap_counter += 1
+  def increment_counter
+    self.tap_counter = self.tap_counter + 1
   end
 
   def increment_counter_by(args={})
-    @tap_counter = @tap_counter + args[:number]
+    self.tap_counter = self.tap_counter + args[:number]
   end
 
-  def tap_counter
-    @tap_counter
+  def custom_accessory_view
+    set_attributes UIView.new, {
+      background_color: UIColor.orangeColor
+    }
   end
 
+  def scroll_to_bottom
+    if table_view.contentSize.height > table_view.frame.size.height
+        offset = CGPointMake(0, table_view.contentSize.height - table_view.frame.size.height)
+        table_view.setContentOffset(offset, animated:false)
+    end
+  end
 
 end

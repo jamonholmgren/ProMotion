@@ -102,8 +102,10 @@ module ProMotion
         background_color: :backgroundColor,
         selection_style: :selectionStyle,
         cell_class_attributes: :cellClassAttributes,
-        accessory_view: :accessoryView,
+        accessory: :accessoryView,
+        accessory: :accessory_view,
         accessory_type: :accessoryType,
+        accessory_action: :accessoryAction,
         accessory_checked: :accessoryDefault,
         remote_image: :remoteImage,
         subviews: :subViews
@@ -117,13 +119,13 @@ module ProMotion
 
       mappings.each_pair do |n, old|
         if data_cell[old]
-          warn "[DEPRECATION] `:#{old}` is deprecated in TableScreens. Use `:#{n}`"
+          PM.logger.deprecated "`:#{old}` is deprecated in TableScreens. Use `:#{n}`"
           data_cell[n] = data_cell[old]
         end
       end
 
       if data_cell[:styles] && data_cell[:styles][:textLabel]
-        warn "[DEPRECATION] `:textLabel` is deprecated in TableScreens. Use `:label`"
+        PM.logger.deprecated "`:textLabel` is deprecated in TableScreens. Use `:label`"
         data_cell[:styles][:label] = data_cell[:styles][:textLabel]
       end
 

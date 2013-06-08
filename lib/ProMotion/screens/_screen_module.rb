@@ -126,7 +126,7 @@ module ProMotion
 
     # [DEPRECATED]
     def set_view_controller(vc)
-      warn "[DEPRECATION] `set_view_controller` is deprecated and discontinued.  Please inherit from the UIViewController you wish to use and include ProMotion::ScreenViewController instead."
+      PM.logger.deprecated "`set_view_controller` is deprecated and discontinued.  Please inherit from the UIViewController you wish to use and include ProMotion::ScreenViewController instead."
       self
     end
 
@@ -153,7 +153,7 @@ module ProMotion
     def on_disappear; end
 
     def view_controller
-      warn "[DEPRECATION] `view_controller` is deprecated, as screens are now UIViewController subclasses."
+      PM.logger.deprecated "`view_controller` is deprecated, as screens are now UIViewController subclasses."
       self
     end
 

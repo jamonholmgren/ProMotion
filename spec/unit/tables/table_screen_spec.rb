@@ -15,6 +15,7 @@ describe "table screens" do
       @screen.tableView(@screen.tableView, numberOfRowsInSection:0).should == 6
       @screen.tableView(@screen.tableView, numberOfRowsInSection:1).should == 2
       @screen.tableView(@screen.tableView, numberOfRowsInSection:2).should == 4
+      @screen.tableView(@screen.tableView, numberOfRowsInSection:3).should == 3
     end
 
     it "should return a UITableViewCell" do
@@ -30,10 +31,8 @@ describe "table screens" do
     end
 
     it "should display all images properly no matter how they were initialized" do
-      section = @screen.promotion_table_data.sections.count - 1 # All the cells we want to test are in the last section
-
-      @screen.tableView(@screen.tableView, numberOfRowsInSection:section).times do |i|
-        index_path = NSIndexPath.indexPathForRow(i, inSection: section)
+      @screen.tableView(@screen.tableView, numberOfRowsInSection:2).times do |i|
+        index_path = NSIndexPath.indexPathForRow(i, inSection:2)
 
         @screen.tableView(@screen.tableView, cellForRowAtIndexPath: index_path).imageView.should.be.kind_of UIImageView
 

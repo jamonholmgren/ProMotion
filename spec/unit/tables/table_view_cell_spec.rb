@@ -13,8 +13,7 @@ describe "PM::TableViewCellModule" do
       layer: { masks_to_bounds: true },
       background_color: UIColor.redColor,
       selection_style: UITableViewCellSelectionStyleGray,
-      accessory: :switch, # currently only :switch is supported
-      accessory_checked: true, # whether it's "checked" or not
+      accessory:{view: :switch, value: true}, # currently only :switch is supported
       image: { image: UIImage.imageNamed("list"), radius: 15 },
       subviews: [ UIView.alloc.initWithFrame(CGRectZero), UILabel.alloc.initWithFrame(CGRectZero) ] # arbitrary views added to the cell
     }

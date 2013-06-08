@@ -51,29 +51,23 @@ describe "ProMotion::TestTableScreen functionality" do
 
   it "should call a method when the switch is flipped" do
     @controller.scroll_to_bottom
-    wait 0.5 do
-      tap "switch_1"
-      @controller.tap_counter.should == 1
-    end
+    tap "switch_1"
+    @controller.tap_counter.should == 1
   end
 
   it "should call the method with arguments when the switch is flipped" do
     @controller.scroll_to_bottom
-    wait 0.5 do
-      tap "switch_2"
-      @controller.tap_counter.should == 3
-    end
+    tap "switch_2"
+    @controller.tap_counter.should == 3
   end
 
   it "should call the method with arguments when the switch is flipped and when the cell is tapped" do
     @controller.scroll_to_bottom
-    wait 0.5 do
-      tap "switch_3"
-      @controller.tap_counter.should == 3
+    tap "switch_3"
+    @controller.tap_counter.should == 3
 
-      tap "Switch With Cell Tap, Switch Action And Parameters"
-      @controller.tap_counter.should == 13
-    end
+    tap "Switch With Cell Tap, Switch Action And Parameters"
+    @controller.tap_counter.should == 13
   end
 
 end

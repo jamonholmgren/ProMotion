@@ -55,6 +55,7 @@ module ProMotion
 
       if data_cell[:accessory][:view] == :switch
         switch_view = UISwitch.alloc.initWithFrame(CGRectZero)
+        switch_view.setAccessibilityLabel(data_cell[:accessory][:accessibility_label]) if data_cell[:accessory][:accessibility_label]
         switch_view.addTarget(self.closest_parent(UITableView), action: "accessory_toggled_switch:", forControlEvents:UIControlEventValueChanged)
         switch_view.on = true if data_cell[:accessory][:value]
         self.accessoryView = switch_view

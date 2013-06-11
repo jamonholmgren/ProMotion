@@ -67,10 +67,13 @@ module ProMotion
       self.tabBarItem = create_tab_bar_item(self.tab_bar_item) if self.tab_bar_item
     end
 
-    def add_nav_bar
+    def add_nav_bar(args = {})
       self.navigation_controller ||= begin
         self.first_screen = true if self.respond_to?(:first_screen=)
-        NavigationController.alloc.initWithRootViewController(self)
+        nav = NavigationController.alloc.initWithRootViewController(self)
+        nav.setModalTransitionStyle(args[:transition_style]) if args[:transition_style]
+        nav.setModalPresentationStyle(args[:presentation_style]) if args[:presentation_style]
+        nav
       end
     end
 

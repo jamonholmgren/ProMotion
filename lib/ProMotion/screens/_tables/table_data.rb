@@ -88,6 +88,7 @@ module ProMotion
     def set_data_cell_defaults(data_cell)
       data_cell[:cell_style] ||= UITableViewCellStyleDefault
       data_cell[:cell_identifier] ||= "Cell"
+      data_cell[:cell_identifier] = determine_cell_identifier(data_cell)
       data_cell[:cell_class] ||= ProMotion::TableViewCell
       data_cell
     end
@@ -154,6 +155,21 @@ module ProMotion
       table_cell.setup(data_cell)
 
       table_cell
+    end
+
+    def determine_cell_identifier(data_cell)
+      ident = data_cell[:cell_identifier]
+      unless data_cell[:accessory].nil?
+        if data_cell[:accessory][:view] == :switch
+          ident << "-switch"
+        elsif !data_cell[:accessory][:view].nil?
+          ident << "-accessory"
+        end
+      end
+      ident << "-subtitle" if data_cell[:subtitle]
+      ident << "-remoteimage" if data_cell[:remote_image]
+      ident << "-image" if data_cell[:image]
+      ident
     end
 
   end

@@ -87,7 +87,7 @@ module ProMotion
 
     def set_data_cell_defaults(data_cell)
       data_cell[:cell_style] ||= UITableViewCellStyleDefault
-      data_cell[:cell_identifier] ||= "Cell"
+      data_cell[:cell_identifier] ||= build_cell_identifier(data_cell)
       data_cell[:cell_class] ||= ProMotion::TableViewCell
       data_cell
     end
@@ -129,6 +129,16 @@ module ProMotion
         data_cell[:styles][:label] = data_cell[:styles][:textLabel]
       end
 
+      # Fix the accessory view if needed
+      # Legacy Support < 0.7.4
+      data_cell[:accessory] ||= data_cell[:accessory_view]
+      data_cell[:accessory] = {
+        view: data_cell[:accessory],
+        value: data_cell[:accessory_value],
+        action: data_cell[:accessory_action],
+        arguments: data_cell[:accessory_arguments]
+      } unless data_cell[:accessory].is_a? Hash
+
       data_cell
     end
 
@@ -144,6 +154,21 @@ module ProMotion
       table_cell.setup(data_cell)
 
       table_cell
+    end
+
+    def build_cell_identifier(data_cell)
+      ident = "Cell"
+      unless data_cell[:accessory].nil?
+        if data_cell[:accessory][:view] == :switch
+          ident << "-switch"
+        elsif !data_cell[:accessory][:view].nil?
+          ident << "-accessory"
+        end
+      end
+      ident << "-subtitle" if data_cell[:subtitle]
+      ident << "-remoteimage" if data_cell[:remote_image]
+      ident << "-image" if data_cell[:image]
+      ident
     end
 
   end

@@ -34,11 +34,11 @@ describe "PM::TableViewCellModule" do
 
     @screen.on_load
 
-    custom_ip = NSIndexPath.indexPathForRow(1, inSection: 1) # Cell "Crazy Full Featured Cell"
+    @custom_ip = NSIndexPath.indexPathForRow(1, inSection: 1) # Cell "Crazy Full Featured Cell"
 
     @screen.update_table_data
 
-    @subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: custom_ip)
+    @subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: @custom_ip)
   end
 
   it "should be a PM::TableViewCell" do
@@ -56,6 +56,9 @@ describe "PM::TableViewCellModule" do
   it "should have the right re-use identifier" do
     @subject.reuseIdentifier.should == "Cell-switch-subtitle-image"
   end
+
+  it "should have the correct height" do
+    @screen.tableView(@screen.table_view, heightForRowAtIndexPath: @custom_ip).should == 50
   end
 
   it "should set the layer.masksToBounds" do

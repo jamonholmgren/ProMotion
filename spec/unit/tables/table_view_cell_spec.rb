@@ -54,7 +54,8 @@ describe "PM::TableViewCellModule" do
   end
 
   it "should have the right re-use identifier" do
-    @subject.reuseIdentifier.should == "Cell"
+    @subject.reuseIdentifier.should == "Cell-switch-subtitle-image"
+  end
   end
 
   it "should set the layer.masksToBounds" do

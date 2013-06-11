@@ -107,7 +107,7 @@ module ProMotion
       screen.hidesBottomBarWhenPushed = args[:hide_tab_bar] == true
 
       # Wrap in a PM::NavigationController?
-      screen.add_nav_bar if args[:nav_bar] && screen.respond_to?(:add_nav_bar)
+      screen.add_nav_bar(args) if args[:nav_bar] && screen.respond_to?(:add_nav_bar)
 
       # Return modified screen instance
       screen

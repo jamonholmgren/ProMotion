@@ -53,8 +53,13 @@ describe "PM::TableViewCellModule" do
     @subject.detailTextLabel.text.should == "This is way too huge..."
   end
 
-  it "should have the right re-use identifier" do
-    @subject.reuseIdentifier.should == "Cell-switch-subtitle-image"
+  it "should have the right custom re-use identifier" do
+    @subject.reuseIdentifier.should == "Cell"
+  end
+  it "should have the right generated re-use identifier" do
+    ip = NSIndexPath.indexPathForRow(2, inSection: 1)
+    subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: ip)
+    subject.reuseIdentifier.should == "Cell-accessory"
   end
 
   it "should have the correct height" do

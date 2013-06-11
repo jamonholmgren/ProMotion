@@ -129,6 +129,16 @@ module ProMotion
         data_cell[:styles][:label] = data_cell[:styles][:textLabel]
       end
 
+      # Fix the accessory view if needed
+      # Legacy Support < 0.7.4
+      data_cell[:accessory] ||= data_cell[:accessory_view]
+      data_cell[:accessory] = {
+        view: data_cell[:accessory],
+        value: data_cell[:accessory_value],
+        action: data_cell[:accessory_action],
+        arguments: data_cell[:accessory_arguments]
+      } unless data_cell[:accessory].is_a? Hash
+
       data_cell
     end
 

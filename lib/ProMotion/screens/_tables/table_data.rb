@@ -87,7 +87,7 @@ module ProMotion
 
     def set_data_cell_defaults(data_cell)
       data_cell[:cell_style] ||= UITableViewCellStyleDefault
-      data_cell[:cell_identifier] = build_cell_identifier(data_cell)
+      data_cell[:cell_identifier] ||= build_cell_identifier(data_cell)
       data_cell[:cell_class] ||= ProMotion::TableViewCell
       data_cell
     end
@@ -157,8 +157,7 @@ module ProMotion
     end
 
     def build_cell_identifier(data_cell)
-      ident = data_cell[:cell_identifier] || "Cell"
-
+      ident = "Cell"
       unless data_cell[:accessory].nil?
         if data_cell[:accessory][:view] == :switch
           ident << "-switch"

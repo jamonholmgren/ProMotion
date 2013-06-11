@@ -28,7 +28,7 @@ module ProMotion
       @refresh_control.endRefreshing
     end
     alias :stop_refreshing :end_refreshing
-    
+
     ######### iOS methods, headless camel case #######
 
     # UIRefreshControl Delegates

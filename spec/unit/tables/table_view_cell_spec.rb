@@ -34,11 +34,11 @@ describe "PM::TableViewCellModule" do
 
     @screen.on_load
 
-    custom_ip = NSIndexPath.indexPathForRow(1, inSection: 1) # Cell "Crazy Full Featured Cell"
+    @custom_ip = NSIndexPath.indexPathForRow(1, inSection: 1) # Cell "Crazy Full Featured Cell"
 
     @screen.update_table_data
 
-    @subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: custom_ip)
+    @subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: @custom_ip)
   end
 
   it "should be a PM::TableViewCell" do
@@ -53,8 +53,17 @@ describe "PM::TableViewCellModule" do
     @subject.detailTextLabel.text.should == "This is way too huge..."
   end
 
-  it "should have the right re-use identifier" do
+  it "should have the right custom re-use identifier" do
     @subject.reuseIdentifier.should == "Cell"
+  end
+  it "should have the right generated re-use identifier" do
+    ip = NSIndexPath.indexPathForRow(2, inSection: 1)
+    subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: ip)
+    subject.reuseIdentifier.should == "Cell-accessory"
+  end
+
+  it "should have the correct height" do
+    @screen.tableView(@screen.table_view, heightForRowAtIndexPath: @custom_ip).should == 50
   end
 
   it "should set the layer.masksToBounds" do

@@ -8,7 +8,7 @@ class BasicScreen < PM::Screen
   def on_load
     # Fires just before a screen is opened for the first time.
   end
-  
+
   def will_appear
     # Fires every time the screen will appear
   end

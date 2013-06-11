@@ -4,13 +4,13 @@ module ProMotion
     attr_accessor :window, :aps_notification, :home_screen
 
     def application(application, didFinishLaunchingWithOptions:launch_options)
-      
+
       apply_status_bar
-      
+
       on_load application, launch_options
 
       check_for_push_notification launch_options
-      
+
       # This will work when RubyMotion fixes a bug.
       # defined?(super) ? super : true
 
@@ -18,11 +18,11 @@ module ProMotion
       super rescue true
       PM.logger.info "You can ignore the NoMethodError -- this is a RubyMotion bug that should be fixed soon."
     end
-    
+
     def applicationWillTerminate(application)
-      
+
       on_unload if respond_to?(:on_unload)
-      
+
     end
 
     def app_delegate

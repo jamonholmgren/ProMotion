@@ -1,7 +1,7 @@
 class TableScreenSearchable < TestTableScreen
 
   searchable
-  
+
   def table_data
     @search_table_data ||= [{
       cells: [

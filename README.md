@@ -507,4 +507,5 @@ incorporated.
 * Silas Matson: [@silasjmatson](https://twitter.com/silasjmatson)
 * Matt Brewer: [@macfanatic](https://twitter.com/macfanatic)
 * [Many others](https://github.com/clearsightstudio/ProMotion/graphs/contributors)
+* If you really want to know, run `git shortlog -s -n -e`
 

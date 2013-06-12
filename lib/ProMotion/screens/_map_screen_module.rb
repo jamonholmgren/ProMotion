@@ -27,9 +27,35 @@ module ProMotion
       @annotations
     end
 
+    def select_annotation(annotation, animated=true)
+      self.mapview.selectAnnotation(annotation, animated:animated)
+    end
+
+    def selected_annotations
+      self.mapview.selectedAnnotations
+    end
+
+    def deselect_annotations(animated=false)
+      unless selected_annotations.nil?
+        selected_annotations.each do |annotation|
+          self.mapview.deselectAnnotation(annotation, animated:animated)
+        end
+      end
+    end
+
     def add_annotation(annotation)
       @annotations << MapScreenAnnotation.new(annotation)
       self.mapview.addAnnotation @annotations.last
+    end
+
+    def add_annotations(annotations)
+      annotations = Array(annotations)
+      to_add = []
+      annotations.each do |a|
+        to_add = MapScreenAnnotation.new(a)
+      end
+      @annotations.concat to_add
+      self.mapview.addAnnotations to_add
     end
 
     def clear_annotations
@@ -53,7 +79,7 @@ module ProMotion
       view
     end
 
-    def set_start_position(params = {})
+    def set_start_position(params={})
       params[:latitude] ||= 37.331789
       params[:longitude] ||= -122.029620
       params[:radius] ||= 10
@@ -71,42 +97,7 @@ module ProMotion
       end
     end
 
-    def something
-      return if annotations.count == 0
-
-      annotation_pad = 1.15
-      max_degrees = 360
-      minimum_zoom 0.014 # Approximately 1 miles (1 degree of arc ~= 69 miles)
-
-      points = []
-      annotations.each do |a|
-        points << MKMapPointForCoordinate(a.coordinate);
-      end
-
-      mapRect = MKPolygon.polygonWithPoints(points, count:points.count).boundingMapRect
-      region = MKCoordinateRegionForMapRect(mapRect)
-
-      #add padding so pins aren't scrunched on the edges
-      region.span.latitudeDelta  *= annotation_pad
-      region.span.longitudeDelta *= annotation_pad
-
-      # but padding can't be bigger than the world
-      region.span.latitudeDelta  = max_degrees if region.span.latitudeDelta > max_degrees
-      region.span.longitudeDelta = max_degrees if region.span.longitudeDelta > max_degrees
-
-      # And don't zoom in stupid-close on small samples
-      region.span.latitudeDelta  = minimum_zoom if region.span.latitudeDelta  < minimum_zoom
-      region.span.longitudeDelta = minimum_zoom if region.span.longitudeDelta < minimum_zoom
-
-      # If there is a sample of 1 we want the max zoom-in instead of max zoom-out
-      if points.count == 1
-        region.span.latitudeDelta = minimum_zoom;
-        region.span.longitudeDelta = minimum_zoom;
-      end
-
-    end
-
-    def zoom_to_fit_annotations(animated = true)
+    def zoom_to_fit_annotations(animated=true)
       #Don't attempt the rezoom of there are no pins
       return if annotations.count == 0
 
@@ -138,6 +129,21 @@ module ProMotion
       fits = self.mapview.regionThatFits(region);
 
       self.mapview.setRegion(fits, animated:animated)
+    end
+
+    def set_region(region, animated=true)
+      self.mapview.setRegion(region, animated:animated)
+    end
+
+    def region(params)
+      return nil unless params.is_a? Hash
+
+      params[:coordinate] = CLLocationCoordinate2DMake(params[:coordinate][:latitude], params[:coordinate][:longitude]) if params[:coordinate].is_a? Hash
+      params[:span] = MKCoordinateSpanMake(params[:span][0], params[:span][1]) if params[:span].is_a? Array
+
+      if params[:coordinate] && params[:span]
+        MKCoordinateRegionMake( params[:coordinate], params[:span] )
+      end
     end
 
     module MapClassMethods

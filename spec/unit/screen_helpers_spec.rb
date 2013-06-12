@@ -160,6 +160,16 @@ describe "screen helpers" do
         @screen.open_modal BasicScreen
       end
 
+      it "should respect animated property of opening modal screens" do
+        new_screen = @screen.send(:setup_screen_for_open, BasicScreen)
+
+        @screen.mock!('presentModalViewController:animated:') do |vc, animated|
+          animated.should == false
+        end
+
+        @screen.send(:open, new_screen, animated: false, modal: true)
+      end
+
       it "should open screen in tab bar if :in_tab is provided" do
         @screen.stub!(:tab_bar, return: true)
         @screen.mock!(:present_view_controller_in_tab_bar_controller) do |screen, tab_name|
@@ -211,6 +221,18 @@ describe "screen helpers" do
           completion.call
         end
         @screen.close
+      end
+
+      it "should respect animated value for closing modal screens" do
+        parent_screen = HomeScreen.new
+        @screen.parent_screen = parent_screen
+        @screen.modal = true
+
+        parent_screen.mock!('dismissViewControllerAnimated:completion:') do |animated, completion|
+          animated.should == false
+        end
+
+        @screen.send(:close, animated: false)
       end
 
       it "#close should pop from the navigation controller" do

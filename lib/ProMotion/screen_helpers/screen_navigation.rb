@@ -2,13 +2,13 @@ module ProMotion
   module ScreenNavigation
 
     def open_screen(screen, args = {})
+      args = { in_detail: false, in_master: false, close_all: false, modal: false, in_tab: false, animated: true }.merge args
 
       # Apply properties to instance
       screen = setup_screen_for_open(screen, args)
       ensure_wrapper_controller_in_place(screen, args)
 
       screen.send(:on_load) if screen.respond_to?(:on_load)
-      animated = args[:animated] || true
 
       if args[:in_detail] && self.split_screen
         self.split_screen.detail_screen = screen
@@ -20,7 +20,7 @@ module ProMotion
         open_root_screen screen
 
       elsif args[:modal]
-        present_modal_view_controller screen, animated
+        present_modal_view_controller screen, args[:animated]
 
       elsif args[:in_tab] && self.tab_bar
         present_view_controller_in_tab_bar_controller screen, args[:in_tab]
@@ -51,7 +51,7 @@ module ProMotion
     def close_screen(args = {})
       args ||= {}
       args = { sender: args } unless args.is_a?(Hash)
-      args[:animated] ||= true
+      args[:animated] = true unless args.has_key?(:animated)
 
       if self.modal?
         close_modal_screen args
@@ -144,14 +144,14 @@ module ProMotion
     end
 
     def close_modal_screen(args={})
-      args[:animated] ||= true
+      args[:animated] = true unless args.has_key?(:animated)
       self.parent_screen.dismissViewControllerAnimated(args[:animated], completion: lambda {
         send_on_return(args)
       })
     end
 
     def close_nav_screen(args={})
-      args[:animated] ||= true
+      args[:animated] = true unless args.has_key?(:animated)
       if args[:to_screen] && args[:to_screen].is_a?(UIViewController)
         self.parent_screen = args[:to_screen]
         self.navigation_controller.popToViewController(args[:to_screen], animated: args[:animated])
@@ -162,3 +162,6 @@ module ProMotion
 
   end
 end
+
+
+

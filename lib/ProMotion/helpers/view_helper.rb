@@ -31,6 +31,7 @@ module ProMotion
     def set_easy_attributes(parent, element, args={})
       attributes = {}
 
+      args[:resize] = args[:autoresizingMask] if args[:autoresizingMask]
       if args[:resize]
         attributes[:autoresizingMask]  = UIViewAutoresizingNone
         attributes[:autoresizingMask] |= UIViewAutoresizingFlexibleLeftMargin   if args[:resize].include?(:left)

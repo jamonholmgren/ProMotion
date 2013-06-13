@@ -44,22 +44,9 @@ class MapScreenAnnotation
     end
   end
 
-  # These methods are used to hold the data from the original annotation hash
-  # and are applied to the MKAnnotationView later on in the view cycle.
-  def identifier
-    @params[:identifier]
-  end
-
-  def pin_color
-    @params[:pin_color]
-  end
-
-  def show_callout
-    @params[:show_callout]
-  end
-
-  def animates_drop
-    @params[:animates_drop]
+  # Handle returning *any* properties that the user sets in the initial parameters.
+  def method_missing(m, *args, &block)
+    @params[m.to_sym] if @params[m.to_sym]
   end
 
   # Allows for retrieving your own custom values on the annotation

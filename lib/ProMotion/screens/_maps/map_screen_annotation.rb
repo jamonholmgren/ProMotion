@@ -14,7 +14,6 @@ class MapScreenAnnotation
 
   def set_defaults
     @params[:title] ||= "Title"
-    @params[:subtitle] ||= "Subtitle"
     @params[:pin_color] ||= MKPinAnnotationColorRed
     @params[:identifier] ||= "Annotation-#{pin_color}"
     @params[:show_callout] ||= true
@@ -26,7 +25,7 @@ class MapScreenAnnotation
   end
 
   def subtitle
-    @params[:subtitle]
+    @params[:subtitle] ||= nil
   end
 
   def coordinate

@@ -52,7 +52,7 @@ module ProMotion
       annotations = Array(annotations)
       to_add = []
       annotations.each do |a|
-        to_add = MapScreenAnnotation.new(a)
+        to_add << MapScreenAnnotation.new(a)
       end
       @annotations.concat to_add
       self.mapview.addAnnotations to_add

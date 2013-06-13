@@ -6,8 +6,8 @@ module ProMotion
     attr_accessor :mapview
 
     def map_setup
-      # Create the Map
-      @annotations ||= []
+      check_annotation_data
+      @promotion_annotation_data = []
       set_up_start_position
     end
 
@@ -19,12 +19,21 @@ module ProMotion
       }
     end
 
+    def check_annotation_data
+      PM.logger.error "Missing #annotation_data method in MapScreen #{self.class.to_s}." unless self.respond_to?(:annotation_data)
+    end
+
+    def update_annotation_data
+      clear_annotations
+      add_annotations annotation_data
+    end
+
     def map
       self.mapview
     end
 
     def annotations
-      @annotations
+      @promotion_annotation_data
     end
 
     def select_annotation(annotation, animated=true)
@@ -44,8 +53,8 @@ module ProMotion
     end
 
     def add_annotation(annotation)
-      @annotations << MapScreenAnnotation.new(annotation)
-      self.mapview.addAnnotation @annotations.last
+      @promotion_annotation_data << MapScreenAnnotation.new(annotation)
+      self.mapview.addAnnotation @promotion_annotation_data.last
     end
 
     def add_annotations(annotations)
@@ -54,15 +63,15 @@ module ProMotion
       annotations.each do |a|
         to_add << MapScreenAnnotation.new(a)
       end
-      @annotations.concat to_add
+      @promotion_annotation_data = to_add
       self.mapview.addAnnotations to_add
     end
 
     def clear_annotations
-      @annotations.each do |a|
+      @promotion_annotation_data.each do |a|
         self.mapview.removeAnnotation(a)
       end
-      @annotations = []
+      @promotion_annotation_data = []
     end
 
     def mapView(mapView, viewForAnnotation:annotation)
@@ -97,6 +106,7 @@ module ProMotion
       end
     end
 
+    # TODO: Why is this so complex?
     def zoom_to_fit_annotations(animated=true)
       #Don't attempt the rezoom of there are no pins
       return if annotations.count == 0

@@ -88,6 +88,14 @@ module ProMotion
       data_cell[:cell_style] ||= UITableViewCellStyleDefault
       data_cell[:cell_identifier] ||= build_cell_identifier(data_cell)
       data_cell[:cell_class] ||= PM::TableViewCell
+      
+      data_cell[:accessory] = {
+        view: data_cell[:accessory],
+        value: data_cell[:accessory_value],
+        action: data_cell[:accessory_action],
+        arguments: data_cell[:accessory_arguments]
+      } unless data_cell[:accessory].is_a? Hash
+
       data_cell
     end
 

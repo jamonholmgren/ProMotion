@@ -69,8 +69,10 @@ module ProMotion
     end
 
     def accessory_toggled_switch(switch)
-      table_cell = switch.superview
-      index_path = table_cell.superview.indexPathForCell(table_cell)
+      # table_cell = switch.superview
+      table_cell = closest_parent(UITableViewCell, switch)
+      # index_path = table_cell.superview.indexPathForCell(table_cell)
+      index_path = closest_parent(UITableView, table_cell).indexPathForCell(table_cell)
 
       data_cell = cell_at_section_and_index(index_path.section, index_path.row)
       data_cell[:accessory][:arguments] = {} unless data_cell[:accessory][:arguments]

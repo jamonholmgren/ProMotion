@@ -1,8 +1,38 @@
-# ProMotion [![Build Status](https://travis-ci.org/clearsightstudio/ProMotion.png)](https://travis-ci.org/clearsightstudio/ProMotion)
+# ProMotion [![Build Status](https://travis-ci.org/clearsightstudio/ProMotion.png)](https://travis-ci.org/clearsightstudio/ProMotion) [![Code Climate](https://codeclimate.com/github/clearsightstudio/ProMotion.png)](https://codeclimate.com/github/clearsightstudio/ProMotion)
 
 ## A new way to easily build RubyMotion apps.
 
-ProMotion is a RubyMotion gem that makes iOS development more like Ruby and less like Objective-C.
+ProMotion is a RubyMotion gem that makes iOS development more like Ruby and less like Objective-C. It introduces a clean, Ruby-style syntax for building screens that is easy to learn and remember.
+
+```ruby
+class AppDelegate < PM::Delegate
+  def on_load(app, options)
+    open RootScreen.new(nav_bar: true)
+  end
+end
+
+class RootScreen < PM::Screen
+  title "Root Screen"
+  
+  def push_new_screen
+    open NewScreen
+  end
+end
+
+class NewScreen < PM::TableScreen
+  title "Table Screen"
+  
+  def table_data
+    [{
+      cells: [
+        { title: "About this app", action: :tapped_about },
+        { title: "Log out", action: :log_out }
+      ]
+    }]
+  end
+end
+```
+
 
 Featured on the RubyMotion blog: [http://blog.rubymotion.com/post/50523137515/introducing-promotion-a-full-featured-rubymotion](http://blog.rubymotion.com/post/50523137515/introducing-promotion-a-full-featured-rubymotion)
 
@@ -506,6 +536,7 @@ incorporated.
 * Jamon Holmgren: [@jamonholmgren](https://twitter.com/jamonholmgren)
 * Silas Matson: [@silasjmatson](https://twitter.com/silasjmatson)
 * Matt Brewer: [@macfanatic](https://twitter.com/macfanatic)
+* Mark Rickert: [@markrickert](https://twitter.com/markrickert)
 * [Many others](https://github.com/clearsightstudio/ProMotion/graphs/contributors)
-* If you really want to know, run `git shortlog -s -n -e`
+* Run `git shortlog -s -n -e` to see everyone who has contributed.
 

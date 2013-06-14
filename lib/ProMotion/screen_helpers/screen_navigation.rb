@@ -88,6 +88,7 @@ module ProMotion
       end
       nav_controller ||= self.navigation_controller
       vc.first_screen = false if vc.respond_to?(:first_screen=)
+      vc.navigation_controller = nav_controller if vc.respond_to?(:navigation_controller=)
       nav_controller.pushViewController(vc, animated: true)
     end
 
@@ -97,11 +98,13 @@ module ProMotion
 
       # Instantiate screen if given a class
       screen = screen.new if screen.respond_to?(:new)
+      
+      # Set parent
+      screen.parent_screen = self if screen.respond_to?(:parent_screen=)
 
-      # Set parent, title & modal properties
-      screen.parent_screen = self if screen.respond_to?("parent_screen=")
-      screen.title = args[:title] if args[:title] && screen.respond_to?("title=")
-      screen.modal = args[:modal] if args[:modal] && screen.respond_to?("modal=")
+      # Set title & modal properties
+      screen.title = args[:title] if args[:title] && screen.respond_to?(:title=)
+      screen.modal = args[:modal] if args[:modal] && screen.respond_to?(:modal=)
 
       # Hide bottom bar?
       screen.hidesBottomBarWhenPushed = args[:hide_tab_bar] == true
@@ -115,7 +118,7 @@ module ProMotion
     end
 
     def ensure_wrapper_controller_in_place(screen, args={})
-      unless args[:close_all] || args[:modal]
+      unless args[:close_all] || args[:modal] || args[:in_detail] || args[:in_master]
         screen.navigation_controller ||= self.navigation_controller if screen.respond_to?("navigation_controller=")
         screen.tab_bar ||= self.tab_bar if screen.respond_to?("tab_bar=")
       end

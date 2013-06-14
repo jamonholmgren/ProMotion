@@ -185,6 +185,14 @@ describe "screen helpers" do
         @screen.mock!(:push_view_controller) { |vc| vc.should.be.instance_of BasicScreen }
         @screen.open BasicScreen
       end
+      
+      it "should ignore its own navigation controller if current screen has a navigation controller" do
+        basic = BasicScreen.new(nav_bar: true) # creates a dangling nav_bar that will be discarded.
+        @screen.open basic
+        basic.navigationController.should == @screen.navigationController
+        basic.navigation_controller.should == @screen.navigationController
+        @screen.navigation_controller.should == @screen.navigationController
+      end
 
       it "should open the provided view controller as root view if no other conditions are met" do
         parent_screen = HomeScreen.new

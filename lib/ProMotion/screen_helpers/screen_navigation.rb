@@ -69,7 +69,7 @@ module ProMotion
 
     def send_on_return(args = {})
       if self.parent_screen && self.parent_screen.respond_to?(:on_return)
-        if args
+        if args && self.parent_screen.method(:on_return).arity != 0
           self.parent_screen.send(:on_return, args)
         else
           self.parent_screen.send(:on_return)

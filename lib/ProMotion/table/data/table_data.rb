@@ -73,11 +73,10 @@ module ProMotion
         params[:section] = params[:index_path].section
         params[:index] = params[:index_path].row
       end
-
+      
       data_cell = self.cell(section: params[:section], index: params[:index])
       return UITableViewCell.alloc.init unless data_cell # No data?
 
-      data_cell = self.remap_data_cell(data_cell) # TODO: Deprecated, remove in version 1.0
       data_cell = self.set_data_cell_defaults(data_cell)
 
       table_cell = self.create_table_cell(data_cell)
@@ -88,50 +87,8 @@ module ProMotion
     def set_data_cell_defaults(data_cell)
       data_cell[:cell_style] ||= UITableViewCellStyleDefault
       data_cell[:cell_identifier] ||= build_cell_identifier(data_cell)
-      data_cell[:cell_class] ||= ProMotion::TableViewCell
-      data_cell
-    end
-
-    def remap_data_cell(data_cell)
-      # Re-maps legacy data cell calls
-      mappings = {
-        cell_style: :cellStyle,
-        cell_identifier: :cellIdentifier,
-        cell_class: :cellClass,
-        masks_to_bounds: :masksToBounds,
-        background_color: :backgroundColor,
-        selection_style: :selectionStyle,
-        cell_class_attributes: :cellClassAttributes,
-        accessory: :accessoryView,
-        accessory: :accessory_view,
-        accessory_type: :accessoryType,
-        accessory_action: :accessoryAction,
-        accessory_checked: :accessoryDefault,
-        remote_image: :remoteImage,
-        subviews: :subViews
-      }
-
-      if data_cell[:masks_to_bounds]
-        PM.logger.deprecated "masks_to_bounds: (value) is deprecated. Use layer: { masks_to_bounds: (value) } instead."
-        data_cell[:layer] ||= {}
-        data_cell[:layer][:masks_to_bounds] = data_cell[:masks_to_bounds] # TODO: Deprecate and then remove this.
-      end
-
-      mappings.each_pair do |n, old|
-        if data_cell[old]
-          PM.logger.deprecated "`:#{old}` is deprecated in TableScreens. Use `:#{n}`"
-          data_cell[n] = data_cell[old]
-        end
-      end
-
-      if data_cell[:styles] && data_cell[:styles][:textLabel]
-        PM.logger.deprecated "`:textLabel` is deprecated in TableScreens. Use `:label`"
-        data_cell[:styles][:label] = data_cell[:styles][:textLabel]
-      end
-
-      # Fix the accessory view if needed
-      # Legacy Support < 0.7.4
-      data_cell[:accessory] ||= data_cell[:accessory_view]
+      data_cell[:cell_class] ||= PM::TableViewCell
+      
       data_cell[:accessory] = {
         view: data_cell[:accessory],
         value: data_cell[:accessory_value],
@@ -144,10 +101,11 @@ module ProMotion
 
     def create_table_cell(data_cell)
       table_cell = table_view.dequeueReusableCellWithIdentifier(data_cell[:cell_identifier])
-
+      
       unless table_cell
+        data_cell[:cell_style] = UITableViewCellStyleSubtitle
         table_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:data_cell[:cell_identifier])
-        table_cell.extend ProMotion::TableViewCellModule unless table_cell.is_a?(ProMotion::TableViewCellModule)
+        table_cell.extend PM::TableViewCellModule unless table_cell.is_a?(PM::TableViewCellModule)
         table_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
       end
 

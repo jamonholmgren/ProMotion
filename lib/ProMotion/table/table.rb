@@ -69,14 +69,12 @@ module ProMotion
     end
 
     def accessory_toggled_switch(switch)
-      # table_cell = switch.superview
       table_cell = closest_parent(UITableViewCell, switch)
-      # index_path = table_cell.superview.indexPathForCell(table_cell)
       index_path = closest_parent(UITableView, table_cell).indexPathForCell(table_cell)
 
       data_cell = cell_at_section_and_index(index_path.section, index_path.row)
-      data_cell[:accessory][:arguments] = {} unless data_cell[:accessory][:arguments]
-      data_cell[:accessory][:arguments][:value] = switch.isOn if data_cell[:accessory][:arguments].is_a? Hash
+      data_cell[:accessory][:arguments] ||= {}
+      data_cell[:accessory][:arguments][:value] = switch.isOn if data_cell[:accessory][:arguments].is_a?(Hash)
 
       trigger_action(data_cell[:accessory][:action], data_cell[:accessory][:arguments]) if data_cell[:accessory][:action]
     end
@@ -143,12 +141,6 @@ module ProMotion
       PM.logger.warn "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(indexPaths, withRowAnimation:animation)'."
       delete_cell(indexPaths, animation)
     end
-
-
-    # Old aliases, deprecated, will be removed
-    alias :createTableViewFromData :create_table_view_from_data
-    alias :updateTableViewData :update_table_view_data
-    alias :cellAtSectionAndIndex :cell_at_section_and_index
 
   end
 end

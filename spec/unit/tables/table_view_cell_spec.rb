@@ -28,7 +28,7 @@ describe "PM::TableViewCellModule" do
         { title: "", cells: [
           {title: "Test 1", accessory_type: UITableViewCellStateShowingEditControlMask },
           custom_cell,
-          { title: "Test2", accessory: button } ] }
+          { title: "Test2", accessory: { view: button } } ] }
       ]
     end
 

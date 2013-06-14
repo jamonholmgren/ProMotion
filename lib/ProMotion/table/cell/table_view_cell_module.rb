@@ -10,7 +10,6 @@ module ProMotion
       # TODO: Some of these need to go away. Unnecessary overhead.
       set_cell_attributes
       set_background_color
-      set_class_attributes
       set_accessory_view
       set_subtitle
       set_image
@@ -32,14 +31,6 @@ module ProMotion
 
     def set_background_color
       self.backgroundView = UIView.new.tap{|v| v.backgroundColor = data_cell[:background_color]} if data_cell[:background_color]
-    end
-
-    def set_class_attributes
-      if data_cell[:cell_class_attributes]
-        PM.logger.deprecated "`cell_class_attributes` is deprecated. Just add the attributes you want to set right into your cell hash."
-        set_attributes self, data_cell[:cell_class_attributes]
-      end
-      self
     end
 
     def set_accessory_view

@@ -144,11 +144,5 @@ module ProMotion
       delete_cell(indexPaths, animation)
     end
 
-
-    # Old aliases, deprecated, will be removed
-    alias :createTableViewFromData :create_table_view_from_data
-    alias :updateTableViewData :update_table_view_data
-    alias :cellAtSectionAndIndex :cell_at_section_and_index
-
   end
 end

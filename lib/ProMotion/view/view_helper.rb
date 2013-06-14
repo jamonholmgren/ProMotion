@@ -49,13 +49,6 @@ module ProMotion
       element
     end
 
-    def frame_from_array(array)
-      PM.logger.deprecated "`frame_from_array` is deprecated and will be removed. Use RubyMotion's built-in [[x, y], [width, height]] or CGRectMake(x, y, w, h)."
-      return CGRectMake(array[0], array[1], array[2], array[3]) if array.length == 4
-      PM.logger.error "frame_from_array expects an array with four elements: [x, y, width, height]"
-      CGRectZero.dup
-    end
-
     def content_height(view)
       height = 0
       view.subviews.each do |sub_view|
@@ -71,12 +64,47 @@ module ProMotion
 
     def closest_parent(type, this_view = nil)
       # iterate up the view hierarchy to find the parent element of "type" containing this view
-      this_view ||= self.superview
+      this_view ||= view_or_self.superview
       while this_view != nil do
         return this_view if this_view.is_a? type
         this_view = this_view.superview
       end
       nil
     end
+    
+    def add(element, attrs = {})
+      add_to view_or_self, element, attrs
+    end
+    alias :add_element :add
+    alias :add_view :add
+
+    def remove(element)
+      element.removeFromSuperview
+      element = nil
+    end
+    alias :remove_element :remove
+    alias :remove_view :remove
+
+    def add_to(parent_element, element, attrs = {})
+      parent_element.addSubview element
+      if attrs && attrs.length > 0
+        set_attributes(element, attrs)
+        set_easy_attributes(parent_element, element, attrs)
+      end
+      element
+    end
+    
+    def view_or_self
+      self.respond_to?(:view) ? self.view : self
+    end
+
+    def bounds
+      return self.view_or_self.bounds
+    end
+
+    def frame
+      return self.view_or_self.frame
+    end
+    
   end
 end

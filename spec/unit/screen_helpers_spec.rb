@@ -108,11 +108,11 @@ describe "screen helpers" do
     describe "opening a screen" do
 
       it "should create an instance from class when opening a new screen" do
-        @screen.send(:setup_screen_for_open, BasicScreen).should.be.instance_of BasicScreen
+        @screen.send(:set_up_screen_for_open, BasicScreen).should.be.instance_of BasicScreen
       end
 
       it "should apply properties when opening a new screen" do
-        new_screen = @screen.send(:setup_screen_for_open, BasicScreen, title: 'Some Title', modal: true, hide_tab_bar: true, nav_bar: true)
+        new_screen = @screen.send(:set_up_screen_for_open, BasicScreen, title: 'Some Title', modal: true, hide_tab_bar: true, nav_bar: true)
 
         new_screen.parent_screen.should == @screen
         new_screen.title.should == 'Some Title'
@@ -122,7 +122,7 @@ describe "screen helpers" do
       end
 
       it "should present the #main_controller when showing a modal screen" do
-        new_screen = @screen.send(:setup_screen_for_open, BasicScreen, modal: true)
+        new_screen = @screen.send(:set_up_screen_for_open, BasicScreen, modal: true)
 
         @screen.mock!('presentModalViewController:animated:') do |vc, animated|
           vc.should == new_screen.main_controller
@@ -151,6 +151,8 @@ describe "screen helpers" do
         end
         @screen.open BasicScreen, modal: true
       end
+      
+      # it "should properly instantiate a screen "
 
       it "should present a modal screen if open_modal is used" do
         @screen.mock!(:present_modal_view_controller) do |screen, animated|
@@ -161,7 +163,7 @@ describe "screen helpers" do
       end
 
       it "should respect animated property of opening modal screens" do
-        new_screen = @screen.send(:setup_screen_for_open, BasicScreen)
+        new_screen = @screen.send(:set_up_screen_for_open, BasicScreen)
 
         @screen.mock!('presentModalViewController:animated:') do |vc, animated|
           animated.should == false

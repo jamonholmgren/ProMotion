@@ -5,7 +5,7 @@ module ProMotion
       args = { in_detail: false, in_master: false, close_all: false, modal: false, in_tab: false, animated: true }.merge args
 
       # Apply properties to instance
-      screen = setup_screen_for_open(screen, args)
+      screen = set_up_screen_for_open(screen, args)
       ensure_wrapper_controller_in_place(screen, args)
 
       screen.send(:on_load) if screen.respond_to?(:on_load)
@@ -93,7 +93,7 @@ module ProMotion
 
     protected
 
-    def setup_screen_for_open(screen, args={})
+    def set_up_screen_for_open(screen, args={})
 
       # Instantiate screen if given a class
       screen = screen.new if screen.respond_to?(:new)

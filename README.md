@@ -536,6 +536,7 @@ incorporated.
 * Jamon Holmgren: [@jamonholmgren](https://twitter.com/jamonholmgren)
 * Silas Matson: [@silasjmatson](https://twitter.com/silasjmatson)
 * Matt Brewer: [@macfanatic](https://twitter.com/macfanatic)
+* Mark Rickert: [@markrickert](https://twitter.com/markrickert)
 * [Many others](https://github.com/clearsightstudio/ProMotion/graphs/contributors)
 * Run `git shortlog -s -n -e` to see everyone who has contributed.
 

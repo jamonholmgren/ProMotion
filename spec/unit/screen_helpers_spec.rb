@@ -152,8 +152,6 @@ describe "screen helpers" do
         @screen.open BasicScreen, modal: true
       end
       
-      # it "should properly instantiate a screen "
-
       it "should present a modal screen if open_modal is used" do
         @screen.mock!(:present_modal_view_controller) do |screen, animated|
           screen.should.be.instance_of BasicScreen

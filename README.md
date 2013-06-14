@@ -1,8 +1,49 @@
-# ProMotion [![Build Status](https://travis-ci.org/clearsightstudio/ProMotion.png)](https://travis-ci.org/clearsightstudio/ProMotion)
+# ProMotion [![Build Status](https://travis-ci.org/clearsightstudio/ProMotion.png)](https://travis-ci.org/clearsightstudio/ProMotion) [![Code Climate](https://codeclimate.com/github/clearsightstudio/ProMotion.png)](https://codeclimate.com/github/clearsightstudio/ProMotion)
 
 ## A new way to easily build RubyMotion apps.
 
 ProMotion is a RubyMotion gem that makes iOS development more like Ruby and less like Objective-C.
+
+Turning this:
+
+```ruby
+class AppDelegate
+  attr_accessor :window
+  
+  def application(application, didFinishLaunchingWithOptions: options)
+    rootView = RootViewController.alloc.initWithNibName:nil, bundle:nil)
+    @navController = UINavigationController.alloc.initWithRootViewController(rootView)
+    self.window.setRootViewController(@navController)
+    self.window.makeKeyAndVisible
+    true
+  end
+end
+
+class RootViewController < UIViewController
+  # ...
+  def push_new_view_controller
+    newViewController = NewViewController.alloc.initWithNibName(nil, bundle:nil)
+    self.navigationController.pushViewController(newViewController, animated:true)
+  end
+end
+```
+
+...into this:
+
+```ruby
+class AppDelegate < PM::Delegate
+  def on_load
+    open RootScreen.new(nav_bar: true)
+  end
+end
+
+class RootScreen < PM::Screen
+  # ...
+  def push_new_screen
+    open NewScreen
+  end
+end
+```
 
 Featured on the RubyMotion blog: [http://blog.rubymotion.com/post/50523137515/introducing-promotion-a-full-featured-rubymotion](http://blog.rubymotion.com/post/50523137515/introducing-promotion-a-full-featured-rubymotion)
 

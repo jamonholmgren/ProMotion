@@ -104,18 +104,19 @@ module ProMotion
 
     def bar_button_item(button_type, args)
       case button_type
-        when UIBarButtonItem
-          button_type
-        when UIImage
-          UIBarButtonItem.alloc.initWithImage(button_type, style: args[:style], target: args[:target], action: args[:action])
-        when String
-          UIBarButtonItem.alloc.initWithTitle(button_type, style: args[:style], target: args[:target], action: args[:action])
+      when UIBarButtonItem
+        button_type
+      when UIImage
+        UIBarButtonItem.alloc.initWithImage(button_type, style: args[:style], target: args[:target], action: args[:action])
+      when String
+        UIBarButtonItem.alloc.initWithTitle(button_type, style: args[:style], target: args[:target], action: args[:action])
+      else
+        if args[:system_icon]
+          UIBarButtonItem.alloc.initWithBarButtonSystemItem(args[:system_icon], target: args[:target], action: args[:action])
         else
-          if args[:system_icon]
-            UIBarButtonItem.alloc.initWithBarButtonSystemItem(args[:system_icon], target: args[:target], action: args[:action])
-          else
-            PM.logger.error("Please supply a title string, a UIImage or :system.")
-          end
+          PM.logger.error("Please supply a title string, a UIImage or :system.")
+          nil
+        end
       end
     end
 

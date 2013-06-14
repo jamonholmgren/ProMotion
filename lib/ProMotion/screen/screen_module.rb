@@ -190,6 +190,14 @@ module ProMotion
     def supported_device_family?(family)
       supported_device_families.include?(family)
     end
+    
+    def bounds
+      return self.view_or_self.bounds
+    end
+
+    def frame
+      return self.view_or_self.frame
+    end
 
     # Class methods
     module ClassMethods

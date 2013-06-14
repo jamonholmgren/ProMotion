@@ -97,14 +97,6 @@ module ProMotion
     def view_or_self
       self.respond_to?(:view) ? self.view : self
     end
-
-    def bounds
-      return self.view_or_self.bounds
-    end
-
-    def frame
-      return self.view_or_self.frame
-    end
     
   end
 end

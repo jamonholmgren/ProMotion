@@ -5,7 +5,7 @@ module ProMotion
       args = { in_detail: false, in_master: false, close_all: false, modal: false, in_tab: false, animated: true }.merge args
 
       # Apply properties to instance
-      screen = setup_screen_for_open(screen, args)
+      screen = set_up_screen_for_open(screen, args)
       ensure_wrapper_controller_in_place(screen, args)
 
       screen.send(:on_load) if screen.respond_to?(:on_load)
@@ -69,7 +69,7 @@ module ProMotion
 
     def send_on_return(args = {})
       if self.parent_screen && self.parent_screen.respond_to?(:on_return)
-        if args
+        if args && self.parent_screen.method(:on_return).arity != 0
           self.parent_screen.send(:on_return, args)
         else
           self.parent_screen.send(:on_return)
@@ -88,20 +88,23 @@ module ProMotion
       end
       nav_controller ||= self.navigation_controller
       vc.first_screen = false if vc.respond_to?(:first_screen=)
+      vc.navigation_controller = nav_controller if vc.respond_to?(:navigation_controller=)
       nav_controller.pushViewController(vc, animated: true)
     end
 
     protected
 
-    def setup_screen_for_open(screen, args={})
+    def set_up_screen_for_open(screen, args={})
 
       # Instantiate screen if given a class
       screen = screen.new if screen.respond_to?(:new)
+      
+      # Set parent
+      screen.parent_screen = self if screen.respond_to?(:parent_screen=)
 
-      # Set parent, title & modal properties
-      screen.parent_screen = self if screen.respond_to?("parent_screen=")
-      screen.title = args[:title] if args[:title] && screen.respond_to?("title=")
-      screen.modal = args[:modal] if args[:modal] && screen.respond_to?("modal=")
+      # Set title & modal properties
+      screen.title = args[:title] if args[:title] && screen.respond_to?(:title=)
+      screen.modal = args[:modal] if args[:modal] && screen.respond_to?(:modal=)
 
       # Hide bottom bar?
       screen.hidesBottomBarWhenPushed = args[:hide_tab_bar] == true
@@ -115,7 +118,7 @@ module ProMotion
     end
 
     def ensure_wrapper_controller_in_place(screen, args={})
-      unless args[:close_all] || args[:modal]
+      unless args[:close_all] || args[:modal] || args[:in_detail] || args[:in_master]
         screen.navigation_controller ||= self.navigation_controller if screen.respond_to?("navigation_controller=")
         screen.tab_bar ||= self.tab_bar if screen.respond_to?("tab_bar=")
       end

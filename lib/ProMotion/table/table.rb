@@ -74,7 +74,7 @@ module ProMotion
 
       data_cell = cell_at_section_and_index(index_path.section, index_path.row)
       data_cell[:accessory][:arguments] ||= {}
-      data_cell[:accessory][:arguments][:value] = switch.isOn if data_cell[:accessory][:arguments].is_a? Hash
+      data_cell[:accessory][:arguments][:value] = switch.isOn if data_cell[:accessory][:arguments].is_a?(Hash)
 
       trigger_action(data_cell[:accessory][:action], data_cell[:accessory][:arguments]) if data_cell[:accessory][:action]
     end

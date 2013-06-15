@@ -1,5 +1,5 @@
 module ProMotion
-  module ScreenTabs
+  module Tabs
     def tab_bar_controller(*screens)
       tab_bar_controller = UITabBarController.alloc.init
 

@@ -17,13 +17,11 @@ describe "PM::Table module" do
       masks_to_bounds: true,
       background_color: UIColor.whiteColor,
       selection_style: UITableViewCellSelectionStyleGray,
-      cell_class_attributes: {
-        # any Obj-C attributes to set on the cell
-        backgroundColor: UIColor.whiteColor
+      accessory: {
+        view: :switch, # currently only :switch is supported
+        type: UITableViewCellAccessoryCheckmark,
+        checked: true # whether it's "checked" or not
       },
-      accessory: :switch, # currently only :switch is supported
-      accessory_type: UITableViewCellAccessoryCheckmark,
-      accessory_checked: true, # whether it's "checked" or not
       image: { image: UIImage.imageNamed("something"), radius: 15 },
       remote_image: {  # remote image, requires SDWebImage CocoaPod
         url: "http://placekitten.com/200/300", placeholder: "some-local-image",

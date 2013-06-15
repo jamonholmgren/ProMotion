@@ -1,5 +1,5 @@
 module ProMotion
-  module BehavesLikeScreen
+  module ViewControllerModule
     def pm_main_controller
       navigationController || self
     end
@@ -7,4 +7,4 @@ module ProMotion
   end
 end
 
-UIViewController.send :include, ProMotion::BehavesLikeScreen
+UIViewController.send :include, ProMotion::ViewControllerModule

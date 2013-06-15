@@ -1,9 +1,8 @@
 module ProMotion
   module ScreenModule
     include ProMotion::ScreenNavigation
-    include ProMotion::ScreenElements
-    include ProMotion::SystemHelper
-    include ProMotion::ScreenTabs
+    include ProMotion::ViewHelper
+    include ProMotion::Tabs
     include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2")
 
     attr_accessor :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal, :split_screen
@@ -26,18 +25,8 @@ module ProMotion
       self
     end
 
-    def is_modal?
-      PM.logger.deprecated "`is_modal?` is deprecated. Use `modal?`."
-      modal?
-    end
-
     def modal?
       self.modal == true
-    end
-
-    def has_nav_bar?
-      PM.logger.deprecated "`has_nav_bar? is deprecated. Use `nav_bar?`."
-      nav_bar?
     end
 
     def nav_bar?
@@ -51,11 +40,6 @@ module ProMotion
     def navigation_controller=(val)
       @navigation_controller = val
       val
-    end
-
-    # [DEPRECATED]
-    def load_view_controller
-      PM.logger.deprecated  "`load_view_controller` is deprecated and doesn't actually do anything anymore. You can safely remove it from your code."
     end
 
     def set_tab_bar_item(args = {})
@@ -119,19 +103,8 @@ module ProMotion
       end
     end
 
-    # [DEPRECATED]
-    def view_controller=(vc)
-      set_view_controller(vc)
-    end
-
     def first_screen?
       self.first_screen == true
-    end
-
-    # [DEPRECATED]
-    def set_view_controller(vc)
-      PM.logger.deprecated "`set_view_controller` is deprecated and discontinued.  Please inherit from the UIViewController you wish to use and include ProMotion::ScreenViewController instead."
-      self
     end
 
     def view_did_load; end
@@ -155,11 +128,6 @@ module ProMotion
       self.on_disappear
     end
     def on_disappear; end
-
-    def view_controller
-      PM.logger.deprecated "`view_controller` is deprecated, as screens are now UIViewController subclasses."
-      self
-    end
 
     def should_rotate(orientation)
       case orientation
@@ -221,6 +189,14 @@ module ProMotion
 
     def supported_device_family?(family)
       supported_device_families.include?(family)
+    end
+    
+    def bounds
+      return self.view_or_self.bounds
+    end
+
+    def frame
+      return self.view_or_self.frame
     end
 
     # Class methods

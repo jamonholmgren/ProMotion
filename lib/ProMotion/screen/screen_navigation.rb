@@ -77,11 +77,6 @@ module ProMotion
       end
     end
 
-    def open_view_controller(screen)
-      PM.logger.deprecated "Use `open_root_screen` instead of the more ambiguous `open_view_controller`."
-      open_root_screen screen
-    end
-
     def push_view_controller(vc, nav_controller=nil)
       unless self.navigation_controller
         PM.logger.error "You need a nav_bar if you are going to push #{vc.to_s} onto it."

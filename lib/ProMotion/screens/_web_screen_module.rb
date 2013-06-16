@@ -79,8 +79,8 @@ module ProMotion
     # Navigation
     def can_go_back; web.canGoBack; end
     def can_go_forward; web.canGoForward; end
-    def back; web.goBack; end
-    def forward; web.goForward; end
+    def back; web.goBack if can_go_back; end
+    def forward; web.goForward if can_go_forward; end
     def refresh; web.reload; end
     def stop; web.stopLoading; end
     alias :reload :refresh

@@ -15,7 +15,7 @@ class MapScreenAnnotation
   def set_defaults
     @params[:title] ||= "Title"
     @params[:pin_color] ||= MKPinAnnotationColorRed
-    @params[:identifier] ||= "Annotation-#{pin_color}"
+    @params[:identifier] ||= "Annotation-#{@params[:pin_color]}"
     @params[:show_callout] ||= true
     @params[:animates_drop] ||= false
   end
@@ -42,11 +42,6 @@ class MapScreenAnnotation
     else
       @coordinate = new_coordinate
     end
-  end
-
-  # Handle returning *any* properties that the user sets in the initial parameters.
-  def method_missing(m, *args, &block)
-    @params[m.to_sym] if @params[m.to_sym]
   end
 
   # Allows for retrieving your own custom values on the annotation

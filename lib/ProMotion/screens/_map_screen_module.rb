@@ -32,6 +32,22 @@ module ProMotion
       self.mapview
     end
 
+    def center
+      self.mapview.centerCoordinate
+    end
+
+    def center=(params={})
+      PM.logger.error "Missing #:latitude property in call to #center=." unless params[:latitude]
+      PM.logger.error "Missing #:longitude property in call to #center=." unless params[:longitude]
+      params[:animated] = true
+
+      # Set the new region
+      self.mapview.setCenterCoordinate(
+        CLLocationCoordinate2DMake(params[:latitude], params[:longitude]),
+        animated:params[:animated]
+      )
+    end
+
     def annotations
       @promotion_annotation_data
     end
@@ -95,7 +111,7 @@ module ProMotion
 
       meters_per_mile = 1609.344
 
-      initialLocation = CLLocationCoordinate2D.new(params[:latitude], params[:longitude])
+      initialLocation = CLLocationCoordinate2DMake(params[:latitude], params[:longitude])
       region = MKCoordinateRegionMakeWithDistance(initialLocation, params[:radius] * meters_per_mile, params[:radius] * meters_per_mile)
       self.mapview.setRegion(region, animated:false)
     end

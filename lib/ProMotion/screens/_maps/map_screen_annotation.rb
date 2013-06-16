@@ -9,7 +9,7 @@ class MapScreenAnnotation
       PM.logger.error("You are required to specify :latitude and :longitude for annotations.")
       return nil
     end
-    @coordinate = CLLocationCoordinate2DMake(@params[:latitude], @params[:longitude])
+    @coordinate = CLLocationCoordinate2D.new(@params[:latitude], @params[:longitude])
   end
 
   def set_defaults
@@ -38,7 +38,7 @@ class MapScreenAnnotation
 
   def setCoordinate(new_coordinate);
     if new_coordinate.is_a? Hash
-      @coordinate = CLLocationCoordinate2DMake(new_coordinate[:latitude], new_coordinate[:longitude])
+      @coordinate = CLLocationCoordinate2D.new(new_coordinate[:latitude], new_coordinate[:longitude])
     else
       @coordinate = new_coordinate
     end

@@ -48,7 +48,7 @@ module ProMotion
 
       # Set the new region
       self.mapview.setCenterCoordinate(
-        CLLocationCoordinate2DMake(params[:latitude], params[:longitude]),
+        CLLocationCoordinate2D.new(params[:latitude], params[:longitude]),
         animated:params[:animated]
       )
     end
@@ -116,7 +116,7 @@ module ProMotion
 
       meters_per_mile = 1609.344
 
-      initialLocation = CLLocationCoordinate2DMake(params[:latitude], params[:longitude])
+      initialLocation = CLLocationCoordinate2D.new(params[:latitude], params[:longitude])
       region = MKCoordinateRegionMakeWithDistance(initialLocation, params[:radius] * meters_per_mile, params[:radius] * meters_per_mile)
       self.mapview.setRegion(region, animated:false)
     end
@@ -133,8 +133,8 @@ module ProMotion
       return if annotations.count == 0
 
       #Set some crazy boundaries
-      topLeft = CLLocationCoordinate2DMake(-90, 180)
-      bottomRight = CLLocationCoordinate2DMake(90, -180)
+      topLeft = CLLocationCoordinate2D.new(-90, 180)
+      bottomRight = CLLocationCoordinate2D.new(90, -180)
 
       #Find the bounds of the pins
       annotations.each do |a|
@@ -145,7 +145,7 @@ module ProMotion
       end
 
       #Find the bounds of all the pins and set the mapView
-      coord = CLLocationCoordinate2DMake(
+      coord = CLLocationCoordinate2D.new(
         topLeft.latitude - (topLeft.latitude - bottomRight.latitude) * 0.5,
         topLeft.longitude + (bottomRight.longitude - topLeft.longitude) * 0.5
       )
@@ -169,7 +169,7 @@ module ProMotion
     def region(params)
       return nil unless params.is_a? Hash
 
-      params[:coordinate] = CLLocationCoordinate2DMake(params[:coordinate][:latitude], params[:coordinate][:longitude]) if params[:coordinate].is_a? Hash
+      params[:coordinate] = CLLocationCoordinate2D.new(params[:coordinate][:latitude], params[:coordinate][:longitude]) if params[:coordinate].is_a? Hash
       params[:span] = MKCoordinateSpanMake(params[:span][0], params[:span][1]) if params[:span].is_a? Array
 
       if params[:coordinate] && params[:span]

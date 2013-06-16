@@ -5,14 +5,13 @@ module ProMotion
       @refreshing = params[:refreshing] || "Refreshing data..."
       @updated_format = params[:updated_format] || "Last updated at %s"
       @updated_time_format = params[:updated_time_format] || "%l:%M %p"
-      @refreshable_callback = params[:callback]|| :on_refresh
+      @refreshable_callback = params[:callback] || :on_refresh
 
       @refresh_control = UIRefreshControl.alloc.init
       @refresh_control.attributedTitle = NSAttributedString.alloc.initWithString(pull_message)
       @refresh_control.addTarget(self, action:'refreshView:', forControlEvents:UIControlEventValueChanged)
       self.refreshControl = @refresh_control
     end
-    alias :makeRefreshable :make_refreshable
 
     def start_refreshing
       return unless @refresh_control

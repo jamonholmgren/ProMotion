@@ -23,6 +23,7 @@ module ProMotion
       self.navigationController.toolbarHidden = !args[:toolbar] unless args[:toolbar].nil?
       self.on_init if self.respond_to?(:on_init)
       self.table_setup if self.respond_to?(:table_setup)
+      self.web_setup if self.respond_to?(:web_setup)
       self
     end
 

@@ -26,7 +26,10 @@ module ProMotion
 
     def set_initial_content
       return unless self.respond_to?(:content)
+      set_content(content)
+    end
 
+    def set_content(content)
       if content.is_a? NSURL
         initialize_with_url content
       else

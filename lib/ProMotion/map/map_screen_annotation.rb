@@ -13,11 +13,13 @@ class MapScreenAnnotation
   end
 
   def set_defaults
-    @params[:title] ||= "Title"
-    @params[:pin_color] ||= MKPinAnnotationColorRed
-    @params[:identifier] ||= "Annotation-#{@params[:pin_color]}"
-    @params[:show_callout] ||= true
-    @params[:animates_drop] ||= false
+    @params = {
+      title: "Title",
+      pin_color: MKPinAnnotationColorRed,
+      identifier: "Annotation-#{@params[:pin_color]}",
+      show_callout: true,
+      animates_drop: false
+    }.merge(@params)
   end
 
   def title

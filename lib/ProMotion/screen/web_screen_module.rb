@@ -85,6 +85,22 @@ module ProMotion
     def stop; web.stopLoading; end
     alias :reload :refresh
 
+    def open_in_chrome(inRequest)
+      # Add pod 'OpenInChrome' to your Rakefile if you want links to open in chrom for users.
+      chrome_controller = OpenInChromeController.sharedInstance
+      return open_in_safari(inRequest) unless chrome_controller.isChromeInstalled
+      chrome_controller.open_in_chrome(inRequest.URL)
+    end
+
+    def open_in_safari(inRequest)
+      #Open UIWebView delegate links in Safari.
+      UIApplication.sharedApplication.openURL(inRequest.URL)
+    end
+
+    def self.included(base)
+      base.extend(ClassMethods)
+    end
+
     #UIWebViewDelegate Methods - Camelcase
     def webView(inWeb, shouldStartLoadWithRequest:inRequest, navigationType:inType)
       if self.external_links == true && inType == UIWebViewNavigationTypeLinkClicked
@@ -98,18 +114,6 @@ module ProMotion
       true #return true for local file loading.
     end
 
-    def open_in_chrome(inRequest)
-      # Add pod 'OpenInChrome' to your Rakefile if you want links to open in chrom for users.
-      chrome_controller = OpenInChromeController.sharedInstance
-      return open_in_safari(inRequest) unless chrome_controller.isChromeInstalled
-      chrome_controller.open_in_chrome(inRequest.URL)
-    end
-
-    def open_in_safari(inRequest)
-      #Open UIWebView delegate links in Safari.
-      UIApplication.sharedApplication.openURL(inRequest.URL)
-    end
-
     def webViewDidStartLoad(webView)
       load_started if self.respond_to?(:load_started)
     end
@@ -120,10 +124,6 @@ module ProMotion
 
     def webView(webView, didFailLoadWithError:error)
       load_failed(error) if self.respond_to?("load_failed:")
-    end
-
-    def self.included(base)
-      base.extend(ClassMethods)
     end
 
   end

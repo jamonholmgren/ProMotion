@@ -28,7 +28,7 @@ module ProMotion
       return unless self.respond_to?(:content)
 
       if content.is_a?(String) && content.match(/^http/)
-        initial_content = NSURL.urlWithStrong(content)
+        initial_content = NSURL.URLWithString(content)
       else
         initial_content = content
       end

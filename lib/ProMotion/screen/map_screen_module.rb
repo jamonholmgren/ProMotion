@@ -79,13 +79,8 @@ module ProMotion
     end
 
     def add_annotations(annotations)
-      annotations = Array(annotations)
-      to_add = []
-      annotations.each do |a|
-        to_add << MapScreenAnnotation.new(a)
-      end
-      @promotion_annotation_data = to_add
-      self.mapview.addAnnotations to_add
+      @promotion_annotation_data = Array(annotations).map{|a| MapScreenAnnotation.new(a)}
+      self.mapview.addAnnotations @promotion_annotation_data
     end
 
     def clear_annotations

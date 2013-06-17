@@ -70,6 +70,10 @@ module ProMotion
       PM.logger.error "Missing #content method in WebScreen #{self.class.to_s}." unless self.respond_to?(:content)
     end
 
+    def html
+      self.webview.stringByEvaluatingJavaScriptFromString("document.body.innerHTML")
+    end
+
     # Navigation
     def can_go_back; web.canGoBack; end
     def can_go_forward; web.canGoForward; end

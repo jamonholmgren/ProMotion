@@ -27,16 +27,10 @@ module ProMotion
     def set_initial_content
       return unless self.respond_to?(:content)
 
-      if content.is_a?(String) && content.match(/^http/)
-        initial_content = NSURL.URLWithString(content)
+      if content.is_a? NSURL
+        initialize_with_url content
       else
-        initial_content = content
-      end
-
-      if initial_content.is_a? NSURL
-        initialize_with_url initial_content
-      else
-        content_path = File.join(NSBundle.mainBundle.resourcePath, initial_content)
+        content_path = File.join(NSBundle.mainBundle.resourcePath, content)
 
         if File.exists? content_path
           content_string = File.read content_path
@@ -45,7 +39,7 @@ module ProMotion
           web.loadHTMLString(convert_retina_images(content_string), baseURL:content_base_url)
         else
           # We assume the user wants to load an arbitrary string into the web view
-          web.loadHTMLString(initial_content, baseURL:nil)
+          web.loadHTMLString(content, baseURL:nil)
         end
       end
     end

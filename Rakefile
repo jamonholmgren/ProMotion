@@ -12,6 +12,7 @@ Motion::Project::App.setup do |app|
   app.name = 'ProMotionTest'
   app.version = "0.99.0"
   app.redgreen_style = :full # :focused, :full
+  app.frameworks += %w(CoreLocation MapKit)
 
   # Devices
   app.deployment_target = "6.0"

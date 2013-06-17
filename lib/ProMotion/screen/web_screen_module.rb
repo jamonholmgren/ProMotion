@@ -26,7 +26,10 @@ module ProMotion
 
     def set_initial_content
       return unless self.respond_to?(:content)
+      set_content(content)
+    end
 
+    def set_content(content)
       if content.is_a? NSURL
         initialize_with_url content
       else
@@ -68,6 +71,10 @@ module ProMotion
 
     def check_content_data
       PM.logger.error "Missing #content method in WebScreen #{self.class.to_s}." unless self.respond_to?(:content)
+    end
+
+    def html
+      self.webview.stringByEvaluatingJavaScriptFromString("document.body.innerHTML")
     end
 
     # Navigation

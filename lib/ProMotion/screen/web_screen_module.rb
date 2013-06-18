@@ -77,6 +77,10 @@ module ProMotion
       self.webview.stringByEvaluatingJavaScriptFromString("document.body.innerHTML")
     end
 
+    def evaluate(js)
+      self.webview.stringByEvaluatingJavaScriptFromString(js)
+    end
+
     # Navigation
     def can_go_back; web.canGoBack; end
     def can_go_forward; web.canGoForward; end

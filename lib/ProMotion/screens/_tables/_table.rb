@@ -139,6 +139,17 @@ module ProMotion
       end
     end
 
+    def tableView(tableView, sectionForSectionIndexTitle:title, atIndex:index)
+      return index unless ["{search}", UITableViewIndexSearch].include?(self.table_data_index[0])
+
+      if index == 0
+        tableView.setContentOffset(CGPointZero, animated:false)
+        NSNotFound
+      else
+        index-1
+      end
+    end
+
     def deleteRowsAtIndexPaths(indexPaths, withRowAnimation:animation)
       PM.logger.warn "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(indexPaths, withRowAnimation:animation)'."
       delete_cell(indexPaths, animation)

@@ -30,4 +30,14 @@ describe "ProMotion::TestWebScreen functionality" do
     end
   end
 
+  it "should manipulate the webscreen contents with javascript" do
+    @webscreen.set_content('<h1 id="cool">Something Cool</h1>')
+
+    wait 0.5 do
+      @webscreen.evaluate('document.getElementById("cool").innerHTML = "Changed"')
+      @webscreen.html.should == '<h1 id="cool">Changed</h1>'
+    end
+
+  end
+
 end

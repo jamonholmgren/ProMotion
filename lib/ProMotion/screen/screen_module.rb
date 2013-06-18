@@ -21,10 +21,11 @@ module ProMotion
       self.add_nav_bar(args) if args[:nav_bar]
       self.navigationController.toolbarHidden = !args[:toolbar] unless args[:toolbar].nil?
       self.on_init if self.respond_to?(:on_init)
-      self.table_setup if self.respond_to?(:table_setup)
-      self.map_setup if self.respond_to?(:map_setup)
-      self.web_setup if self.respond_to?(:web_setup)
+      self.screen_setup
       self
+    end
+
+    def screen_setup
     end
 
     def modal?

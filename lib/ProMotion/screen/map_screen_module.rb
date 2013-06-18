@@ -5,7 +5,7 @@ module ProMotion
 
     attr_accessor :mapview
 
-    def map_setup
+    def setup
       check_annotation_data
       @promotion_annotation_data = []
       set_up_start_position

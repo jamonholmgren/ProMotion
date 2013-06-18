@@ -2,7 +2,7 @@ module ProMotion
   module Table
     include ProMotion::ViewHelper
 
-    def table_setup
+    def setup
       check_table_data
       set_up_table_view
       set_up_searchable

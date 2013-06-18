@@ -5,7 +5,7 @@ module ProMotion
 
     attr_accessor :webview, :external_links
 
-    def web_setup
+    def setup
       check_content_data
       self.external_links ||= false
     end

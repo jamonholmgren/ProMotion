@@ -5,6 +5,7 @@ describe "PM::Table module" do
   end
 
   def custom_cell
+    @image = UIImage.imageNamed("list")
     cell_factory({
       title: "Crazy Full Featured Cell",
       subtitle: "This is way too huge..see note",
@@ -15,14 +16,14 @@ describe "PM::Table module" do
       cell_identifier: "Cell",
       cell_class: PM::TableViewCell,
       masks_to_bounds: true,
-      background_color: UIColor.whiteColor,
+      background_color: UIColor.colorWithPatternImage(@image),
       selection_style: UITableViewCellSelectionStyleGray,
       accessory: {
         view: :switch, # currently only :switch is supported
         type: UITableViewCellAccessoryCheckmark,
         checked: true # whether it's "checked" or not
       },
-      image: { image: UIImage.imageNamed("something"), radius: 15 },
+      image: { image: @image, radius: 15 },
       remote_image: {  # remote image, requires SDWebImage CocoaPod
         url: "http://placekitten.com/200/300", placeholder: "some-local-image",
         size: 50, radius: 15
@@ -100,6 +101,15 @@ describe "PM::Table module" do
     end
 
     @subject.tableView(@subject.table_view, didSelectRowAtIndexPath:@custom_ip)
+  end
+  
+  it "should set a custom cell background image" do
+    @image.should.not.be.nil
+    ip = NSIndexPath.indexPathForRow(0, inSection: 3) # Cell 2-1
+    cell = @subject.tableView(@subject.table_view, cellForRowAtIndexPath: ip)
+    cell.should.be.kind_of(UITableViewCell)
+    cell.backgroundColor.should.be.kind_of(UIColor)
+    cell.backgroundColor.should == UIColor.colorWithPatternImage(@image)
   end
 
 end

@@ -18,7 +18,7 @@ describe "ProMotion::TestWebScreen functionality" do
     @webscreen.set_content(file_name)
 
     @loaded_file = File.read(File.join(NSBundle.mainBundle.resourcePath, file_name))
-    wait 0.75 do
+    wait 1.0 do
       @webscreen.html.should == @loaded_file
     end
   end

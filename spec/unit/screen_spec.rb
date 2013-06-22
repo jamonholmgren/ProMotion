@@ -115,8 +115,9 @@ describe "screen properties" do
       @screen.nav_bar?.should == true
     end
 
-    it "#main_controller should return a navigation controller" do
-      @screen.main_controller.should.be.instance_of ProMotion::NavigationController
+    it "#navigation_controller should return a navigation controller" do
+      @screen.navigation_controller.should.be.instance_of ProMotion::NavigationController
+      @screen.navigationController.should.be.instance_of ProMotion::NavigationController
     end
 
     it "have a right bar button item" do

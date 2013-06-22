@@ -121,11 +121,11 @@ describe "screen helpers" do
         new_screen.nav_bar?.should == true
       end
 
-      it "should present the #main_controller when showing a modal screen" do
+      it "should present the navigationController when showing a modal screen" do
         new_screen = @screen.send(:set_up_screen_for_open, BasicScreen, modal: true)
 
         @screen.mock!('presentModalViewController:animated:') do |vc, animated|
-          vc.should == new_screen.main_controller
+          vc.should == (new_screen.navigationController || new_screen)
           animated.should == true
         end
         @screen.send(:present_modal_view_controller, new_screen, true)

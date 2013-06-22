@@ -5,7 +5,7 @@ describe "ProMotion::TestWebScreen functionality" do
   def controller
     rotate_device to: :portrait, button: :bottom
     @webscreen ||= TestWebScreen.new(nav_bar: true)
-    @webscreen.main_controller
+    @webscreen.navigation_controller
   end
 
   after do

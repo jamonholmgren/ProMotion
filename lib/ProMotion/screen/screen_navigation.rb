@@ -29,7 +29,7 @@ module ProMotion
         push_view_controller screen
 
       else
-        open_root_screen screen.pm_main_controller
+        open_root_screen (screen.navigationController || screen)
 
       end
 
@@ -120,7 +120,7 @@ module ProMotion
     end
 
     def present_modal_view_controller(screen, animated)
-      self.presentModalViewController(screen.pm_main_controller, animated:animated)
+      self.presentModalViewController((screen.navigationController || screen), animated:animated)
     end
 
     def present_view_controller_in_tab_bar_controller(screen, tab_name)

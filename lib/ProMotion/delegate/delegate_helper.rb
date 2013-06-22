@@ -45,7 +45,7 @@ module ProMotion
       self.home_screen = screen
 
       self.window ||= self.ui_window.alloc.initWithFrame(UIScreen.mainScreen.bounds)
-      self.window.rootViewController = screen.pm_main_controller
+      self.window.rootViewController = (screen.navigationController || screen)
       self.window.makeKeyAndVisible
 
     end

@@ -26,8 +26,8 @@ module ProMotion
         frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height),
         resize: [ :width, :height ],
         delegate: self,
+        data_detector_types: detector_types
       }
-      self.webview.dataDetectorTypes = detectors
 
       set_initial_content
     end
@@ -46,7 +46,7 @@ module ProMotion
         initialize_with_url content
       else
         content_path = File.join(NSBundle.mainBundle.resourcePath, content)
-        
+
         if File.exists? content_path
           content_string = File.read content_path
           content_base_url = NSURL.fileURLWithPath NSBundle.mainBundle.resourcePath

@@ -46,15 +46,15 @@ module ProMotion
         initialize_with_url content
       else
         content_path = File.join(NSBundle.mainBundle.resourcePath, content)
-
+        
         if File.exists? content_path
           content_string = File.read content_path
           content_base_url = NSURL.fileURLWithPath NSBundle.mainBundle.resourcePath
 
-          web.loadHTMLString(convert_retina_images(content_string), baseURL:content_base_url)
+          self.web.loadHTMLString(convert_retina_images(content_string), baseURL:content_base_url)
         else
           # We assume the user wants to load an arbitrary string into the web view
-          web.loadHTMLString(content, baseURL:nil)
+          self.web.loadHTMLString(content, baseURL:nil)
         end
       end
     end

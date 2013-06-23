@@ -3,7 +3,7 @@ module ProMotion
     include ProMotion::ViewHelper
     include ScreenModule
 
-    attr_accessor :webview, :external_links
+    attr_accessor :webview, :external_links, :detector_types
 
     def screen_setup
       check_content_data
@@ -11,10 +11,22 @@ module ProMotion
     end
 
     def on_init
+
+      self.detector_types ||= UIDataDetectorTypeNone
+      detectors = self.detector_types
+      if self.detector_types.is_a? Array
+        detectors |= UIDataDetectorTypePhoneNumber   if self.detector_types.include?(:phone)
+        detectors |= UIDataDetectorTypeLink          if self.detector_types.include?(:link)
+        detectors |= UIDataDetectorTypeAddress       if self.detector_types.include?(:address)
+        detectors |= UIDataDetectorTypeCalendarEvent if self.detector_types.include?(:event)
+        detectors |= UIDataDetectorTypeAll           if self.detector_types.include?(:all)
+      end
+
       self.webview ||= add UIWebView.new, {
         frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height),
         resize: [ :width, :height ],
-        delegate: self
+        delegate: self,
+        data_detector_types: detector_types
       }
 
       set_initial_content
@@ -34,7 +46,7 @@ module ProMotion
         initialize_with_url content
       else
         content_path = File.join(NSBundle.mainBundle.resourcePath, content)
-        
+
         if File.exists? content_path
           content_string = File.read content_path
           content_base_url = NSURL.fileURLWithPath NSBundle.mainBundle.resourcePath

@@ -27,10 +27,6 @@ module ProMotion
       tab_bar_controller
     end
 
-    # Open a UITabBarController with the specified screens as the
-    # root view controller of the current app.
-    # @param [Array] A comma-delimited list of screen classes or instances.
-    # @return [UITabBarController]
     def open_tab_bar(*screens)
       tab_bar = tab_bar_controller(*screens)
 
@@ -44,10 +40,10 @@ module ProMotion
       if tab.is_a? String
         return self.select(self.tab_bar, title: tab)
       elsif tab.is_a? Numeric
-        tab_bar_controller.selectedIndex = tab
-        return tab_bar_controller.viewControllers[tab]
+        self.tab_bar.selectedIndex = tab
+        return self.tab_bar.viewControllers[tab]
       else
-        $stderr.puts "Unable to open tab #{tab.to_s} because it isn't a string."
+        $stderr.puts "Unable to open tab #{tab.to_s} because it isn't a string or number."
       end
     end
 

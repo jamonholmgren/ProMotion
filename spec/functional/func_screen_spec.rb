@@ -5,7 +5,7 @@ describe "ProMotion::Screen functional" do
   def controller
     rotate_device to: :portrait, button: :bottom
     @controller ||= FunctionalScreen.new(nav_bar: true)
-    @controller.main_controller
+    @controller.navigation_controller
   end
 
   after do

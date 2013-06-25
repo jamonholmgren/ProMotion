@@ -6,7 +6,7 @@ describe "ProMotion::TestTableScreen functionality" do
     rotate_device to: :portrait, button: :bottom
     @controller ||= TestTableScreen.new(nav_bar: true)
     @controller.on_load
-    @controller.main_controller
+    @controller.navigation_controller
   end
 
   after do

@@ -5,7 +5,7 @@ describe "Searchable table spec" do
   def controller
     @controller ||= TableScreenSearchable.new(nav_bar: true)
     @controller.on_load
-    @controller.main_controller
+    @controller.navigation_controller
   end
 
   it "should be rotated in portrait mode" do

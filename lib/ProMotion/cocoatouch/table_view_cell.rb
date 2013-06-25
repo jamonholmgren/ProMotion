@@ -15,6 +15,5 @@ module ProMotion
         self.imageView.frame = CGRectInset(f, size_inset_x, size_inset_y)
       end
     end
-
   end
 end

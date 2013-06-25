@@ -7,7 +7,7 @@ describe "ProMotion::TestMapScreen functionality" do
     @map ||= TestMapScreen.new(nav_bar: true)
     @map.on_load
     @map.will_appear
-    @map.main_controller
+    @map.navigation_controller
   end
 
   after do

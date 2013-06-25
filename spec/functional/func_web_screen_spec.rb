@@ -5,7 +5,7 @@ describe "ProMotion::TestWebScreen functionality" do
   def controller
     rotate_device to: :portrait, button: :bottom
     @webscreen ||= TestWebScreen.new(nav_bar: true)
-    @webscreen.main_controller
+    @webscreen.navigation_controller
   end
 
   after do
@@ -18,7 +18,7 @@ describe "ProMotion::TestWebScreen functionality" do
     @webscreen.set_content(file_name)
 
     @loaded_file = File.read(File.join(NSBundle.mainBundle.resourcePath, file_name))
-    wait 0.5 do
+    wait 1.0 do
       @webscreen.html.should == @loaded_file
     end
   end

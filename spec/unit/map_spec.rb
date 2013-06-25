@@ -35,5 +35,5 @@ describe "map properties" do
     @map.clear_annotations
     @map.annotations.count.should == 0
   end
-
+  
 end

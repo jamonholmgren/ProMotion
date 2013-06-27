@@ -114,23 +114,35 @@ module ProMotion
 
     def view_will_appear(animated)
       self.will_appear
+
+      self.will_present if isBeingPresented
     end
     def will_appear; end
+    def will_present; end
 
     def view_did_appear(animated)
       self.on_appear
+
+      self.on_presented if isBeingPresented
     end
     def on_appear; end
+    def on_presented; end
 
     def view_will_disappear(animated)
       self.will_disappear
+
+      self.will_dismiss if isBeingDismissed
     end
     def will_disappear; end
+    def will_dismiss; end
 
     def view_did_disappear(animated)
       self.on_disappear
+
+      self.on_dismiss if isBeingDismissed
     end
     def on_disappear; end
+    def on_dismiss; end
 
     def should_rotate(orientation)
       case orientation

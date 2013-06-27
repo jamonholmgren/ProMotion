@@ -2,9 +2,10 @@ module ProMotion
   module TableViewCellModule
     include ViewHelper
 
-    attr_accessor :data_cell
+    attr_accessor :data_cell, :table_screen
 
-    def setup(data_cell)
+    def setup(data_cell, screen)
+      self.table_screen = WeakRef.new(screen)
       self.data_cell = data_cell
 
       # TODO: Some of these need to go away. Unnecessary overhead.
@@ -34,15 +35,18 @@ module ProMotion
     end
 
     def set_accessory_view
+      PM.logger.info data_cell.to_s
       if data_cell[:accessory][:view] == :switch
         switch_view = UISwitch.alloc.initWithFrame(CGRectZero)
-        switch_view.setAccessibilityLabel(data_cell[:accessory][:accessibility_label]) if data_cell[:accessory][:accessibility_label]
-        switch_view.addTarget(self.closest_parent(UITableView), action: "accessory_toggled_switch:", forControlEvents:UIControlEventValueChanged)
-        switch_view.on = true if data_cell[:accessory][:value]
+        switch_view.setAccessibilityLabel(data_cell[:accessory][:accessibility_label] || data_cell[:title])
+        switch_view.addTarget(self.table_screen, action: "accessory_toggled_switch:", forControlEvents:UIControlEventValueChanged)
+        switch_view.on = !!data_cell[:accessory][:value]
         self.accessoryView = switch_view
       elsif data_cell[:accessory][:view]
         self.accessoryView = data_cell[:accessory][:view]
         self.accessoryView.autoresizingMask = UIViewAutoresizingFlexibleWidth
+      else
+        self.accessoryView = nil
       end
 
       self

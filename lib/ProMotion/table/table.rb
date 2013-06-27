@@ -72,11 +72,13 @@ module ProMotion
       table_cell = closest_parent(UITableViewCell, switch)
       index_path = closest_parent(UITableView, table_cell).indexPathForCell(table_cell)
 
-      data_cell = cell_at_section_and_index(index_path.section, index_path.row)
-      data_cell[:accessory][:arguments] ||= {}
-      data_cell[:accessory][:arguments][:value] = switch.isOn if data_cell[:accessory][:arguments].is_a?(Hash)
+      if index_path
+        data_cell = cell_at_section_and_index(index_path.section, index_path.row)
+        data_cell[:accessory][:arguments] ||= {}
+        data_cell[:accessory][:arguments][:value] = switch.isOn if data_cell[:accessory][:arguments].is_a?(Hash)
 
-      trigger_action(data_cell[:accessory][:action], data_cell[:accessory][:arguments]) if data_cell[:accessory][:action]
+        trigger_action(data_cell[:accessory][:action], data_cell[:accessory][:arguments]) if data_cell[:accessory][:action]
+      end
     end
 
     def delete_row(index_paths, animation = nil)
@@ -87,6 +89,35 @@ module ProMotion
         @promotion_table_data.delete_cell(index_path: index_path)
       end
       table_view.deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)
+    end
+
+    def table_view_cell(params={})
+      if params[:index_path]
+        params[:section] = params[:index_path].section
+        params[:index] = params[:index_path].row
+      end
+
+      data_cell = @promotion_table_data.cell(section: params[:section], index: params[:index])
+      return UITableViewCell.alloc.init unless data_cell # No data?
+
+      table_cell = create_table_cell(data_cell)
+
+      table_cell
+    end
+      
+    def create_table_cell(data_cell)
+      table_cell = table_view.dequeueReusableCellWithIdentifier(data_cell[:cell_identifier])
+      
+      unless table_cell
+        data_cell[:cell_style] = UITableViewCellStyleSubtitle
+        table_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:data_cell[:cell_identifier])
+        table_cell.extend PM::TableViewCellModule unless table_cell.is_a?(PM::TableViewCellModule)
+        table_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
+      end
+
+      table_cell.setup(data_cell, self)
+
+      table_cell
     end
 
     ########## Cocoa touch methods #################
@@ -114,7 +145,7 @@ module ProMotion
     end
 
     def tableView(table_view, cellForRowAtIndexPath:index_path)
-      @promotion_table_data.table_view_cell(index_path: index_path)
+      table_view_cell(index_path: index_path)
     end
 
     def tableView(table_view, heightForRowAtIndexPath:index_path)

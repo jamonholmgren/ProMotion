@@ -27,7 +27,8 @@ module ProMotion
       end
 
       table_section = self.section(params[:section])
-      table_section[:cells].at(params[:index].to_i)
+      c = table_section[:cells].at(params[:index].to_i)
+      set_data_cell_defaults c
     end
 
     def delete_cell(params={})
@@ -68,22 +69,6 @@ module ProMotion
       self.filtered = false
     end
 
-    def table_view_cell(params={})
-      if params[:index_path]
-        params[:section] = params[:index_path].section
-        params[:index] = params[:index_path].row
-      end
-      
-      data_cell = self.cell(section: params[:section], index: params[:index])
-      return UITableViewCell.alloc.init unless data_cell # No data?
-
-      data_cell = self.set_data_cell_defaults(data_cell)
-
-      table_cell = self.create_table_cell(data_cell)
-
-      table_cell
-    end
-
     def set_data_cell_defaults(data_cell)
       data_cell[:cell_style] ||= UITableViewCellStyleDefault
       data_cell[:cell_identifier] ||= build_cell_identifier(data_cell)
@@ -97,21 +82,6 @@ module ProMotion
       } unless data_cell[:accessory].is_a? Hash
 
       data_cell
-    end
-
-    def create_table_cell(data_cell)
-      table_cell = table_view.dequeueReusableCellWithIdentifier(data_cell[:cell_identifier])
-      
-      unless table_cell
-        data_cell[:cell_style] = UITableViewCellStyleSubtitle
-        table_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:data_cell[:cell_identifier])
-        table_cell.extend PM::TableViewCellModule unless table_cell.is_a?(PM::TableViewCellModule)
-        table_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
-      end
-
-      table_cell.setup(data_cell)
-
-      table_cell
     end
 
     def build_cell_identifier(data_cell)

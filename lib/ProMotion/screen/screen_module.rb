@@ -115,7 +115,7 @@ module ProMotion
     def view_will_appear(animated)
       self.will_appear
 
-      self.will_present if isBeingPresented
+      self.will_present if isMovingToParentViewController
     end
     def will_appear; end
     def will_present; end
@@ -123,7 +123,7 @@ module ProMotion
     def view_did_appear(animated)
       self.on_appear
 
-      self.on_presented if isBeingPresented
+      self.on_presented if isMovingToParentViewController
     end
     def on_appear; end
     def on_presented; end
@@ -131,7 +131,7 @@ module ProMotion
     def view_will_disappear(animated)
       self.will_disappear
 
-      self.will_dismiss if isBeingDismissed
+      self.will_dismiss if isMovingFromParentViewController
     end
     def will_disappear; end
     def will_dismiss; end
@@ -139,7 +139,7 @@ module ProMotion
     def view_did_disappear(animated)
       self.on_disappear
 
-      self.on_dismiss if isBeingDismissed
+      self.on_dismiss if isMovingFromParentViewController
     end
     def on_disappear; end
     def on_dismiss; end

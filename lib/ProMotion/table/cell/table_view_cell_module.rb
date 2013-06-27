@@ -35,7 +35,6 @@ module ProMotion
     end
 
     def set_accessory_view
-      PM.logger.info data_cell.to_s
       if data_cell[:accessory][:view] == :switch
         switch_view = UISwitch.alloc.initWithFrame(CGRectZero)
         switch_view.setAccessibilityLabel(data_cell[:accessory][:accessibility_label] || data_cell[:title])

@@ -14,7 +14,7 @@ module ProMotion
         self.split_screen.detail_screen = screen
 
       elsif args[:in_master] && self.split_screen
-        self.split_screen.master_screen = screen 
+        self.split_screen.master_screen = screen
 
       elsif args[:close_all]
         open_root_screen screen
@@ -38,6 +38,10 @@ module ProMotion
 
     def open_root_screen(screen)
       app_delegate.open_root_screen(screen)
+    end
+
+    def pop_to_root(animated = false)
+      self.navigation_controller.popToRootViewControllerAnimated animated
     end
 
     def open_modal(screen, args = {})
@@ -93,7 +97,7 @@ module ProMotion
 
       # Instantiate screen if given a class
       screen = screen.new if screen.respond_to?(:new)
-      
+
       # Set parent
       screen.parent_screen = self if screen.respond_to?(:parent_screen=)
 

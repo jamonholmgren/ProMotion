@@ -72,10 +72,19 @@ describe "ProMotion::Screen functional" do
       @presented_screen.will_present_fired.should == true
       @presented_screen.on_presented_fired.should == true
 
+      @presented_screen.will_dismiss_fired.should.not == true
+      @presented_screen.on_dismiss_fired.should.not == true
+
+      @presented_screen.reset
+
       @presented_screen.close
       wait 0.6 do
         @presented_screen.will_dismiss_fired.should == true
         @presented_screen.on_dismiss_fired.should == true
+
+        @presented_screen.will_present_fired.should.not == true
+        @presented_screen.on_presented_fired.should.not == true
+
         @presented_screen = nil
       end
     end

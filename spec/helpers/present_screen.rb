@@ -17,4 +17,10 @@ class PresentScreen < PM::Screen
     self.on_dismiss_fired = true
   end
 
+  def reset
+    self.will_present_fired = false
+    self.on_presented_fired = false
+    self.will_dismiss_fired = false
+    self.on_dismiss_fired = false
+  end
 end

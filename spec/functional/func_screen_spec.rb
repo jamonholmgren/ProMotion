@@ -5,11 +5,13 @@ describe "ProMotion::Screen functional" do
   def controller
     rotate_device to: :portrait, button: :bottom
     @controller ||= FunctionalScreen.new(nav_bar: true)
+    @root_screen = @controller
     @controller.navigation_controller
   end
 
   after do
     @controller = nil
+    @root_screen = nil
   end
 
   it "should have a navigation bar" do
@@ -17,19 +19,19 @@ describe "ProMotion::Screen functional" do
   end
 
   it "should allow setting a left nav bar button" do
-    @controller.set_nav_bar_button :left, title: "Cool", action: :triggered_button
+    @root_screen.set_nav_bar_button :left, title: "Cool", action: :triggered_button
     tap("Cool")
-    @controller.button_was_triggered.should.be.true
+    @root_screen.button_was_triggered.should.be.true
   end
 
   it "should allow setting a right nav bar button" do
-    @controller.set_nav_bar_button :right, title: "Cool2", action: :triggered_button
+    @root_screen.set_nav_bar_button :right, title: "Cool2", action: :triggered_button
     tap("Cool2")
-    @controller.button_was_triggered.should.be.true
+    @root_screen.button_was_triggered.should.be.true
   end
 
   it "should allow opening another screen in the same nav bar and have a back button that is operational" do
-    @controller.open BasicScreen
+    @root_screen.open BasicScreen
 
     wait 0.5 do
 
@@ -47,7 +49,7 @@ describe "ProMotion::Screen functional" do
   it "should allow opening and closing a modal screen" do
     @basic = BasicScreen.new(nav_bar: true)
     wait 0.1 do
-      @controller.open_modal @basic
+      @root_screen.open_modal @basic
 
       wait 0.6 do
 
@@ -59,6 +61,22 @@ describe "ProMotion::Screen functional" do
           view("Functional").should.be.kind_of UINavigationItemView
         end
 
+      end
+    end
+  end
+
+  it "should fire the will_present, on_presented, will_dismiss, and on_dismiss_methods" do
+    @presented_screen = PresentScreen.new
+    @root_screen.open @presented_screen
+    wait 0.6 do
+      @presented_screen.will_present_fired.should == true
+      @presented_screen.on_presented_fired.should == true
+
+      @presented_screen.close
+      wait 0.6 do
+        @presented_screen.will_dismiss_fired.should == true
+        @presented_screen.on_dismiss_fired.should == true
+        @presented_screen = nil
       end
     end
   end

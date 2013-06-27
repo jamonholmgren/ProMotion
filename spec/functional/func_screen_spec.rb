@@ -64,7 +64,7 @@ describe "ProMotion::Screen functional" do
   end
 
   it "should pop to the root view controller" do
-    root_vc = @controller.navigation_controller.visibleViewController
+    @root_vc = @controller.navigation_controller.visibleViewController
     @controller.navigation_controller.viewControllers.count.should == 1
     @controller.open BasicScreen.new
     wait 0.6 do
@@ -76,7 +76,7 @@ describe "ProMotion::Screen functional" do
           @controller.pop_to_root true
           wait 0.6 do
             @controller.navigation_controller.viewControllers.count.should == 1
-            @controller.navigation_controller.topViewController.should == root_vc
+            @controller.navigation_controller.topViewController.should == @root_vc
           end
         end
       end

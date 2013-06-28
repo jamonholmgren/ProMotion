@@ -71,8 +71,8 @@ module ProMotion
 
     def set_data_cell_defaults(data_cell)
       data_cell[:cell_style] ||= UITableViewCellStyleDefault
-      data_cell[:cell_identifier] ||= build_cell_identifier(data_cell)
       data_cell[:cell_class] ||= PM::TableViewCell
+      data_cell[:cell_identifier] ||= build_cell_identifier(data_cell)
       
       data_cell[:accessory] = {
         view: data_cell[:accessory],
@@ -85,9 +85,9 @@ module ProMotion
     end
 
     def build_cell_identifier(data_cell)
-      ident = "#{data_cell[:cell_class]}"
+      ident = "#{data_cell[:cell_class].to_s}"
       ident << "-#{data_cell[:stylename].to_s}" if data_cell[:stylename] # For Teacup
-      ident << "-#{data_cell[:accessory][:view].to_s}" if data_cell[:accessory]
+      ident << "-accessory" if data_cell[:accessory]
       ident << "-subtitle" if data_cell[:subtitle]
       ident << "-remoteimage" if data_cell[:remote_image]
       ident << "-image" if data_cell[:image]

@@ -5,7 +5,7 @@ module ProMotion
     include ProMotion::Tabs
     include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2")
 
-    attr_accessor :parent_screen, :first_screen, :tab_bar_item, :tab_bar, :modal, :split_screen
+    attr_accessor :parent_screen, :first_screen, :tab_bar_item, :modal, :split_screen
 
     def on_create(args = {})
       unless self.is_a?(UIViewController)
@@ -14,9 +14,7 @@ module ProMotion
 
       self.title = self.class.send(:get_title)
 
-      args.each do |k, v|
-        self.send("#{k}=", v) if self.respond_to?("#{k}=")
-      end
+      args.each { |k, v| self.send("#{k}=", v) if self.respond_to?("#{k}=") }
 
       self.add_nav_bar(args) if args[:nav_bar]
       self.navigationController.toolbarHidden = !args[:toolbar] unless args[:toolbar].nil?
@@ -43,15 +41,6 @@ module ProMotion
     def navigation_controller=(val)
       @navigation_controller = val
       val
-    end
-
-    def set_tab_bar_item(args = {})
-      self.tab_bar_item = args
-      refresh_tab_bar_item
-    end
-
-    def refresh_tab_bar_item
-      self.tabBarItem = create_tab_bar_item(self.tab_bar_item) if self.tab_bar_item
     end
 
     def add_nav_bar(args = {})

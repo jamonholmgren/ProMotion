@@ -173,6 +173,7 @@ module ProMotion
     end
     
     def look_up_address(args={}, &callback)
+      args[:address] = args if args.is_a? String # Assume if a string is passed that they want an address
       geocoder = CLGeocoder.new
       
       return geocoder.geocodeAddressDictionary(args[:address], completionHandler: callback) if args[:address].is_a?(Hash)

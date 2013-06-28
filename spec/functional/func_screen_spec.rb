@@ -100,7 +100,7 @@ describe "ProMotion::Screen functional" do
         @controller.open BasicScreen.new
         wait 0.6 do
           @controller.navigation_controller.viewControllers.count.should == 4
-          @controller.pop_to_root true
+          @controller.close to_screen: :root
           wait 0.6 do
             @controller.navigation_controller.viewControllers.count.should == 1
             @controller.navigation_controller.topViewController.should == @root_vc

@@ -41,10 +41,6 @@ module ProMotion
       app_delegate.open_root_screen(screen)
     end
 
-    def pop_to_root(animated = false)
-      self.navigation_controller.popToRootViewControllerAnimated animated
-    end
-
     def open_modal(screen, args = {})
       open screen, args.merge({ modal: true })
     end
@@ -155,7 +151,9 @@ module ProMotion
 
     def close_nav_screen(args={})
       args[:animated] = true unless args.has_key?(:animated)
-      if args[:to_screen] && args[:to_screen].is_a?(UIViewController)
+      if args[:to_screen] == :root
+        self.navigation_controller.popToRootViewControllerAnimated args[:animated]
+      elsif args[:to_screen] && args[:to_screen].is_a?(UIViewController)
         self.parent_screen = args[:to_screen]
         self.navigation_controller.popToViewController(args[:to_screen], animated: args[:animated])
       else

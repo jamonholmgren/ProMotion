@@ -18,14 +18,14 @@ describe "ProMotion::TestWebScreen functionality" do
     @webscreen.set_content(file_name)
 
     @loaded_file = File.read(File.join(NSBundle.mainBundle.resourcePath, file_name))
-    wait 1.0 do
+    wait_for_change @webscreen, 'load_finished' do
       @webscreen.html.should == @loaded_file
     end
   end
 
   it "should allow you to navigate to a website" do
     @webscreen.set_content(NSURL.URLWithString("http://www.google.com"))
-    wait 1.0 do
+    wait_for_change @webscreen, 'load_finished' do
       @webscreen.html.include?('<form action="/search"').should == true
     end
   end
@@ -33,7 +33,7 @@ describe "ProMotion::TestWebScreen functionality" do
   it "should manipulate the webscreen contents with javascript" do
     @webscreen.set_content('<h1 id="cool">Something Cool</h1>')
 
-    wait 0.5 do
+    wait_for_change @webscreen, 'load_finished' do
       @webscreen.evaluate('document.getElementById("cool").innerHTML = "Changed"')
       @webscreen.html.should == '<h1 id="cool">Changed</h1>'
     end

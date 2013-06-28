@@ -35,5 +35,15 @@ describe "map properties" do
     @map.clear_annotations
     @map.annotations.count.should == 0
   end
-  
+
+  it "should geocode an address" do
+    @map.lookup_infinite_loop
+    wait_for_change @map, 'infinite_loop_points' do
+      placemarks = @map.infinite_loop_points
+      placemarks.count.should == 1
+      placemarks.first.postalCode.should == "95014"
+      puts placemarks.first.description.include?("Cupertino").should == true
+    end
+  end
+
 end

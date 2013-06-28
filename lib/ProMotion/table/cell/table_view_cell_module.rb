@@ -25,25 +25,28 @@ module ProMotion
 
     def set_cell_attributes
       data_cell_attributes = data_cell.dup
-      [:image, :accessory_action].each { |k| data_cell_attributes.delete(k) }
+      [:image, :accessory_action, :editing_style].each { |k| data_cell_attributes.delete(k) }
       set_attributes self, data_cell_attributes
       self
     end
 
     def set_background_color
-      self.backgroundView = UIView.new.tap{|v| v.backgroundColor = data_cell[:background_color]} if data_cell[:background_color]
+      self.backgroundView ||= UIView.new
+      self.backgroundView.backgroundColor = data_cell[:background_color] if data_cell[:background_color]
     end
 
     def set_accessory_view
-      if data_cell[:accessory][:view] == :switch
-        switch_view = UISwitch.alloc.initWithFrame(CGRectZero)
-        switch_view.setAccessibilityLabel(data_cell[:accessory][:accessibility_label] || data_cell[:title])
-        switch_view.addTarget(self.table_screen, action: "accessory_toggled_switch:", forControlEvents:UIControlEventValueChanged)
-        switch_view.on = !!data_cell[:accessory][:value]
-        self.accessoryView = switch_view
-      elsif data_cell[:accessory][:view]
-        self.accessoryView = data_cell[:accessory][:view]
-        self.accessoryView.autoresizingMask = UIViewAutoresizingFlexibleWidth
+      if data_cell[:accessory]
+        if data_cell[:accessory][:view] == :switch
+          switch_view = UISwitch.alloc.initWithFrame(CGRectZero)
+          switch_view.setAccessibilityLabel(data_cell[:accessory][:accessibility_label] || data_cell[:title])
+          switch_view.addTarget(self.table_screen, action: "accessory_toggled_switch:", forControlEvents:UIControlEventValueChanged)
+          switch_view.on = !!data_cell[:accessory][:value]
+          self.accessoryView = switch_view
+        elsif data_cell[:accessory][:view]
+          self.accessoryView = data_cell[:accessory][:view]
+          self.accessoryView.autoresizingMask = UIViewAutoresizingFlexibleWidth
+        end
       else
         self.accessoryView = nil
       end

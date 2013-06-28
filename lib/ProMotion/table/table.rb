@@ -109,7 +109,7 @@ module ProMotion
       table_cell = table_view.dequeueReusableCellWithIdentifier(data_cell[:cell_identifier])
       
       unless table_cell
-        data_cell[:cell_style] = UITableViewCellStyleSubtitle
+        data_cell[:cell_style] ||= UITableViewCellStyleSubtitle
         table_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:data_cell[:cell_identifier])
         table_cell.extend PM::TableViewCellModule unless table_cell.is_a?(PM::TableViewCellModule)
         table_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
@@ -148,21 +148,44 @@ module ProMotion
       table_view_cell(index_path: index_path)
     end
 
+    def tableView(table_view, willDisplayCell: table_cell, forRowAtIndexPath: index_path)
+      data_cell = @promotion_table_data.cell(index_path: index_path)
+      table_cell.backgroundColor = data_cell[:background_color] if data_cell[:background_color]
+      table_cell.send(:restyle!) if table_cell.respond_to?(:restyle!)
+    end
+
     def tableView(table_view, heightForRowAtIndexPath:index_path)
       (@promotion_table_data.cell(index_path: index_path)[:height] || table_view.rowHeight).to_f
     end
 
     def tableView(table_view, didSelectRowAtIndexPath:index_path)
-      cell = @promotion_table_data.cell(index_path: index_path)
+      data_cell = @promotion_table_data.cell(index_path: index_path)
       table_view.deselectRowAtIndexPath(index_path, animated: true)
 
-      cell[:arguments] ||= {}
-      cell[:arguments][:cell] = cell if cell[:arguments].is_a?(Hash) # TODO: Should we really do this?
+      data_cell[:arguments] ||= {}
+      data_cell[:arguments][:cell] = data_cell if data_cell[:arguments].is_a?(Hash) # TODO: Should we really do this?
 
-      trigger_action(cell[:action], cell[:arguments]) if cell[:action]
+      trigger_action(data_cell[:action], data_cell[:arguments]) if data_cell[:action]
     end
 
-    def tableView(tableView, commitEditingStyle:editing_style, forRowAtIndexPath:index_path)
+    def tableView(table_view, editingStyleForRowAtIndexPath: index_path)
+      data_cell = @promotion_table_data.cell(index_path: index_path)
+
+      case data_cell[:editing_style]
+      when nil
+        UITableViewCellEditingStyleNone
+      when :none
+        UITableViewCellEditingStyleNone
+      when :delete
+        UITableViewCellEditingStyleDelete
+      when :insert
+        UITableViewCellEditingStyleInsert
+      else
+        data_cell[:editing_style]
+      end
+    end
+
+    def tableView(table_view, commitEditingStyle: editing_style, forRowAtIndexPath: index_path)
       if editing_style == UITableViewCellEditingStyleDelete
         delete_cell(index_path)
       end
@@ -175,13 +198,13 @@ module ProMotion
         tableView.setContentOffset(CGPointZero, animated:false)
         NSNotFound
       else
-        index-1
+        index - 1
       end
     end
 
-    def deleteRowsAtIndexPaths(indexPaths, withRowAnimation:animation)
-      PM.logger.warn "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(indexPaths, withRowAnimation:animation)'."
-      delete_cell(indexPaths, animation)
+    def deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)
+      PM.logger.warn "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)'."
+      delete_cell(index_paths, animation)
     end
 
   end

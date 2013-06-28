@@ -79,20 +79,15 @@ module ProMotion
         value: data_cell[:accessory_value],
         action: data_cell[:accessory_action],
         arguments: data_cell[:accessory_arguments]
-      } unless data_cell[:accessory].is_a? Hash
+      } unless data_cell[:accessory].nil? || data_cell[:accessory].is_a?(Hash)
 
       data_cell
     end
 
     def build_cell_identifier(data_cell)
-      ident = "Cell"
-      unless data_cell[:accessory].nil?
-        if data_cell[:accessory][:view] == :switch
-          ident << "-switch"
-        elsif !data_cell[:accessory][:view].nil?
-          ident << "-accessory"
-        end
-      end
+      ident = "#{data_cell[:cell_class]}"
+      ident << "-#{data_cell[:stylename].to_s}" if data_cell[:stylename] # For Teacup
+      ident << "-#{data_cell[:accessory][:view].to_s}" if data_cell[:accessory]
       ident << "-subtitle" if data_cell[:subtitle]
       ident << "-remoteimage" if data_cell[:remote_image]
       ident << "-image" if data_cell[:image]

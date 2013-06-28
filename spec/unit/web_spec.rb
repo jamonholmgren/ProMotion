@@ -11,7 +11,7 @@ describe "web screen properties" do
   end
 
   it "should load the about html page" do
-    wait 0.5 do
+    wait_for_change @webscreen, 'load_finished' do
       @webscreen.load_finished.should == true
     end
   end

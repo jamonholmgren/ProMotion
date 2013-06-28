@@ -104,10 +104,10 @@ module ProMotion
 
       table_cell
     end
-      
+
     def create_table_cell(data_cell)
       table_cell = table_view.dequeueReusableCellWithIdentifier(data_cell[:cell_identifier])
-      
+
       unless table_cell
         data_cell[:cell_style] ||= UITableViewCellStyleSubtitle
         table_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:data_cell[:cell_identifier])

@@ -172,6 +172,15 @@ module ProMotion
       end
     end
 
+    def look_up_address(args={}, &callback)
+      args[:address] = args if args.is_a? String # Assume if a string is passed that they want an address
+
+      geocoder = CLGeocoder.new
+      return geocoder.geocodeAddressDictionary(args[:address], completionHandler: callback) if args[:address].is_a?(Hash)
+      return geocoder.geocodeAddressString(args[:address].to_s, completionHandler: callback) unless args[:region]
+      return geocoder.geocodeAddressString(args[:address].to_s, inRegion:args[:region].to_s, completionHandler: callback) if args[:region]
+    end
+
     module MapClassMethods
       def start_position(params={})
         @start_position_params = params

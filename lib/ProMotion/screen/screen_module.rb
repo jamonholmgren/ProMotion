@@ -5,7 +5,7 @@ module ProMotion
     include ProMotion::Tabs
     include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2")
 
-    attr_accessor :parent_screen, :first_screen, :tab_bar_item, :modal, :split_screen
+    attr_accessor :parent_screen, :first_screen, :modal, :split_screen
 
     def on_create(args = {})
       unless self.is_a?(UIViewController)

@@ -141,7 +141,8 @@ describe "screen helpers" do
 
       it "should open a root screen if :close_all is provided" do
         @screen.mock!(:open_root_screen) { |screen| screen.should.be.instance_of BasicScreen }
-        @screen.open BasicScreen, close_all: true
+        screen = @screen.open BasicScreen, close_all: true
+        screen.should.be.kind_of BasicScreen
       end
 
       it "should present a modal screen if :modal is provided" do
@@ -149,7 +150,8 @@ describe "screen helpers" do
           screen.should.be.instance_of BasicScreen
           animated.should == true
         end
-        @screen.open BasicScreen, modal: true
+        screen = @screen.open BasicScreen, modal: true
+        screen.should.be.kind_of BasicScreen
       end
       
       it "should present a modal screen if open_modal is used" do
@@ -157,7 +159,8 @@ describe "screen helpers" do
           screen.should.be.instance_of BasicScreen
           animated.should == true
         end
-        @screen.open_modal BasicScreen
+        screen = @screen.open_modal BasicScreen
+        screen.should.be.kind_of BasicScreen
       end
 
       it "should respect animated property of opening modal screens" do
@@ -167,7 +170,8 @@ describe "screen helpers" do
           animated.should == false
         end
 
-        @screen.send(:open, new_screen, animated: false, modal: true)
+        screen = @screen.send(:open, new_screen, animated: false, modal: true)
+        screen.should.be.kind_of BasicScreen
       end
 
       it "should open screen in tab bar if :in_tab is provided" do
@@ -176,17 +180,20 @@ describe "screen helpers" do
           screen.should.be.instance_of BasicScreen
           tab_name.should == 'my_tab'
         end
-        @screen.open BasicScreen, in_tab: 'my_tab'
+        screen = @screen.open BasicScreen, in_tab: 'my_tab'
+        screen.should.be.kind_of BasicScreen
       end
 
       it "should pop onto navigation controller if current screen is on nav stack already" do
         @screen.mock!(:push_view_controller) { |vc| vc.should.be.instance_of BasicScreen }
-        @screen.open BasicScreen
+        screen = @screen.open BasicScreen
+        screen.should.be.kind_of BasicScreen
       end
       
       it "should ignore its own navigation controller if current screen has a navigation controller" do
         basic = BasicScreen.new(nav_bar: true) # creates a dangling nav_bar that will be discarded.
-        @screen.open basic
+        screen = @screen.open basic
+        screen.should.be.kind_of BasicScreen
         basic.navigationController.should == @screen.navigationController
         basic.navigation_controller.should == @screen.navigationController
         @screen.navigation_controller.should == @screen.navigationController
@@ -196,7 +203,8 @@ describe "screen helpers" do
         parent_screen = HomeScreen.new
         new_screen = BasicScreen.new
         parent_screen.mock!(:open_root_screen) { |vc| vc.should.be == new_screen }
-        parent_screen.open_screen new_screen
+        screen = parent_screen.open_screen new_screen
+        screen.should == new_screen
       end
 
     end

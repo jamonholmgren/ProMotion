@@ -33,6 +33,7 @@ module ProMotion
 
       end
 
+      screen
     end
     alias :open :open_screen
 

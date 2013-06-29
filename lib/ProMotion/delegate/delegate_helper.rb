@@ -48,6 +48,7 @@ module ProMotion
       self.window.rootViewController = (screen.navigationController || screen)
       self.window.makeKeyAndVisible
 
+      screen
     end
     alias :open :open_screen
     alias :open_root_screen :open_screen

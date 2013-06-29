@@ -2,7 +2,10 @@
 
 ## A new way to easily build RubyMotion apps.
 
-ProMotion is a RubyMotion gem that makes iOS development more like Ruby and less like Objective-C. It introduces a clean, Ruby-style syntax for building screens that is easy to learn and remember.
+ProMotion is a RubyMotion gem that makes iOS development more like Ruby and less like Objective-C.
+It introduces a clean, Ruby-style syntax for building screens that is easy to learn and remember and
+abstracts a ton of boilerplate UIViewController, UINavigationController, and other iOS code into a
+simple, Ruby-like DSL.
 
 ```ruby
 class AppDelegate < PM::Delegate
@@ -32,37 +35,6 @@ class NewScreen < PM::TableScreen
   end
 end
 ```
-
-
-**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
-
-- [ProMotion ](#promotion-)
-  - [A new way to easily build RubyMotion apps.](#a-new-way-to-easily-build-rubymotion-apps)
-- [Tutorials](#tutorials)
-  - [Screencasts](#screencasts)
-  - [Sample Apps](#sample-apps)
-  - [Apps Built With ProMotion](#apps-built-with-promotion)
-- [Getting Started](#getting-started)
-  - [Setup](#setup)
-- [What's New?](#whats-new)
-  - [Version 0.7](#version-07)
-- [Usage](#usage)
-  - [Creating a basic screen](#creating-a-basic-screen)
-  - [Loading your first screen](#loading-your-first-screen)
-  - [Creating a split screen (iPad apps only)](#creating-a-split-screen-ipad-apps-only)
-  - [Creating a tab bar](#creating-a-tab-bar)
-  - [Add navigation bar buttons](#add-navigation-bar-buttons)
-  - [Opening and closing screens](#opening-and-closing-screens)
-    - [Note about split screens and universal apps](#note-about-split-screens-and-universal-apps)
-  - [Adding view elements](#adding-view-elements)
-  - [Table Screens](#table-screens)
-  - [Using your own UIViewController](#using-your-own-uiviewcontroller)
-- [API Reference](#api-reference)
-- [Help](#help)
-- [Contributing](#contributing)
-  - [Working on Features](#working-on-features)
-  - [Submitting a Pull Request](#submitting-a-pull-request)
-  - [Primary Contributors](#primary-contributors)
 
 # Tutorials
 

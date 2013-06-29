@@ -66,11 +66,15 @@ end
 
 # Tutorials
 
-http://www.clearsightstudio.com/insights/ruby-motion-promotion-tutorial
+Shows how to make a basic app in ProMotion. Updated in May.
+
+[http://www.clearsightstudio.com/insights/ruby-motion-promotion-tutorial](http://www.clearsightstudio.com/insights/ruby-motion-promotion-tutorial)
 
 ## Screencasts
 
-http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/
+Shows how to create a Youtube app that shows Portland Trailblazer highlights.
+
+[http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/](http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/)
 
 ## Sample Apps
 
@@ -81,7 +85,7 @@ source to pull from Github.
 
 ## Apps Built With ProMotion
 
-[View apps built with ProMotion (feel free to submit yours in a pull request!)](https://github.com/clearsightstudio/ProMotion/blob/master/PROMOTION_APPS.md)
+[View apps built with ProMotion (feel free to submit yours!)](https://github.com/clearsightstudio/ProMotion/wiki/Apps-built-on-ProMotion)
 
 # Getting Started
 
@@ -99,7 +103,7 @@ Check out the [Basic Usage Examples](https://github.com/clearsightstudio/ProMoti
 
 # API Reference
 
-We've created a fairly comprehensive wiki with code examples, usage examples, and API reference.
+We've created a comprehensive and always updated wiki with code examples, usage examples, and API reference.
 
 ### [ProMotion API Reference](https://github.com/clearsightstudio/ProMotion/wiki/_pages)
 

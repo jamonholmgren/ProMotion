@@ -34,15 +34,6 @@ end
 ```
 
 
-Featured on the RubyMotion blog: [http://blog.rubymotion.com/post/50523137515/introducing-promotion-a-full-featured-rubymotion](http://blog.rubymotion.com/post/50523137515/introducing-promotion-a-full-featured-rubymotion)
-
-## New: Version 1.0 is on its way!
-
-Go check out the [version-1.0](https://github.com/clearsightstudio/ProMotion/tree/version-1.0) branch -- 
-it's got some great improvements and cleaner source code. Although it's not completely ready to launch, 
-we recommend trying it out.
-
-
 **Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
 
 - [ProMotion ](#promotion-)

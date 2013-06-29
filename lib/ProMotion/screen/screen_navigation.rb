@@ -14,7 +14,7 @@ module ProMotion
         self.split_screen.detail_screen = screen
 
       elsif args[:in_master] && self.split_screen
-        self.split_screen.master_screen = screen 
+        self.split_screen.master_screen = screen
 
       elsif args[:close_all]
         open_root_screen screen
@@ -94,7 +94,7 @@ module ProMotion
 
       # Instantiate screen if given a class
       screen = screen.new if screen.respond_to?(:new)
-      
+
       # Set parent
       screen.parent_screen = self if screen.respond_to?(:parent_screen=)
 
@@ -151,7 +151,9 @@ module ProMotion
 
     def close_nav_screen(args={})
       args[:animated] = true unless args.has_key?(:animated)
-      if args[:to_screen] && args[:to_screen].is_a?(UIViewController)
+      if args[:to_screen] == :root
+        self.navigation_controller.popToRootViewControllerAnimated args[:animated]
+      elsif args[:to_screen] && args[:to_screen].is_a?(UIViewController)
         self.parent_screen = args[:to_screen]
         self.navigation_controller.popToViewController(args[:to_screen], animated: args[:animated])
       else

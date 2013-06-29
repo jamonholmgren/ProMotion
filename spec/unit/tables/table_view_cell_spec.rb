@@ -56,6 +56,7 @@ describe "PM::TableViewCellModule" do
   it "should have the right custom re-use identifier" do
     @subject.reuseIdentifier.should == "Custom Cell"
   end
+
   it "should have the right generated re-use identifier" do
     ip = NSIndexPath.indexPathForRow(2, inSection: 1)
     subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: ip)

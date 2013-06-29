@@ -8,7 +8,7 @@ describe "PM::TableViewCellModule" do
       action: :tapped_cell_1,
       height: 50, # manually changes the cell's height
       cell_style: UITableViewCellStyleSubtitle,
-      cell_identifier: "Cell",
+      cell_identifier: "Custom Cell",
       cell_class: PM::TableViewCell,
       layer: { masks_to_bounds: true },
       background_color: UIColor.redColor,
@@ -54,12 +54,12 @@ describe "PM::TableViewCellModule" do
   end
 
   it "should have the right custom re-use identifier" do
-    @subject.reuseIdentifier.should == "Cell"
+    @subject.reuseIdentifier.should == "Custom Cell"
   end
   it "should have the right generated re-use identifier" do
     ip = NSIndexPath.indexPathForRow(2, inSection: 1)
     subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: ip)
-    subject.reuseIdentifier.should == "Cell-accessory"
+    subject.reuseIdentifier.should == "ProMotion::TableViewCell-accessory"
   end
 
   it "should have the correct height" do

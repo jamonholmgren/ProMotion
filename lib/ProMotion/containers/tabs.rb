@@ -1,50 +1,32 @@
 module ProMotion
   module Tabs
-    def tab_bar_controller(*screens)
-      tab_bar_controller = UITabBarController.alloc.init
-
-      view_controllers = []
-      tag_index = 0
-
-      screens.map! { |s| s.respond_to?(:new) ? s.new : s } # Initialize any classes
-
-      screens.each do |s|
-        s = s.new if s.respond_to?(:new)
-
-        s.tabBarItem.tag = tag_index
-
-        s.parent_screen = self if self.is_a?(UIViewController) && s.respond_to?("parent_screen=")
-        s.tab_bar = tab_bar_controller if s.respond_to?("tab_bar=")
-
-        view_controllers << (s.navigationController || s)
-
-        tag_index += 1
-
-        s.on_load if s.respond_to?(:on_load)
-      end
-
-      tab_bar_controller.viewControllers = view_controllers
-      tab_bar_controller
-    end
-
+    attr_accessor :tab_bar, :tab_bar_item
+    
     def open_tab_bar(*screens)
-      tab_bar = tab_bar_controller(*screens)
+      self.tab_bar = PM::TabBarController.new(screens)
 
-      a = self.respond_to?(:open_root_screen) ? self : UIApplication.sharedApplication.delegate
+      delegate = self.respond_to?(:open_root_screen) ? self : UIApplication.sharedApplication.delegate
 
-      a.open_root_screen(tab_bar)
-      tab_bar
+      delegate.open_root_screen(self.tab_bar)
+      self.tab_bar
     end
 
     def open_tab(tab)
-      if tab.is_a? String
-        return self.select(self.tab_bar, title: tab)
-      elsif tab.is_a? Numeric
-        self.tab_bar.selectedIndex = tab
-        return self.tab_bar.viewControllers[tab]
-      else
-        $stderr.puts "Unable to open tab #{tab.to_s} because it isn't a string or number."
-      end
+      self.tab_bar.open_tab(tab)
+    end
+
+    def set_tab_bar_item(args = {})
+      self.tab_bar_item = args
+      refresh_tab_bar_item
+    end
+
+    def refresh_tab_bar_item
+      self.tabBarItem = create_tab_bar_item(self.tab_bar_item) if self.tab_bar_item && self.respond_to?(:tabBarItem=)
+    end
+
+    def set_tab_bar_badge(number)
+      self.tab_bar_item[:badge] = number
+      refresh_tab_bar_item
     end
 
     def create_tab_bar_icon(icon, tag)
@@ -69,19 +51,7 @@ module ProMotion
 
       return tab_bar_item
     end
-
-    def select(tab_bar_controller, title: title)
-      root_controller = nil
-      tab_bar_controller.viewControllers.each do |vc|
-        if vc.tabBarItem.title == title
-          tab_bar_controller.selectedViewController = vc
-          root_controller = vc
-          break
-        end
-      end
-      root_controller
-    end
-
+    
     def replace_current_item(tab_bar_controller, view_controller: vc)
       controllers = NSMutableArray.arrayWithArray(tab_bar_controller.viewControllers)
       controllers.replaceObjectAtIndex(tab_bar_controller.selectedIndex, withObject: vc)

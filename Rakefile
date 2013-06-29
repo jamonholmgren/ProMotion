@@ -41,6 +41,10 @@ namespace :spec do
     App.config.instance_variable_set("@spec_files", spec_files)
     Rake::Task["simulator"].invoke
   end
+  
+  task :func do
+    Rake::Task["spec:functional"].invoke
+  end
 
   task :functional do
     App.config.spec_mode = true

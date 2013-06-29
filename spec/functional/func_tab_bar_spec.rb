@@ -50,5 +50,29 @@ describe "PM::Tabs" do
     @screen4.open_tab 0
     @tab_bar.selectedIndex.should == 0
   end
+  
+  it "should allow opening a tab from the app_delegate" do
+    @app.open_tab "Screen 2"
+    @tab_bar.selectedIndex.should == 1
+    @app.open_tab "Screen 3"
+    @tab_bar.selectedIndex.should == 2
+    @app.open_tab "Screen 4"
+    @tab_bar.selectedIndex.should == 3
+    @app.open_tab "Screen 1"
+    @tab_bar.selectedIndex.should == 0
+  end
+  
+  it "should allow opening a tab by accessing the tab bar directly" do
+    @tab_bar.open_tab "Screen 2"
+    @tab_bar.selectedIndex.should == 1
+    @tab_bar.open_tab "Screen 3"
+    @tab_bar.selectedIndex.should == 2
+    @tab_bar.open_tab "Screen 4"
+    @tab_bar.selectedIndex.should == 3
+    @tab_bar.open_tab "Screen 1"
+    @tab_bar.selectedIndex.should == 0
+  end
+  
+  
 
 end

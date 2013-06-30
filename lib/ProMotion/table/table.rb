@@ -38,6 +38,10 @@ module ProMotion
       table_view
     end
 
+    def searching?
+      @promotion_table_data.filtered
+    end
+
     def update_table_view_data(data)
       @promotion_table_data.data = data
       table_view.reloadData

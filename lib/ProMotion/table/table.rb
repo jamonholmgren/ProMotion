@@ -38,9 +38,8 @@ module ProMotion
       table_view
     end
 
-    def is_searching?
-      return true if self.class.respond_to?(:get_searchable) && @promotion_table_data.filtered == true
-      false
+    def searching?
+      @promotion_table_data.filtered
     end
 
     def update_table_view_data(data)

@@ -47,7 +47,7 @@ module ProMotion
 
       search_string = search_string.downcase.strip
 
-      self.data.each do |section|
+      self.data.compact.each do |section|
         new_section = {}
         new_section[:cells] = []
 

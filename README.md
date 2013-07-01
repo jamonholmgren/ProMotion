@@ -36,6 +36,17 @@ class NewScreen < PM::TableScreen
 end
 ```
 
+# Features
+
+|Screens|Table Screens|
+|---|---|
+|![ProMotion::Screen](https://f.cloud.github.com/assets/1479215/728896/6e5ffd02-e220-11e2-8ec7-c82cb02f6bb8.png)|![ProMotion::TableScreen](https://f.cloud.github.com/assets/1479215/707518/5ea9291a-de1f-11e2-8186-4c4a02dc04a0.png)|
+
+|Navigation Bars|Tab Bars|
+|---|---|
+|![Nav Bars](https://f.cloud.github.com/assets/1479215/707499/63916eb6-de1e-11e2-90e4-e632202c5da7.png)|*Screenshot coming soon*|
+
+
 # Tutorials
 
 Shows how to make a basic app in ProMotion. Updated in May.

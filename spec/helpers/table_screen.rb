@@ -1,4 +1,4 @@
-class TestTableScreen < ProMotion::SectionedTableScreen
+class TestTableScreen < ProMotion::TableScreen
 
   attr_accessor :tap_counter
 

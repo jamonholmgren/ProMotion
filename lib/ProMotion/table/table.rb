@@ -1,6 +1,19 @@
 module ProMotion
   module Table
+
     include ProMotion::ViewHelper
+    include ProMotion::Table::Searchable
+    include ProMotion::Table::Refreshable
+    TABLE_STYLE = UITableViewStylePlain
+
+    def table_view
+      @table_view ||= begin
+        t = UITableView.alloc.initWithFrame(self.view.frame, style:TABLE_STYLE)
+        t.dataSource = self
+        t.delegate = self
+        t
+      end
+    end
 
     def screen_setup
       check_table_data
@@ -124,6 +137,10 @@ module ProMotion
       table_cell
     end
 
+    def update_table_data
+      self.update_table_view_data(self.table_data)
+    end
+
     ########## Cocoa touch methods #################
     def numberOfSectionsInTableView(table_view)
       return @promotion_table_data.data.size
@@ -209,6 +226,41 @@ module ProMotion
     def deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)
       PM.logger.warn "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)'."
       delete_cell(index_paths, animation)
+    end
+
+    module TableClassMethods
+      # Searchable
+      def searchable(params={})
+        @searchable_params = params
+        @searchable = true
+      end
+
+      def get_searchable_params
+        @searchable_params ||= nil
+      end
+
+      def get_searchable
+        @searchable ||= false
+      end
+
+      # Refreshable
+      def refreshable(params = {})
+        @refreshable_params = params
+        @refreshable = true
+      end
+
+      def get_refreshable
+        @refreshable ||= false
+      end
+
+      def get_refreshable_params
+        @refreshable_params ||= nil
+      end
+
+    end
+
+    def self.included(base)
+      base.extend(TableClassMethods)
     end
 
   end

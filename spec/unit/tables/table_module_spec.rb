@@ -40,7 +40,7 @@ describe "PM::Table module" do
       },{
         title: "Table cell group 2", cells: [ cell_factory ]
       },{
-        title: "Table cell group 3", cells: [ cell_factory(title: "3-1"), cell_factory(title: "3-2") ]
+        title: "Table cell group 3", cells: [ cell_factory(title: "3-1"), cell_factory(title: "3-2", background_color: UIColor.blueColor) ]
       },{
         title: "Table cell group 4", cells: [ custom_cell, cell_factory(title: "4-2"), cell_factory(title: "4-3"), cell_factory(title: "4-4") ]
       }]
@@ -110,6 +110,13 @@ describe "PM::Table module" do
     cell.should.be.kind_of(UITableViewCell)
     cell.backgroundColor.should.be.kind_of(UIColor)
     cell.backgroundColor.should == UIColor.colorWithPatternImage(@image)
+  end
+
+  it "should set a custom cell background color" do
+    cell = @subject.tableView(@subject.table_view, cellForRowAtIndexPath: @ip)
+    cell.should.be.kind_of(UITableViewCell)
+    cell.backgroundColor.should.be.kind_of(UIColor)
+    cell.backgroundColor.should == UIColor.blueColor
   end
 
 end

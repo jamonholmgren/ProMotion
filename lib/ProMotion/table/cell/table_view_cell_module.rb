@@ -10,7 +10,6 @@ module ProMotion
 
       # TODO: Some of these need to go away. Unnecessary overhead.
       set_cell_attributes
-      set_background_color
       set_accessory_view
       set_subtitle
       set_image
@@ -28,11 +27,6 @@ module ProMotion
       [:image, :accessory_action, :editing_style].each { |k| data_cell_attributes.delete(k) }
       set_attributes self, data_cell_attributes
       self
-    end
-
-    def set_background_color
-      self.backgroundView ||= UIView.new
-      self.backgroundView.backgroundColor = data_cell[:background_color] if data_cell[:background_color]
     end
 
     def set_accessory_view

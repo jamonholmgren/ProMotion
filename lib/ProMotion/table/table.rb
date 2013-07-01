@@ -154,7 +154,7 @@ module ProMotion
 
     def tableView(table_view, willDisplayCell: table_cell, forRowAtIndexPath: index_path)
       data_cell = @promotion_table_data.cell(index_path: index_path)
-      table_cell.backgroundColor = data_cell[:background_color] if data_cell[:background_color]
+      table_cell.backgroundColor = data_cell[:background_color] || UIColor.whiteColor
       table_cell.send(:restyle!) if table_cell.respond_to?(:restyle!)
     end
 

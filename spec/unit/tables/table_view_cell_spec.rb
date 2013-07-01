@@ -72,7 +72,7 @@ describe "PM::TableViewCellModule" do
   end
 
   it "should set the background color" do
-    @subject.backgroundView.backgroundColor.should == UIColor.redColor
+    @subject.backgroundColor.should == UIColor.redColor
   end
 
   it "should set the selection color style" do
@@ -103,9 +103,9 @@ describe "PM::TableViewCellModule" do
   end
 
   it "should create two extra subviews" do
-    @subject.subviews.length.should == 4
-    @subject.subviews[2].class.should == UIView
-    @subject.subviews[3].class.should == UILabel
+    @subject.subviews.length.should == 3
+    @subject.subviews[1].class.should == UIView
+    @subject.subviews[2].class.should == UILabel
   end
 
 

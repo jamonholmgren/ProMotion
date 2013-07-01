@@ -1,5 +1,9 @@
 module ProMotion
-  module DelegateHelper
+  module DelegateModule
+    
+    include ProMotion::Tabs
+    include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2") # Only with iPad
+    include ProMotion::DelegateNotifications
 
     attr_accessor :window, :aps_notification, :home_screen
 
@@ -11,12 +15,7 @@ module ProMotion
 
       check_for_push_notification launch_options
 
-      # This will work when RubyMotion fixes a bug.
-      # defined?(super) ? super : true
-
-      # Workaround for now. Will display a NoMethodError, but ignore.
-      super rescue true
-      PM.logger.info "You can ignore the NoMethodError -- this is a RubyMotion bug that should be fixed soon."
+      super rescue true # Can cause error message if no super is found, but it's harmless. Ignore.
     end
 
     def applicationWillTerminate(application)

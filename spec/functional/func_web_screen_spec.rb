@@ -24,7 +24,7 @@ describe "ProMotion::TestWebScreen functionality" do
   end
 
   it "should allow you to navigate to a website" do
-    @webscreen.set_content(NSURL.URLWithString("http://www.google.com"))
+    @webscreen.set_content(NSURL.URLWithString("https://www.google.com"))
     wait_for_change @webscreen, 'load_finished' do
       @webscreen.html.include?('<form action="/search"').should == true
     end

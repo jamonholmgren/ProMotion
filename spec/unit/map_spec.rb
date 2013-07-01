@@ -42,7 +42,7 @@ describe "map properties" do
       placemarks = @map.infinite_loop_points
       placemarks.count.should == 1
       placemarks.first.postalCode.should == "95014"
-      puts placemarks.first.description.include?("Cupertino").should == true
+      placemarks.first.description.include?("Cupertino").should == true
     end
   end
 

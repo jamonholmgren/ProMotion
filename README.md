@@ -42,6 +42,8 @@ Go check out the [version-1.0](https://github.com/clearsightstudio/ProMotion/tre
 it's got some great improvements and cleaner source code. Although it's not completely ready to launch, 
 we recommend trying it out.
 
+We use [Semantic Versioning](http://semver.org/). Current stable version is 0.7.6.
+
 
 **Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
 

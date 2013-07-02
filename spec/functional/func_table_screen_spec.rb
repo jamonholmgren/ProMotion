@@ -9,10 +9,6 @@ describe "ProMotion::TestTableScreen functionality" do
     @controller.navigation_controller
   end
 
-  after do
-    @controller = nil
-  end
-
   it "should have a navigation bar" do
     @controller.navigationController.should.be.kind_of(UINavigationController)
   end
@@ -40,34 +36,46 @@ describe "ProMotion::TestTableScreen functionality" do
   it "should delete the specified row from the table view on tap" do
     @controller.tableView(@controller.tableView, numberOfRowsInSection:0).should == 6
     tap("Delete the row below")
-    @controller.tableView(@controller.tableView, numberOfRowsInSection:0).should == 5
+    wait 0.3 do
+      @controller.tableView(@controller.tableView, numberOfRowsInSection:0).should == 5
+    end
   end
 
   it "should delete the specified row from the table view on tap with an animation" do
     @controller.tableView(@controller.tableView, numberOfRowsInSection:0).should == 6
     tap("Delete the row below with an animation")
-    @controller.tableView(@controller.tableView, numberOfRowsInSection:0).should == 5
+    wait 0.3 do
+      @controller.tableView(@controller.tableView, numberOfRowsInSection:0).should == 5
+    end
   end
 
   it "should call a method when the switch is flipped" do
     @controller.scroll_to_bottom
     tap "switch_1"
-    @controller.tap_counter.should == 1
+    wait 0.3 do
+      @controller.tap_counter.should == 1
+    end
   end
 
   it "should call the method with arguments when the switch is flipped and when the cell is tapped" do
     @controller.scroll_to_bottom
     tap "switch_3"
-    @controller.tap_counter.should == 3
+    wait 0.3 do
+      @controller.tap_counter.should == 3
 
-    tap "Switch With Cell Tap, Switch Action And Parameters"
-    @controller.tap_counter.should == 13
+      tap "Switch With Cell Tap, Switch Action And Parameters"
+      wait 0.3 do
+        @controller.tap_counter.should == 13
+      end
+    end
   end
 
   it "should call the method with arguments when the switch is flipped" do
     @controller.scroll_to_bottom
     tap "switch_2"
-    @controller.tap_counter.should == 3
+    wait 0.3 do
+      @controller.tap_counter.should == 3
+    end
   end
 
 end

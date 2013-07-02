@@ -196,9 +196,7 @@ module ProMotion
       data_cell = @promotion_table_data.cell(index_path: index_path)
 
       case data_cell[:editing_style]
-      when nil
-        UITableViewCellEditingStyleNone
-      when :none
+      when nil, :none
         UITableViewCellEditingStyleNone
       when :delete
         UITableViewCellEditingStyleDelete
@@ -211,7 +209,7 @@ module ProMotion
 
     def tableView(table_view, commitEditingStyle: editing_style, forRowAtIndexPath: index_path)
       if editing_style == UITableViewCellEditingStyleDelete
-        delete_cell(index_path)
+        delete_row(index_path)
       end
     end
 
@@ -228,7 +226,7 @@ module ProMotion
 
     def deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)
       PM.logger.warn "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)'."
-      delete_cell(index_paths, animation)
+      delete_row(index_paths, animation)
     end
 
     module TableClassMethods

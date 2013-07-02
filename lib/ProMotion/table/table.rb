@@ -4,15 +4,18 @@ module ProMotion
     include ProMotion::ViewHelper
     include ProMotion::Table::Searchable
     include ProMotion::Table::Refreshable
-    TABLE_STYLE = UITableViewStylePlain
 
     def table_view
       @table_view ||= begin
-        t = UITableView.alloc.initWithFrame(self.view.frame, style:TABLE_STYLE)
+        t = UITableView.alloc.initWithFrame(self.view.frame, style: table_style)
         t.dataSource = self
         t.delegate = self
         t
       end
+    end
+
+    def table_style
+      UITableViewStylePlain
     end
 
     def screen_setup

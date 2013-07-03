@@ -54,7 +54,8 @@ namespace :spec do
     Rake::Task["simulator"].invoke
   end
 
-  task :sim_close do
-    sh "osascript -e 'tell application \"iphone simulator\" to quit'"
-  end
+end
+
+task :sim_close do
+  sh "osascript -e 'tell application \"iphone simulator\" to quit'"
 end

@@ -49,6 +49,26 @@ describe "ProMotion::TestTableScreen functionality" do
     end
   end
 
+  # TODO: Why is it so complicated to find the delete button??
+  it "should use editing_style to delete the table row" do
+    @controller.tableView(@controller.tableView, numberOfRowsInSection:0).should == 6
+    @controller.cell_was_deleted.should != true
+    flick("Just another deletable blank row", :to => :left)
+
+    wait 0.25 do
+      # Tap the delete button
+      view('Just another deletable blank row').superview.superview.subviews.each do |subview|
+        if subview.class == UITableViewCellDeleteConfirmationControl
+          tap subview
+          wait 0.25 do
+            @controller.tableView(@controller.tableView, numberOfRowsInSection:0).should == 5
+            @controller.cell_was_deleted.should == true
+          end
+        end
+      end
+    end
+  end
+
   it "should call a method when the switch is flipped" do
     @controller.scroll_to_bottom
     tap "switch_1"

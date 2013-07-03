@@ -46,50 +46,6 @@ end
 |---|---|
 |![Nav Bars](https://f.cloud.github.com/assets/1479215/707499/63916eb6-de1e-11e2-90e4-e632202c5da7.png)|*Screenshot coming soon*|
 
-<<<<<<< HEAD
-=======
-Featured on the RubyMotion blog: [http://blog.rubymotion.com/post/50523137515/introducing-promotion-a-full-featured-rubymotion](http://blog.rubymotion.com/post/50523137515/introducing-promotion-a-full-featured-rubymotion)
-
-## New: Version 1.0 is on its way!
-
-Go check out the [version-1.0](https://github.com/clearsightstudio/ProMotion/tree/version-1.0) branch -- 
-it's got some great improvements and cleaner source code. Although it's not completely ready to launch, 
-we recommend trying it out.
-
-We use [Semantic Versioning](http://semver.org/). Current stable version is 0.7.6.
-
-
-**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
-
-- [ProMotion ](#promotion-)
-  - [A new way to easily build RubyMotion apps.](#a-new-way-to-easily-build-rubymotion-apps)
-- [Tutorials](#tutorials)
-  - [Screencasts](#screencasts)
-  - [Sample Apps](#sample-apps)
-  - [Apps Built With ProMotion](#apps-built-with-promotion)
-- [Getting Started](#getting-started)
-  - [Setup](#setup)
-- [What's New?](#whats-new)
-  - [Version 0.7](#version-07)
-- [Usage](#usage)
-  - [Creating a basic screen](#creating-a-basic-screen)
-  - [Loading your first screen](#loading-your-first-screen)
-  - [Creating a split screen (iPad apps only)](#creating-a-split-screen-ipad-apps-only)
-  - [Creating a tab bar](#creating-a-tab-bar)
-  - [Add navigation bar buttons](#add-navigation-bar-buttons)
-  - [Opening and closing screens](#opening-and-closing-screens)
-    - [Note about split screens and universal apps](#note-about-split-screens-and-universal-apps)
-  - [Adding view elements](#adding-view-elements)
-  - [Table Screens](#table-screens)
-  - [Using your own UIViewController](#using-your-own-uiviewcontroller)
-- [API Reference](#api-reference)
-- [Help](#help)
-- [Contributing](#contributing)
-  - [Working on Features](#working-on-features)
-  - [Submitting a Pull Request](#submitting-a-pull-request)
-  - [Primary Contributors](#primary-contributors)
->>>>>>> master
-
 # Tutorials
 
 Shows how to make a basic app in ProMotion. Updated in May.

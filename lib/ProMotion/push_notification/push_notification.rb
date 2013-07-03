@@ -32,7 +32,7 @@ module ProMotion
     end
 
     def method_missing(method, *args, &block)
-      aps[method.to_s] || self.notification[method.to_s] || super
+      aps[method.to_s] || aps[method.to_sym] || self.notification[method.to_s] || self.notification[method.to_sym] || super
     end
 
     # For testing from the REPL

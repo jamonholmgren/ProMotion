@@ -1,6 +1,6 @@
 class TestTableScreen < ProMotion::TableScreen
 
-  attr_accessor :tap_counter
+  attr_accessor :tap_counter, :cell_was_deleted
 
   def promotion_table_data
     @promotion_table_data
@@ -17,7 +17,7 @@ class TestTableScreen < ProMotion::TableScreen
         { title: "Increment", action: :increment_counter_by, arguments: {number: 3} },
         { title: "Add New Row", action: :add_tableview_row },
         { title: "Delete the row below", action: :delete_cell, arguments: {section: 0, row:3} },
-        { title: "Just another blank row" },
+        { title: "Just another deletable blank row", editing_style: :delete },
         { title: "Delete the row below with an animation", action: :delete_cell, arguments: {animated: true, section: 0, row:5 } },
         { title: "Just another blank row" }
       ]
@@ -84,6 +84,10 @@ class TestTableScreen < ProMotion::TableScreen
       @data[args[:section]][:cells].delete_at args[:row]
       update_table_data
     end
+  end
+
+  def cell_deleted(cell)
+    self.cell_was_deleted = true
   end
 
   def increment_counter

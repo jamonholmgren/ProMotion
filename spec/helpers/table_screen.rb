@@ -18,6 +18,7 @@ class TestTableScreen < ProMotion::TableScreen
         { title: "Add New Row", action: :add_tableview_row },
         { title: "Delete the row below", action: :delete_cell, arguments: {section: 0, row:3} },
         { title: "Just another deletable blank row", editing_style: :delete },
+        { title: "A non-deletable blank row", editing_style: :delete },
         { title: "Delete the row below with an animation", action: :delete_cell, arguments: {animated: true, section: 0, row:5 } },
         { title: "Just another blank row" }
       ]
@@ -86,8 +87,12 @@ class TestTableScreen < ProMotion::TableScreen
     end
   end
 
-  def cell_deleted(cell)
-    self.cell_was_deleted = true
+  def on_cell_deleted(cell)
+    if cell[:title] == "A non-deletable blank row"
+      false 
+    else
+      self.cell_was_deleted = true
+    end
   end
 
   def increment_counter

@@ -104,12 +104,17 @@ module ProMotion
     def delete_row(index_paths, animation = nil)
       animation ||= UITableViewRowAnimationAutomatic
       index_paths = Array(index_paths)
+      deletable_index_paths = []
 
       index_paths.each do |index_path|
-        cell_deleted(@promotion_table_data.cell(index_path: index_path)) if self.respond_to?("cell_deleted:")
-        @promotion_table_data.delete_cell(index_path: index_path)
+        delete_cell = false
+        delete_cell = send(:on_cell_deleted, @promotion_table_data.cell(index_path: index_path)) if self.respond_to?("on_cell_deleted:")
+        unless delete_cell == false
+          @promotion_table_data.delete_cell(index_path: index_path)
+          deletable_index_paths << index_path
+        end
       end
-      table_view.deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)
+      table_view.deleteRowsAtIndexPaths(deletable_index_paths, withRowAnimation:animation) if deletable_index_paths.length > 0
     end
 
     def table_view_cell(params={})

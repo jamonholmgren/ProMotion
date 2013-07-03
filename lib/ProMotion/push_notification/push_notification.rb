@@ -31,20 +31,27 @@ module ProMotion
       aps["sound"] if aps
     end
 
+    def method_missing(method, *args, &block)
+      aps[method.to_s] || aps[method.to_sym] || self.notification[method.to_s] || self.notification[method.to_sym] || super
+    end
+
     # For testing from the REPL
     # > PM::PushNotification.simulate alert: "My test message", badge: 4
     def self.simulate(args = {})
-      UIApplication.sharedApplication.delegate.on_push_notification self.fake_notification(args)
+      UIApplication.sharedApplication.delegate.on_push_notification self.fake_notification(args), args[:launched]
     end
 
     def self.fake_notification(args = {})
       self.new({
         "aps" => {
-          "alert" => args[:alert] || "Test Push Notification",
-          "badge" => args[:badge] || 2,
-          "sound" => args[:sound] || "default"
-        }
-      })
+          "alert" => args.delete(:alert) || "Test Push Notification",
+          "badge" => args.delete(:badge) || 2,
+          "sound" => args.delete(:sound) || "default"
+        },
+        "channels" => args.delete(:channels) || [
+          "channel_name"
+        ]
+      }.merge(args))
     end
 
   end

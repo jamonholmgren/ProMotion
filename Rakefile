@@ -53,4 +53,9 @@ namespace :spec do
     App.config.instance_variable_set("@spec_files", spec_files)
     Rake::Task["simulator"].invoke
   end
+
+end
+
+task :sim_close do
+  sh "osascript -e 'tell application \"iphone simulator\" to quit'"
 end

@@ -5,7 +5,7 @@ module ProMotion
 
     def check_for_push_notification(options)
       if options && options[UIApplicationLaunchOptionsRemoteNotificationKey]
-        received_push_notification options[UIApplicationLaunchOptionsRemoteNotificationKey]
+        received_push_notification options[UIApplicationLaunchOptionsRemoteNotificationKey], true
       end
     end
 
@@ -38,9 +38,9 @@ module ProMotion
       types
     end
 
-    def received_push_notification(notification)
+    def received_push_notification(notification, was_launched)
       @aps_notification = PM::PushNotification.new(notification)
-      on_push_notification(@aps_notification) if respond_to?(:on_push_notification)
+      on_push_notification(@aps_notification, was_launched) if respond_to?(:on_push_notification)
     end
 
     # CocoaTouch
@@ -54,7 +54,7 @@ module ProMotion
     end
 
     def application(application, didReceiveRemoteNotification:notification)
-      received_push_notification(notification)
+      received_push_notification(notification, false)
     end
 
   end

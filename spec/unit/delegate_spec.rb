@@ -13,7 +13,7 @@ describe "PM::Delegate" do
 
   it "should handle push notifications" do
 
-    @subject.mock!(:on_push_notification) do |notification|
+    @subject.mock!(:on_push_notification) do |notification, was_launched|
       notification.should.be.kind_of(PM::PushNotification)
       notification.alert.should == "Eating Bacon"
       notification.badge.should == 42

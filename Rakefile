@@ -40,6 +40,7 @@ namespace :spec do
     spec_files -= functional_files
     App.config.instance_variable_set("@spec_files", spec_files)
     Rake::Task["simulator"].invoke
+    Rake::Task["spec:sim_close"].invoke
   end
   
   task :func do
@@ -52,5 +53,10 @@ namespace :spec do
     spec_files -= unit_files
     App.config.instance_variable_set("@spec_files", spec_files)
     Rake::Task["simulator"].invoke
+    Rake::Task["spec:sim_close"].invoke
+  end
+
+  task :sim_close do
+    sh "osascript -e 'tell application \"iphone simulator\" to quit'"
   end
 end

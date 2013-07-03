@@ -1,6 +1,6 @@
 class TestTableScreen < ProMotion::TableScreen
 
-  attr_accessor :tap_counter
+  attr_accessor :tap_counter, :cell_was_deleted
 
   def promotion_table_data
     @promotion_table_data
@@ -84,6 +84,10 @@ class TestTableScreen < ProMotion::TableScreen
       @data[args[:section]][:cells].delete_at args[:row]
       update_table_data
     end
+  end
+
+  def cell_deleted(cell)
+    self.cell_was_deleted = true
   end
 
   def increment_counter

@@ -106,6 +106,7 @@ module ProMotion
       index_paths = Array(index_paths)
 
       index_paths.each do |index_path|
+        cell_deleted(@promotion_table_data.cell(index_path: index_path)) if self.respond_to?("cell_deleted:")
         @promotion_table_data.delete_cell(index_path: index_path)
       end
       table_view.deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)

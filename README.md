@@ -47,9 +47,11 @@ end
 |![ProMotion TableScreen](https://f.cloud.github.com/assets/1479215/751067/8fe7631a-e4e7-11e2-84f1-6ae50ac4f8e8.png)|![ProMotion Grouped Table Screens](https://f.cloud.github.com/assets/1479215/751162/a805b9da-e4ea-11e2-9c39-0c65f8a8de77.png)|![Searchable](https://f.cloud.github.com/assets/1479215/707490/ba750216-de1d-11e2-9594-0880b12f8ffe.png)|![Refreshable](https://f.cloud.github.com/assets/139261/472574/af268e52-b735-11e2-8b9b-a9245b421715.gif)|
 
 
-|iPad SplitScreens|
-|---|
-|![ProMotion SplitScreens](https://f.cloud.github.com/assets/1479215/751188/13c3a7c6-e4ec-11e2-8c87-a94e0c07702b.png)|
+|iPad SplitScreens|Map Screens|Web Screens|
+|---|---|---|
+|![ProMotion SplitScreens](https://f.cloud.github.com/assets/1479215/751188/13c3a7c6-e4ec-11e2-8c87-a94e0c07702b.png)|![MapScreen](https://f.cloud.github.com/assets/1479215/751217/dab20958-e4ed-11e2-9b3e-b42c0199d9e7.png)|![ProMotion WebScreen](https://f.cloud.github.com/assets/1479215/751235/b6fe91ba-e4ee-11e2-8707-c74c7f833de3.png)|
+
+#### ...and much more.
 
 # Tutorials
 

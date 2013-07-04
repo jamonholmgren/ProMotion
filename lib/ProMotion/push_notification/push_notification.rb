@@ -31,8 +31,8 @@ module ProMotion
       aps["sound"] if aps
     end
 
-    def method_missing(method, *args, &block)
-      aps[method.to_s] || aps[method.to_sym] || self.notification[method.to_s] || self.notification[method.to_sym] || super
+    def method_missing(meth, *args, &block)
+      aps[meth.to_s] || aps[meth.to_sym] || self.notification[meth.to_s] || self.notification[meth.to_sym] || super
     end
 
     # For testing from the REPL

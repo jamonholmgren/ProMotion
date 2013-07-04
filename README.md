@@ -44,7 +44,7 @@ end
 
 |Table Screens|Searchable|Refreshable|
 |---|---|---|
-|![ProMotion TableScreen](https://f.cloud.github.com/assets/1479215/751067/8fe7631a-e4e7-11e2-84f1-6ae50ac4f8e8.png)|![Searchable](https://f.cloud.github.com/assets/1479215/707490/ba750216-de1d-11e2-9594-0880b12f8ffe.png)|[Refreshable](https://f.cloud.github.com/assets/139261/472574/af268e52-b735-11e2-8b9b-a9245b421715.gif)|
+|![ProMotion TableScreen](https://f.cloud.github.com/assets/1479215/751067/8fe7631a-e4e7-11e2-84f1-6ae50ac4f8e8.png)|![Searchable](https://f.cloud.github.com/assets/1479215/707490/ba750216-de1d-11e2-9594-0880b12f8ffe.png)|![Refreshable](https://f.cloud.github.com/assets/139261/472574/af268e52-b735-11e2-8b9b-a9245b421715.gif)|
 
 
 # Tutorials

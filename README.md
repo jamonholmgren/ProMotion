@@ -38,9 +38,13 @@ end
 
 # Features
 
-|Screens|Table Screens|Navigation Bars|
+|Screens|Navigation Bars|Tab Bars|
 |---|---|---|
-|![ProMotion::Screen](https://f.cloud.github.com/assets/1479215/728896/6e5ffd02-e220-11e2-8ec7-c82cb02f6bb8.png)|![ProMotion::TableScreen](https://f.cloud.github.com/assets/1479215/707518/5ea9291a-de1f-11e2-8186-4c4a02dc04a0.png)|![Nav Bars](https://f.cloud.github.com/assets/1479215/707499/63916eb6-de1e-11e2-90e4-e632202c5da7.png)|
+|![ProMotion Screen](https://f.cloud.github.com/assets/1479215/751058/486b6e1e-e4e7-11e2-9d1f-d9380a58f643.png)|![ProMotion Nav Bar](https://f.cloud.github.com/assets/1479215/751076/e4762858-e4e7-11e2-8442-ac7c9ad142e6.png)|![ProMotion Tabs](https://f.cloud.github.com/assets/1479215/751128/76ebe320-e4e9-11e2-86ee-d81c4c1e92f2.png)|
+
+|Table Screens|Searchable|Refreshable|
+|---|---|---|
+|![ProMotion TableScreen](https://f.cloud.github.com/assets/1479215/751067/8fe7631a-e4e7-11e2-84f1-6ae50ac4f8e8.png)|![Searchable](https://f.cloud.github.com/assets/1479215/707490/ba750216-de1d-11e2-9594-0880b12f8ffe.png)|[Refreshable](https://f.cloud.github.com/assets/139261/472574/af268e52-b735-11e2-8b9b-a9245b421715.gif)|
 
 
 # Tutorials

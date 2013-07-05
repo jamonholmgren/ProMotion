@@ -47,6 +47,7 @@ describe "ProMotion::TestMapScreen functionality" do
     @map.select_annotation_at 2
     wait 0.75 do
       @map.selected_annotations.count.should == 1
+      @map.selected_annotations[0].should == @map.promotion_annotation_data[2]
     end
   end
 

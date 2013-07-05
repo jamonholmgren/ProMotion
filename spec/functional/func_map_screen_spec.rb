@@ -5,7 +5,6 @@ describe "ProMotion::TestMapScreen functionality" do
   def controller
     rotate_device to: :portrait, button: :bottom
     @map ||= TestMapScreen.new(nav_bar: true)
-    @map.on_load
     @map.will_appear
     @map.navigation_controller
   end

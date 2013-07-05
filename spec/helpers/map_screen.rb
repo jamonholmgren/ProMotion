@@ -13,14 +13,6 @@ class TestMapScreen < PM::MapScreen
     @promotion_annotation_data
   end
 
-  def on_load
-    # self.tap_counter = 0
-  end
-
-  def will_appear
-    update_annotation_data
-  end
-
   def annotation_data
     # Partial set of data from "GPS Map of Gorges State Park": http://www.hikewnc.info/maps/gorges-state-park/gps-map
     @data ||= [{

@@ -11,7 +11,8 @@ require 'ProMotion'
 Motion::Project::App.setup do |app|
   app.name = 'ProMotionTest'
   app.version = "0.99.0"
-  app.redgreen_style = :focused # :focused, :full
+  app.redgreen_style = :full # :focused, :full
+  app.frameworks += %w(CoreLocation MapKit)
 
   # Devices
   app.deployment_target = "6.0"
@@ -40,6 +41,10 @@ namespace :spec do
     App.config.instance_variable_set("@spec_files", spec_files)
     Rake::Task["simulator"].invoke
   end
+  
+  task :func do
+    Rake::Task["spec:functional"].invoke
+  end
 
   task :functional do
     App.config.spec_mode = true
@@ -48,4 +53,9 @@ namespace :spec do
     App.config.instance_variable_set("@spec_files", spec_files)
     Rake::Task["simulator"].invoke
   end
+
+end
+
+task :sim_close do
+  sh "osascript -e 'tell application \"iphone simulator\" to quit'"
 end

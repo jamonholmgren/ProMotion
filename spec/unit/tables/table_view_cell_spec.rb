@@ -8,7 +8,7 @@ describe "PM::TableViewCellModule" do
       action: :tapped_cell_1,
       height: 50, # manually changes the cell's height
       cell_style: UITableViewCellStyleSubtitle,
-      cell_identifier: "Cell",
+      cell_identifier: "Custom Cell",
       cell_class: PM::TableViewCell,
       layer: { masks_to_bounds: true },
       background_color: UIColor.redColor,
@@ -28,7 +28,7 @@ describe "PM::TableViewCellModule" do
         { title: "", cells: [
           {title: "Test 1", accessory_type: UITableViewCellStateShowingEditControlMask },
           custom_cell,
-          { title: "Test2", accessory: button } ] }
+          { title: "Test2", accessory: { view: button } } ] }
       ]
     end
 
@@ -54,12 +54,13 @@ describe "PM::TableViewCellModule" do
   end
 
   it "should have the right custom re-use identifier" do
-    @subject.reuseIdentifier.should == "Cell"
+    @subject.reuseIdentifier.should == "Custom Cell"
   end
+
   it "should have the right generated re-use identifier" do
     ip = NSIndexPath.indexPathForRow(2, inSection: 1)
     subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: ip)
-    subject.reuseIdentifier.should == "Cell-accessory"
+    subject.reuseIdentifier.should == "ProMotion::TableViewCell-accessory"
   end
 
   it "should have the correct height" do
@@ -71,7 +72,7 @@ describe "PM::TableViewCellModule" do
   end
 
   it "should set the background color" do
-    @subject.backgroundView.backgroundColor.should == UIColor.redColor
+    @subject.backgroundColor.should == UIColor.redColor
   end
 
   it "should set the selection color style" do
@@ -102,9 +103,9 @@ describe "PM::TableViewCellModule" do
   end
 
   it "should create two extra subviews" do
-    @subject.subviews.length.should == 4
-    @subject.subviews[2].class.should == UIView
-    @subject.subviews[3].class.should == UILabel
+    @subject.subviews.length.should == 3
+    @subject.subviews[1].class.should == UIView
+    @subject.subviews[2].class.should == UILabel
   end
 
 

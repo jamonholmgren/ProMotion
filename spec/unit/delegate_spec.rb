@@ -13,7 +13,7 @@ describe "PM::Delegate" do
 
   it "should handle push notifications" do
 
-    @subject.mock!(:on_push_notification) do |notification|
+    @subject.mock!(:on_push_notification) do |notification, was_launched|
       notification.should.be.kind_of(PM::PushNotification)
       notification.alert.should == "Eating Bacon"
       notification.badge.should == 42
@@ -29,9 +29,10 @@ describe "PM::Delegate" do
   it "should set home_screen when opening a new screen" do
 
     @subject.application(UIApplication.sharedApplication, didFinishLaunchingWithOptions: nil)
-    @subject.open BasicScreen.new(nav_bar: true)
+    screen = @subject.open BasicScreen.new(nav_bar: true)
     @subject.home_screen.should.be.kind_of BasicScreen
     @subject.window.rootViewController.should.be.kind_of UINavigationController
+    screen.should.be.kind_of BasicScreen
 
   end
 

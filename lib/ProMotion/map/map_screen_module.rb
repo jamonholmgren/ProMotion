@@ -61,6 +61,10 @@ module ProMotion
       self.mapview.selectAnnotation(annotation, animated:animated)
     end
 
+    def select_annotation_at(annotation_index, animated=true)
+      select_annotation(annotations[annotation_index], animated:animated)
+    end
+
     def selected_annotations
       self.mapview.selectedAnnotations
     end

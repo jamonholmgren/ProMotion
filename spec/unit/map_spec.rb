@@ -3,8 +3,7 @@ describe "map properties" do
   before do
     # Simulate AppDelegate setup of map screen
     @map = TestMapScreen.new modal: true, nav_bar: true
-    @map.on_load
-    @map.will_appear
+    @map.view_will_appear(false)
   end
 
   it "should store title" do

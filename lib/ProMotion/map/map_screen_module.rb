@@ -20,6 +20,11 @@ module ProMotion
       }
     end
 
+    def view_will_appear(animated)
+      super
+      update_annotation_data
+    end
+
     def check_mapkit_included
       PM.logger.error "You must add MapKit and CoreLocation to your project's frameworks in the Rakefile." unless defined?(CLLocationCoordinate2D)
     end

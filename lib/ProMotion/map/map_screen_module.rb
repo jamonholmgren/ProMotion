@@ -91,17 +91,22 @@ module ProMotion
     end
 
     def mapView(mapView, viewForAnnotation:annotation)
-      identifier = annotation.annotation_params[:identifier]
-      if view = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier)
-        view.annotation = annotation
-      else
-        #Set the pin properties
-        view = MKPinAnnotationView.alloc.initWithAnnotation(annotation, reuseIdentifier:identifier)
-        view.canShowCallout = annotation.annotation_params[:show_callout]
-        view.animatesDrop = annotation.annotation_params[:animates_drop]
-        view.pinColor = annotation.annotation_params[:pin_color]
+      # Only ProMotion annotations respond to 'annotation_params'
+      if annotation.respond_to?(:annotation_params)
+        identifier = annotation.annotation_params[:identifier]
+      
+        if view = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier)
+          view.annotation = annotation
+        else
+          # Set the pin properties
+          view = MKPinAnnotationView.alloc.initWithAnnotation(annotation, reuseIdentifier:identifier)
+          view.canShowCallout = annotation.annotation_params[:show_callout]
+          view.animatesDrop = annotation.annotation_params[:animates_drop]
+          view.pinColor = annotation.annotation_params[:pin_color]
+        end
+      
+        view
       end
-      view
     end
 
     def set_start_position(params={})

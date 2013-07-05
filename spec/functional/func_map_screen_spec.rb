@@ -36,15 +36,24 @@ describe "ProMotion::TestMapScreen functionality" do
 
   it "should select an annotation" do
     @map.selected_annotations.should == nil
-    @map.select_annotation(@map.annotations.first, true)
+    @map.select_annotation @map.annotations.first
     wait 0.75 do
       @map.selected_annotations.count.should == 1
     end
   end
 
+  it "should select an annotation by index" do
+    @map.selected_annotations.should == nil
+    @map.select_annotation_at 2
+    wait 0.75 do
+      @map.selected_annotations.count.should == 1
+      @map.selected_annotations[0].should == @map.promotion_annotation_data[2]
+    end
+  end
+
   it "should select another annotation and check that the title is correct" do
     @map.selected_annotations.should == nil
-    @map.select_annotation(@map.annotations[1], true)
+    @map.select_annotation @map.annotations[1]
     wait 0.75 do
       @map.selected_annotations.count.should == 1
     end
@@ -55,7 +64,7 @@ describe "ProMotion::TestMapScreen functionality" do
   end
 
   it "should deselect selected annotations" do
-    @map.select_annotation(@map.annotations.last, true)
+    @map.select_annotation @map.annotations.last
     wait 0.75 do
       # @map.selected_annotations.count.should == 1
     end

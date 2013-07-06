@@ -93,6 +93,15 @@ module ProMotion
       self.webview.stringByEvaluatingJavaScriptFromString(js)
     end
 
+    def current_url
+      evaluate('document.URL')
+    end
+
+    def open_url(url)
+      ns_url = NSURL.URLWithString(url)
+      set_content(ns_url)
+    end
+
     # Navigation
     def can_go_back; web.canGoBack; end
     def can_go_forward; web.canGoForward; end

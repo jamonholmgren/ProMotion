@@ -1,5 +1,7 @@
 module ProMotion
   module ViewHelper
+    include Conversions
+    
     def set_attributes(element, args = {})
       args.each { |k, v| set_attribute(element, k, v) }
       element
@@ -24,21 +26,12 @@ module ProMotion
       element
     end
 
-    def objective_c_method_name(meth)
-      meth.split('_').inject([]){ |buffer,e| buffer.push(buffer.empty? ? e : e.capitalize) }.join
-    end
-
     def set_easy_attributes(parent, element, args={})
       attributes = {}
 
       if args[:resize]
         attributes[:autoresizingMask]  = UIViewAutoresizingNone
-        attributes[:autoresizingMask] |= UIViewAutoresizingFlexibleLeftMargin   if args[:resize].include?(:left)
-        attributes[:autoresizingMask] |= UIViewAutoresizingFlexibleRightMargin  if args[:resize].include?(:right)
-        attributes[:autoresizingMask] |= UIViewAutoresizingFlexibleTopMargin    if args[:resize].include?(:top)
-        attributes[:autoresizingMask] |= UIViewAutoresizingFlexibleBottomMargin if args[:resize].include?(:bottom)
-        attributes[:autoresizingMask] |= UIViewAutoresizingFlexibleWidth        if args[:resize].include?(:width)
-        attributes[:autoresizingMask] |= UIViewAutoresizingFlexibleHeight       if args[:resize].include?(:height)
+        args[:resize].each { |r| attributes[:autoresizingMask] |= map_resize_symbol(r) }
       end
 
       if [:left, :top, :width, :height].select{ |a| args[a] && args[a] != :auto }.length == 4
@@ -96,6 +89,20 @@ module ProMotion
     
     def view_or_self
       self.respond_to?(:view) ? self.view : self
+    end
+    
+    protected
+    
+    def map_resize_symbol(symbol)
+      @_resize_symbols ||= {
+        left:     UIViewAutoresizingFlexibleLeftMargin,
+        right:    UIViewAutoresizingFlexibleRightMargin,
+        top:      UIViewAutoresizingFlexibleTopMargin,
+        bottom:   UIViewAutoresizingFlexibleBottomMargin,
+        width:    UIViewAutoresizingFlexibleWidth,
+        height:   UIViewAutoresizingFlexibleHeight     
+      }
+      @_resize_symbols[symbol] || symbol
     end
     
   end

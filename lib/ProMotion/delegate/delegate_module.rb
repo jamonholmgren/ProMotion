@@ -90,9 +90,9 @@ module ProMotion
 
       def status_bar_animation(opt)
         {
-          fade: UIStatusBarAnimationFade,
-          slide: UIStatusBarAnimationSlide,
-          none: UIStatusBarAnimationNone
+          fade:   UIStatusBarAnimationFade,
+          slide:  UIStatusBarAnimationSlide,
+          none:   UIStatusBarAnimationNone
         }[opt] || UIStatusBarAnimationNone
       end
 

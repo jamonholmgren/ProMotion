@@ -9,6 +9,7 @@ GEM
     motion-redgreen (0.1.0)
     motion-stump (0.2.1)
     rake (10.0.4)
+    webstub (0.6.0)
 
 PLATFORMS
   ruby
@@ -18,3 +19,4 @@ DEPENDENCIES
   motion-redgreen
   motion-stump
   rake
+  webstub

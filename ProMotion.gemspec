@@ -20,6 +20,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = ProMotion::VERSION
 
+  gem.add_development_dependency("webstub")
   gem.add_development_dependency("motion-stump")
   gem.add_development_dependency("motion-redgreen")
   gem.add_development_dependency("rake")

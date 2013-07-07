@@ -31,7 +31,7 @@ module ProMotion
     end
 
     def applicationWillEnterForeground(application)
-      on_enter_foregraound if respond_to?(:on_enter_foregraound)
+      on_enter_foreground if respond_to?(:on_enter_foreground)
     end
 
     def applicationWillTerminate(application)

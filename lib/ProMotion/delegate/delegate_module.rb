@@ -1,27 +1,41 @@
 module ProMotion
   module DelegateModule
-    
+
     include ProMotion::Tabs
     include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2") # Only with iPad
     include ProMotion::DelegateNotifications
 
     attr_accessor :window, :aps_notification, :home_screen
 
+    def application(application, willFinishLaunchingWithOptions:launch_options)
+      will_load(application, launch_options) if respond_to?(:will_load)
+    end
+
     def application(application, didFinishLaunchingWithOptions:launch_options)
-
       apply_status_bar
-
       on_load application, launch_options
-
       check_for_push_notification launch_options
-
       super rescue true # Can cause error message if no super is found, but it's harmless. Ignore.
     end
 
+    def applicationDidBecomeActive(application)
+      became_active if respond_to?(:became_active)
+    end
+
+    def applicationWillResignActive(application)
+      resign_active if respond_to?(:resign_active)
+    end
+
+    def applicationDidEnterBackground(application)
+      on_enter_background if respond_to?(:on_enter_background)
+    end
+
+    def applicationWillEnterForeground(application)
+      on_enter_foregraound if respond_to?(:on_enter_foregraound)
+    end
+
     def applicationWillTerminate(application)
-
       on_unload if respond_to?(:on_unload)
-
     end
 
     def app_delegate

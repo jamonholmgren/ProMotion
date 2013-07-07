@@ -238,6 +238,7 @@ module ProMotion
     protected
     
     def map_row_animation_symbol(symbol)
+      symbol ||= UITableViewRowAnimationAutomatic
       {
         automatic:  UITableViewRowAnimationAutomatic,
         fade:       UITableViewRowAnimationFade,
@@ -248,7 +249,7 @@ module ProMotion
         none:       UITableViewRowAnimationNone,
         middle:     UITableViewRowAnimationMiddle,
         automatic:  UITableViewRowAnimationAutomatic
-      }[symbol] ||  UITableViewRowAnimationAutomatic
+      }[symbol] || symbol
     end
 
     module TableClassMethods

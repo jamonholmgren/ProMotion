@@ -93,6 +93,15 @@ module ProMotion
       self.webview.stringByEvaluatingJavaScriptFromString(js)
     end
 
+    def current_url
+      evaluate('document.URL')
+    end
+
+    def open_url(url)
+      ns_url = NSURL.URLWithString(url)
+      set_content(ns_url)
+    end
+
     # Navigation
     def can_go_back; web.canGoBack; end
     def can_go_forward; web.canGoForward; end
@@ -128,7 +137,10 @@ module ProMotion
         end
         return false #don't allow the web view to load the link.
       end
-      true #return true for local file loading.
+
+      is_enable_load_request = true #return true on default for local file loading.
+      is_enable_load_request = !!on_request(inRequest, inType) if self.respond_to?(:on_request)
+      is_enable_load_request
     end
 
     def webViewDidStartLoad(webView)

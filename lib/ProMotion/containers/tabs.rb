@@ -1,5 +1,7 @@
 module ProMotion
   module Tabs
+    include Conversions
+    
     attr_accessor :tab_bar, :tab_bar_item
     
     def open_tab_bar(*screens)
@@ -44,7 +46,7 @@ module ProMotion
       tab[:tag] ||= @current_tag ||= 0
       @current_tag = tab[:tag] + 1
 
-      tab_bar_item = create_tab_bar_icon(tab[:system_icon], tab[:tag]) if tab[:system_icon]
+      tab_bar_item = create_tab_bar_icon(map_tab_symbol(tab[:system_icon]), tab[:tag]) if tab[:system_icon]
       tab_bar_item = create_tab_bar_icon_custom(title, tab[:icon], tab[:tag]) if tab[:icon]
 
       tab_bar_item.badgeValue = tab[:badge_number].to_s unless tab[:badge_number].nil? || tab[:badge_number] <= 0
@@ -56,6 +58,26 @@ module ProMotion
       controllers = NSMutableArray.arrayWithArray(tab_bar_controller.viewControllers)
       controllers.replaceObjectAtIndex(tab_bar_controller.selectedIndex, withObject: vc)
       tab_bar_controller.viewControllers = controllers
+    end
+    
+    protected
+    
+    def map_tab_symbol(symbol)
+      @_tab_symbols ||= {
+        more:         UITabBarSystemItemMore,
+        favorites:    UITabBarSystemItemFavorites,
+        featured:     UITabBarSystemItemFeatured,
+        top_rated:    UITabBarSystemItemTopRated,
+        recents:      UITabBarSystemItemRecents,
+        contacts:     UITabBarSystemItemContacts,
+        history:      UITabBarSystemItemHistory,
+        bookmarks:    UITabBarSystemItemBookmarks,
+        search:       UITabBarSystemItemSearch,
+        downloads:    UITabBarSystemItemDownloads,
+        most_recent:  UITabBarSystemItemMostRecent,
+        most_viewed:  UITabBarSystemItemMostViewed
+      }
+      @_tab_symbols[symbol] || symbol
     end
   end
 end

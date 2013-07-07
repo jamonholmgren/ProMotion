@@ -19,11 +19,11 @@ module ProMotion
     end
 
     def applicationDidBecomeActive(application)
-      became_active if respond_to?(:became_active)
+      on_activate if respond_to?(:on_activate)
     end
 
     def applicationWillResignActive(application)
-      resign_active if respond_to?(:resign_active)
+      will_deactivate if respond_to?(:will_deactivate)
     end
 
     def applicationDidEnterBackground(application)
@@ -31,7 +31,7 @@ module ProMotion
     end
 
     def applicationWillEnterForeground(application)
-      on_enter_foreground if respond_to?(:on_enter_foreground)
+      will_enter_foreground if respond_to?(:will_enter_foreground)
     end
 
     def applicationWillTerminate(application)

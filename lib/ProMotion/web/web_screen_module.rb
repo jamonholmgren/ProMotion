@@ -132,7 +132,10 @@ module ProMotion
         end
         return false #don't allow the web view to load the link.
       end
-      true #return true for local file loading.
+
+      load_request_enable = true #return true on default for local file loading.
+      load_request_enable = !!on_request(inRequest, inType) if self.respond_to?(:on_request)
+      load_request_enable
     end
 
     def webViewDidStartLoad(webView)

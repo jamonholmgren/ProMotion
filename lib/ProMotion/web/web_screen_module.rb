@@ -13,20 +13,17 @@ module ProMotion
     def on_init
 
       self.detector_types ||= UIDataDetectorTypeNone
-      detectors = self.detector_types
       if self.detector_types.is_a? Array
-        detectors |= UIDataDetectorTypePhoneNumber   if self.detector_types.include?(:phone)
-        detectors |= UIDataDetectorTypeLink          if self.detector_types.include?(:link)
-        detectors |= UIDataDetectorTypeAddress       if self.detector_types.include?(:address)
-        detectors |= UIDataDetectorTypeCalendarEvent if self.detector_types.include?(:event)
-        detectors |= UIDataDetectorTypeAll           if self.detector_types.include?(:all)
+        detectors = UIDataDetectorTypeNone
+        self.detector_types.each { |dt| detectors |= map_detector_symbol(dt) }
+        self.detector_types = detectors
       end
 
       self.webview ||= add UIWebView.new, {
         frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height),
         resize: [ :width, :height ],
         delegate: self,
-        data_detector_types: detector_types
+        data_detector_types: self.detector_types
       }
 
       set_initial_content
@@ -141,6 +138,18 @@ module ProMotion
 
     def webView(webView, didFailLoadWithError:error)
       load_failed(error) if self.respond_to?("load_failed:")
+    end
+    
+    protected
+    
+    def map_detector_symbol(symbol)
+      {
+        phone:    UIDataDetectorTypePhoneNumber,
+        link:     UIDataDetectorTypeLink,
+        address:  UIDataDetectorTypeAddress,
+        event:    UIDataDetectorTypeCalendarEvent,
+        all:      UIDataDetectorTypeAll
+      }[symbol] || UIDataDetectorTypeNone
     end
 
   end

@@ -91,6 +91,34 @@ module ProMotion
       self.respond_to?(:view) ? self.view : self
     end
     
+    # These three color methods are stolen from BubbleWrap.
+    def rgb_color(r,g,b)
+      rgba_color(r,g,b,1)
+    end
+
+    def rgba_color(r,g,b,a)
+      r,g,b = [r,g,b].map { |i| i / 255.0}
+      UIColor.colorWithRed(r, green: g, blue:b, alpha:a)
+    end
+
+    def hex_color(str)
+      hex_color = str.gsub("#", "")
+      case hex_color.size 
+      when 3
+        colors = hex_color.scan(%r{[0-9A-Fa-f]}).map{ |el| (el * 2).to_i(16) }
+      when 6
+        colors = hex_color.scan(%r<[0-9A-Fa-f]{2}>).map{ |el| el.to_i(16) }
+      else
+        raise ArgumentError
+      end
+      
+      if colors.size == 3
+        rgb_color(colors[0], colors[1], colors[2])
+      else
+        raise ArgumentError
+      end 
+    end
+    
     protected
     
     def map_resize_symbol(symbol)

@@ -17,8 +17,6 @@ module ProMotion
       master = master.new if master.respond_to?(:new)
       detail = detail.new if detail.respond_to?(:new)
 
-      [ master, detail ].map { |s| s.on_load if s.respond_to?(:on_load) }
-
       split = split_screen_controller master, detail
       if args.has_key?(:icon) or args.has_key?(:title)
         split.tabBarItem = create_tab_bar_item(args)

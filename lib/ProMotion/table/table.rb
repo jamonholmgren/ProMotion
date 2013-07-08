@@ -4,6 +4,7 @@ module ProMotion
     include ProMotion::ViewHelper
     include ProMotion::Table::Searchable
     include ProMotion::Table::Refreshable
+    include ProMotion::Table::Indexable
 
     def table_view
       @table_view ||= begin
@@ -170,7 +171,13 @@ module ProMotion
       if @promotion_table_data.filtered
         nil
       else
-        self.table_data_index if self.respond_to?(:table_data_index)
+        if self.respond_to?(:table_data_index)
+          self.table_data_index
+        elsif self.class.get_indexable
+          self.index_from_section_titles
+        else
+          nil
+        end
       end
     end
 
@@ -262,6 +269,20 @@ module ProMotion
 
       def get_refreshable_params
         @refreshable_params ||= nil
+      end
+      
+      # Indexable
+      def indexable(params = {})
+        @indexable_params = params
+        @indexable = true
+      end
+
+      def get_indexable
+        @indexable ||= false
+      end
+
+      def get_indexable_params
+        @indexable_params ||= nil
       end
 
     end

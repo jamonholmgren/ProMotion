@@ -102,7 +102,7 @@ module ProMotion
     end
 
     def delete_row(index_paths, animation = nil)
-      animation ||= UITableViewRowAnimationAutomatic
+      animation = map_row_animation_symbol(animation)
       index_paths = Array(index_paths)
       deletable_index_paths = []
 
@@ -233,6 +233,23 @@ module ProMotion
     def deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)
       PM.logger.warn "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)'."
       delete_row(index_paths, animation)
+    end
+    
+    protected
+    
+    def map_row_animation_symbol(symbol)
+      symbol ||= UITableViewRowAnimationAutomatic
+      {
+        automatic:  UITableViewRowAnimationAutomatic,
+        fade:       UITableViewRowAnimationFade,
+        right:      UITableViewRowAnimationRight,
+        left:       UITableViewRowAnimationLeft,
+        top:        UITableViewRowAnimationTop,
+        bottom:     UITableViewRowAnimationBottom,
+        none:       UITableViewRowAnimationNone,
+        middle:     UITableViewRowAnimationMiddle,
+        automatic:  UITableViewRowAnimationAutomatic
+      }[symbol] || symbol
     end
 
     module TableClassMethods

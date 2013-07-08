@@ -38,7 +38,7 @@ module ProMotion
 
     def set_initial_content
       return unless self.respond_to?(:content)
-      set_content(content)
+      content.is_a?(NSURL) ? open_url(content) : set_content(content)
     end
 
     def set_content(content)

@@ -1,6 +1,6 @@
 module ProMotion
   module TableViewCellModule
-    include ViewHelper
+    include Styling
 
     attr_accessor :data_cell, :table_screen
 

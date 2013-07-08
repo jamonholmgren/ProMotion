@@ -1,6 +1,6 @@
 module ProMotion
   module WebScreenModule
-    include ProMotion::ViewHelper
+    include ProMotion::Styling
     include ScreenModule
 
     attr_accessor :webview, :external_links, :detector_types

@@ -1,7 +1,7 @@
 module ProMotion
   module Table
 
-    include ProMotion::ViewHelper
+    include ProMotion::Styling
     include ProMotion::Table::Searchable
     include ProMotion::Table::Refreshable
 

@@ -1,5 +1,5 @@
 module ProMotion
-  module ViewHelper
+  module Styling
     include Conversions
     
     def set_attributes(element, args = {})

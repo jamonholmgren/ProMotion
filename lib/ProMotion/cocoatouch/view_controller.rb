@@ -5,6 +5,11 @@ module ProMotion
       s.on_create(args) if s.respond_to?(:on_create)
       s
     end
+    
+    def loadView
+      super
+      self.send(:on_load) if self.respond_to?(:on_load)
+    end
 
     def viewDidLoad
       super

@@ -53,7 +53,6 @@ module ProMotion
     def open_screen(screen, args={})
 
       screen = screen.new if screen.respond_to?(:new)
-      screen.send(:on_load) if screen.respond_to?(:on_load)
 
       self.home_screen = screen
 

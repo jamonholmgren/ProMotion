@@ -1,7 +1,7 @@
 module ProMotion
   module ScreenModule
     include ProMotion::ScreenNavigation
-    include ProMotion::ViewHelper
+    include ProMotion::Styling
     include ProMotion::Tabs
     include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2")
 

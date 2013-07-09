@@ -1,6 +1,6 @@
 module ProMotion
   module MapScreenModule
-    include ProMotion::ViewHelper
+    include ProMotion::Styling
     include ScreenModule
 
     attr_accessor :mapview

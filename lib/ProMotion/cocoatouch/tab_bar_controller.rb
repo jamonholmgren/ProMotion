@@ -14,7 +14,6 @@ module ProMotion
         s.tab_bar = tab_bar_controller if s.respond_to?("tab_bar=")
         view_controllers << (s.navigationController || s)
         tag_index += 1
-        s.on_load if s.respond_to?(:on_load)
       end
 
       tab_bar_controller.viewControllers = view_controllers

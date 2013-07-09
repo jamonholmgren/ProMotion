@@ -8,8 +8,6 @@ module ProMotion
       screen = set_up_screen_for_open(screen, args)
       ensure_wrapper_controller_in_place(screen, args)
 
-      screen.send(:on_load) if screen.respond_to?(:on_load)
-
       if args[:in_detail] && self.split_screen
         self.split_screen.detail_screen = screen
 

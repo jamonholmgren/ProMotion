@@ -133,6 +133,10 @@ module ProMotion
       trigger_action(cell[:action], cell[:arguments]) if cell[:action]
     end
 
+    def tableView(table_view, editingStyleForRowAtIndexPath: index_path)
+      UITableViewCellEditingStyleInsert
+    end
+
     def tableView(tableView, commitEditingStyle:editing_style, forRowAtIndexPath:index_path)
       if editing_style == UITableViewCellEditingStyleDelete
         delete_cell(index_path)

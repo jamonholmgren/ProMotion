@@ -133,7 +133,7 @@ Create a Gemfile and add the following lines:
 
 ```ruby
 source 'https://rubygems.org'
-gem "ProMotion", "~> 0.7.5"
+gem "ProMotion", "~> 0.7.7"
 ```
 
 Run `bundle install` in Terminal to install ProMotion.

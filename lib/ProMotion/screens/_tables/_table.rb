@@ -134,7 +134,7 @@ module ProMotion
     end
 
     def tableView(table_view, editingStyleForRowAtIndexPath: index_path)
-      UITableViewCellEditingStyleInsert
+      UITableViewCellEditingStyleNone
     end
 
     def tableView(tableView, commitEditingStyle:editing_style, forRowAtIndexPath:index_path)

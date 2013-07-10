@@ -32,7 +32,7 @@ describe "ProMotion::TestWebScreen functionality" do
     stub_request(:get, "https://www.google.com/").
       to_return(body: %q{Google! <form action="/search">%}, content_type: "text/html")
 
-    @webscreen.set_content(NSURL.URLWithString("https://www.google.com/"))
+    @webscreen.open_url(NSURL.URLWithString("https://www.google.com/"))
     wait_for_change @webscreen, 'load_finished' do
       @webscreen.html.include?('<form action="/search"').should == true
     end

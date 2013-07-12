@@ -45,36 +45,36 @@ describe "screen helpers" do
     end
 
     it "should add a left nav bar button" do
-      @screen.set_nav_bar_left_button "Save", action: :save_something, type: UIBarButtonItemStyleDone
+      @screen.set_nav_bar_button :left, title: "Save", action: :save_something, type: UIBarButtonItemStyleDone
       @screen.navigationItem.leftBarButtonItem.class.should == UIBarButtonItem
     end
 
     it "should add a right nav bar button" do
-      @screen.set_nav_bar_right_button "Cancel", action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
+      @screen.set_nav_bar_button :right, title: "Cancel", action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
       @screen.navigationItem.rightBarButtonItem.class.should == UIBarButtonItem
     end
 
     it "should add an image right nav bar button" do
       image = UIImage.imageNamed("list.png")
-      @screen.set_nav_bar_right_button image, action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
+      @screen.set_nav_bar_button :right, image: image, action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
       @screen.navigationItem.rightBarButtonItem.image.class.should == UIImage
       @screen.navigationItem.rightBarButtonItem.image.should == image
     end
 
     it "should add an image left nav bar button" do
       image = UIImage.imageNamed("list.png")
-      @screen.set_nav_bar_left_button image, action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
+      @screen.set_nav_bar_button :left, image: image, action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
       @screen.navigationItem.leftBarButtonItem.image.class.should == UIImage
       @screen.navigationItem.leftBarButtonItem.image.should == image
     end
 
     it "should add a left UIBarButtonItem" do
-      @screen.set_nav_bar_left_button @screen.editButtonItem
+      @screen.set_nav_bar_button :left, system_item: :edit
       @screen.navigationItem.leftBarButtonItem.class.should == UIBarButtonItem
     end
 
     it "should add a right UIBarButtonItem" do
-      @screen.set_nav_bar_right_button @screen.editButtonItem
+      @screen.set_nav_bar_button :right, system_item: :add
       @screen.navigationItem.rightBarButtonItem.class.should == UIBarButtonItem
     end
   end

@@ -64,10 +64,13 @@ module ProMotion
     end
 
     def set_nav_bar_button(side, args={})
-      args[:style]  ||= UIBarButtonItemStyleBordered
+      args[:style] = map_bar_button_item_style(args[:style])
       args[:target] ||= self
       args[:action] ||= nil
-      button_type = args[:image] || args[:button] || args[:system_icon] || args[:title] || "Button"
+      args[:system_item] ||= args[:system_icon] # backwards compatibility
+      args[:system_item] = map_bar_button_system_item(args[:system_item]) if args[:system_item] && args[:system_item].is_a?(Symbol)
+      
+      button_type = args[:image] || args[:button] || args[:system_item] || args[:title] || "Button"
 
       button = bar_button_item button_type, args
 
@@ -76,7 +79,8 @@ module ProMotion
 
       button
     end
-
+    
+    # TODO: Make this better. Not able to do image: "logo", for example.
     def bar_button_item(button_type, args)
       case button_type
       when UIBarButtonItem
@@ -86,8 +90,8 @@ module ProMotion
       when String
         UIBarButtonItem.alloc.initWithTitle(button_type, style: args[:style], target: args[:target], action: args[:action])
       else
-        if args[:system_icon]
-          UIBarButtonItem.alloc.initWithBarButtonSystemItem(args[:system_icon], target: args[:target], action: args[:action])
+        if args[:system_item]
+          UIBarButtonItem.alloc.initWithBarButtonSystemItem(args[:system_item], target: args[:target], action: args[:action])
         else
           PM.logger.error("Please supply a title string, a UIImage or :system.")
           nil
@@ -201,6 +205,44 @@ module ProMotion
 
     def frame
       return self.view_or_self.frame
+    end
+    
+    def map_bar_button_item_style(symbol)
+      symbol = {
+        plain:    UIBarButtonItemStylePlain,
+        bordered: UIBarButtonItemStyleBordered,
+        done:     UIBarButtonItemStyleDone
+      }[symbol] if symbol.is_a?(Symbol)
+      symbol || UIBarButtonItemStyleBordered
+    end
+    
+    def map_bar_button_system_item(symbol)
+      {
+        done:         UIBarButtonSystemItemDone,
+        cancel:       UIBarButtonSystemItemCancel,
+        edit:         UIBarButtonSystemItemEdit,
+        save:         UIBarButtonSystemItemSave,
+        add:          UIBarButtonSystemItemAdd,
+        flexible_space: UIBarButtonSystemItemFlexibleSpace,
+        fixed_space:    UIBarButtonSystemItemFixedSpace,
+        compose:      UIBarButtonSystemItemCompose,
+        reply:        UIBarButtonSystemItemReply,
+        action:       UIBarButtonSystemItemAction,
+        organize:     UIBarButtonSystemItemOrganize,
+        bookmarks:    UIBarButtonSystemItemBookmarks,
+        search:       UIBarButtonSystemItemSearch,
+        refresh:      UIBarButtonSystemItemRefresh,
+        stop:         UIBarButtonSystemItemStop,
+        camera:       UIBarButtonSystemItemCamera,
+        trash:        UIBarButtonSystemItemTrash,
+        play:         UIBarButtonSystemItemPlay,
+        pause:        UIBarButtonSystemItemPause,
+        rewind:       UIBarButtonSystemItemRewind,
+        fast_forward: UIBarButtonSystemItemFastForward,
+        undo:         UIBarButtonSystemItemUndo,
+        redo:         UIBarButtonSystemItemRedo,
+        page_curl:    UIBarButtonSystemItemPageCurl
+      }[symbol] ||    UIBarButtonSystemItemDone
     end
 
     # Class methods

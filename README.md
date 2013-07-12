@@ -53,6 +53,16 @@ end
 
 #### ...and much more.
 
+# Getting Started
+
+Check out our new [Getting Started Guide](https://github.com/clearsightstudio/ProMotion/wiki/Getting-Started-Guide) in the wiki!
+
+# What's New?
+
+## Version 1.0
+
+* TODO
+
 # Tutorials
 
 Shows how to make a basic app in ProMotion. Updated in May.
@@ -72,29 +82,15 @@ source to pull from Github.
 
 [https://github.com/jamonholmgren/promotion-demo](https://github.com/jamonholmgren/promotion-demo)
 
-## Apps Built With ProMotion
+Here's a demo app showing some styling options.
 
-[View apps built with ProMotion (feel free to submit yours!)](https://github.com/clearsightstudio/ProMotion/wiki/Apps-built-on-ProMotion)
-
-# Getting Started
-
-Check out our new [Getting Started Guide](https://github.com/clearsightstudio/ProMotion/wiki/Getting-Started-Guide) in the wiki!
-
-# What's New?
-
-## Version 1.0
-
-* TODO
-
-# Usage
-
-Check out the [Basic Usage Examples](https://github.com/clearsightstudio/ProMotion/wiki/Basic-Usage-Examples) in the wiki for usage examples.
+[https://github.com/jamonholmgren/promotion-styling](https://github.com/jamonholmgren/promotion-styling)
 
 # API Reference
 
 We've created a comprehensive and always updated wiki with code examples, usage examples, and API reference.
 
-### [ProMotion API Reference](https://github.com/clearsightstudio/ProMotion/wiki/_pages)
+### [ProMotion API Reference](https://github.com/clearsightstudio/ProMotion/wiki)
 
 # Help
 
@@ -108,7 +104,7 @@ and let's discuss. **It's a good idea to run your idea by the committers before 
 a pull request.** We'll always consider your ideas carefully but not all ideas will be
 incorporated.
 
-## Working on Features
+## Working on New Features
 
 1. Clone the repos into `Your-Project/Vendor/ProMotion`
 2. Update your `Gemfile`to reference the project as `gem 'ProMotion', :path => "vendor/ProMotion/"`

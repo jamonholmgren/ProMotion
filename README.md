@@ -61,7 +61,24 @@ Check out our new [Getting Started Guide](https://github.com/clearsightstudio/Pr
 
 ## Version 1.0
 
-* TODO
+* **New Screen** [`PM::MapScreen`](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::MapScreen)
+* **New Screen** [`PM::WebScreen`](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::WebScreen)
+* Added [`indexable`](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::TableScreen#indexable) as a `PM::TableScreen` feature
+* Added `PM::SplitViewController` and the ability to open a screen `in_detail:` or `in_master:`. [More info here.](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::Screen#openscreen-args--)
+* Added `PM::TabBarController` and `PM::Tabs` and refactored the `open_tab_bar` code
+* **IMPORTANT:** Changed `on_load` to fire more consistently. You are now encouraged to put your view setup code in here rather than `will_appear`.
+* Many methods that used to require long UIKit constants now take short :symbols. Check documentation.
+* Simpler `PM::Delegate` code, added `will_load(app, options)` and others. [See the documentation.](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::Delegate)
+* [Added a few keys and improvements](https://github.com/clearsightstudio/ProMotion/wiki/Reference%3A-All-available-table_data-options) to table_data
+* Removed `PM::SectionedTableScreen` (`PM::TableScreen` is already a sectioned table)
+* Removed any last UIKit monkeypatching. Everything is a subclass now. ProMotion is probably the least invasive RubyMotion gem in common use.
+* Push Notification updates
+* Renamed `PM::ViewHelper` to `PM::Styling` and [added some common helpers](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::Screen#hex_colorstr)
+* Added `will_present`, `on_present`, `will_dismiss`, `on_dismiss` to screens
+* Major internal refactors everywhere
+* Lots of new unit & functional tests
+* Removed deprecations, cleaned up a lot of code
+* Huge improvements to the [wiki](https://github.com/clearsightstudio/ProMotion/wiki)
 
 # Tutorials
 

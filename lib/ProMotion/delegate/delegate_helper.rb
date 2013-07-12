@@ -53,6 +53,10 @@ module ProMotion
     alias :open_root_screen :open_screen
     alias :home :open_screen
 
+    def open_modal(screen, args={})
+      open screen, args.merge({ modal: true })
+    end
+
     def apply_status_bar
       self.class.send(:apply_status_bar)
     end

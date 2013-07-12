@@ -1,12 +1,12 @@
 class PresentScreen < PM::Screen
-  attr_accessor :will_present_fired, :on_presented_fired, :will_dismiss_fired, :on_dismiss_fired
+  attr_accessor :will_present_fired, :on_present_fired, :will_dismiss_fired, :on_dismiss_fired
 
   def will_present
     self.will_present_fired = true
   end
 
-  def on_presented
-    self.on_presented_fired = true
+  def on_present
+    self.on_present_fired = true
   end
 
   def will_dismiss
@@ -19,7 +19,7 @@ class PresentScreen < PM::Screen
 
   def reset
     self.will_present_fired = false
-    self.on_presented_fired = false
+    self.on_present_fired = false
     self.will_dismiss_fired = false
     self.on_dismiss_fired = false
   end

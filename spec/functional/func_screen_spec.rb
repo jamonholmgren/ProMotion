@@ -65,12 +65,12 @@ describe "ProMotion::Screen functional" do
     end
   end
 
-  it "should fire the will_present, on_presented, will_dismiss, and on_dismiss_methods" do
+  it "should fire the will_present, on_present, will_dismiss, and on_dismiss_methods" do
     @presented_screen = PresentScreen.new
     @root_screen.open @presented_screen
     wait 0.6 do
       @presented_screen.will_present_fired.should == true
-      @presented_screen.on_presented_fired.should == true
+      @presented_screen.on_present_fired.should == true
 
       @presented_screen.will_dismiss_fired.should.not == true
       @presented_screen.on_dismiss_fired.should.not == true
@@ -83,7 +83,7 @@ describe "ProMotion::Screen functional" do
         @presented_screen.on_dismiss_fired.should == true
 
         @presented_screen.will_present_fired.should.not == true
-        @presented_screen.on_presented_fired.should.not == true
+        @presented_screen.on_present_fired.should.not == true
 
         @presented_screen = nil
       end

@@ -6,6 +6,7 @@ describe "PM::FormotionScreen" do
 
   it "should store title" do
     TestFormotionScreen.get_title.should == 'Formotion Test'
+    @screen.class.get_title.should == "Formotion Test"
   end
 
   it "should set default title on new instances" do

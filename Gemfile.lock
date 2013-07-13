@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ProMotion (0.7.7)
+    ProMotion (1.0.0)
 
 GEM
   remote: https://rubygems.org/

@@ -1,5 +1,6 @@
 module ProMotion
   module WebScreenModule
+
     attr_accessor :webview, :external_links, :detector_types
 
     def screen_setup
@@ -41,7 +42,7 @@ module ProMotion
       if File.exists? content_path
         content_string = File.read content_path
         content_base_url = NSURL.fileURLWithPath NSBundle.mainBundle.resourcePath
-        
+
         self.web.loadHTMLString(convert_retina_images(content_string), baseURL:content_base_url)
       else
         # We assume the user wants to load an arbitrary string into the web view
@@ -78,7 +79,7 @@ module ProMotion
     end
 
     def html
-      self.webview.stringByEvaluatingJavaScriptFromString("document.body.innerHTML")
+      self.webview.stringByEvaluatingJavaScriptFromString("document.documentElement.outerHTML")
     end
 
     def evaluate(js)
@@ -137,9 +138,9 @@ module ProMotion
     def webView(webView, didFailLoadWithError:error)
       load_failed(error) if self.respond_to?("load_failed:")
     end
-    
+
     protected
-    
+
     def map_detector_symbol(symbol)
       {
         phone:    UIDataDetectorTypePhoneNumber,

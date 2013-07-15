@@ -60,8 +60,6 @@ module ProMotion
       tab_bar_controller.viewControllers = controllers
     end
     
-    protected
-    
     def map_tab_symbol(symbol)
       @_tab_symbols ||= {
         more:         UITabBarSystemItemMore,
@@ -79,5 +77,19 @@ module ProMotion
       }
       @_tab_symbols[symbol] || symbol
     end
+    
+    module TabClassMethods
+      def tab_bar_item(args={})
+        @tab_bar_item = args
+      end
+      def get_tab_bar_item
+        @tab_bar_item
+      end
+    end
+    
+    def self.included(base)
+      base.extend(TabClassMethods)
+    end
+    
   end
 end

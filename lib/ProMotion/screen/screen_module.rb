@@ -13,13 +13,15 @@ module ProMotion
       end
 
       self.title = self.class.send(:get_title)
+      self.tab_bar_item = self.class.send(:get_tab_bar_item)
+      self.refresh_tab_bar_item if self.tab_bar_item
 
       args.each { |k, v| self.send("#{k}=", v) if self.respond_to?("#{k}=") }
 
       self.add_nav_bar(args) if args[:nav_bar]
       self.navigationController.toolbarHidden = !args[:toolbar] unless args[:toolbar].nil?
-      self.on_init if self.respond_to?(:on_init)
       self.screen_setup
+      self.on_init if self.respond_to?(:on_init)
       self
     end
 
@@ -268,6 +270,7 @@ module ProMotion
 
     def self.included(base)
       base.extend(ClassMethods)
+      base.extend(TabClassMethods) # TODO: Is there a better way?
     end
   end
 end

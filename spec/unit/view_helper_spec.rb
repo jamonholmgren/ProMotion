@@ -6,7 +6,7 @@ describe "view helpers" do
 
   before do
     @dummy = UIView.alloc.initWithFrame CGRectZero
-    @dummy.extend ProMotion::ViewHelper
+    @dummy.extend ProMotion::Styling
   end
 
   it "should allow you to set attributes" do
@@ -78,7 +78,7 @@ describe "view helpers" do
 
     before do
       @dummy = UIView.alloc.initWithFrame CGRectZero
-      @dummy.extend ProMotion::ViewHelper
+      @dummy.extend ProMotion::Styling
       
       @parent = UIView.alloc.initWithFrame(CGRectMake(0, 0, 320, 480))
       @child = UIView.alloc.initWithFrame(CGRectZero)

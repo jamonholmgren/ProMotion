@@ -1,8 +1,5 @@
 module ProMotion
   module WebScreenModule
-    include ProMotion::Styling
-    include ScreenModule
-
     attr_accessor :webview, :external_links, :detector_types
 
     def screen_setup
@@ -111,10 +108,6 @@ module ProMotion
     def open_in_safari(inRequest)
       #Open UIWebView delegate links in Safari.
       UIApplication.sharedApplication.openURL(inRequest.URL)
-    end
-
-    def self.included(base)
-      base.extend(ClassMethods)
     end
 
     #UIWebViewDelegate Methods - Camelcase

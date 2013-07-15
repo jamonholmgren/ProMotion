@@ -1,23 +1,18 @@
 module ProMotion
   module MapScreenModule
-    include ProMotion::Styling
-    include ScreenModule
-
     attr_accessor :mapview
 
     def screen_setup
-      check_annotation_data
-      @promotion_annotation_data = []
-      set_up_start_position
-    end
-
-    def on_init
       check_mapkit_included
       self.mapview ||= add MKMapView.new, {
         frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height),
         resize: [ :width, :height ],
         delegate: self
       }
+      
+      check_annotation_data
+      @promotion_annotation_data = []
+      set_up_start_position
     end
 
     def view_will_appear(animated)
@@ -205,7 +200,6 @@ module ProMotion
       end
     end
     def self.included(base)
-      base.extend(ClassMethods)
       base.extend(MapClassMethods)
     end
 

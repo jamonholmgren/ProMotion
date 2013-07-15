@@ -45,36 +45,36 @@ describe "screen helpers" do
     end
 
     it "should add a left nav bar button" do
-      @screen.set_nav_bar_left_button "Save", action: :save_something, type: UIBarButtonItemStyleDone
+      @screen.set_nav_bar_button :left, title: "Save", action: :save_something, type: UIBarButtonItemStyleDone
       @screen.navigationItem.leftBarButtonItem.class.should == UIBarButtonItem
     end
 
     it "should add a right nav bar button" do
-      @screen.set_nav_bar_right_button "Cancel", action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
+      @screen.set_nav_bar_button :right, title: "Cancel", action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
       @screen.navigationItem.rightBarButtonItem.class.should == UIBarButtonItem
     end
 
     it "should add an image right nav bar button" do
       image = UIImage.imageNamed("list.png")
-      @screen.set_nav_bar_right_button image, action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
+      @screen.set_nav_bar_button :right, image: image, action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
       @screen.navigationItem.rightBarButtonItem.image.class.should == UIImage
       @screen.navigationItem.rightBarButtonItem.image.should == image
     end
 
     it "should add an image left nav bar button" do
       image = UIImage.imageNamed("list.png")
-      @screen.set_nav_bar_left_button image, action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
+      @screen.set_nav_bar_button :left, image: image, action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
       @screen.navigationItem.leftBarButtonItem.image.class.should == UIImage
       @screen.navigationItem.leftBarButtonItem.image.should == image
     end
 
     it "should add a left UIBarButtonItem" do
-      @screen.set_nav_bar_left_button @screen.editButtonItem
+      @screen.set_nav_bar_button :left, system_item: :edit
       @screen.navigationItem.leftBarButtonItem.class.should == UIBarButtonItem
     end
 
     it "should add a right UIBarButtonItem" do
-      @screen.set_nav_bar_right_button @screen.editButtonItem
+      @screen.set_nav_bar_button :right, system_item: :add
       @screen.navigationItem.rightBarButtonItem.class.should == UIBarButtonItem
     end
   end
@@ -121,11 +121,11 @@ describe "screen helpers" do
         new_screen.nav_bar?.should == true
       end
 
-      it "should present the #main_controller when showing a modal screen" do
+      it "should present the navigationController when showing a modal screen" do
         new_screen = @screen.send(:set_up_screen_for_open, BasicScreen, modal: true)
 
         @screen.mock!('presentModalViewController:animated:') do |vc, animated|
-          vc.should == new_screen.main_controller
+          vc.should == (new_screen.navigationController || new_screen)
           animated.should == true
         end
         @screen.send(:present_modal_view_controller, new_screen, true)
@@ -141,7 +141,8 @@ describe "screen helpers" do
 
       it "should open a root screen if :close_all is provided" do
         @screen.mock!(:open_root_screen) { |screen| screen.should.be.instance_of BasicScreen }
-        @screen.open BasicScreen, close_all: true
+        screen = @screen.open BasicScreen, close_all: true
+        screen.should.be.kind_of BasicScreen
       end
 
       it "should present a modal screen if :modal is provided" do
@@ -149,7 +150,8 @@ describe "screen helpers" do
           screen.should.be.instance_of BasicScreen
           animated.should == true
         end
-        @screen.open BasicScreen, modal: true
+        screen = @screen.open BasicScreen, modal: true
+        screen.should.be.kind_of BasicScreen
       end
       
       it "should present a modal screen if open_modal is used" do
@@ -157,7 +159,8 @@ describe "screen helpers" do
           screen.should.be.instance_of BasicScreen
           animated.should == true
         end
-        @screen.open_modal BasicScreen
+        screen = @screen.open_modal BasicScreen
+        screen.should.be.kind_of BasicScreen
       end
 
       it "should respect animated property of opening modal screens" do
@@ -167,7 +170,8 @@ describe "screen helpers" do
           animated.should == false
         end
 
-        @screen.send(:open, new_screen, animated: false, modal: true)
+        screen = @screen.send(:open, new_screen, animated: false, modal: true)
+        screen.should.be.kind_of BasicScreen
       end
 
       it "should open screen in tab bar if :in_tab is provided" do
@@ -176,17 +180,20 @@ describe "screen helpers" do
           screen.should.be.instance_of BasicScreen
           tab_name.should == 'my_tab'
         end
-        @screen.open BasicScreen, in_tab: 'my_tab'
+        screen = @screen.open BasicScreen, in_tab: 'my_tab'
+        screen.should.be.kind_of BasicScreen
       end
 
       it "should pop onto navigation controller if current screen is on nav stack already" do
         @screen.mock!(:push_view_controller) { |vc| vc.should.be.instance_of BasicScreen }
-        @screen.open BasicScreen
+        screen = @screen.open BasicScreen
+        screen.should.be.kind_of BasicScreen
       end
       
       it "should ignore its own navigation controller if current screen has a navigation controller" do
         basic = BasicScreen.new(nav_bar: true) # creates a dangling nav_bar that will be discarded.
-        @screen.open basic
+        screen = @screen.open basic
+        screen.should.be.kind_of BasicScreen
         basic.navigationController.should == @screen.navigationController
         basic.navigation_controller.should == @screen.navigationController
         @screen.navigation_controller.should == @screen.navigationController
@@ -196,7 +203,8 @@ describe "screen helpers" do
         parent_screen = HomeScreen.new
         new_screen = BasicScreen.new
         parent_screen.mock!(:open_root_screen) { |vc| vc.should.be == new_screen }
-        parent_screen.open_screen new_screen
+        screen = parent_screen.open_screen new_screen
+        screen.should == new_screen
       end
 
     end

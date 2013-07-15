@@ -3,4 +3,4 @@ gemfile:
   - Gemfile
 before_script: bundle install
 script: bundle exec rake spec
-bump: 3
+bump: 5

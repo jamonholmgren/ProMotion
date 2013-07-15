@@ -25,6 +25,25 @@ describe "screen properties" do
     @screen.title = "instance method"
     HomeScreen.get_title.should != 'instance method'
   end
+  
+  it "should set the tab bar item with a system icon" do
+    @screen.set_tab_bar_item system_icon: :contacts
+    comparison = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemContacts, tag: 0)
+    @screen.tabBarItem.systemItem.should == comparison.systemItem
+    @screen.tabBarItem.tag.should == comparison.tag
+    @screen.tabBarItem.image.should == comparison.image
+  end
+
+  it "should set the tab bar item with a custom icon and title" do
+    @screen.set_tab_bar_item title: "My Screen", icon: "list"
+    
+    icon_image = UIImage.imageNamed("list")
+    comparison = UITabBarItem.alloc.initWithTitle("My Screen", image: icon_image, tag: 0)
+    
+    @screen.tabBarItem.systemItem.should == comparison.systemItem
+    @screen.tabBarItem.tag.should == comparison.tag
+    @screen.tabBarItem.image.should == comparison.image
+  end
 
   it "should store debug mode" do
     HomeScreen.debug_mode = true
@@ -109,30 +128,15 @@ describe "screen properties" do
 
   end
 
-
-  describe "pm_main_controller" do
-
-    it "should return the navigation controller wrapper" do
-      @screen.pm_main_controller.should.be.instance_of ProMotion::NavigationController
-    end
-
-    it "should return itself when screen is a plain UIViewController" do
-      vc = UIViewController.alloc.initWithNibName(nil, bundle: nil)
-      vc.respond_to?(:pm_main_controller).should == true
-      vc.pm_main_controller.should == vc
-    end
-
-  end
-
-
   describe "navigation controller behavior" do
 
     it "should have a nav bar" do
       @screen.nav_bar?.should == true
     end
 
-    it "#main_controller should return a navigation controller" do
-      @screen.main_controller.should.be.instance_of ProMotion::NavigationController
+    it "#navigation_controller should return a navigation controller" do
+      @screen.navigation_controller.should.be.instance_of ProMotion::NavigationController
+      @screen.navigationController.should.be.instance_of ProMotion::NavigationController
     end
 
     it "have a right bar button item" do

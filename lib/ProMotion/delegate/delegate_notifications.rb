@@ -5,7 +5,7 @@ module ProMotion
 
     def check_for_push_notification(options)
       if options && options[UIApplicationLaunchOptionsRemoteNotificationKey]
-        received_push_notification options[UIApplicationLaunchOptionsRemoteNotificationKey]
+        received_push_notification options[UIApplicationLaunchOptionsRemoteNotificationKey], true
       end
     end
 
@@ -14,10 +14,7 @@ module ProMotion
       notification_types = [ :badge, :sound, :alert, :newsstand ] if notification_types.include?(:all)
 
       types = UIRemoteNotificationTypeNone
-      types = types | UIRemoteNotificationTypeBadge if notification_types.include?(:badge)
-      types = types | UIRemoteNotificationTypeSound if notification_types.include?(:sound)
-      types = types | UIRemoteNotificationTypeAlert if notification_types.include?(:alert)
-      types = types | UIRemoteNotificationTypeNewsstandContentAvailability if notification_types.include?(:newsstand)
+      notification_types.each { |t| types = types | map_notification_symbol(t) }
 
       UIApplication.sharedApplication.registerForRemoteNotificationTypes types
     end
@@ -38,9 +35,9 @@ module ProMotion
       types
     end
 
-    def received_push_notification(notification)
+    def received_push_notification(notification, was_launched)
       @aps_notification = PM::PushNotification.new(notification)
-      on_push_notification(@aps_notification) if respond_to?(:on_push_notification)
+      on_push_notification(@aps_notification, was_launched) if respond_to?(:on_push_notification)
     end
 
     # CocoaTouch
@@ -54,7 +51,19 @@ module ProMotion
     end
 
     def application(application, didReceiveRemoteNotification:notification)
-      received_push_notification(notification)
+      received_push_notification(notification, false)
+    end
+    
+    protected
+    
+    def map_notification_symbol(symbol)
+      {
+        none:       UIRemoteNotificationTypeNone,
+        badge:      UIRemoteNotificationTypeBadge,
+        sound:      UIRemoteNotificationTypeSound,
+        alert:      UIRemoteNotificationTypeAlert,
+        newsstand:  UIRemoteNotificationTypeNewsstandContentAvailability
+      }[symbol] || UIRemoteNotificationTypeNone
     end
 
   end

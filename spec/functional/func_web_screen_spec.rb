@@ -24,7 +24,7 @@ describe "ProMotion::TestWebScreen functionality" do
 
     @loaded_file = File.read(File.join(NSBundle.mainBundle.resourcePath, file_name))
     wait_for_change @webscreen, 'load_finished' do
-      @webscreen.html.should == @loaded_file
+      @webscreen.html.delete("\n").should == @loaded_file.delete("\n")
     end
   end
 
@@ -43,7 +43,7 @@ describe "ProMotion::TestWebScreen functionality" do
 
     wait_for_change @webscreen, 'load_finished' do
       @webscreen.evaluate('document.getElementById("cool").innerHTML = "Changed"')
-      @webscreen.html.should == '<h1 id="cool">Changed</h1>'
+      @webscreen.html.should =~ /<h1 id="cool">Changed<\/h1>/
     end
 
   end

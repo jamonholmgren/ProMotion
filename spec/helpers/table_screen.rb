@@ -8,6 +8,8 @@ class TestTableScreen < ProMotion::TableScreen
 
   def on_load
     self.tap_counter = 0
+    set_attributes self.view, { backgroundView: nil, backgroundColor: UIColor.whiteColor }
+    set_nav_bar_right_button UIImage.imageNamed("list.png"), action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
   end
 
   def table_data

@@ -173,7 +173,7 @@ module ProMotion
       else
         if self.respond_to?(:table_data_index)
           self.table_data_index
-        elsif self.class.get_indexable
+        elsif self.class.respond_to?(:get_indexable) && self.class.get_indexable
           self.index_from_section_titles
         else
           nil

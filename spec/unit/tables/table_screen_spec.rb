@@ -7,6 +7,13 @@ describe "table screens" do
       @screen.on_load
     end
 
+    it "should add an image right nav bar button" do
+      image = UIImage.imageNamed("list.png")
+      # @screen.set_nav_bar_button :right, image: image, action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
+      @screen.navigationItem.rightBarButtonItem.image.class.should == UIImage
+      @screen.navigationItem.rightBarButtonItem.image.should == image
+    end
+
     it "should display some sections" do
       @screen.promotion_table_data.sections.should.be.kind_of(Array)
     end

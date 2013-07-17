@@ -154,7 +154,7 @@ module ProMotion
 
     ########## Cocoa touch methods #################
     def numberOfSectionsInTableView(table_view)
-      return @promotion_table_data.data.size
+      return Array(@promotion_table_data.data).length
     end
 
     # Number of cells

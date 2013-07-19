@@ -104,7 +104,7 @@ module ProMotion
 
     def delete_row(index_paths, animation = nil)
       animation = map_row_animation_symbol(animation)
-      index_paths = Array(index_paths)
+      index_paths = [index_paths] if index_paths.kind_of?(NSIndexPath)
       deletable_index_paths = []
 
       index_paths.each do |index_path|

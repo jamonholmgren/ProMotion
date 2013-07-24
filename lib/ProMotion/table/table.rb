@@ -60,6 +60,7 @@ module ProMotion
     end
 
     def update_table_view_data(data)
+      create_table_view_from_data(data) unless @promotion_table_data
       @promotion_table_data.data = data
       table_view.reloadData
     end

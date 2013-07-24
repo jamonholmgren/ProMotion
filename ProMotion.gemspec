@@ -12,6 +12,7 @@ Gem::Specification.new do |gem|
                         utilities to make iOS development more like Ruby and less like Objective-C.
                       "
   gem.homepage      = "https://github.com/clearsightstudio/ProMotion"
+  gem.license       = 'MIT'
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

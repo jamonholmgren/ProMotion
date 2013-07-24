@@ -95,4 +95,21 @@ describe "table screens" do
 
   end
 
+  describe 'test PM::TableScreen\'s method call order' do
+    before do
+      class MethodCallOrderTestTableScreen < PM::TableScreen
+        def table_data; @table_data ||= []; end
+        def on_load
+          @table_data = [{cells: [ title: 'cell 1' ]}]
+          update_table_data
+        end
+      end
+    end
+
+    it 'should not raise error at load view' do
+      proc { @screen = MethodCallOrderTestTableScreen.new }.should.not.raise(NoMethodError)
+    end
+  end
+
 end
+

@@ -32,12 +32,18 @@ describe "PM::TableViewCellModule" do
     button = UIButton.buttonWithType(UIButtonTypeRoundedRect).tap{|b| b.titleLabel.text = "ACC" }
     @screen.mock! :table_data do
       [
-        { title: "", cells: [] },
-        { title: "", cells: [
-          {title: "Test 1", accessory_type: UITableViewCellStateShowingEditControlMask },
-          custom_cell,
-          { title: "Test2", accessory: { view: button } },
-          attributed_cell ] }
+        {
+          title: "", cells: []
+        },
+        {
+          title: "",
+          cells: [
+            { title: "Test 1", accessory_type: UITableViewCellStateShowingEditControlMask },
+            custom_cell,
+            { title: "Test2", accessory: { view: button } },
+            attributed_cell
+          ]
+        }
       ]
     end
 

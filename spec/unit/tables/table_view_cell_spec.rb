@@ -19,6 +19,14 @@ describe "PM::TableViewCellModule" do
     }
   end
 
+  def attributed_cell
+    {
+      title: NSMutableAttributedString.alloc.initWithString("Attributed Title"),
+      subtitle: NSMutableAttributedString.alloc.initWithString("Attributed Subtitle"),
+      cell_style: UITableViewCellStyleSubtitle
+    }
+  end
+
   before do
     @screen = TestTableScreen.new
     button = UIButton.buttonWithType(UIButtonTypeRoundedRect).tap{|b| b.titleLabel.text = "ACC" }
@@ -28,17 +36,20 @@ describe "PM::TableViewCellModule" do
         { title: "", cells: [
           {title: "Test 1", accessory_type: UITableViewCellStateShowingEditControlMask },
           custom_cell,
-          { title: "Test2", accessory: { view: button } } ] }
+          { title: "Test2", accessory: { view: button } },
+          attributed_cell ] }
       ]
     end
 
     @screen.on_load
 
     @custom_ip = NSIndexPath.indexPathForRow(1, inSection: 1) # Cell "Crazy Full Featured Cell"
+    @attributed_ip = NSIndexPath.indexPathForRow(3, inSection: 1) # Attributed Cell
 
     @screen.update_table_data
 
     @subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: @custom_ip)
+    @attributed_subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: @attributed_ip)
   end
 
   it "should be a PM::TableViewCell" do
@@ -47,6 +58,14 @@ describe "PM::TableViewCellModule" do
 
   it "should have the right title" do
     @subject.textLabel.text.should == "Crazy Full Featured Cell"
+  end
+
+  it "should allow attributed title" do
+    @attributed_subject.textLabel.attributedText.mutableString.should == "Attributed Title"
+  end
+
+  it "should allow attributed subtitle" do
+    @attributed_subject.detailTextLabel.attributedText.mutableString.should == "Attributed Subtitle"
   end
 
   it "should have the right subtitle" do

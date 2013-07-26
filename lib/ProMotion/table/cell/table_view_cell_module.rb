@@ -50,7 +50,11 @@ module ProMotion
 
     def set_subtitle
       if data_cell[:subtitle] && self.detailTextLabel
-        self.detailTextLabel.text = data_cell[:subtitle]
+        # Allowing Attributed text
+        case data_cell[:subtitle].class.to_s
+        when /Attributed/ then self.detailTextLabel.attributedText = data_cell[:subtitle]
+        else self.detailTextLabel.text = data_cell[:subtitle]
+        end
         self.detailTextLabel.backgroundColor = UIColor.clearColor
         self.detailTextLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth
       end
@@ -135,7 +139,12 @@ module ProMotion
         cell_title = data_cell[:title]
         cell_title ||= ""
         self.textLabel.backgroundColor = UIColor.clearColor
-        self.textLabel.text = cell_title
+
+        # Allowing Attributed text
+        case cell_title.class.to_s
+        when /Attributed/ then self.textLabel.attributedText = cell_title
+        else self.textLabel.text = cell_title
+        end
       end
 
       self

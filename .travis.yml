@@ -1,6 +1,5 @@
 language: objective-c
 gemfile:
   - Gemfile
-before_script: bundle install
+before_script: sudo chown -R travis ~/Library/RubyMotion
 script: bundle exec rake spec
-bump: 5

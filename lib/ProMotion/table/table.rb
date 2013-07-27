@@ -31,6 +31,9 @@ module ProMotion
     end
 
     def set_up_table_view
+      # before access self.table_data, create UITableView and call on_load
+      table_view
+
       self.view = self.create_table_view_from_data(self.table_data)
     end
 

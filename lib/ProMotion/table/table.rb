@@ -31,6 +31,9 @@ module ProMotion
     end
 
     def set_up_table_view
+      # before access self.table_data, create UITableView and call on_load
+      table_view
+
       self.view = self.create_table_view_from_data(self.table_data)
     end
 
@@ -154,7 +157,7 @@ module ProMotion
 
     ########## Cocoa touch methods #################
     def numberOfSectionsInTableView(table_view)
-      return @promotion_table_data.data.size
+      return Array(@promotion_table_data.data).length
     end
 
     # Number of cells
@@ -242,9 +245,33 @@ module ProMotion
       PM.logger.warn "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)'."
       delete_row(index_paths, animation)
     end
-    
+
+    # Section view methods
+    def tableView(table_view, viewForHeaderInSection: index)
+      section = section_at_index(index)
+
+      if section[:title_view]
+        klass      = section[:title_view]
+        view       = klass.new if klass.respond_to?(:new)
+        view.title = section[:title] if view.respond_to?(:title=)
+        view
+      else
+        nil
+      end
+    end
+
+    def tableView(table_view, heightForHeaderInSection: index)
+      section = section_at_index(index)
+
+      if section[:title_view] || (section[:title] && !section[:title].empty?)
+        section[:title_view_height] || tableView.sectionHeaderHeight
+      else
+        0.0
+      end
+    end
+
     protected
-    
+
     def map_row_animation_symbol(symbol)
       symbol ||= UITableViewRowAnimationAutomatic
       {
@@ -288,7 +315,7 @@ module ProMotion
       def get_refreshable_params
         @refreshable_params ||= nil
       end
-      
+
       # Indexable
       def indexable(params = {})
         @indexable_params = params

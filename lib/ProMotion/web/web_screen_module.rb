@@ -100,10 +100,11 @@ module ProMotion
     alias :reload :refresh
 
     def open_in_chrome(inRequest)
-      # Add pod 'OpenInChrome' to your Rakefile if you want links to open in chrom for users.
+      # Add pod 'OpenInChrome' to your Rakefile if you want links to open in Google Chrome for users.
+      # This will fall back to Safari if the user doesn't have Chrome installed.
       chrome_controller = OpenInChromeController.sharedInstance
       return open_in_safari(inRequest) unless chrome_controller.isChromeInstalled
-      chrome_controller.open_in_chrome(inRequest.URL)
+      chrome_controller.openInChrome(inRequest.URL)
     end
 
     def open_in_safari(inRequest)

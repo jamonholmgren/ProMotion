@@ -29,4 +29,16 @@ describe "Searchable table spec" do
     @controller.tableView(@controller.tableView, numberOfRowsInSection:0).should == 50
   end
 
+  it "should expose the search_string variable and clear it properly" do
+    @controller.searchDisplayController(@controller, shouldReloadTableForSearchString:"North")
+
+    @controller.search_string.should == "north"
+    @controller.original_search_string.should == "North"
+
+    @controller.searchDisplayControllerWillEndSearch(@controller)
+
+    @controller.search_string.should == false
+    @controller.original_search_string.should == false
+  end
+
 end

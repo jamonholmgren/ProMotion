@@ -1,6 +1,6 @@
 module ProMotion
   class TableData
-    attr_accessor :data, :filtered_data, :search_string, :filtered, :table_view
+    attr_accessor :data, :filtered_data, :search_string, :original_search_string, :filtered, :table_view
 
     def initialize(data, table_view)
       self.data = data
@@ -45,6 +45,7 @@ module ProMotion
       self.filtered_data = []
       self.filtered = true
 
+      self.original_search_string = search_string
       self.search_string = search_string.downcase.strip
 
       self.data.compact.each do |section|
@@ -68,6 +69,7 @@ module ProMotion
       self.filtered_data = []
       self.filtered = false
       self.search_string = false
+      self.original_search_string = false
     end
 
     def set_data_cell_defaults(data_cell)

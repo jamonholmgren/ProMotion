@@ -59,6 +59,10 @@ module ProMotion
       @promotion_table_data.filtered
     end
 
+    def original_search_string
+      @promotion_table_data.original_search_string
+    end
+
     def search_string
       @promotion_table_data.search_string
     end

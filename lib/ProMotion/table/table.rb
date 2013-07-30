@@ -59,6 +59,10 @@ module ProMotion
       @promotion_table_data.filtered
     end
 
+    def search_string
+      @promotion_table_data.search_string
+    end
+
     def update_table_view_data(data)
       create_table_view_from_data(data) unless @promotion_table_data
       @promotion_table_data.data = data
@@ -242,9 +246,9 @@ module ProMotion
       PM.logger.warn "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)'."
       delete_row(index_paths, animation)
     end
-    
+
     protected
-    
+
     def map_row_animation_symbol(symbol)
       symbol ||= UITableViewRowAnimationAutomatic
       {
@@ -288,7 +292,7 @@ module ProMotion
       def get_refreshable_params
         @refreshable_params ||= nil
       end
-      
+
       # Indexable
       def indexable(params = {})
         @indexable_params = params

@@ -27,7 +27,7 @@ module ProMotion
     end
 
     def set_tab_bar_badge(number)
-      self.tab_bar_item[:badge] = number
+      self.tab_bar_item[:badge_number] = number
       refresh_tab_bar_item
     end
 

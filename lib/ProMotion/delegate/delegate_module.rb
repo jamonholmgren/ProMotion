@@ -38,6 +38,10 @@ module ProMotion
       on_unload if respond_to?(:on_unload)
     end
 
+    def application(application, openURL: url, sourceApplication:source_app, annotation: annotation)
+      on_open_url({ url: url, source_app: source_app, annotation: annotation }) if respond_to?(:on_open_url)
+    end
+
     def app_delegate
       self
     end

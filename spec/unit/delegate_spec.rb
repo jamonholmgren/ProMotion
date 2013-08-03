@@ -84,4 +84,17 @@ describe "PM::Delegate" do
     @subject.called_on_unload.should == true
   end
 
+  it "should handle open URL" do
+    url = NSURL.URLWithString("http://example.com")
+    sourceApplication = 'com.example'
+    annotation = {jamon: true}
+    @subject.mock!(:on_open_url) do |parameters|
+      parameters[:url].should == url
+      parameters[:source_app].should == sourceApplication
+      parameters[:annotation][:jamon].should.be.true
+    end
+
+    @subject.application(UIApplication.sharedApplication, openURL: url, sourceApplication:sourceApplication, annotation: annotation)
+  end
+
 end

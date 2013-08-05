@@ -31,6 +31,9 @@ module ProMotion
     end
 
     def set_up_table_view
+      # before access self.table_data, create UITableView and call on_load
+      table_view
+
       self.view = self.create_table_view_from_data(self.table_data)
     end
 
@@ -57,6 +60,14 @@ module ProMotion
 
     def searching?
       @promotion_table_data.filtered
+    end
+
+    def original_search_string
+      @promotion_table_data.original_search_string
+    end
+
+    def search_string
+      @promotion_table_data.search_string
     end
 
     def update_table_view_data(data)

@@ -1,6 +1,6 @@
 module ProMotion
   class TableData
-    attr_accessor :data, :filtered_data, :filtered, :table_view
+    attr_accessor :data, :filtered_data, :search_string, :original_search_string, :filtered, :table_view
 
     def initialize(data, table_view)
       self.data = data
@@ -45,14 +45,15 @@ module ProMotion
       self.filtered_data = []
       self.filtered = true
 
-      search_string = search_string.downcase.strip
+      self.original_search_string = search_string
+      self.search_string = search_string.downcase.strip
 
       self.data.compact.each do |section|
         new_section = {}
         new_section[:cells] = []
 
         new_section[:cells] = section[:cells].map do |cell|
-          cell[:searchable] != false && "#{cell[:title]}\n#{cell[:search_text]}".downcase.strip.include?(search_string) ? cell : nil
+          cell[:searchable] != false && "#{cell[:title]}\n#{cell[:search_text]}".downcase.strip.include?(self.search_string) ? cell : nil
         end.compact
 
         if new_section[:cells] && new_section[:cells].length > 0
@@ -67,6 +68,8 @@ module ProMotion
     def stop_searching
       self.filtered_data = []
       self.filtered = false
+      self.search_string = false
+      self.original_search_string = false
     end
 
     def set_data_cell_defaults(data_cell)

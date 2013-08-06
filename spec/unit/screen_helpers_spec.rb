@@ -19,7 +19,7 @@ describe "screen helpers" do
     end
 
     it "should set attributes using :stylename before adding a subview" do
-      def @subview.apply_stylename(style); self.backgroundColor = UIColor.blueColor; end
+      def @subview.style=(style); self.backgroundColor = UIColor.blueColor; end
       @screen.add @subview, stylename: :subview_style
       @screen.view.subviews.first.backgroundColor.should == UIColor.blueColor
     end

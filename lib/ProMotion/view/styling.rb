@@ -17,8 +17,8 @@ module ProMotion
         element.send("#{k}=", v)
       elsif v.is_a?(Array) && element.respond_to?("#{k}") && element.method("#{k}").arity == v.length
         element.send("#{k}", *v)
-      elsif k == :stylename && element.respond_to?(:apply_stylename)
-        element.apply_stylename(v.to_sym)
+      elsif k == :stylename && element.respond_to?(:style=)
+        element.style = v.to_sym
       else
         # Doesn't respond. Check if snake case.
         if k.to_s.include?("_")

@@ -31,7 +31,7 @@ describe "ProMotion::Screen functional" do
   end
 
   it "should allow setting a right nav bar button with accessibility" do
-    @root_screen.set_nav_bar_button :right, system_item: :add, accessibility: "cool3", action: :triggered_button
+    @root_screen.set_nav_bar_button :right, system_item: :add, accessibility_label: "cool3", action: :triggered_button
     tap("cool3")
     @root_screen.button_was_triggered.should.be.true
   end

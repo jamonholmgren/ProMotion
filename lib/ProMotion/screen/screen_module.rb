@@ -65,7 +65,7 @@ module ProMotion
       set_nav_bar_button :left, args
     end
 
-    def set_nav_bar_button(side, args={})
+    def set_nav_bar_button(side, args={}, attributes={})
       args[:style] = map_bar_button_item_style(args[:style])
       args[:target] ||= self
       args[:action] ||= nil
@@ -75,7 +75,10 @@ module ProMotion
       button_type = args[:image] || args[:button] || args[:system_item] || args[:title] || "Button"
 
       button = bar_button_item button_type, args
-      button.accessibilityLabel = args[:accessibility] if args[:accessibility]
+      [:style, :target, :action, :system_item, :system_icon, :image].each do |k|
+        args.delete(k)
+      end
+      set_attributes button, args
 
       self.navigationItem.leftBarButtonItem = button if side == :left
       self.navigationItem.rightBarButtonItem = button if side == :right

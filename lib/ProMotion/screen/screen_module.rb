@@ -65,7 +65,7 @@ module ProMotion
       set_nav_bar_button :left, args
     end
 
-    def set_nav_bar_button(side, args={}, attributes={})
+    def set_nav_bar_button(side, args={})
       args[:style] = map_bar_button_item_style(args[:style])
       args[:target] ||= self
       args[:action] ||= nil

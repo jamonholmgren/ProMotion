@@ -24,3 +24,10 @@ tmp
 .DS_Store
 .dat*
 .rake_tasks*
+
+# IDE / editor files
+.idea/
+*.tmproj
+*.tmproject
+tmtags
+*.sublime-workspace

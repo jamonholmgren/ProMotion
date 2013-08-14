@@ -35,8 +35,10 @@ module ProMotion
       return UITabBarItem.alloc.initWithTabBarSystemItem(icon, tag: tag)
     end
 
-    def create_tab_bar_icon_custom(title, image_name, tag)
-      icon_image = UIImage.imageNamed(image_name)
+    def create_tab_bar_icon_custom(title, icon_image, tag)
+      if icon_image.is_a?(String)
+        icon_image = UIImage.imageNamed(icon_image)
+      end
       return UITabBarItem.alloc.initWithTitle(title, image:icon_image, tag:tag)
     end
 

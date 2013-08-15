@@ -24,7 +24,7 @@ module ProMotion
         present_view_controller_in_tab_bar_controller screen, args[:in_tab]
 
       elsif self.navigation_controller
-        push_view_controller screen
+        push_view_controller screen, self.navigation_controller, args[:animated].nil? ? true : args[:animated]
 
       else
         open_root_screen (screen.navigationController || screen)
@@ -76,14 +76,14 @@ module ProMotion
       end
     end
 
-    def push_view_controller(vc, nav_controller=nil)
+    def push_view_controller(vc, nav_controller=nil, animated=true)
       unless self.navigation_controller
         PM.logger.error "You need a nav_bar if you are going to push #{vc.to_s} onto it."
       end
       nav_controller ||= self.navigation_controller
       vc.first_screen = false if vc.respond_to?(:first_screen=)
       vc.navigation_controller = nav_controller if vc.respond_to?(:navigation_controller=)
-      nav_controller.pushViewController(vc, animated: true)
+      nav_controller.pushViewController(vc, animated: animated)
     end
 
     protected

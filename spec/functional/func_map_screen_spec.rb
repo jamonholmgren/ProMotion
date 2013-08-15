@@ -9,13 +9,13 @@ describe "ProMotion::TestMapScreen functionality" do
     @map.navigation_controller
   end
 
-  def add_image_annotation(image)
+  def add_image_annotation
     ann = {
       longitude: -82.965972900392,
       latitude: 35.090648651124,
       title: "My Cool Image Pin",
       subtitle: "Image pin subtitle",
-      image: image
+      image: UIImage.imageNamed("test.jpeg")
     }
     @map.annotations.count.should == 5
     @map.add_annotation ann
@@ -115,20 +115,14 @@ describe "ProMotion::TestMapScreen functionality" do
     @map.annotations.count.should == 2
   end
 
-  it "should add an image based annotation using a UIImage" do
-    add_image_annotation(UIImage.imageNamed("test.jpeg"))
-    @map.annotations.count.should == 6
-    @map.mapview.viewForAnnotation(@map.annotations.last).class.should == MKAnnotationView
-  end
-
-  it "should add an image based annotation using a string" do
-    add_image_annotation("test.jpeg")
+  it "should add an image based annotation" do
+    add_image_annotation
     @map.annotations.count.should == 6
     @map.mapview.viewForAnnotation(@map.annotations.last).class.should == MKAnnotationView
   end
 
   it "should select an image annotation" do
-    add_image_annotation("test.jpeg")
+    add_image_annotation
     @map.selected_annotations.should == nil
     @map.select_annotation @map.annotations.last
     wait 0.75 do
@@ -137,7 +131,7 @@ describe "ProMotion::TestMapScreen functionality" do
   end
 
   it "should select an image annotation by index" do
-    add_image_annotation("test.jpeg")
+    add_image_annotation
     @map.selected_annotations.should == nil
     @map.select_annotation_at 5
     wait 0.75 do
@@ -147,7 +141,7 @@ describe "ProMotion::TestMapScreen functionality" do
   end
 
   it "should select an image annotation and check that the title is correct" do
-    add_image_annotation("test.jpeg")
+    add_image_annotation
     @map.selected_annotations.should == nil
     @map.select_annotation @map.annotations[5]
     wait 0.75 do

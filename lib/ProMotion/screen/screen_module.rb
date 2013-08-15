@@ -75,10 +75,6 @@ module ProMotion
       button_type = args[:image] || args[:button] || args[:system_item] || args[:title] || "Button"
 
       button = bar_button_item button_type, args
-      [:style, :target, :action, :system_item, :system_icon, :image].each do |k|
-        args.delete(k)
-      end
-      set_attributes button, args
 
       self.navigationItem.leftBarButtonItem = button if side == :left
       self.navigationItem.rightBarButtonItem = button if side == :right

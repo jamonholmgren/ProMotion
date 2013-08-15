@@ -38,8 +38,19 @@ module ProMotion
     def create_tab_bar_icon_custom(title, icon_image, tag)
       if icon_image.is_a?(String)
         icon_image = UIImage.imageNamed(icon_image)
+      elsif icon_image.is_a?(Hash)
+        icon_selected = icon_image[:selected]
+        icon_unselected = icon_image[:unselected]
+        icon_image = nil
       end
-      return UITabBarItem.alloc.initWithTitle(title, image:icon_image, tag:tag)
+      
+      item = UITabBarItem.alloc.initWithTitle(title, image:icon_image, tag:tag)
+
+      if icon_selected || icon_unselected
+        item.setFinishedSelectedImage(icon_selected, withFinishedUnselectedImage: icon_unselected)
+      end
+
+      return item
     end
 
     def create_tab_bar_item(tab={})

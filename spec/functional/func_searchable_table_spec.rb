@@ -41,4 +41,12 @@ describe "Searchable table spec" do
     @controller.original_search_string.should == false
   end
 
+  it "should call the stopped_searching callback properly" do
+    @controller.searchDisplayController(@controller, shouldReloadTableForSearchString:"North")
+    @controller.stopped_searching_called.should == nil
+
+    @controller.searchDisplayControllerWillEndSearch(@controller)
+    @controller.stopped_searching_called.should == true
+  end
+
 end

@@ -2,7 +2,7 @@ class TableScreenSearchable < TestTableScreen
 
   searchable
 
-  attr_accessor :stopped_searching_called
+  attr_accessor :on_end_search_called, :on_begin_search_called
 
   def table_data
     @search_table_data ||= [{
@@ -61,8 +61,12 @@ class TableScreenSearchable < TestTableScreen
     }]
   end
 
-  def stopped_searching
-    self.stopped_searching_called = true
+  def on_begin_search
+    self.on_begin_search_called = true
+  end
+
+  def on_end_search
+    self.on_end_search_called = true
   end
 
 end

@@ -41,12 +41,16 @@ describe "Searchable table spec" do
     @controller.original_search_string.should == false
   end
 
-  it "should call the stopped_searching callback properly" do
+  it "should call the start and stop searching callbacks properly" do
+    @controller.on_begin_search_called.should == nil
+    @controller.on_end_search_called.should == nil
+
+    @controller.searchDisplayControllerWillBeginSearch(@controller)
     @controller.searchDisplayController(@controller, shouldReloadTableForSearchString:"North")
-    @controller.stopped_searching_called.should == nil
+    @controller.on_begin_search_called.should == true
 
     @controller.searchDisplayControllerWillEndSearch(@controller)
-    @controller.stopped_searching_called.should == true
+    @controller.on_end_search_called.should == true
   end
 
 end

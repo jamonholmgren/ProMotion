@@ -78,7 +78,8 @@ module ProMotion
 
       self.navigationItem.leftBarButtonItem = button if side == :left
       self.navigationItem.rightBarButtonItem = button if side == :right
-
+      self.navigationItem.backBarButtonItem = button if side == :back
+      
       button
     end
     

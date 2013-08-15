@@ -51,13 +51,12 @@ module ProMotion
         @promotion_table_data_data = nil
         self.table_view.setScrollEnabled true
         self.table_view.reloadData
-        @table_search_display_controller.delegate.on_end_search if @table_search_display_controller.delegate.respond_to? "on_end_search"
+        @table_search_display_controller.delegate.will_end_search if @table_search_display_controller.delegate.respond_to? "will_end_search"
       end
 
       def searchDisplayControllerWillBeginSearch(controller)
         self.table_view.setScrollEnabled false
-        puts 'searchDisplayControllerWillBeginSearch(controller)'
-        @table_search_display_controller.delegate.on_begin_search if @table_search_display_controller.delegate.respond_to? "on_begin_search"
+        @table_search_display_controller.delegate.will_begin_search if @table_search_display_controller.delegate.respond_to? "will_begin_search"
       end
     end
   end

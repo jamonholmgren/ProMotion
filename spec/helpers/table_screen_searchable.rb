@@ -2,6 +2,8 @@ class TableScreenSearchable < TestTableScreen
 
   searchable
 
+  attr_accessor :stopped_searching_called
+
   def table_data
     @search_table_data ||= [{
       cells: [
@@ -57,6 +59,10 @@ class TableScreenSearchable < TestTableScreen
         { title: "Wyoming" }
       ]
     }]
+  end
+
+  def stopped_searching
+    self.stopped_searching_called = true
   end
 
 end

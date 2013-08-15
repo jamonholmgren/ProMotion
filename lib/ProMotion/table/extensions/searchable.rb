@@ -51,6 +51,7 @@ module ProMotion
         @promotion_table_data_data = nil
         self.table_view.setScrollEnabled true
         self.table_view.reloadData
+        @table_search_display_controller.delegate.stopped_searching if @table_search_display_controller.delegate.respond_to? "stopped_searching"
       end
 
       def searchDisplayControllerWillBeginSearch(controller)

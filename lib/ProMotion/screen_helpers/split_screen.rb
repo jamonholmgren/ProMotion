@@ -41,7 +41,7 @@ module ProMotion
 
     private
     def _dismiss_popover
-      @popover_controller.dismissPopoverAnimated(@popover_controller)
+      @popover_controller.dismissPopoverAnimated(true)
     end
 
     # UISplitViewControllerDelegate methods

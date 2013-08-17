@@ -35,7 +35,6 @@ module ProMotion
     end
 
     def dismiss_popover
-      puts "trying to dismiss popover for #{@popover} : #{@popover.class}"
       _dismiss_popover if @popover_controller
     end
 
@@ -47,14 +46,12 @@ module ProMotion
     # UISplitViewControllerDelegate methods
 
     def splitViewController(svc, willHideViewController: vc, withBarButtonItem: button, forPopoverController: pc)
-      puts "willHideViewController: #{vc}"
       button.title = vc.title
       svc.detail_screen.navigationItem.leftBarButtonItem = button;
       @popover_controller = pc
     end
 
     def splitViewController(svc, willShowViewController: vc, invalidatingBarButtonItem: barButtonItem)
-      puts "willShowViewController: #{vc}"
       svc.detail_screen.navigationItem.leftBarButtonItem = nil
       @popover_controller = nil
     end

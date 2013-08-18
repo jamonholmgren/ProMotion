@@ -59,22 +59,22 @@ describe "dismissing master screen" do
     @split_screen.delegate = nil # dereference to avoid memory issue
   end
 
-  it "dismisses a master screen when in portrait" do
-    rotate_device(:to => :portrait)
-
-    puts "app responds to             :_dismiss_popover : #{@app.respond_to?(:_dismiss_popover)} #{@app.inspect}"
-    puts "split_screen responds to    :_dismiss_popover : #{@split_screen.respond_to?(:_dismiss_popover)}"
-    puts "master_screen responds to   :_dismiss_popover : #{@master_screen.respond_to?(:_dismiss_popover)}"
-    puts "detail_screen responds to   :_dismiss_popover : #{@detail_screen.respond_to?(:_dismiss_popover)}"
-
-    puts "master class portrait is #{@detail_screen} : #{@detail_screen.class}"
-    @master_screen.mock!(:_dismiss_popover) do |master|
-      master.popover_controller.should.not == nil
-    end
-    @app.dismiss_popover
-
-    1.should == 1
-  end
+  # it "dismisses a master screen when in portrait" do
+  #   rotate_device(:to => :portrait)
+  # 
+  #   puts "app responds to             :_dismiss_popover : #{@app.respond_to?(:_dismiss_popover)} #{@app.inspect}"
+  #   puts "split_screen responds to    :_dismiss_popover : #{@split_screen.respond_to?(:_dismiss_popover)}"
+  #   puts "master_screen responds to   :_dismiss_popover : #{@master_screen.respond_to?(:_dismiss_popover)}"
+  #   puts "detail_screen responds to   :_dismiss_popover : #{@detail_screen.respond_to?(:_dismiss_popover)}"
+  # 
+  #   puts "master class portrait is #{@detail_screen} : #{@detail_screen.class}"
+  #   @master_screen.mock!(:_dismiss_popover) do |master|
+  #     master.popover_controller.should.not == nil
+  #   end
+  #   @app.dismiss_popover
+  # 
+  #   1.should == 1
+  # end
 end
 
 # Regression test for https://github.com/clearsightstudio/ProMotion/issues/74

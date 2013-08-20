@@ -50,7 +50,30 @@ describe "ProMotion::Screen functional" do
       end
 
     end
+    
   end
+
+  it "should push another screen with animation by default" do
+    basic = @root_screen.open BasicScreen
+    wait 0.5 do
+      basic.animation_ts.should.be > 0.2
+    end
+  end
+
+  it "should push another screen with animation when animated: true" do
+    basic = @root_screen.open BasicScreen, animated: true
+    wait 0.5 do
+      basic.animation_ts.should.be > 0.2
+    end
+  end
+
+  it "should push another screen without animation when animated: false" do
+    basic = @root_screen.open BasicScreen, animated: false
+    wait 0.5 do
+      basic.animation_ts.should.be < 0.2
+    end
+  end
+
 
   it "should allow opening and closing a modal screen" do
     @basic = BasicScreen.new(nav_bar: true)

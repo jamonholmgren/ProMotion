@@ -13,4 +13,10 @@ describe "PM::FormotionScreen" do
     @screen.title.should == "Formotion Test"
   end
 
+  it "should fire the on_submit method when form is submitted" do
+    @screen.form.submit
+    @screen.submitted_form.should.not.be.nil
+    @screen.submitted_form.render.should.be.kind_of(Hash)
+  end
+
 end

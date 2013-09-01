@@ -1,7 +1,7 @@
 module ProMotion
   module Styling
     include Conversions
-    
+
     def set_attributes(element, args = {})
       args.each { |k, v| set_attribute(element, k, v) }
       element
@@ -34,6 +34,8 @@ module ProMotion
         args[:resize].each { |r| attributes[:autoresizingMask] |= map_resize_symbol(r) }
       end
 
+      args[:left] = args.delete(:x) if args[:x]
+      args[:top] = args.delete(:y) if args[:y]
       if [:left, :top, :width, :height].select{ |a| args[a] && args[a] != :auto }.length == 4
         attributes[:frame] = CGRectMake(args[:left], args[:top], args[:width], args[:height])
       end
@@ -64,7 +66,7 @@ module ProMotion
       end
       nil
     end
-    
+
     def add(element, attrs = {})
       add_to view_or_self, element, attrs
     end
@@ -86,11 +88,11 @@ module ProMotion
       end
       element
     end
-    
+
     def view_or_self
       self.respond_to?(:view) ? self.view : self
     end
-    
+
     # These three color methods are stolen from BubbleWrap.
     def rgb_color(r,g,b)
       rgba_color(r,g,b,1)
@@ -103,7 +105,7 @@ module ProMotion
 
     def hex_color(str)
       hex_color = str.gsub("#", "")
-      case hex_color.size 
+      case hex_color.size
       when 3
         colors = hex_color.scan(%r{[0-9A-Fa-f]}).map{ |el| (el * 2).to_i(16) }
       when 6
@@ -111,16 +113,16 @@ module ProMotion
       else
         raise ArgumentError
       end
-      
+
       if colors.size == 3
         rgb_color(colors[0], colors[1], colors[2])
       else
         raise ArgumentError
-      end 
+      end
     end
-    
+
     protected
-    
+
     def map_resize_symbol(symbol)
       @_resize_symbols ||= {
         left:     UIViewAutoresizingFlexibleLeftMargin,
@@ -128,10 +130,10 @@ module ProMotion
         top:      UIViewAutoresizingFlexibleTopMargin,
         bottom:   UIViewAutoresizingFlexibleBottomMargin,
         width:    UIViewAutoresizingFlexibleWidth,
-        height:   UIViewAutoresizingFlexibleHeight     
+        height:   UIViewAutoresizingFlexibleHeight
       }
       @_resize_symbols[symbol] || symbol
     end
-    
+
   end
 end

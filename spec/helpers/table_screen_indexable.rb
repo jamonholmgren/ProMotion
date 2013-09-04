@@ -13,5 +13,6 @@ class TableScreenIndexable < PM::TableScreen
 end
 
 class TableScreenIndexableSearchable < TableScreenIndexable
+  indexable
   searchable
 end

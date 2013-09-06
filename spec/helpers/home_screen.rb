@@ -1,4 +1,5 @@
 class HomeScreen < ProMotion::Screen
+  attr_accessor :on_return_fired
 
   title "Home"
 
@@ -8,6 +9,7 @@ class HomeScreen < ProMotion::Screen
   end
 
   def on_return(args={})
+    self.on_return_fired = true
   end
 
 end

@@ -1,6 +1,6 @@
 class TestTableScreen < ProMotion::TableScreen
 
-  attr_accessor :tap_counter, :cell_was_deleted
+  attr_accessor :tap_counter, :cell_was_deleted, :on_return_fired
 
   def promotion_table_data
     @promotion_table_data
@@ -91,7 +91,7 @@ class TestTableScreen < ProMotion::TableScreen
 
   def on_cell_deleted(cell)
     if cell[:title] == "A non-deletable blank row"
-      false 
+      false
     else
       self.cell_was_deleted = true
     end
@@ -116,6 +116,10 @@ class TestTableScreen < ProMotion::TableScreen
         offset = CGPointMake(0, table_view.contentSize.height - table_view.frame.size.height)
         table_view.setContentOffset(offset, animated:false)
     end
+  end
+
+  def on_return(args={})
+    self.on_return_fired = true
   end
 
 end

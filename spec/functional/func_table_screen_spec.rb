@@ -117,4 +117,18 @@ describe "ProMotion::TestTableScreen functionality" do
     end
   end
 
+  it "should fire update_table_data for parent table screen on closing modal" do
+    @basic = BasicScreen.new(nav_bar: true)
+    wait 0.1 do
+      @controller.open_modal @basic
+      wait 0.5 do
+        @controller.on_return_fired.should.not.be.true
+        @basic.close
+        wait 0.5 do
+          @controller.on_return_fired.should.be.true
+        end
+      end
+    end
+  end
+
 end

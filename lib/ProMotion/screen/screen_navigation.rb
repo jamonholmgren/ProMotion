@@ -75,7 +75,6 @@ module ProMotion
           self.parent_screen.send(:on_return)
         end
       end
-      self.parent_screen.send(:update_table_data) if self.parent_screen.respond_to?(:update_table_data)
     end
 
     def push_view_controller(vc, nav_controller=nil)
@@ -147,6 +146,7 @@ module ProMotion
       self.parent_screen.dismissViewControllerAnimated(args[:animated], completion: lambda {
         send_on_return(args)
       })
+      update_parent_table_data
     end
 
     def close_nav_screen(args={})
@@ -159,6 +159,11 @@ module ProMotion
       else
         self.navigation_controller.popViewControllerAnimated(args[:animated])
       end
+      # update_parent_table_data
+    end
+
+    def update_parent_table_data
+      self.parent_screen.send(:update_table_data) if self.parent_screen.respond_to?(:update_table_data)
     end
 
   end

@@ -159,7 +159,6 @@ module ProMotion
       else
         self.navigation_controller.popViewControllerAnimated(args[:animated])
       end
-      # update_parent_table_data
     end
 
     def update_parent_table_data

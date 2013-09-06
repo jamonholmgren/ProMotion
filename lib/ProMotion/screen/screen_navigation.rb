@@ -67,8 +67,9 @@ module ProMotion
     alias :close :close_screen
 
     def send_on_return(args = {})
-      if self.parent_screen && self.parent_screen.respond_to?(:on_return)
-        if args && self.parent_screen.method(:on_return).arity != 0
+      return unless self.parent_screen
+      if self.parent_screen.respond_to?(:on_return)
+        if self.parent_screen.method(:on_return).arity != 0
           self.parent_screen.send(:on_return, args)
         else
           self.parent_screen.send(:on_return)
@@ -145,6 +146,7 @@ module ProMotion
       self.parent_screen.dismissViewControllerAnimated(args[:animated], completion: lambda {
         send_on_return(args)
       })
+      update_parent_table_data
     end
 
     def close_nav_screen(args={})
@@ -157,6 +159,10 @@ module ProMotion
       else
         self.navigation_controller.popViewControllerAnimated(args[:animated])
       end
+    end
+
+    def update_parent_table_data
+      self.parent_screen.send(:update_table_data) if self.parent_screen.respond_to?(:update_table_data)
     end
 
   end

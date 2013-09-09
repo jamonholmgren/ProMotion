@@ -55,7 +55,7 @@ end
 
 # Getting Started
 
-Check out our new [Getting Started Guide](https://github.com/clearsightstudio/ProMotion/wiki/Getting-Started-Guide) in the wiki!
+Check out our new [Getting Started Guide](https://github.com/clearsightstudio/ProMotion/wiki/Guide:-Getting-Started) in the wiki!
 
 # What's New?
 

@@ -102,8 +102,7 @@ module ProMotion
         #Set the pin properties
         if annotation.annotation_params[:image]
           view = MKAnnotationView.alloc.initWithAnnotation(annotation, reuseIdentifier:identifier)
-          annotation_image = annotation.annotation_params[:image]
-          view.image = annotation_image.is_a?(String) ? UIImage.imageNamed(annotation_image) : annotation_image
+          view.image =  annotation.annotation_params[:image]
         else
           view = MKPinAnnotationView.alloc.initWithAnnotation(annotation, reuseIdentifier:identifier)
           view.animatesDrop = annotation.annotation_params[:animates_drop]

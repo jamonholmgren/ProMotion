@@ -1,4 +1,5 @@
 class TestFormotionScreen < PM::FormotionScreen
+  attr_accessor :submitted_form
 
   title "Formotion Test"
 
@@ -20,6 +21,10 @@ class TestFormotionScreen < PM::FormotionScreen
         }]
       }]
     }
+  end
+
+  def on_submit(form)
+    self.submitted_form = form
   end
 
 end

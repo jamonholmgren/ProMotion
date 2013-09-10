@@ -2,7 +2,7 @@ module ProMotion
   if defined?(Formotion) && defined?(Formotion::FormController)
     class FormotionScreen < Formotion::FormController
       include ProMotion::ScreenModule
-      
+
       def self.new(args = {})
         s = self.alloc.initWithStyle(UITableViewStyleGrouped)
         s.on_create(args) if s.respond_to?(:on_create)
@@ -19,6 +19,8 @@ module ProMotion
         s.tableView.allowsSelectionDuringEditing = true
         s.title = t
 
+        s.form.on_submit { |form| s.on_submit(form) if s.respond_to?(:on_submit) }
+
         s
       end
 
@@ -28,11 +30,11 @@ module ProMotion
         self.form.controller = self
         self.tableView.reloadData
       end
-      
+
       def screen_setup
         self.title = self.class.send(:get_title)
       end
-    
+
       def loadView
         super
         self.send(:on_load) if self.respond_to?(:on_load)

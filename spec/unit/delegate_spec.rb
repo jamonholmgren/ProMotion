@@ -98,3 +98,18 @@ describe "PM::Delegate" do
   end
 
 end
+
+
+describe "PM::Delegate Colors" do
+
+  it 'should set the application tint color' do
+    @subject = TestDelegateRed.new
+
+    @subject.mock!(:on_load) do |app, options|
+      app.windows.first.rootViewController.view.tintColor.should == UIColor.blackColor
+    end
+
+    @subject.application(UIApplication.sharedApplication, didFinishLaunchingWithOptions:{jamon: true})
+  end
+
+end

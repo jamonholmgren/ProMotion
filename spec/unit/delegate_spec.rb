@@ -106,10 +106,10 @@ describe "PM::Delegate Colors" do
     @subject = TestDelegateRed.new
 
     @subject.mock!(:on_load) do |app, options|
-      app.windows.first.rootViewController.view.tintColor.should == UIColor.blackColor
+      app.windows.first.rootViewController.view.tintColor.should == UIColor.redColor
     end
 
-    @subject.application(UIApplication.sharedApplication, didFinishLaunchingWithOptions:{jamon: true})
+    @subject.application(UIApplication.sharedApplication, didFinishLaunchingWithOptions:nil)
   end
 
 end

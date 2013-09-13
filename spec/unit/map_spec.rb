@@ -30,6 +30,17 @@ describe "map properties" do
     @map.annotations.count.should == 6
   end
 
+  it "should return custom annotation parameters" do
+    ann = {
+      longitude: -82.966093558105,
+      latitude: 35.092520895652,
+      title: "Custom",
+      another_value: "Mark"
+    }
+    @map.add_annotation(ann)
+    @map.annotations.last.another_value.should == "Mark"
+  end
+
   it "should clear annotations" do
     @map.clear_annotations
     @map.annotations.count.should == 0

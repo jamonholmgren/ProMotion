@@ -52,5 +52,13 @@ module ProMotion
       @params
     end
 
+    def method_missing(meth, *args)
+      if @params[meth.to_sym]
+        @params[meth.to_sym]
+      else
+        PM.logger.warn "The annotation parameter \"#{meth}\" does not exist on this pin."
+      end
+    end
+
   end
 end

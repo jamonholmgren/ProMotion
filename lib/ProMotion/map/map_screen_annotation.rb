@@ -57,6 +57,7 @@ module ProMotion
         @params[meth.to_sym]
       else
         PM.logger.warn "The annotation parameter \"#{meth}\" does not exist on this pin."
+        nil
       end
     end
 

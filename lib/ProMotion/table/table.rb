@@ -180,16 +180,12 @@ module ProMotion
 
     # Set table_data_index if you want the right hand index column (jumplist)
     def sectionIndexTitlesForTableView(table_view)
-      if @promotion_table_data.filtered
-        nil
+      return nil if @promotion_table_data.filtered
+
+      if self.respond_to?(:table_data_index)
+        self.table_data_index
       else
-        if self.respond_to?(:table_data_index)
-          self.table_data_index
-        elsif self.class.respond_to?(:get_indexable) && self.class.get_indexable
-          self.index_from_section_titles
-        else
-          nil
-        end
+        nil
       end
     end
 

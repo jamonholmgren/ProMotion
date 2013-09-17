@@ -1,7 +1,7 @@
 module ProMotion
   module Styling
     include Conversions
-    
+
     def set_attributes(element, args = {})
       args.each { |k, v| set_attribute(element, k, v) }
       element
@@ -64,33 +64,34 @@ module ProMotion
       end
       nil
     end
-    
+
     def add(element, attrs = {})
       add_to view_or_self, element, attrs
     end
     alias :add_element :add
     alias :add_view :add
 
-    def remove(element)
-      element.removeFromSuperview
-      element = nil
+    def remove(elements)
+      Array(elements).each(&:removeFromSuperview)
     end
     alias :remove_element :remove
     alias :remove_view :remove
 
-    def add_to(parent_element, element, attrs = {})
-      parent_element.addSubview element
-      if attrs && attrs.length > 0
-        set_attributes(element, attrs)
-        set_easy_attributes(parent_element, element, attrs)
+    def add_to(parent_element, elements, attrs = {})
+      Array(elements).each do |element|
+        parent_element.addSubview element
+        if attrs && attrs.length > 0
+          set_attributes(element, attrs)
+          set_easy_attributes(parent_element, element, attrs)
+        end
       end
-      element
+      elements
     end
-    
+
     def view_or_self
       self.respond_to?(:view) ? self.view : self
     end
-    
+
     # These three color methods are stolen from BubbleWrap.
     def rgb_color(r,g,b)
       rgba_color(r,g,b,1)
@@ -103,7 +104,7 @@ module ProMotion
 
     def hex_color(str)
       hex_color = str.gsub("#", "")
-      case hex_color.size 
+      case hex_color.size
       when 3
         colors = hex_color.scan(%r{[0-9A-Fa-f]}).map{ |el| (el * 2).to_i(16) }
       when 6
@@ -111,16 +112,16 @@ module ProMotion
       else
         raise ArgumentError
       end
-      
+
       if colors.size == 3
         rgb_color(colors[0], colors[1], colors[2])
       else
         raise ArgumentError
-      end 
+      end
     end
-    
+
     protected
-    
+
     def map_resize_symbol(symbol)
       @_resize_symbols ||= {
         left:     UIViewAutoresizingFlexibleLeftMargin,
@@ -128,10 +129,10 @@ module ProMotion
         top:      UIViewAutoresizingFlexibleTopMargin,
         bottom:   UIViewAutoresizingFlexibleBottomMargin,
         width:    UIViewAutoresizingFlexibleWidth,
-        height:   UIViewAutoresizingFlexibleHeight     
+        height:   UIViewAutoresizingFlexibleHeight
       }
       @_resize_symbols[symbol] || symbol
     end
-    
+
   end
 end

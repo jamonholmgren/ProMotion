@@ -1,11 +1,14 @@
 # ProMotion [![Build Status](https://travis-ci.org/clearsightstudio/ProMotion.png)](https://travis-ci.org/clearsightstudio/ProMotion) [![Code Climate](https://codeclimate.com/github/clearsightstudio/ProMotion.png)](https://codeclimate.com/github/clearsightstudio/ProMotion)
 
-## A new way to easily build RubyMotion apps.
+## iPhone Apps, Ruby-style
 
 ProMotion is a RubyMotion gem that makes iOS development more like Ruby and less like Objective-C.
 It introduces a clean, Ruby-style syntax for building screens that is easy to learn and remember and
 abstracts a ton of boilerplate UIViewController, UINavigationController, and other iOS code into a
 simple, Ruby-like DSL.
+
+Watch the [September Motion Meetup](http://www.youtube.com/watch?v=rf7h-3AiMRQ) where Gant Laborde
+interviews Jamon Holmgren about ProMotion!
 
 ```ruby
 class AppDelegate < PM::Delegate
@@ -16,7 +19,7 @@ end
 
 class RootScreen < PM::Screen
   title "Root Screen"
-  
+
   def push_new_screen
     open NewScreen
   end
@@ -24,7 +27,7 @@ end
 
 class NewScreen < PM::TableScreen
   title "Table Screen"
-  
+
   def table_data
     [{
       cells: [

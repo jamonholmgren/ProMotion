@@ -51,7 +51,7 @@ module ProMotion
     end
 
     def application(application, didReceiveRemoteNotification:notification)
-      received_push_notification(notification, false)
+      received_push_notification(notification, application.applicationState != UIApplicationStateActive)
     end
     
     protected

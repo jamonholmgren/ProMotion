@@ -73,20 +73,21 @@ module ProMotion
     alias :add_element :add
     alias :add_view :add
 
-    def remove(element)
-      element.removeFromSuperview
-      element = nil
+    def remove(elements)
+      Array(elements).each(&:removeFromSuperview)
     end
     alias :remove_element :remove
     alias :remove_view :remove
 
-    def add_to(parent_element, element, attrs = {})
-      parent_element.addSubview element
-      if attrs && attrs.length > 0
-        set_attributes(element, attrs)
-        set_easy_attributes(parent_element, element, attrs)
+    def add_to(parent_element, elements, attrs = {})
+      Array(elements).each do |element|
+        parent_element.addSubview element
+        if attrs && attrs.length > 0
+          set_attributes(element, attrs)
+          set_easy_attributes(parent_element, element, attrs)
+        end
       end
-      element
+      elements
     end
 
     def view_or_self

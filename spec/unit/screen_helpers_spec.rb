@@ -24,10 +24,27 @@ describe "screen helpers" do
       @screen.view.subviews.count.should == 0
     end
 
+    it "should let you remove an array of subviews" do
+      subview_a = UIView.alloc.initWithFrame CGRectZero
+      subview_b = UIView.alloc.initWithFrame CGRectZero
+      @screen.view.addSubview subview_a
+      @screen.view.addSubview subview_b
+      @screen.remove [subview_a, subview_b]
+      @screen.view.subviews.count.should == 0
+    end
+
     it "should add a subview to another element" do
       sub_subview = UIView.alloc.initWithFrame CGRectZero
       @screen.add_to @subview, sub_subview
       @subview.subviews.include?(sub_subview).should == true
+    end
+
+    it "should add an array of subviews to another element" do
+      sub_subview_a = UIView.alloc.initWithFrame CGRectZero
+      sub_subview_b = UIView.alloc.initWithFrame CGRectZero
+      @screen.add_to @subview, [sub_subview_a, sub_subview_b]
+      @subview.subviews.include?(sub_subview_a).should == true
+      @subview.subviews.include?(sub_subview_b).should == true
     end
 
     it "should add a subview to another element with attributes" do
@@ -142,7 +159,7 @@ describe "screen helpers" do
         screen = @screen.open BasicScreen, modal: true
         screen.should.be.kind_of BasicScreen
       end
-      
+
       it "should present a modal screen if open_modal is used" do
         @screen.mock!(:present_modal_view_controller) do |screen, animated|
           screen.should.be.instance_of BasicScreen
@@ -178,7 +195,7 @@ describe "screen helpers" do
         screen = @screen.open BasicScreen
         screen.should.be.kind_of BasicScreen
       end
-      
+
       it "should ignore its own navigation controller if current screen has a navigation controller" do
         basic = BasicScreen.new(nav_bar: true) # creates a dangling nav_bar that will be discarded.
         screen = @screen.open basic

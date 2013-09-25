@@ -27,6 +27,24 @@ describe "PM::Delegate" do
 
   end
 
+  it "should return the registered push notification types as an array" do
+    @subject.registered_push_notifications.should == []
+    bits = 0
+    types = []
+    { badge:      UIRemoteNotificationTypeBadge,
+      sound:      UIRemoteNotificationTypeSound,
+      alert:      UIRemoteNotificationTypeAlert,
+      newsstand:  UIRemoteNotificationTypeNewsstandContentAvailability }.each do |symbol, bit|
+        UIApplication.sharedApplication.stub!(:enabledRemoteNotificationTypes, return: bit)
+        @subject.registered_push_notifications.should == [symbol]
+
+        bits |= bit
+        types << symbol
+        UIApplication.sharedApplication.stub!(:enabledRemoteNotificationTypes, return: bits)
+        @subject.registered_push_notifications.should == types
+      end
+  end
+
   it "should return false for was_launched if the app is currently active on screen" do
     @subject.mock!(:on_push_notification) do |notification, was_launched|
       was_launched.should.be.false

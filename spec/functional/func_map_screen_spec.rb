@@ -19,8 +19,8 @@ describe "ProMotion::TestMapScreen functionality" do
 
   it "should have the map properly centered" do
     center_coordinate = @map.center
-    center_coordinate.latitude.should.be.close 35.090648651123, 0.001
-    center_coordinate.longitude.should.be.close -82.965972900391, 0.001
+    center_coordinate.latitude.should.be.close 35.090648651123, 0.02
+    center_coordinate.longitude.should.be.close -82.965972900391, 0.02
   end
 
   it "should move the map center" do

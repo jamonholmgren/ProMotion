@@ -54,6 +54,7 @@ module ProMotion
 
       if self.modal?
         close_modal_screen args
+        send_on_return(args)
 
       elsif self.navigation_controller
         close_nav_screen args

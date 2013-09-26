@@ -27,10 +27,10 @@ module ProMotion
       mask = UIApplication.sharedApplication.enabledRemoteNotificationTypes
       types = []
 
-      types << :badge     if mask & UIRemoteNotificationTypeBadge
-      types << :sound     if mask & UIRemoteNotificationTypeSound
-      types << :alert     if mask & UIRemoteNotificationTypeAlert
-      types << :newsstand if mask & UIRemoteNotificationTypeNewsstandContentAvailability
+      types << :badge     if mask & UIRemoteNotificationTypeBadge > 0
+      types << :sound     if mask & UIRemoteNotificationTypeSound > 0
+      types << :alert     if mask & UIRemoteNotificationTypeAlert > 0
+      types << :newsstand if mask & UIRemoteNotificationTypeNewsstandContentAvailability > 0
 
       types
     end
@@ -53,9 +53,9 @@ module ProMotion
     def application(application, didReceiveRemoteNotification:notification)
       received_push_notification(notification, application.applicationState != UIApplicationStateActive)
     end
-    
+
     protected
-    
+
     def map_notification_symbol(symbol)
       {
         none:       UIRemoteNotificationTypeNone,

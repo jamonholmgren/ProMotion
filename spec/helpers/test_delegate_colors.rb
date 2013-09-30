@@ -10,6 +10,8 @@ class TestDelegateRed < TestDelegateColored
   tint_color UIColor.redColor
 end
 
-class TestDelegateBlack < TestDelegateColored
-  tint_color UIColor.blackColor
-end
+# Other colors
+
+# class TestDelegateBlack < TestDelegateColored
+#   tint_color UIColor.blackColor
+# end

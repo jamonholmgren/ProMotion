@@ -15,7 +15,7 @@ describe "ProMotion::TestMapScreen functionality" do
       latitude: 35.090648651124,
       title: "My Cool Image Pin",
       subtitle: "Image pin subtitle",
-      image: UIImage.imageNamed("test.jpeg")
+      image: UIImage.imageNamed("test.png")
     }
     @map.annotations.count.should == 5
     @map.add_annotation ann

@@ -99,17 +99,21 @@ describe "PM::Delegate" do
 
 end
 
-
 describe "PM::Delegate Colors" do
 
-  it 'should set the application tint color' do
+  before do
     @subject = TestDelegateRed.new
+    @map = TestMapScreen.new modal: true, nav_bar: true
+    @map.view_will_appear(false)
+    @subject.open @map
+  end
 
-    @subject.mock!(:on_load) do |app, options|
-      app.windows.first.rootViewController.view.tintColor.should == UIColor.redColor
+  it 'should set the application tint color on iOS 7' do
+    if UIDevice.currentDevice.systemVersion.to_f >= 7.0
+      @map.view.tintColor.should == UIColor.redColor
+    else
+      1.should == 1
     end
-
-    @subject.application(UIApplication.sharedApplication, didFinishLaunchingWithOptions:nil)
   end
 
 end

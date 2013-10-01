@@ -146,21 +146,21 @@ describe "PM::Delegate" do
 
 end
 
-describe "PM::Delegate Colors" do
+# iOS 7 ONLY tests
+if UIDevice.currentDevice.systemVersion.to_f >= 7.0
+  describe "PM::Delegate Colors" do
 
-  before do
-    @subject = TestDelegateRed.new
-    @map = TestMapScreen.new modal: true, nav_bar: true
-    @map.view_will_appear(false)
-    @subject.open @map
-  end
-
-  it 'should set the application tint color on iOS 7' do
-    if UIDevice.currentDevice.systemVersion.to_f >= 7.0
-      @map.view.tintColor.should == UIColor.redColor
-    else
-      1.should == 1
+    before do
+      @subject = TestDelegateRed.new
+      @map = TestMapScreen.new modal: true, nav_bar: true
+      @map.view_will_appear(false)
+      @subject.open @map
     end
+
+    it 'should set the application tint color on iOS 7' do
+      @map.view.tintColor.should == UIColor.redColor
+    end
+
   end
 
-end
+end # End iOS 7 ONLY tests

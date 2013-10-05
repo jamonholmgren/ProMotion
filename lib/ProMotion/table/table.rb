@@ -205,7 +205,7 @@ module ProMotion
 
     def tableView(table_view, didSelectRowAtIndexPath:index_path)
       data_cell = @promotion_table_data.cell(index_path: index_path)
-      table_view.deselectRowAtIndexPath(index_path, animated: true)
+      table_view.deselectRowAtIndexPath(index_path, animated: true) if self.clearsSelectionOnViewWillAppear
 
       data_cell[:arguments] ||= {}
       data_cell[:arguments][:cell] = data_cell if data_cell[:arguments].is_a?(Hash) # TODO: Should we really do this?

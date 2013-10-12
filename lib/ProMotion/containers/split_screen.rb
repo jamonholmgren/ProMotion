@@ -21,6 +21,11 @@ module ProMotion
       if args.has_key?(:icon) or args.has_key?(:title)
         split.tabBarItem = create_tab_bar_item(args)
       end
+
+      if args.has_key?(:button_title)
+        @button_title = args[:button_title]
+      end
+
       split
     end
 
@@ -33,7 +38,7 @@ module ProMotion
     # UISplitViewControllerDelegate methods
 
     def splitViewController(svc, willHideViewController: vc, withBarButtonItem: button, forPopoverController: pc)
-      button.title = vc.title
+      button.title = @button_title || vc.title
       svc.detail_screen.navigationItem.leftBarButtonItem = button;
     end
 

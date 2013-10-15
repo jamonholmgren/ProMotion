@@ -62,6 +62,7 @@ module ProMotion
 
       self.window ||= self.ui_window.alloc.initWithFrame(UIScreen.mainScreen.bounds)
       self.window.rootViewController = (screen.navigationController || screen)
+      self.window.tintColor = self.class.send(:get_tint_color) if self.window.respond_to?("tintColor=")
       self.window.makeKeyAndVisible
 
       screen
@@ -97,6 +98,16 @@ module ProMotion
           slide:  UIStatusBarAnimationSlide,
           none:   UIStatusBarAnimationNone
         }[opt] || UIStatusBarAnimationNone
+      end
+
+      def tint_color(c)
+        @tint_color = c
+      end
+      def tint_color=(c)
+        @tint_color = c
+      end
+      def get_tint_color
+        @tint_color || nil
       end
 
     end

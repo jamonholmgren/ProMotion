@@ -58,7 +58,7 @@ describe "ProMotion::TestTableScreen functionality" do
     wait 0.25 do
       # Tap the delete button
       view('Just another deletable blank row').superview.superview.subviews.each do |subview|
-        if subview.class == UITableViewCellDeleteConfirmationControl
+        if subview.class == UITableViewCellDeleteConfirmationView
           tap subview
           wait 0.25 do
             @controller.tableView(@controller.tableView, numberOfRowsInSection:0).should == 6
@@ -77,7 +77,7 @@ describe "ProMotion::TestTableScreen functionality" do
     wait 0.25 do
       # Tap the delete button
       view('A non-deletable blank row').superview.superview.subviews.each do |subview|
-        if subview.class == UITableViewCellDeleteConfirmationControl
+        if subview.class == UITableViewCellDeleteConfirmationView
           tap subview
           wait 0.25 do
             @controller.tableView(@controller.tableView, numberOfRowsInSection:0).should == 7
@@ -91,7 +91,7 @@ describe "ProMotion::TestTableScreen functionality" do
   it "should call a method when the switch is flipped" do
     @controller.scroll_to_bottom
     tap "switch_1"
-    wait 0.3 do
+    wait 0.5 do
       @controller.tap_counter.should == 1
     end
   end
@@ -99,11 +99,11 @@ describe "ProMotion::TestTableScreen functionality" do
   it "should call the method with arguments when the switch is flipped and when the cell is tapped" do
     @controller.scroll_to_bottom
     tap "switch_3"
-    wait 0.3 do
+    wait 0.5 do
       @controller.tap_counter.should == 3
 
       tap "Switch With Cell Tap, Switch Action And Parameters"
-      wait 0.3 do
+      wait 0.5 do
         @controller.tap_counter.should == 13
       end
     end

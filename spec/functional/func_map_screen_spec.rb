@@ -6,7 +6,7 @@ describe "ProMotion::TestMapScreen functionality" do
     rotate_device to: :portrait, button: :bottom
     @map ||= TestMapScreen.new(nav_bar: true)
     @map.will_appear
-    @map.navigation_controller
+    @map.navigationController
   end
 
   def add_image_annotation
@@ -118,7 +118,7 @@ describe "ProMotion::TestMapScreen functionality" do
   it "should add an image based annotation" do
     add_image_annotation
     @map.annotations.count.should == 6
-    @map.mapview.viewForAnnotation(@map.annotations.last).class.should == MKAnnotationView
+    @map.mapview.viewForAnnotation(@map.annotations.last).should.be.kind_of MKAnnotationView
   end
 
   it "should select an image annotation" do

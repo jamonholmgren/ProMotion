@@ -6,15 +6,15 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    bubble-wrap (1.3.0)
-    formotion (1.3.1)
-      bubble-wrap (>= 1.1.4)
+    bubble-wrap (1.4.0)
+    formotion (1.6)
+      bubble-wrap (~> 1.4.0)
       motion-require (~> 0.0.3)
     motion-redgreen (0.1.0)
-    motion-require (0.0.6)
-    motion-stump (0.2.1)
-    rake (10.0.4)
-    webstub (0.6.0)
+    motion-require (0.0.7)
+    motion-stump (0.3.0)
+    rake (10.1.0)
+    webstub (0.6.1)
 
 PLATFORMS
   ruby

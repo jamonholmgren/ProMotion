@@ -33,20 +33,23 @@ module ProMotion
     end
 
     def nav_bar?
-      !!self.navigation_controller
+      !!self.navigationController
     end
 
     def navigation_controller
-      @navigation_controller ||= self.navigationController
+      self.navigationController
     end
 
-    def navigation_controller=(val)
-      @navigation_controller = val
-      val
+    def navigation_controller=(nav)
+      @navigationController = nav
+    end
+
+    def navigationController=(nav)
+      @navigationController = nav
     end
 
     def add_nav_bar(args = {})
-      self.navigation_controller ||= begin
+      self.navigationController ||= begin
         self.first_screen = true if self.respond_to?(:first_screen=)
         nav = NavigationController.alloc.initWithRootViewController(self)
         nav.setModalTransitionStyle(args[:transition_style]) if args[:transition_style]

@@ -6,7 +6,7 @@ describe "ProMotion::TestMapScreen functionality" do
     rotate_device to: :portrait, button: :bottom
     @map ||= TestMapScreen.new(nav_bar: true)
     @map.will_appear
-    @map.navigation_controller
+    @map.navigationController
   end
 
   def add_image_annotation

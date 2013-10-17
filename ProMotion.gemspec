@@ -15,8 +15,10 @@ Gem::Specification.new do |gem|
   gem.license       = 'MIT'
 
   gem.files         = `git ls-files`.split($\)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
-  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
+  # gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  # gem.executables   = gem.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  gem.executables   << "pm"
+  gem.test_files    = gem.files.grep(%r{^(spec)/})
   gem.name          = "ProMotion"
   gem.require_paths = ["lib"]
   gem.version       = ProMotion::VERSION
@@ -26,4 +28,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency("motion-redgreen")
   gem.add_development_dependency("formotion")
   gem.add_development_dependency("rake")
+  gem.add_dependency("methadone")
 end

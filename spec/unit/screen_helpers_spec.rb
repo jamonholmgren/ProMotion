@@ -191,7 +191,7 @@ describe "screen helpers" do
       end
 
       it "should pop onto navigation controller if current screen is on nav stack already" do
-        @screen.mock!(:push_view_controller) { |vc| vc.should.be.instance_of BasicScreen }
+        @screen.mock!(:push_view_controller) { |vc, n, a| vc.should.be.instance_of BasicScreen }
         screen = @screen.open BasicScreen
         screen.should.be.kind_of BasicScreen
       end

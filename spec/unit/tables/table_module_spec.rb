@@ -135,7 +135,7 @@ describe "PM::Table module" do
     end
 
     it "should use the default section height if none is specified" do
-      @subject.tableView(@subject.table_view, heightForHeaderInSection:4).should == 22.0 # Built-in default
+      @subject.tableView(@subject.table_view, heightForHeaderInSection:4).should == 23.0 # Built-in default
     end
 
     it "should use the set title_view_height if one is specified" do

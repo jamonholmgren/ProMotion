@@ -111,7 +111,7 @@ describe "PM::TableViewCellModule" do
   it "should set the accessory view to a button" do
     ip = NSIndexPath.indexPathForRow(2, inSection: 1)
     subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: ip)
-    subject.accessoryView.should.be.kind_of(UIRoundedRectButton)
+    subject.accessoryView.should.be.kind_of(UIButton)
   end
 
   it "should set the accessory type to edit" do
@@ -128,9 +128,10 @@ describe "PM::TableViewCellModule" do
   end
 
   it "should create two extra subviews" do
-    @subject.subviews.length.should == 3
-    @subject.subviews[1].class.should == UIView
-    @subject.subviews[2].class.should == UILabel
+    content_view = @subject.subviews.first
+    content_view.subviews.length.should == 3
+    content_view.subviews[1].class.should == UIView
+    content_view.subviews[2].class.should == UILabel
   end
 
 

@@ -9,6 +9,10 @@ describe "ProMotion::TestTableScreen functionality" do
     @controller.navigationController
   end
 
+  def confirmation_class
+    TestHelper.ios7 ? UITableViewCellDeleteConfirmationButton : UITableViewCellDeleteConfirmationControl
+  end
+
   it "should have a navigation bar" do
     @controller.navigationController.should.be.kind_of(UINavigationController)
   end
@@ -58,7 +62,7 @@ describe "ProMotion::TestTableScreen functionality" do
     wait 0.25 do
       # Tap the delete button
       view('Just another deletable blank row').superview.superview.subviews.each do |subview|
-        if subview.class == UITableViewCellDeleteConfirmationButton
+        if subview.class == confirmation_class
           tap subview
           wait 0.25 do
             @controller.tableView(@controller.tableView, numberOfRowsInSection:0).should == 6
@@ -77,7 +81,7 @@ describe "ProMotion::TestTableScreen functionality" do
     wait 0.25 do
       # Tap the delete button
       view('A non-deletable blank row').superview.superview.subviews.each do |subview|
-        if subview.class == UITableViewCellDeleteConfirmationButton
+        if subview.class == confirmation_class
           tap subview
           wait 0.25 do
             @controller.tableView(@controller.tableView, numberOfRowsInSection:0).should == 7

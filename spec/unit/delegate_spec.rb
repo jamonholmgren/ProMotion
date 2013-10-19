@@ -1,5 +1,4 @@
 describe "PM::Delegate" do
-
   before { @subject = TestDelegate.new }
 
   it 'should call on_load on launch' do
@@ -148,7 +147,7 @@ describe "PM::Delegate" do
 end
 
 # iOS 7 ONLY tests
-if UIDevice.currentDevice.systemVersion.to_f >= 7.0
+if TestHelper.ios7
   describe "PM::Delegate Colors" do
 
     before do

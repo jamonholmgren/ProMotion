@@ -128,7 +128,7 @@ describe "PM::TableViewCellModule" do
   end
 
   it "should create two extra subviews" do
-    content_view = @subject.subviews.first
+    content_view = TestHelper.ios7 ? @subject.subviews.first : @subject
     content_view.subviews.length.should == 3
     content_view.subviews[1].class.should == UIView
     content_view.subviews[2].class.should == UILabel

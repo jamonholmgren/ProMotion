@@ -44,7 +44,6 @@ describe "PM::Delegate" do
       end
   end
 
-  # Disabled 2013-10-16 by Jamon -- causing failures on iOS 7
   it "should return false for was_launched if the app is currently active on screen" do
     @subject.mock!(:on_push_notification) do |notification, was_launched|
       was_launched.should.be.false

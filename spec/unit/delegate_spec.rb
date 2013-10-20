@@ -1,5 +1,4 @@
 describe "PM::Delegate" do
-
   before { @subject = TestDelegate.new }
 
   it 'should call on_load on launch' do
@@ -50,9 +49,9 @@ describe "PM::Delegate" do
       was_launched.should.be.false
     end
 
-    UIApplication.sharedApplication.stub!(:applicationState, return: UIApplicationStateActive)
+    fake_app = Struct.new(:applicationState).new(UIApplicationStateActive)
     remote_notification = PM::PushNotification.fake_notification.notification
-    @subject.application(UIApplication.sharedApplication, didReceiveRemoteNotification: remote_notification)
+    @subject.application(fake_app, didReceiveRemoteNotification: remote_notification)
   end
 
   it "should return true for was_launched if app was launched from background" do
@@ -60,9 +59,9 @@ describe "PM::Delegate" do
       was_launched.should.be.true
     end
 
-    UIApplication.sharedApplication.stub!(:applicationState, return: UIApplicationStateBackground)
+    fake_app = Struct.new(:applicationState).new(UIApplicationStateBackground)
     remote_notification = PM::PushNotification.fake_notification.notification
-    @subject.application(UIApplication.sharedApplication, didReceiveRemoteNotification: remote_notification)
+    @subject.application(fake_app, didReceiveRemoteNotification: remote_notification)
   end
 
   it "should return true for was_launched if the app wasn't running" do
@@ -147,7 +146,7 @@ describe "PM::Delegate" do
 end
 
 # iOS 7 ONLY tests
-if UIDevice.currentDevice.systemVersion.to_f >= 7.0
+if TestHelper.ios7
   describe "PM::Delegate Colors" do
 
     before do

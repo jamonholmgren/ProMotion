@@ -94,9 +94,9 @@ describe "screen helpers" do
     end
 
     it "#push_view_controller should use the default navigation controller if not provided" do
-      vcs = @screen.navigation_controller.viewControllers
+      vcs = @screen.navigationController.viewControllers
       @screen.push_view_controller @second_vc
-      @screen.navigation_controller.viewControllers.count.should == vcs.count + 1
+      @screen.navigationController.viewControllers.count.should == vcs.count + 1
     end
 
     it "#push_view_controller should use a provided navigation controller" do
@@ -191,7 +191,7 @@ describe "screen helpers" do
       end
 
       it "should pop onto navigation controller if current screen is on nav stack already" do
-        @screen.mock!(:push_view_controller) { |vc| vc.should.be.instance_of BasicScreen }
+        @screen.mock!(:push_view_controller) { |vc, n, a| vc.should.be.instance_of BasicScreen }
         screen = @screen.open BasicScreen
         screen.should.be.kind_of BasicScreen
       end
@@ -201,8 +201,6 @@ describe "screen helpers" do
         screen = @screen.open basic
         screen.should.be.kind_of BasicScreen
         basic.navigationController.should == @screen.navigationController
-        basic.navigation_controller.should == @screen.navigationController
-        @screen.navigation_controller.should == @screen.navigationController
       end
 
       it "should open the provided view controller as root view if no other conditions are met" do
@@ -258,7 +256,7 @@ describe "screen helpers" do
       end
 
       it "#close should pop from the navigation controller" do
-        @screen.navigation_controller.mock!(:popViewControllerAnimated) { |animated| animated.should == true }
+        @screen.navigationController.mock!(:popViewControllerAnimated) { |animated| animated.should == true }
         @screen.close
       end
 

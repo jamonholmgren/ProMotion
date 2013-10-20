@@ -1,0 +1,45 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'methadone'
+require 'ProMotion/version'
+
+class App
+  include Methadone::Main
+  include Methadone::CLILogging
+  include Methadone::SH
+  
+  main do |command, opt|
+    case command.to_sym
+    when :new then create(opt)
+    when :help then show_help
+    else show_help
+    end
+
+    0 # Good!
+  end
+
+  def self.show_help
+    info "pm - Command line tools for ProMotion."
+    info "By Jamon Holmgren"
+    info ""
+    info "Commands:"
+    info "  new <appname>"
+    info "    Creates a new ProMotion app from a template."
+  end
+
+  def self.create(name)
+    return puts "Usage: pm new <appname>" unless name.to_s.length > 0
+    info "Creating new ProMotion iOS app #{name}"
+    sh "motion create --template=git@github.com:jamonholmgren/promotion-template.git #{name}"
+  end
+
+  description "Command line for ProMotion."
+
+  arg :command
+  arg :opt, :optional
+
+  version ProMotion::VERSION
+
+  go!
+end

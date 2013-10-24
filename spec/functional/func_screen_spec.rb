@@ -6,7 +6,7 @@ describe "ProMotion::Screen functional" do
     rotate_device to: :portrait, button: :bottom
     @controller ||= FunctionalScreen.new(nav_bar: true)
     @root_screen = @controller
-    @controller.navigation_controller
+    @controller.navigationController
   end
 
   after do
@@ -114,19 +114,19 @@ describe "ProMotion::Screen functional" do
   end
 
   it "should pop to the root view controller" do
-    @root_vc = @controller.navigation_controller.visibleViewController
-    @controller.navigation_controller.viewControllers.count.should == 1
+    @root_vc = @controller.navigationController.visibleViewController
+    @controller.navigationController.viewControllers.count.should == 1
     @controller.open BasicScreen.new
     wait 0.6 do
       @controller.open BasicScreen.new
       wait 0.6 do
         @controller.open BasicScreen.new
         wait 0.6 do
-          @controller.navigation_controller.viewControllers.count.should == 4
+          @controller.navigationController.viewControllers.count.should == 4
           @controller.close to_screen: :root
           wait 0.6 do
-            @controller.navigation_controller.viewControllers.count.should == 1
-            @controller.navigation_controller.topViewController.should == @root_vc
+            @controller.navigationController.viewControllers.count.should == 1
+            @controller.navigationController.topViewController.should == @root_vc
           end
         end
       end

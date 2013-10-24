@@ -1,11 +1,11 @@
 module ProMotion
   class ViewController < UIViewController
     def self.new(args = {})
-      s = self.alloc.initWithNibName(nil, bundle:nil)
+      s = self.alloc.initWithNibName(args[:nib_name] || nil, bundle:args[:bundle] || nil)
       s.on_create(args) if s.respond_to?(:on_create)
       s
     end
-    
+
     def loadView
       super
       self.send(:on_load) if self.respond_to?(:on_load)

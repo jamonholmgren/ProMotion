@@ -69,21 +69,26 @@ module ProMotion
     end
 
     def set_nav_bar_button(side, args={})
-      args[:style] = map_bar_button_item_style(args[:style])
-      args[:target] ||= self
-      args[:action] ||= nil
-      args[:system_item] ||= args[:system_icon] # backwards compatibility
-      args[:system_item] = map_bar_button_system_item(args[:system_item]) if args[:system_item] && args[:system_item].is_a?(Symbol)
-      
-      button_type = args[:image] || args[:button] || args[:system_item] || args[:title] || "Button"
-
-      button = bar_button_item button_type, args
+      button = create_toolbar_button(args)
 
       self.navigationItem.leftBarButtonItem = button if side == :left
       self.navigationItem.rightBarButtonItem = button if side == :right
       self.navigationItem.backBarButtonItem = button if side == :back
-      
+
       button
+    end
+
+    def create_toolbar_button(args = {})
+      args[:style] = map_bar_button_item_style(args[:style])
+      args[:target] ||= self
+      args[:action] ||= nil
+      args[:custom_view] = args[:custom_view] if args[:custom_view]
+      args[:system_item] ||= args[:system_icon] # backwards compatibility
+      args[:system_item] = map_bar_button_system_item(args[:system_item]) if args[:system_item] && args[:system_item].is_a?(Symbol)
+
+      button_type = args[:image] || args[:button] || args[:system_item] || args[:custom_view] || args[:title] || "Button"
+
+      bar_button_item button_type, args
     end
     
     # TODO: Make this better. Not able to do image: "logo", for example.
@@ -96,7 +101,9 @@ module ProMotion
       when String
         UIBarButtonItem.alloc.initWithTitle(button_type, style: args[:style], target: args[:target], action: args[:action])
       else
-        if args[:system_item]
+        if args[:custom_view]
+          UIBarButtonItem.alloc.initWithCustomView(args[:custom_view])
+        elsif args[:system_item]
           UIBarButtonItem.alloc.initWithBarButtonSystemItem(args[:system_item], target: args[:target], action: args[:action])
         else
           PM.logger.error("Please supply a title string, a UIImage or :system.")
@@ -212,7 +219,7 @@ module ProMotion
     def frame
       return self.view_or_self.frame
     end
-    
+
     def map_bar_button_item_style(symbol)
       symbol = {
         plain:    UIBarButtonItemStylePlain,
@@ -221,7 +228,7 @@ module ProMotion
       }[symbol] if symbol.is_a?(Symbol)
       symbol || UIBarButtonItemStyleBordered
     end
-    
+
     def map_bar_button_system_item(symbol)
       {
         done:         UIBarButtonSystemItemDone,

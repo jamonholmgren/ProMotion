@@ -25,7 +25,7 @@ describe "screen properties" do
     @screen.title = "instance method"
     HomeScreen.get_title.should != 'instance method'
   end
-  
+
   it "should set the tab bar item with a system icon" do
     @screen.set_tab_bar_item system_icon: :contacts
     comparison = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemContacts, tag: 0)
@@ -36,10 +36,10 @@ describe "screen properties" do
 
   it "should set the tab bar item with a custom icon and title" do
     @screen.set_tab_bar_item title: "My Screen", icon: "list"
-    
+
     icon_image = UIImage.imageNamed("list")
     comparison = UITabBarItem.alloc.initWithTitle("My Screen", image: icon_image, tag: 0)
-    
+
     @screen.tabBarItem.systemItem.should == comparison.systemItem
     @screen.tabBarItem.tag.should == comparison.tag
     @screen.tabBarItem.image.should == comparison.image
@@ -193,6 +193,18 @@ describe "screen properties" do
 
       it "is has the right image" do
         @screen.navigationItem.rightBarButtonItem.title.should == nil
+      end
+    end
+
+    describe 'custom view bar buttons' do
+      before do
+        @activity = UIActivityIndicatorView.alloc.initWithActivityIndicatorStyle(UIActivityIndicatorViewStyleWhite)
+        @screen.set_nav_bar_button :right, {custom_view: @activity}
+      end
+
+      it "has a right bar button item of the correct type" do
+        @screen.navigationItem.rightBarButtonItem.should.be.instance_of UIBarButtonItem
+        @screen.navigationItem.rightBarButtonItem.customView.should.be.instance_of UIActivityIndicatorView
       end
     end
 

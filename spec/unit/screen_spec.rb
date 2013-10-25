@@ -227,4 +227,33 @@ describe "screen with toolbar" do
     screen.navigationController.toolbarHidden?.should == true
   end
 
+  it "adds a single item" do
+    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen.on_load
+    screen.set_toolbar_button([{title: "Testing Toolbar"}])
+
+    screen.navigationController.toolbar.items.should.be.instance_of Array
+    screen.navigationController.toolbar.items.count.should == 1
+    screen.navigationController.toolbar.items.first.should.be.instance_of UIBarButtonItem
+    screen.navigationController.toolbar.items.first.title.should == "Testing Toolbar"
+  end
+
+  it "adds multiple items" do
+    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen.set_toolbar_buttons [{title: "Testing Toolbar"}, {title: "Another Test"}]
+
+    screen.navigationController.toolbar.items.should.be.instance_of Array
+    screen.navigationController.toolbar.items.count.should == 2
+    screen.navigationController.toolbar.items.first.title.should == "Testing Toolbar"
+    screen.navigationController.toolbar.items.last.title.should == "Another Test"
+  end
+
+  it "shows the toolbar when setting items" do
+    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: false
+    screen.on_load
+    screen.navigationController.toolbarHidden?.should == true
+    screen.set_toolbar_button([{title: "Testing Toolbar"}], false)
+    screen.navigationController.toolbarHidden?.should == false
+  end
 end
+

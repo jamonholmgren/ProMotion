@@ -90,7 +90,15 @@ module ProMotion
 
       bar_button_item button_type, args
     end
-    
+
+    def set_toolbar_items(buttons = [], animated = true)
+      buttons = Array(buttons)
+      self.toolbarItems = buttons.map{|b| b.is_a?(UIBarButtonItem) ? b : create_toolbar_button(b) }
+      navigation_controller.setToolbarHidden(false, animated:animated)
+    end
+    alias_method :set_toolbar_buttons, :set_toolbar_items
+    alias_method :set_toolbar_button,  :set_toolbar_items
+
     # TODO: Make this better. Not able to do image: "logo", for example.
     def bar_button_item(button_type, args)
       case button_type

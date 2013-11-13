@@ -1,8 +1,7 @@
 module ProMotion
   module DelegateModule
-
     include ProMotion::Tabs
-    include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2") # Only with iPad
+    include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
     include ProMotion::DelegateNotifications
 
     attr_accessor :window, :aps_notification, :home_screen

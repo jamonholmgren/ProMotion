@@ -1,11 +1,7 @@
 module ProMotion
   module DelegateModule
-    def open_split_screen(*a)
-      PM.logger.error "Can't open a split screen. Add ipad to your list of supported devices."
-    end
-
     include ProMotion::Tabs
-    include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2") # Only with iPad
+    include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
     include ProMotion::DelegateNotifications
 
     attr_accessor :window, :aps_notification, :home_screen

@@ -3,6 +3,7 @@ module ProMotion
     include Conversions
 
     def set_attributes(element, args = {})
+      args = get_attributes_from_symbol(args)
       args.each { |k, v| set_attribute(element, k, v) }
       element
     end
@@ -80,6 +81,7 @@ module ProMotion
     alias :remove_view :remove
 
     def add_to(parent_element, elements, attrs = {})
+      attrs = get_attributes_from_symbol(attrs)
       Array(elements).each do |element|
         parent_element.addSubview element
         if attrs && attrs.length > 0
@@ -123,6 +125,14 @@ module ProMotion
     end
 
     protected
+
+    def get_attributes_from_symbol(attrs)
+      return attrs if attrs.is_a?(Hash)
+      PM.logger.error "#{attrs} styling method is not defined" unless self.respond_to?(attrs)
+      new_attrs = send(attrs)
+      PM.logger.error "#{attrs} should return a hash" unless new_attrs.is_a?(Hash)
+      new_attrs
+    end
 
     def map_resize_symbol(symbol)
       @_resize_symbols ||= {

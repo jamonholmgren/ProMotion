@@ -10,4 +10,10 @@ class HomeScreen < ProMotion::Screen
   def on_return(args={})
   end
 
+  def subview_styles
+    {
+      backgroundColor: UIColor.greenColor
+    }
+  end
+
 end

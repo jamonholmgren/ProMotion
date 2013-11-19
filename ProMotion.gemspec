@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
   gem.license       = 'MIT'
 
   gem.files         = `git ls-files`.split($\)
-  gem.executables   << "pm"
+  gem.executables   << "promotion"
   gem.test_files    = gem.files.grep(%r{^(spec)/})
   gem.name          = "ProMotion"
   gem.require_paths = ["lib"]

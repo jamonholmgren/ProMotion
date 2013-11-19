@@ -1,8 +1,7 @@
 module ProMotion
   module DelegateModule
-
     include ProMotion::Tabs
-    include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2") # Only with iPad
+    include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
     include ProMotion::DelegateNotifications
 
     attr_accessor :window, :aps_notification, :home_screen
@@ -38,6 +37,10 @@ module ProMotion
       on_unload if respond_to?(:on_unload)
     end
 
+    def application(application, openURL: url, sourceApplication:source_app, annotation: annotation)
+      on_open_url({ url: url, source_app: source_app, annotation: annotation }) if respond_to?(:on_open_url)
+    end
+
     def app_delegate
       self
     end
@@ -58,6 +61,7 @@ module ProMotion
 
       self.window ||= self.ui_window.alloc.initWithFrame(UIScreen.mainScreen.bounds)
       self.window.rootViewController = (screen.navigationController || screen)
+      self.window.tintColor = self.class.send(:get_tint_color) if self.window.respond_to?("tintColor=")
       self.window.makeKeyAndVisible
 
       screen
@@ -93,6 +97,16 @@ module ProMotion
           slide:  UIStatusBarAnimationSlide,
           none:   UIStatusBarAnimationNone
         }[opt] || UIStatusBarAnimationNone
+      end
+
+      def tint_color(c)
+        @tint_color = c
+      end
+      def tint_color=(c)
+        @tint_color = c
+      end
+      def get_tint_color
+        @tint_color || nil
       end
 
     end

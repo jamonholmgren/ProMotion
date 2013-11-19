@@ -25,7 +25,7 @@ describe "screen properties" do
     @screen.title = "instance method"
     HomeScreen.get_title.should != 'instance method'
   end
-  
+
   it "should set the tab bar item with a system icon" do
     @screen.set_tab_bar_item system_icon: :contacts
     comparison = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemContacts, tag: 0)
@@ -36,10 +36,10 @@ describe "screen properties" do
 
   it "should set the tab bar item with a custom icon and title" do
     @screen.set_tab_bar_item title: "My Screen", icon: "list"
-    
+
     icon_image = UIImage.imageNamed("list")
     comparison = UITabBarItem.alloc.initWithTitle("My Screen", image: icon_image, tag: 0)
-    
+
     @screen.tabBarItem.systemItem.should == comparison.systemItem
     @screen.tabBarItem.tag.should == comparison.tag
     @screen.tabBarItem.image.should == comparison.image
@@ -134,8 +134,7 @@ describe "screen properties" do
       @screen.nav_bar?.should == true
     end
 
-    it "#navigation_controller should return a navigation controller" do
-      @screen.navigation_controller.should.be.instance_of ProMotion::NavigationController
+    it "#navigationController should return a navigation controller" do
       @screen.navigationController.should.be.instance_of ProMotion::NavigationController
     end
 
@@ -197,6 +196,18 @@ describe "screen properties" do
       end
     end
 
+    describe 'custom view bar buttons' do
+      before do
+        @activity = UIActivityIndicatorView.alloc.initWithActivityIndicatorStyle(UIActivityIndicatorViewStyleWhite)
+        @screen.set_nav_bar_button :right, {custom_view: @activity}
+      end
+
+      it "has a right bar button item of the correct type" do
+        @screen.navigationItem.rightBarButtonItem.should.be.instance_of UIBarButtonItem
+        @screen.navigationItem.rightBarButtonItem.customView.should.be.instance_of UIActivityIndicatorView
+      end
+    end
+
   end
 
 end
@@ -211,10 +222,38 @@ describe "screen with toolbar" do
   end
 
   it "hidden" do
-    # Simulate AppDelegate setup of main screen
     screen = HomeScreen.new modal: true, nav_bar: true, toolbar: false
     screen.on_load
     screen.navigationController.toolbarHidden?.should == true
   end
 
+  it "adds a single item" do
+    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen.on_load
+    screen.set_toolbar_button([{title: "Testing Toolbar"}])
+
+    screen.navigationController.toolbar.items.should.be.instance_of Array
+    screen.navigationController.toolbar.items.count.should == 1
+    screen.navigationController.toolbar.items.first.should.be.instance_of UIBarButtonItem
+    screen.navigationController.toolbar.items.first.title.should == "Testing Toolbar"
+  end
+
+  it "adds multiple items" do
+    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen.set_toolbar_buttons [{title: "Testing Toolbar"}, {title: "Another Test"}]
+
+    screen.navigationController.toolbar.items.should.be.instance_of Array
+    screen.navigationController.toolbar.items.count.should == 2
+    screen.navigationController.toolbar.items.first.title.should == "Testing Toolbar"
+    screen.navigationController.toolbar.items.last.title.should == "Another Test"
+  end
+
+  it "shows the toolbar when setting items" do
+    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: false
+    screen.on_load
+    screen.navigationController.toolbarHidden?.should == true
+    screen.set_toolbar_button([{title: "Testing Toolbar"}], false)
+    screen.navigationController.toolbarHidden?.should == false
+  end
 end
+

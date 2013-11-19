@@ -165,7 +165,7 @@ module ProMotion
 
     ########## Cocoa touch methods #################
     def numberOfSectionsInTableView(table_view)
-      return @promotion_table_data.data.size
+      return Array(@promotion_table_data.data).length
     end
 
     # Number of cells
@@ -205,7 +205,7 @@ module ProMotion
 
     def tableView(table_view, didSelectRowAtIndexPath:index_path)
       data_cell = @promotion_table_data.cell(index_path: index_path)
-      table_view.deselectRowAtIndexPath(index_path, animated: true)
+      table_view.deselectRowAtIndexPath(index_path, animated: true) unless data_cell[:keep_selection] == true
 
       data_cell[:arguments] ||= {}
       data_cell[:arguments][:cell] = data_cell if data_cell[:arguments].is_a?(Hash) # TODO: Should we really do this?
@@ -248,6 +248,30 @@ module ProMotion
     def deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)
       PM.logger.warn "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)'."
       delete_row(index_paths, animation)
+    end
+
+    # Section view methods
+    def tableView(table_view, viewForHeaderInSection: index)
+      section = section_at_index(index)
+
+      if section[:title_view]
+        klass      = section[:title_view]
+        view       = klass.new if klass.respond_to?(:new)
+        view.title = section[:title] if view.respond_to?(:title=)
+        view
+      else
+        nil
+      end
+    end
+
+    def tableView(table_view, heightForHeaderInSection: index)
+      section = section_at_index(index)
+
+      if section[:title_view] || (section[:title] && !section[:title].empty?)
+        section[:title_view_height] || tableView.sectionHeaderHeight
+      else
+        0.0
+      end
     end
 
     protected

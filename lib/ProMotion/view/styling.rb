@@ -34,6 +34,8 @@ module ProMotion
         args[:resize].each { |r| attributes[:autoresizingMask] |= map_resize_symbol(r) }
       end
 
+      args[:left] = args.delete(:x) if args[:x]
+      args[:top] = args.delete(:y) if args[:y]
       if [:left, :top, :width, :height].select{ |a| args[a] && args[a] != :auto }.length == 4
         attributes[:frame] = CGRectMake(args[:left], args[:top], args[:width], args[:height])
       end

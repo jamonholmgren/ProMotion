@@ -2,6 +2,8 @@ class TableScreenSearchable < TestTableScreen
 
   searchable
 
+  attr_accessor :will_end_search_called, :will_begin_search_called
+
   def table_data
     @search_table_data ||= [{
       cells: [
@@ -57,6 +59,14 @@ class TableScreenSearchable < TestTableScreen
         { title: "Wyoming" }
       ]
     }]
+  end
+
+  def will_begin_search
+    self.will_begin_search_called = true
+  end
+
+  def will_end_search
+    self.will_end_search_called = true
   end
 
 end

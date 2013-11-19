@@ -6,7 +6,7 @@ describe "ProMotion::Screen functional" do
     rotate_device to: :portrait, button: :bottom
     @controller ||= FunctionalScreen.new(nav_bar: true)
     @root_screen = @controller
-    @controller.navigation_controller
+    @controller.navigationController
   end
 
   after do
@@ -44,7 +44,30 @@ describe "ProMotion::Screen functional" do
       end
 
     end
+    
   end
+
+  it "should push another screen with animation by default" do
+    basic = @root_screen.open BasicScreen
+    wait 0.5 do
+      basic.animation_ts.should.be > 0.2
+    end
+  end
+
+  it "should push another screen with animation when animated: true" do
+    basic = @root_screen.open BasicScreen, animated: true
+    wait 0.5 do
+      basic.animation_ts.should.be > 0.2
+    end
+  end
+
+  it "should push another screen without animation when animated: false" do
+    basic = @root_screen.open BasicScreen, animated: false
+    wait 0.5 do
+      basic.animation_ts.should.be < 0.2
+    end
+  end
+
 
   it "should allow opening and closing a modal screen" do
     @basic = BasicScreen.new(nav_bar: true)
@@ -91,19 +114,19 @@ describe "ProMotion::Screen functional" do
   end
 
   it "should pop to the root view controller" do
-    @root_vc = @controller.navigation_controller.visibleViewController
-    @controller.navigation_controller.viewControllers.count.should == 1
+    @root_vc = @controller.navigationController.visibleViewController
+    @controller.navigationController.viewControllers.count.should == 1
     @controller.open BasicScreen.new
     wait 0.6 do
       @controller.open BasicScreen.new
       wait 0.6 do
         @controller.open BasicScreen.new
         wait 0.6 do
-          @controller.navigation_controller.viewControllers.count.should == 4
+          @controller.navigationController.viewControllers.count.should == 4
           @controller.close to_screen: :root
           wait 0.6 do
-            @controller.navigation_controller.viewControllers.count.should == 1
-            @controller.navigation_controller.topViewController.should == @root_vc
+            @controller.navigationController.viewControllers.count.should == 1
+            @controller.navigationController.topViewController.should == @root_vc
           end
         end
       end

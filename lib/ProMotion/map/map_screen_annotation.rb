@@ -17,7 +17,7 @@ module ProMotion
       @params = {
         title: "Title",
         pin_color: MKPinAnnotationColorRed,
-        identifier: "Annotation-#{@params[:pin_color]}",
+        identifier: "Annotation-#{@params[:pin_color] || @params[:image]}",
         show_callout: true,
         animates_drop: false
       }.merge(@params)

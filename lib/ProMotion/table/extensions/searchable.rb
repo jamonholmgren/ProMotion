@@ -42,13 +42,12 @@ module ProMotion
       ######### iOS methods, headless camel case #######
 
       def searchDisplayController(controller, shouldReloadTableForSearchString:search_string)
-        @promotion_table_data.search(search_string)
+        self.promotion_table_data.search(search_string)
         true
       end
 
       def searchDisplayControllerWillEndSearch(controller)
-        @promotion_table_data.stop_searching
-        @promotion_table_data_data = nil
+        self.promotion_table_data.stop_searching
         self.table_view.setScrollEnabled true
         self.table_view.reloadData
         @table_search_display_controller.delegate.will_end_search if @table_search_display_controller.delegate.respond_to? "will_end_search"

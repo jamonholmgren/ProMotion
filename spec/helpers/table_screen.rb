@@ -2,10 +2,6 @@ class TestTableScreen < ProMotion::TableScreen
 
   attr_accessor :tap_counter, :cell_was_deleted
 
-  def promotion_table_data
-    @promotion_table_data
-  end
-
   def on_load
     self.tap_counter = 0
     set_attributes self.view, { backgroundView: nil, backgroundColor: UIColor.whiteColor }

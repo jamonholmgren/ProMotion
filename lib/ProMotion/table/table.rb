@@ -6,22 +6,14 @@ module ProMotion
     include ProMotion::Table::Refreshable
     include ProMotion::Table::Indexable
 
-    def table_view
-      @table_view ||= begin
-        t = UITableView.alloc.initWithFrame(self.view.frame, style: table_style)
-        t.dataSource = self
-        t.delegate = self
-        t
-      end
-    end
+    attr_reader :promotion_table_data
 
-    def table_style
-      UITableViewStylePlain
+    def table_view
+      self.view
     end
 
     def screen_setup
       check_table_data
-      set_up_table_view
       set_up_searchable
       set_up_refreshable
     end
@@ -30,11 +22,8 @@ module ProMotion
       PM.logger.error "Missing #table_data method in TableScreen #{self.class.to_s}." unless self.respond_to?(:table_data)
     end
 
-    def set_up_table_view
-      # before access self.table_data, create UITableView and call on_load
-      table_view
-
-      self.view = self.create_table_view_from_data(self.table_data)
+    def promotion_table_data
+      @promotion_table_data ||= TableData.new(table_data, table_view)
     end
 
     def set_up_searchable
@@ -53,37 +42,31 @@ module ProMotion
       end
     end
 
-    def create_table_view_from_data(data)
-      @promotion_table_data = TableData.new(data, table_view)
-      table_view
-    end
-
     def searching?
-      @promotion_table_data.filtered
+      self.promotion_table_data.filtered
     end
 
     def original_search_string
-      @promotion_table_data.original_search_string
+      self.promotion_table_data.original_search_string
     end
 
     def search_string
-      @promotion_table_data.search_string
+      self.promotion_table_data.search_string
     end
 
     def update_table_view_data(data)
-      create_table_view_from_data(data) unless @promotion_table_data
-      @promotion_table_data.data = data
+      self.promotion_table_data.data = data
       table_view.reloadData
     end
 
     # Methods to retrieve data
 
     def section_at_index(index)
-      @promotion_table_data.section(index)
+      self.promotion_table_data.section(index)
     end
 
     def cell_at_section_and_index(section, index)
-      @promotion_table_data.cell(section: section, index: index)
+      self.promotion_table_data.cell(section: section, index: index)
     end
 
     def trigger_action(action, arguments)
@@ -121,9 +104,9 @@ module ProMotion
 
       index_paths.each do |index_path|
         delete_cell = false
-        delete_cell = send(:on_cell_deleted, @promotion_table_data.cell(index_path: index_path)) if self.respond_to?("on_cell_deleted:")
+        delete_cell = send(:on_cell_deleted, self.promotion_table_data.cell(index_path: index_path)) if self.respond_to?("on_cell_deleted:")
         unless delete_cell == false
-          @promotion_table_data.delete_cell(index_path: index_path)
+          self.promotion_table_data.delete_cell(index_path: index_path)
           deletable_index_paths << index_path
         end
       end
@@ -136,7 +119,7 @@ module ProMotion
         params[:index] = params[:index_path].row
       end
 
-      data_cell = @promotion_table_data.cell(section: params[:section], index: params[:index])
+      data_cell = self.promotion_table_data.cell(section: params[:section], index: params[:index])
       return UITableViewCell.alloc.init unless data_cell # No data?
 
       table_cell = create_table_cell(data_cell)
@@ -165,28 +148,24 @@ module ProMotion
 
     ########## Cocoa touch methods #################
     def numberOfSectionsInTableView(table_view)
-      return Array(@promotion_table_data.data).length
+      Array(self.promotion_table_data.data).length
     end
 
     # Number of cells
     def tableView(table_view, numberOfRowsInSection:section)
-      return @promotion_table_data.section_length(section)
-      0
+      self.promotion_table_data.section_length(section)
     end
 
     def tableView(table_view, titleForHeaderInSection:section)
-      return section_at_index(section)[:title] if section_at_index(section) && section_at_index(section)[:title]
+      section = section_at_index(section) || return
+      section[:title]
     end
 
     # Set table_data_index if you want the right hand index column (jumplist)
     def sectionIndexTitlesForTableView(table_view)
-      return nil if @promotion_table_data.filtered
-
-      if self.respond_to?(:table_data_index)
-        self.table_data_index
-      else
-        nil
-      end
+      return if self.promotion_table_data.filtered
+      return self.table_data_index if self.respond_to?(:table_data_index)
+      nil
     end
 
     def tableView(table_view, cellForRowAtIndexPath:index_path)
@@ -194,17 +173,17 @@ module ProMotion
     end
 
     def tableView(table_view, willDisplayCell: table_cell, forRowAtIndexPath: index_path)
-      data_cell = @promotion_table_data.cell(index_path: index_path)
+      data_cell = self.promotion_table_data.cell(index_path: index_path)
       table_cell.backgroundColor = data_cell[:background_color] || UIColor.whiteColor
       table_cell.send(:restyle!) if table_cell.respond_to?(:restyle!)
     end
 
     def tableView(table_view, heightForRowAtIndexPath:index_path)
-      (@promotion_table_data.cell(index_path: index_path)[:height] || table_view.rowHeight).to_f
+      (self.promotion_table_data.cell(index_path: index_path)[:height] || table_view.rowHeight).to_f
     end
 
     def tableView(table_view, didSelectRowAtIndexPath:index_path)
-      data_cell = @promotion_table_data.cell(index_path: index_path)
+      data_cell = self.promotion_table_data.cell(index_path: index_path)
       table_view.deselectRowAtIndexPath(index_path, animated: true) unless data_cell[:keep_selection] == true
 
       data_cell[:arguments] ||= {}
@@ -214,7 +193,7 @@ module ProMotion
     end
 
     def tableView(table_view, editingStyleForRowAtIndexPath: index_path)
-      data_cell = @promotion_table_data.cell(index_path: index_path)
+      data_cell = self.promotion_table_data.cell(index_path: index_path)
 
       case data_cell[:editing_style]
       when nil, :none
@@ -292,6 +271,10 @@ module ProMotion
     end
 
     module TableClassMethods
+      def table_style
+        UITableViewStylePlain
+      end
+
       # Searchable
       def searchable(params={})
         @searchable_params = params

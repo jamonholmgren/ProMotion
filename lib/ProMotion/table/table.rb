@@ -1,3 +1,8 @@
+motion_require '../view/styling'
+motion_require 'extensions/searchable'
+motion_require 'extensions/refreshable'
+motion_require 'extensions/indexable'
+
 module ProMotion
   module Table
 

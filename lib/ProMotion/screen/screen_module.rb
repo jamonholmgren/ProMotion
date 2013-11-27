@@ -33,20 +33,23 @@ module ProMotion
     end
 
     def nav_bar?
-      !!self.navigation_controller
+      !!self.navigationController
     end
 
     def navigation_controller
-      @navigation_controller ||= self.navigationController
+      self.navigationController
     end
 
-    def navigation_controller=(val)
-      @navigation_controller = val
-      val
+    def navigation_controller=(nav)
+      @navigationController = nav
+    end
+
+    def navigationController=(nav)
+      @navigationController = nav
     end
 
     def add_nav_bar(args = {})
-      self.navigation_controller ||= begin
+      self.navigationController ||= begin
         self.first_screen = true if self.respond_to?(:first_screen=)
         nav = NavigationController.alloc.initWithRootViewController(self)
         nav.setModalTransitionStyle(args[:transition_style]) if args[:transition_style]
@@ -66,22 +69,36 @@ module ProMotion
     end
 
     def set_nav_bar_button(side, args={})
-      args[:style] = map_bar_button_item_style(args[:style])
-      args[:target] ||= self
-      args[:action] ||= nil
-      args[:system_item] ||= args[:system_icon] # backwards compatibility
-      args[:system_item] = map_bar_button_system_item(args[:system_item]) if args[:system_item] && args[:system_item].is_a?(Symbol)
-      
-      button_type = args[:image] || args[:button] || args[:system_item] || args[:title] || "Button"
-
-      button = bar_button_item button_type, args
+      button = create_toolbar_button(args)
 
       self.navigationItem.leftBarButtonItem = button if side == :left
       self.navigationItem.rightBarButtonItem = button if side == :right
+      self.navigationItem.backBarButtonItem = button if side == :back
 
       button
     end
-    
+
+    def create_toolbar_button(args = {})
+      args[:style] = map_bar_button_item_style(args[:style])
+      args[:target] ||= self
+      args[:action] ||= nil
+      args[:custom_view] = args[:custom_view] if args[:custom_view]
+      args[:system_item] ||= args[:system_icon] # backwards compatibility
+      args[:system_item] = map_bar_button_system_item(args[:system_item]) if args[:system_item] && args[:system_item].is_a?(Symbol)
+
+      button_type = args[:image] || args[:button] || args[:system_item] || args[:custom_view] || args[:title] || "Button"
+
+      bar_button_item button_type, args
+    end
+
+    def set_toolbar_items(buttons = [], animated = true)
+      buttons = Array(buttons)
+      self.toolbarItems = buttons.map{|b| b.is_a?(UIBarButtonItem) ? b : create_toolbar_button(b) }
+      navigation_controller.setToolbarHidden(false, animated:animated)
+    end
+    alias_method :set_toolbar_buttons, :set_toolbar_items
+    alias_method :set_toolbar_button,  :set_toolbar_items
+
     # TODO: Make this better. Not able to do image: "logo", for example.
     def bar_button_item(button_type, args)
       case button_type
@@ -92,7 +109,9 @@ module ProMotion
       when String
         UIBarButtonItem.alloc.initWithTitle(button_type, style: args[:style], target: args[:target], action: args[:action])
       else
-        if args[:system_item]
+        if args[:custom_view]
+          UIBarButtonItem.alloc.initWithCustomView(args[:custom_view])
+        elsif args[:system_item]
           UIBarButtonItem.alloc.initWithBarButtonSystemItem(args[:system_item], target: args[:target], action: args[:action])
         else
           PM.logger.error("Please supply a title string, a UIImage or :system.")
@@ -208,7 +227,7 @@ module ProMotion
     def frame
       return self.view_or_self.frame
     end
-    
+
     def map_bar_button_item_style(symbol)
       symbol = {
         plain:    UIBarButtonItemStylePlain,
@@ -217,7 +236,7 @@ module ProMotion
       }[symbol] if symbol.is_a?(Symbol)
       symbol || UIBarButtonItemStyleBordered
     end
-    
+
     def map_bar_button_system_item(symbol)
       {
         done:         UIBarButtonSystemItemDone,

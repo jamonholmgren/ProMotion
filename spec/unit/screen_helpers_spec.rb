@@ -18,6 +18,11 @@ describe "screen helpers" do
       @screen.view.subviews.first.backgroundColor.should == UIColor.redColor
     end
 
+    it "should set attributes using a symbol" do
+      @screen.add @subview, :subview_styles
+      @screen.view.subviews.first.backgroundColor.should == UIColor.greenColor
+    end
+
     it "should let you remove a view" do
       @screen.view.addSubview @subview
       @screen.remove @subview
@@ -61,38 +66,27 @@ describe "screen helpers" do
       @screen = HomeScreen.new(nav_bar: true)
     end
 
-    it "should add a left nav bar button" do
-      @screen.set_nav_bar_button :left, title: "Save", action: :save_something, type: UIBarButtonItemStyleDone
-      @screen.navigationItem.leftBarButtonItem.class.should == UIBarButtonItem
-    end
 
-    it "should add a right nav bar button" do
-      @screen.set_nav_bar_button :right, title: "Cancel", action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
-      @screen.navigationItem.rightBarButtonItem.class.should == UIBarButtonItem
-    end
+    [:left, :right, :back].each do |placement|
+      buttonItemMethod = :"#{placement}BarButtonItem"
 
-    it "should add an image right nav bar button" do
-      image = UIImage.imageNamed("list.png")
-      @screen.set_nav_bar_button :right, image: image, action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
-      @screen.navigationItem.rightBarButtonItem.image.class.should == UIImage
-      @screen.navigationItem.rightBarButtonItem.image.should == image
-    end
+      it "should add a #{placement} nav bar button" do
+        @screen.set_nav_bar_button placement, title: "Save", action: :save_something, type: UIBarButtonItemStyleDone
+        @screen.navigationItem.send(buttonItemMethod).class.should == UIBarButtonItem
+      end
 
-    it "should add an image left nav bar button" do
-      image = UIImage.imageNamed("list.png")
-      @screen.set_nav_bar_button :left, image: image, action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
-      @screen.navigationItem.leftBarButtonItem.image.class.should == UIImage
-      @screen.navigationItem.leftBarButtonItem.image.should == image
-    end
+      it "should add an image #{placement} nav bar button" do
+        image = UIImage.imageNamed("list.png")
+        @screen.set_nav_bar_button placement, image: image, action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
+        @screen.navigationItem.send(buttonItemMethod).image.class.should == UIImage
+        @screen.navigationItem.send(buttonItemMethod).image.should == image
+      end
 
-    it "should add a left UIBarButtonItem" do
-      @screen.set_nav_bar_button :left, system_item: :edit
-      @screen.navigationItem.leftBarButtonItem.class.should == UIBarButtonItem
-    end
+      it "should add a #{placement} UIBarButtonItem" do
+        @screen.set_nav_bar_button placement, system_item: :add
+        @screen.navigationItem.send(buttonItemMethod).class.should == UIBarButtonItem
+      end
 
-    it "should add a right UIBarButtonItem" do
-      @screen.set_nav_bar_button :right, system_item: :add
-      @screen.navigationItem.rightBarButtonItem.class.should == UIBarButtonItem
     end
   end
 
@@ -105,9 +99,9 @@ describe "screen helpers" do
     end
 
     it "#push_view_controller should use the default navigation controller if not provided" do
-      vcs = @screen.navigation_controller.viewControllers
+      vcs = @screen.navigationController.viewControllers
       @screen.push_view_controller @second_vc
-      @screen.navigation_controller.viewControllers.count.should == vcs.count + 1
+      @screen.navigationController.viewControllers.count.should == vcs.count + 1
     end
 
     it "#push_view_controller should use a provided navigation controller" do
@@ -202,7 +196,7 @@ describe "screen helpers" do
       end
 
       it "should pop onto navigation controller if current screen is on nav stack already" do
-        @screen.mock!(:push_view_controller) { |vc| vc.should.be.instance_of BasicScreen }
+        @screen.mock!(:push_view_controller) { |vc, n, a| vc.should.be.instance_of BasicScreen }
         screen = @screen.open BasicScreen
         screen.should.be.kind_of BasicScreen
       end
@@ -212,8 +206,6 @@ describe "screen helpers" do
         screen = @screen.open basic
         screen.should.be.kind_of BasicScreen
         basic.navigationController.should == @screen.navigationController
-        basic.navigation_controller.should == @screen.navigationController
-        @screen.navigation_controller.should == @screen.navigationController
       end
 
       it "should open the provided view controller as root view if no other conditions are met" do
@@ -269,7 +261,7 @@ describe "screen helpers" do
       end
 
       it "#close should pop from the navigation controller" do
-        @screen.navigation_controller.mock!(:popViewControllerAnimated) { |animated| animated.should == true }
+        @screen.navigationController.mock!(:popViewControllerAnimated) { |animated| animated.should == true }
         @screen.close
       end
 

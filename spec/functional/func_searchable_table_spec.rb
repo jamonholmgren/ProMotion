@@ -5,7 +5,7 @@ describe "Searchable table spec" do
   def controller
     @controller ||= TableScreenSearchable.new(nav_bar: true)
     @controller.on_load
-    @controller.navigation_controller
+    @controller.navigationController
   end
 
   it "should be rotated in portrait mode" do
@@ -39,6 +39,18 @@ describe "Searchable table spec" do
 
     @controller.search_string.should == false
     @controller.original_search_string.should == false
+  end
+
+  it "should call the start and stop searching callbacks properly" do
+    @controller.will_begin_search_called.should == nil
+    @controller.will_end_search_called.should == nil
+
+    @controller.searchDisplayControllerWillBeginSearch(@controller)
+    @controller.searchDisplayController(@controller, shouldReloadTableForSearchString:"North")
+    @controller.will_begin_search_called.should == true
+
+    @controller.searchDisplayControllerWillEndSearch(@controller)
+    @controller.will_end_search_called.should == true
   end
 
 end

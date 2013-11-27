@@ -112,7 +112,7 @@ module ProMotion
 
     def ensure_wrapper_controller_in_place(screen, args={})
       unless args[:close_all] || args[:modal] || args[:in_detail] || args[:in_master]
-        screen.navigationController ||= self.navigationController
+        screen.navigation_controller ||= self.navigation_controller if screen.respond_to?("navigation_controller=")
         screen.tab_bar ||= self.tab_bar if screen.respond_to?("tab_bar=")
       end
     end

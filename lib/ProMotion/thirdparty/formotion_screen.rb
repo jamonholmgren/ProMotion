@@ -1,3 +1,5 @@
+motion_require '../screen/screen_module'
+
 module ProMotion
   if defined?(Formotion) && defined?(Formotion::FormController)
     class FormotionScreen < Formotion::FormController

@@ -1,3 +1,5 @@
+motion_require '../../view/styling'
+
 module ProMotion
   module TableViewCellModule
     include Styling

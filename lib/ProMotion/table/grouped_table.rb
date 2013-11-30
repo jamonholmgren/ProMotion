@@ -1,7 +1,12 @@
 module ProMotion
   module GroupedTable
-    def table_style
-      UITableViewStyleGrouped
+    module GroupedTableClassMethods
+      def table_style
+        UITableViewStyleGrouped
+      end
+    end
+    def self.included(base)
+      base.extend(GroupedTableClassMethods)
     end
   end
 end

@@ -63,4 +63,12 @@ describe "Split screen functional" do
 
   end
 
+  it "should override the title on the button" do
+    rotate_device to: :portrait, button: :bottom
+
+    test_title = "Test Title"
+    @controller = @app.open_split_screen @master, @detail, button_title: test_title
+    @detail.navigationItem.leftBarButtonItem.title.should == test_title
+  end
+
 end

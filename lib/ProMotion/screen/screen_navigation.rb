@@ -23,8 +23,8 @@ module ProMotion
       elsif args[:in_tab] && self.tab_bar
         present_view_controller_in_tab_bar_controller screen, args[:in_tab]
 
-      elsif self.navigation_controller
-        push_view_controller screen
+      elsif self.navigationController
+        push_view_controller screen, self.navigationController, args[:animated].nil? ? true : args[:animated]
 
       else
         open_root_screen (screen.navigationController || screen)
@@ -55,7 +55,7 @@ module ProMotion
       if self.modal?
         close_modal_screen args
 
-      elsif self.navigation_controller
+      elsif self.navigationController
         close_nav_screen args
         send_on_return(args) # TODO: this would be better implemented in a callback or view_did_disappear.
 
@@ -76,14 +76,13 @@ module ProMotion
       end
     end
 
-    def push_view_controller(vc, nav_controller=nil)
-      unless self.navigation_controller
+    def push_view_controller(vc, nav_controller=nil, animated=true)
+      unless self.navigationController
         PM.logger.error "You need a nav_bar if you are going to push #{vc.to_s} onto it."
       end
-      nav_controller ||= self.navigation_controller
+      nav_controller ||= self.navigationController
       vc.first_screen = false if vc.respond_to?(:first_screen=)
-      vc.navigation_controller = nav_controller if vc.respond_to?(:navigation_controller=)
-      nav_controller.pushViewController(vc, animated: true)
+      nav_controller.pushViewController(vc, animated: animated)
     end
 
     protected
@@ -113,7 +112,7 @@ module ProMotion
 
     def ensure_wrapper_controller_in_place(screen, args={})
       unless args[:close_all] || args[:modal] || args[:in_detail] || args[:in_master]
-        screen.navigation_controller ||= self.navigation_controller if screen.respond_to?("navigation_controller=")
+        screen.navigationController ||= self.navigationController
         screen.tab_bar ||= self.tab_bar if screen.respond_to?("tab_bar=")
       end
     end
@@ -127,7 +126,6 @@ module ProMotion
       if vc
 
         if vc.is_a?(UINavigationController)
-          screen.navigation_controller = vc if screen.respond_to?("navigation_controller=")
           push_view_controller(screen, vc)
         else
           # TODO: This should probably open the vc, shouldn't it?
@@ -150,12 +148,12 @@ module ProMotion
     def close_nav_screen(args={})
       args[:animated] = true unless args.has_key?(:animated)
       if args[:to_screen] == :root
-        self.navigation_controller.popToRootViewControllerAnimated args[:animated]
+        self.navigationController.popToRootViewControllerAnimated args[:animated]
       elsif args[:to_screen] && args[:to_screen].is_a?(UIViewController)
         self.parent_screen = args[:to_screen]
-        self.navigation_controller.popToViewController(args[:to_screen], animated: args[:animated])
+        self.navigationController.popToViewController(args[:to_screen], animated: args[:animated])
       else
-        self.navigation_controller.popViewControllerAnimated(args[:animated])
+        self.navigationController.popViewControllerAnimated(args[:animated])
       end
     end
 

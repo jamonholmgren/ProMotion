@@ -48,7 +48,7 @@ describe "split screen `open` functionality" do
     home = HomeScreen.new(nav_bar: true)
     child = BasicScreen.new
     screen = home.open child, in_detail: true, in_master: true
-    home.navigation_controller.topViewController.should == child
+    home.navigationController.topViewController.should == child
     screen.should == child
   end
 

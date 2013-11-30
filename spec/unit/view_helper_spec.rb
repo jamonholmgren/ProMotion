@@ -79,7 +79,7 @@ describe "view helpers" do
     before do
       @dummy = UIView.alloc.initWithFrame CGRectZero
       @dummy.extend ProMotion::Styling
-      
+
       @parent = UIView.alloc.initWithFrame(CGRectMake(0, 0, 320, 480))
       @child = UIView.alloc.initWithFrame(CGRectZero)
     end
@@ -89,11 +89,11 @@ describe "view helpers" do
         resize: [:left, :right, :top, :bottom, :width, :height]
       }
 
-      mask =  UIViewAutoresizingFlexibleLeftMargin | 
-              UIViewAutoresizingFlexibleRightMargin | 
-              UIViewAutoresizingFlexibleTopMargin | 
-              UIViewAutoresizingFlexibleBottomMargin | 
-              UIViewAutoresizingFlexibleWidth | 
+      mask =  UIViewAutoresizingFlexibleLeftMargin |
+              UIViewAutoresizingFlexibleRightMargin |
+              UIViewAutoresizingFlexibleTopMargin |
+              UIViewAutoresizingFlexibleBottomMargin |
+              UIViewAutoresizingFlexibleWidth |
               UIViewAutoresizingFlexibleHeight
 
       @child.autoresizingMask.should == mask
@@ -104,8 +104,8 @@ describe "view helpers" do
         resize: [:left, :right, :top]
       }
 
-      mask =  UIViewAutoresizingFlexibleLeftMargin | 
-              UIViewAutoresizingFlexibleRightMargin | 
+      mask =  UIViewAutoresizingFlexibleLeftMargin |
+              UIViewAutoresizingFlexibleRightMargin |
               UIViewAutoresizingFlexibleTopMargin
 
       @child.autoresizingMask.should == mask
@@ -116,8 +116,8 @@ describe "view helpers" do
         resize: [:bottom, :width, :height]
       }
 
-      mask =  UIViewAutoresizingFlexibleBottomMargin | 
-              UIViewAutoresizingFlexibleWidth | 
+      mask =  UIViewAutoresizingFlexibleBottomMargin |
+              UIViewAutoresizingFlexibleWidth |
               UIViewAutoresizingFlexibleHeight
 
       @child.autoresizingMask.should == mask
@@ -135,6 +135,17 @@ describe "view helpers" do
       @dummy.set_easy_attributes @parent, @child, {
         left: 10,
         top: 20,
+        width: 100,
+        height: 50
+      }
+
+      @child.frame.should == CGRectMake(10, 20, 100, 50)
+    end
+
+    it "Should create a frame with x & y" do
+      @dummy.set_easy_attributes @parent, @child, {
+        x: 10,
+        y: 20,
         width: 100,
         height: 50
       }

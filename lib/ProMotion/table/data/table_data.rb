@@ -73,7 +73,9 @@ module ProMotion
     end
 
     def set_data_cell_defaults(data_cell)
-      data_cell[:cell_style] ||= UITableViewCellStyleDefault
+      data_cell[:cell_style] ||= begin
+        data_cell[:subtitle] ? UITableViewCellStyleSubtitle : UITableViewCellStyleDefault
+      end
       data_cell[:cell_class] ||= PM::TableViewCell
       data_cell[:cell_identifier] ||= build_cell_identifier(data_cell)
 

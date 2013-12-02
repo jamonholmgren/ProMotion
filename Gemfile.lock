@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ProMotion (1.0.4)
+    ProMotion (1.1.0.rc1)
       methadone
 
 GEM
@@ -11,7 +11,7 @@ GEM
     formotion (1.6)
       bubble-wrap (~> 1.4.0)
       motion-require (~> 0.0.3)
-    methadone (1.3.0)
+    methadone (1.3.1)
       bundler
     motion-redgreen (0.1.0)
     motion-require (0.0.7)

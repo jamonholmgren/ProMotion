@@ -131,7 +131,6 @@ module ProMotion
       table_cell = table_view.dequeueReusableCellWithIdentifier(data_cell[:cell_identifier])
 
       unless table_cell
-        data_cell[:cell_style] ||= UITableViewCellStyleSubtitle
         table_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:data_cell[:cell_identifier])
         table_cell.extend PM::TableViewCellModule unless table_cell.is_a?(PM::TableViewCellModule)
         table_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin

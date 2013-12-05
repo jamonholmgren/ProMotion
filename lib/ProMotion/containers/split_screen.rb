@@ -26,6 +26,10 @@ module ProMotion
         @button_title = args[:button_title]
       end
 
+      if args.has_key?(:swipe)
+        split.presentsWithGesture = args[:swipe]
+      end
+
       split
     end
 

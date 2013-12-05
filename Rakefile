@@ -17,8 +17,6 @@ Motion::Project::App.setup do |app|
   # Devices
   app.deployment_target = "6.0"
   app.device_family = [:ipad] # so we can test split screen capability
-
-  # app.detect_dependencies = false
 end
 
 def all_files

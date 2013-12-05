@@ -1,6 +1,6 @@
 class TestMapScreen < PM::MapScreen
 
-  attr_accessor :infinite_loop_points
+  attr_accessor :infinite_loop_points, :request_complete
 
   start_position latitude: 35.090648651123, longitude: -82.965972900391, radius: 4
   title "Gorges State Park, NC"
@@ -43,7 +43,9 @@ class TestMapScreen < PM::MapScreen
   end
 
   def lookup_infinite_loop
-    look_up_address address: "1 Infinite Loop" do |points, error|
+    self.request_complete = false
+    self.look_up_address address: "1 Infinite Loop" do |points, error|
+      self.request_complete = true
       self.infinite_loop_points = points
     end
   end

@@ -15,16 +15,16 @@ Gem::Specification.new do |gem|
   gem.license       = 'MIT'
 
   gem.files         = `git ls-files`.split($\)
-  gem.executables   << "pm"
+  gem.executables   << "promotion"
   gem.test_files    = gem.files.grep(%r{^(spec)/})
   gem.name          = "ProMotion"
   gem.require_paths = ["lib"]
   gem.version       = ProMotion::VERSION
 
+  gem.add_dependency "motion-require", ">= 0.0.6"
   gem.add_development_dependency("webstub")
   gem.add_development_dependency("motion-stump")
   gem.add_development_dependency("motion-redgreen")
-  gem.add_development_dependency("formotion")
   gem.add_development_dependency("rake")
   gem.add_dependency("methadone")
 end

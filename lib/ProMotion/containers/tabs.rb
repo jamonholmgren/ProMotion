@@ -1,3 +1,5 @@
+motion_require '../extensions/conversions'
+
 module ProMotion
   module Tabs
     include Conversions

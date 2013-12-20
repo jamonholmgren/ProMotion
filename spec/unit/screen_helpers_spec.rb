@@ -18,6 +18,11 @@ describe "screen helpers" do
       @screen.view.subviews.first.backgroundColor.should == UIColor.redColor
     end
 
+    it "should set attributes using a symbol" do
+      @screen.add @subview, :subview_styles
+      @screen.view.subviews.first.backgroundColor.should == UIColor.greenColor
+    end
+
     it "should let you remove a view" do
       @screen.view.addSubview @subview
       @screen.remove @subview

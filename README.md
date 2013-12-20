@@ -11,25 +11,33 @@ Watch the [September Motion Meetup](http://www.youtube.com/watch?v=rf7h-3AiMRQ) 
 interviews Jamon Holmgren about ProMotion!
 
 ```ruby
+# app/app_delegate.rb
 class AppDelegate < PM::Delegate
   def on_load(app, options)
     open RootScreen.new(nav_bar: true)
   end
 end
 
+# app/screens/root_screen.rb
 class RootScreen < PM::Screen
   title "Root Screen"
 
-  def push_new_screen
-    open NewScreen
+  def on_load
+    set_bar_button :right, title: "Help", action: :push_help_screen
+  end
+
+  def push_help_screen
+    open HelpScreen
   end
 end
 
-class NewScreen < PM::TableScreen
+# app/screens/help_screen.rb
+class HelpScreen < PM::TableScreen
   title "Table Screen"
 
   def table_data
     [{
+      title: "Help",
       cells: [
         { title: "About this app", action: :tapped_about },
         { title: "Log out", action: :log_out }
@@ -43,45 +51,40 @@ end
 
 |Screens|Navigation Bars|Tab Bars|
 |---|---|---|
-|![ProMotion Screen](https://f.cloud.github.com/assets/1479215/751058/486b6e1e-e4e7-11e2-9d1f-d9380a58f643.png)|![ProMotion Nav Bar](https://f.cloud.github.com/assets/1479215/751076/e4762858-e4e7-11e2-8442-ac7c9ad142e6.png)|![ProMotion Tabs](https://f.cloud.github.com/assets/1479215/751128/76ebe320-e4e9-11e2-86ee-d81c4c1e92f2.png)|
+|![ProMotion Screen](https://f.cloud.github.com/assets/1479215/1534021/060aaaac-4c8f-11e3-903c-743e54252222.png)|![ProMotion Nav Bar](https://f.cloud.github.com/assets/1479215/1534077/db39aab6-4c8f-11e3-83f7-e03d52ac615d.png)|![ProMotion Tabs](https://f.cloud.github.com/assets/1479215/1534115/9f4c4cd8-4c90-11e3-9285-96ac253facda.png)|
 
 |Table Screens|Grouped Tables|Searchable|Refreshable|
 |---|---|---|---|
-|![ProMotion TableScreen](https://f.cloud.github.com/assets/1479215/751067/8fe7631a-e4e7-11e2-84f1-6ae50ac4f8e8.png)|![ProMotion Grouped Table Screens](https://f.cloud.github.com/assets/1479215/751162/a805b9da-e4ea-11e2-9c39-0c65f8a8de77.png)|![Searchable](https://f.cloud.github.com/assets/1479215/707490/ba750216-de1d-11e2-9594-0880b12f8ffe.png)|![Refreshable](https://f.cloud.github.com/assets/139261/472574/af268e52-b735-11e2-8b9b-a9245b421715.gif)|
+|![ProMotion TableScreen](https://f.cloud.github.com/assets/1479215/1534137/ed71e864-4c90-11e3-98aa-ed96049f5407.png)|![Grouped Table Screen](https://f.cloud.github.com/assets/1479215/1589973/61a48610-5281-11e3-85ac-abee99bf73ad.png)|![Searchable](https://f.cloud.github.com/assets/1479215/1534299/20cc05c6-4c93-11e3-92ca-9ee39c044457.png)|![Refreshable](https://f.cloud.github.com/assets/1479215/1534317/5a14ef28-4c93-11e3-8e9e-f8c08d8464f8.png)|
 
 
 |iPad SplitScreens|Map Screens|Web Screens|
 |---|---|---|
-|![ProMotion SplitScreens](https://f.cloud.github.com/assets/1479215/751188/13c3a7c6-e4ec-11e2-8c87-a94e0c07702b.png)|![MapScreen](https://f.cloud.github.com/assets/1479215/751217/dab20958-e4ed-11e2-9b3e-b42c0199d9e7.png)|![ProMotion WebScreen](https://f.cloud.github.com/assets/1479215/751235/b6fe91ba-e4ee-11e2-8707-c74c7f833de3.png)|
+|![ProMotion SplitScreens](https://f.cloud.github.com/assets/1479215/1534507/0edb8dd4-4c96-11e3-9896-d4583d0ed161.png)|![MapScreen](https://f.cloud.github.com/assets/1479215/1534628/f7dbf7e8-4c97-11e3-8817-4c2a58824771.png)|![ProMotion WebScreen](https://f.cloud.github.com/assets/1479215/1534631/ffe1b36a-4c97-11e3-8c8f-c7b14e26182d.png)|
 
 #### ...and much more.
 
 # Getting Started
 
-Check out our new [Getting Started Guide](https://github.com/clearsightstudio/ProMotion/wiki/Guide:-Getting-Started) in the wiki!
+Check out the [Getting Started Guide](https://github.com/clearsightstudio/ProMotion/wiki/Guide:-Getting-Started) in the wiki!
 
 # What's New?
 
-## Version 1.0
+## Version 1.1.x
 
-* **New Screen** [`PM::MapScreen`](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::MapScreen)
-* **New Screen** [`PM::WebScreen`](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::WebScreen)
-* Added [`indexable`](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::TableScreen#indexable) as a `PM::TableScreen` feature
-* Added `PM::SplitViewController` and the ability to open a screen `in_detail:` or `in_master:`. [More info here.](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::Screen#openscreen-args--)
-* Added `PM::TabBarController` and `PM::Tabs` and refactored the `open_tab_bar` code
-* **IMPORTANT:** Changed `on_load` to fire more consistently. You are now encouraged to put your view setup code in here rather than `will_appear`.
-* Many methods that used to require long UIKit constants now take short :symbols. Check documentation.
-* Simpler `PM::Delegate` code, added `will_load(app, options)` and others. [See the documentation.](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::Delegate)
-* [Added a few keys and improvements](https://github.com/clearsightstudio/ProMotion/wiki/Reference%3A-All-available-table_data-options) to table_data
-* Removed `PM::SectionedTableScreen` (`PM::TableScreen` is already a sectioned table)
-* Removed any last UIKit monkeypatching. Everything is a subclass now. ProMotion is probably the least invasive RubyMotion gem in common use.
-* Push Notification updates
-* Renamed `PM::ViewHelper` to `PM::Styling` and [added some common helpers](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::Screen#hex_colorstr)
-* Added `will_present`, `on_present`, `will_dismiss`, `on_dismiss` to screens
-* Major internal refactors everywhere
-* Lots of new unit & functional tests
-* Removed deprecations, cleaned up a lot of code
-* Huge improvements to the [wiki](https://github.com/clearsightstudio/ProMotion/wiki)
+* Added a [ProMotion executable](https://github.com/clearsightstudio/ProMotion/wiki/Command-Line-Tool) called `promotion`. You can type `promotion new <myapp>` and it will create a ProMotion-specific app. We will be adding more functionality in the future.
+* Can now pass a symbol to `add`, `add_to`, and `set_attributes` to call a method with that name to get styles.
+* Added `button_title:` to `open_split_screen` to [customize the auto-generated button title](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::SplitScreen#open_split_screenmaster-detail-args--)
+* Updates to [set_tab_bar_button](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::Tabs#set_tab_bar_itemargs)
+* Added to PM::Delegate [`on_open_url(args = {})`](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::Delegate#on_open_urlargs--) where `args` contains `:url`, `:source_app`, and `:annotation`
+* Added to PM::Delegate [`tint_color`](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::Delegate#tint_color) to customize the application-wide tint color
+* Added to [PM::MapScreen annotations](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::MapScreen) the ability to set an image
+* Removed legacy `navigation_controller` references which were causing confusion.
+* Allowed setting a `custom_view` for `bar_button_item`s.
+* Added `will_begin_search` and `will_end_search` callbacks to PM::TableScreen.
+* Added `title_view` and `title_view_height` to sections in PM::TableScreen.
+* Updated screenshots for iOS 7
+* Refactored code and lots of new passing tests
 
 # Tutorials
 
@@ -114,34 +117,13 @@ We've created a comprehensive and always updated wiki with code examples, usage 
 
 # Help
 
-If you need help, feel free to ping me on twitter [@jamonholmgren](http://twitter.com/jamonholmgren)
+If you need help, feel free to tweet [@jamonholmgren](http://twitter.com/jamonholmgren)
 or open an issue on GitHub. Opening an issue is usually the best and we respond to those pretty quickly.
+If we don't respond within a day, tweet Jamon or Mark a link to the issue.
 
 # Contributing
 
-I'm very open to ideas. Tweet me with your ideas or open a ticket (I don't mind!)
-and let's discuss. **It's a good idea to run your idea by the committers before creating
-a pull request.** We'll always consider your ideas carefully but not all ideas will be
-incorporated.
-
-## Working on New Features
-
-1. Clone the repos into `Your-Project/Vendor/ProMotion`
-2. Update your `Gemfile`to reference the project as `gem 'ProMotion', :path => "vendor/ProMotion/"`
-3. Run `bundle`
-4. Run `rake clean` and then `rake`
-5. Contribute!
-
-## Submitting a Pull Request
-
-1. Fork the project
-2. Create a feature branch
-3. Code
-4. Update or create new specs ** NOTE: your PR is far more likely to be merged if you include comprehensive tests! **
-5. Make sure tests are passing by running `rake spec` *(you can run functional and unit specs separately with `rake spec:functional` and `rake spec:unit`)*
-6. Submit pull request to `edge` (for new features) or `master` (for bugfixes)
-7. Make a million little nitpicky changes that @jamonholmgren wants
-8. Merged, then fame, adoration, kudos everywhere
+See [CONTRIBUTING.md](./).
 
 ## Primary Contributors
 

@@ -9,6 +9,7 @@ module ProMotion
     def loadView
       super
       self.send(:on_load) if self.respond_to?(:on_load)
+      self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0)
     end
 
     def viewDidLoad

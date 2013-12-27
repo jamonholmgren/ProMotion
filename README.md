@@ -23,7 +23,7 @@ class RootScreen < PM::Screen
   title "Root Screen"
 
   def on_load
-    set_bar_button :right, title: "Help", action: :push_help_screen
+    set_nav_bar_button :right, title: "Help", action: :push_help_screen
   end
 
   def push_help_screen

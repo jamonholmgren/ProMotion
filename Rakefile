@@ -1,11 +1,7 @@
 $:.unshift("/Library/RubyMotion/lib")
 require 'motion/project/template/ios'
 require 'bundler'
-
-# this follow from gemspec
 Bundler.require(:development)
-
-# this follow development code
 require 'ProMotion'
 
 Motion::Project::App.setup do |app|

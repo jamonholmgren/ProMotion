@@ -19,4 +19,19 @@ describe "PM::FormotionScreen" do
     @screen.submitted_form.render.should.be.kind_of(Hash)
   end
 
+  describe "After update_table_data" do
+    before do
+      @screen.test_update_table_data
+    end
+
+    it "should update the table data" do
+      @screen.table_data[:sections][0][:title].should == "Updated Data"
+    end
+
+    it "should fire the on_submit method when form is submitted" do
+      @screen.form.submit
+      @screen.submitted_form.should.not.be.nil
+      @screen.submitted_form.render.should.be.kind_of(Hash)
+    end
+  end
 end

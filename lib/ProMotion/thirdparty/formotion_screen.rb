@@ -19,9 +19,13 @@ module ProMotion
         s.tableView.allowsSelectionDuringEditing = true
         s.title = t
 
-        s.form.on_submit { |form| s.on_submit(form) if s.respond_to?(:on_submit) }
+        s.bind_submit
 
         s
+      end
+
+      def bind_submit
+        self.form.on_submit { |form| self.on_submit(form) if self.respond_to?(:on_submit) }
       end
 
       # emulate the ProMotion table update for formotion
@@ -29,6 +33,7 @@ module ProMotion
         self.form            = table_data
         self.form.controller = self
         self.tableView.reloadData
+        self.bind_submit
       end
 
       def screen_setup

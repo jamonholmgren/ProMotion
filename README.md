@@ -23,7 +23,7 @@ class RootScreen < PM::Screen
   title "Root Screen"
 
   def on_load
-    set_bar_button :right, title: "Help", action: :push_help_screen
+    set_nav_bar_button :right, title: "Help", action: :push_help_screen
   end
 
   def push_help_screen
@@ -66,7 +66,8 @@ end
 
 # Getting Started
 
-Check out the [Getting Started Guide](https://github.com/clearsightstudio/ProMotion/wiki/Guide:-Getting-Started) in the wiki!
+1. Check out the [Getting Started Guide](https://github.com/clearsightstudio/ProMotion/wiki/Guide:-Getting-Started) in the wiki
+2. Follow a tutorial: [Building an ESPN app using RubyMotion, ProMotion, and TDD](http://jamonholmgren.com/building-an-espn-app-using-rubymotion-promotion-and-tdd)
 
 # What's New?
 
@@ -123,7 +124,7 @@ If we don't respond within a day, tweet Jamon or Mark a link to the issue.
 
 # Contributing
 
-See [CONTRIBUTING.md](./).
+See [CONTRIBUTING.md](https://github.com/clearsightstudio/ProMotion/edit/master/CONTRIBUTING.md).
 
 ## Primary Contributors
 

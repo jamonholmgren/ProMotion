@@ -15,17 +15,10 @@ module ProMotion
           PM.logger.error "PM::FormotionScreen requires a `table_data` method or form: to be passed into `new`."
         end
 
-        t = s.title # Formotion kills the title when you request tableView.
         s.tableView.allowsSelectionDuringEditing = true
-        s.title = t
-
-        s.bind_submit
+        s.after_setup
 
         s
-      end
-
-      def bind_submit
-        self.form.on_submit { |form| self.on_submit(form) if self.respond_to?(:on_submit) }
       end
 
       # emulate the ProMotion table update for formotion
@@ -33,11 +26,20 @@ module ProMotion
         self.form            = table_data
         self.form.controller = self
         self.tableView.reloadData
-        self.bind_submit
+        self.after_setup
       end
 
       def screen_setup
         self.title = self.class.send(:get_title)
+      end
+
+      def after_setup
+        self.title = self.class.send(:get_title) # Formotion kills the title when you request tableView.
+        self.bind_submit # bind submit action after populating table data
+      end
+
+      def bind_submit
+        self.form.on_submit { |form| self.on_submit(form) if self.respond_to?(:on_submit) }
       end
 
       def loadView

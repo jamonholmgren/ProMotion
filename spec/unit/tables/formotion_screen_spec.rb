@@ -24,6 +24,10 @@ describe "PM::FormotionScreen" do
       @screen.test_update_table_data
     end
 
+    it "should preserve the screen title" do
+      @screen.title.should == "Formotion Test"
+    end
+
     it "should update the table data" do
       @screen.table_data[:sections][0][:title].should == "Updated Data"
     end

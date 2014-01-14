@@ -17,6 +17,7 @@ module ProMotion
       def start_refreshing
         return unless @refresh_control
 
+        @refresh_control.attributedTitle = NSAttributedString.alloc.initWithString(@refreshing)
         @refresh_control.beginRefreshing
 
         # Fix iOS 7 now showing the spinner automatically when beginRefreshing is called

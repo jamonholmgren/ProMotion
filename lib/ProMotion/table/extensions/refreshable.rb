@@ -21,7 +21,8 @@ module ProMotion
 
         # Fix iOS 7 now showing the spinner automatically when beginRefreshing is called
         # Modification of this code: http://stackoverflow.com/a/16250679/814123
-        if self.tableView.contentOffset.y < 0 && UIDevice.currentDevice.systemVersion.to_f >= 7.0
+
+        if UIDevice.currentDevice.systemVersion.to_f >= 7.0
           UIView.animateWithDuration(0.25, delay:0, options:UIViewAnimationOptionBeginFromCurrentState, animations: lambda {
             self.tableView.contentOffset = CGPointMake(0, self.tableView.contentOffset.y - @refresh_control.frame.size.height)
           }, completion: lambda{|finished|

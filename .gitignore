@@ -31,3 +31,5 @@ tmp
 *.tmproject
 tmtags
 *.sublime-workspace
+
+*.2048.lock

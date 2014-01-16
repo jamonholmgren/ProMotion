@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ProMotion (1.1.0)
+    ProMotion (1.1.1)
       methadone
       motion-require (>= 0.0.6)
 
@@ -13,7 +13,7 @@ GEM
     motion-redgreen (0.1.0)
     motion-require (0.0.7)
     motion-stump (0.3.0)
-    rake (10.1.0)
+    rake (10.1.1)
     webstub (1.0.1)
 
 PLATFORMS

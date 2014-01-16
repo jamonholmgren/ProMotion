@@ -65,18 +65,21 @@ module ProMotion
 
     def set_remote_image
       if data_cell[:remote_image]
-        if self.imageView.respond_to?("setImageWithURL:placeholderImage:")
+        if self.imageView.respond_to?("setImageWithURL:placeholder:")
           url = data_cell[:remote_image][:url]
           url = NSURL.URLWithString(url) unless url.is_a?(NSURL)
           placeholder = data_cell[:remote_image][:placeholder]
           placeholder = UIImage.imageNamed(placeholder) if placeholder.is_a?(String)
 
           self.image_size = data_cell[:remote_image][:size] if data_cell[:remote_image][:size] && self.respond_to?("image_size=")
-          self.imageView.setImageWithURL(url, placeholderImage: placeholder)
+          self.imageView.setImageWithURL(url, placeholder: placeholder)
           self.imageView.layer.masksToBounds = true
           self.imageView.layer.cornerRadius = data_cell[:remote_image][:radius] if data_cell[:remote_image].has_key?(:radius)
+        elsif self.imageView.respond_to?("setImageWithURL:placeholderImage:")
+          # TODO - Remove this in next major release
+          PM.logger.deprecated "The SDWebImage cocoapod is deprecated. Please replace it with 'JMImageCache'."
         else
-          PM.logger.error "ProMotion Warning: to use remote_image with TableScreen you need to include the CocoaPod 'SDWebImage'."
+          PM.logger.error "ProMotion Warning: to use remote_image with TableScreen you need to include the CocoaPod 'JMImageCache'."
         end
       end
       self

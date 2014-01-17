@@ -24,6 +24,9 @@ module ProMotion
         # Doesn't respond. Check if snake case.
         if k.to_s.include?("_")
           set_attribute(element, objective_c_method_name(k), v)
+        else
+          # Warn
+          PM.logger.warn("set_attribute: #{element.inspect} doesn't respond to `#{k.to_s}` or `#{k.to_s}=`.")
         end
       end
       element

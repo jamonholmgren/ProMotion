@@ -8,6 +8,7 @@ module ProMotion
 
     def application(application, willFinishLaunchingWithOptions:launch_options)
       will_load(application, launch_options) if respond_to?(:will_load)
+      true
     end
 
     def application(application, didFinishLaunchingWithOptions:launch_options)

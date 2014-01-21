@@ -9,8 +9,8 @@ Promotion core should strive to ProMotionify the UIKit level elements of RubyMot
   - PM::Screen | UIViewController
   - PM::SplitScreen | UISplitViewController
   - PM::TableScreen | UITableViewController
-    - PM::TableCell | UITableCell
-  - PM::TabScreen | UITabBarController
+    - PM::TableCell | UITableViewCell
+  - PM::TabBar | UITabBarController
   - PM::CollectionScreen | UICollectionViewController
     - PM::CollectionCell | UICollectionViewCell
   - PM::ImagePickerScreen | UIImagePickerController 

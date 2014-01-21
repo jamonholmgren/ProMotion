@@ -18,7 +18,7 @@ module ProMotion
         open_root_screen screen
 
       elsif args[:modal]
-        present_modal_view_controller screen, args[:animated]
+        present_modal_view_controller screen, args[:animated], args[:completion]
 
       elsif args[:in_tab] && self.tab_bar
         present_view_controller_in_tab_bar_controller screen, args[:in_tab]
@@ -117,8 +117,8 @@ module ProMotion
       end
     end
 
-    def present_modal_view_controller(screen, animated)
-      self.presentModalViewController((screen.navigationController || screen), animated:animated)
+    def present_modal_view_controller(screen, animated, completion)
+      self.presentViewController((screen.navigationController || screen), animated:animated, completion:completion)
     end
 
     def present_view_controller_in_tab_bar_controller(screen, tab_name)

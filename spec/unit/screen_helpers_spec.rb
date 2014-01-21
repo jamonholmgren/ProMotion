@@ -135,11 +135,12 @@ describe "screen helpers" do
       it "should present the navigationController when showing a modal screen" do
         new_screen = @screen.send(:set_up_screen_for_open, BasicScreen, modal: true)
 
-        @screen.mock!('presentModalViewController:animated:') do |vc, animated|
+        @screen.mock!('presentViewController:animated:completion:') do |vc, animated, completion|
           vc.should == (new_screen.navigationController || new_screen)
           animated.should == true
+          completion.should == nil
         end
-        @screen.send(:present_modal_view_controller, new_screen, true)
+        @screen.send(:present_modal_view_controller, new_screen, true, nil)
       end
 
       # it "should push screen onto nav controller stack inside a tab bar" do
@@ -157,28 +158,31 @@ describe "screen helpers" do
       end
 
       it "should present a modal screen if :modal is provided" do
-        @screen.mock!(:present_modal_view_controller) do |screen, animated|
+        @screen.mock!(:present_modal_view_controller) do |screen, animated, completion|
           screen.should.be.instance_of BasicScreen
           animated.should == true
+          completion.should.be.kind_of Proc
         end
-        screen = @screen.open BasicScreen, modal: true
+        screen = @screen.open BasicScreen, modal: true, completion: lambda{}
         screen.should.be.kind_of BasicScreen
       end
 
       it "should present a modal screen if open_modal is used" do
-        @screen.mock!(:present_modal_view_controller) do |screen, animated|
+        @screen.mock!(:present_modal_view_controller) do |screen, animated, completion|
           screen.should.be.instance_of BasicScreen
           animated.should == true
+          completion.should == nil
         end
         screen = @screen.open_modal BasicScreen
         screen.should.be.kind_of BasicScreen
       end
 
-      it "should respect animated property of opening modal screens" do
+      it "should respect animated and competion property of opening modal screens" do
         new_screen = @screen.send(:set_up_screen_for_open, BasicScreen)
 
-        @screen.mock!('presentModalViewController:animated:') do |vc, animated|
+        @screen.mock!('presentViewController:animated:completion:') do |vc, animated, completion|
           animated.should == false
+          completion.should == nil
         end
 
         screen = @screen.send(:open, new_screen, animated: false, modal: true)

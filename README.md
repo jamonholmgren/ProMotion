@@ -104,8 +104,6 @@ Shows how to create a Youtube app that shows Portland Trailblazer highlights.
 
 [http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/](http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/)
 
-MotionInMotion
-
 ## Sample Apps
 
 Here's a demo app that is used to test new functionality. You might have to change the Gemfile

@@ -67,7 +67,8 @@ end
 # Getting Started
 
 1. Check out the [Getting Started Guide](https://github.com/clearsightstudio/ProMotion/wiki/Guide:-Getting-Started) in the wiki
-2. Follow a tutorial: [Building an ESPN app using RubyMotion, ProMotion, and TDD](http://jamonholmgren.com/building-an-espn-app-using-rubymotion-promotion-and-tdd)
+2. Watch the excellent [MotionInMotion screencast about ProMotion](https://motioninmotion.tv/screencasts/8) (very reasonably priced subscription required)
+3. Follow a tutorial: [Building an ESPN app using RubyMotion, ProMotion, and TDD](http://jamonholmgren.com/building-an-espn-app-using-rubymotion-promotion-and-tdd)
 
 # What's New?
 
@@ -95,9 +96,15 @@ Shows how to make a basic app in ProMotion. Updated in May.
 
 ## Screencasts
 
+MotionInMotion shows how to make a simple demo app in a short time.
+
+[https://motioninmotion.tv/screencasts/8](https://motioninmotion.tv/screencasts/8)
+
 Shows how to create a Youtube app that shows Portland Trailblazer highlights.
 
 [http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/](http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/)
+
+MotionInMotion
 
 ## Sample Apps
 

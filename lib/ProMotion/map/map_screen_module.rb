@@ -10,7 +10,7 @@ module ProMotion
         resize: [ :width, :height ],
         delegate: self
       }
-      
+
       check_annotation_data
       @promotion_annotation_data = []
       set_up_start_position
@@ -76,7 +76,6 @@ module ProMotion
 
     def zoom_to_user(radius = 0.05, animated=true)
       show_user_location unless showing_user_location?
-      ap user_location
       set_region(MKCoordinateRegionMake(user_location, [radius, radius]), animated)
     end
 
@@ -217,6 +216,15 @@ module ProMotion
       return geocoder.geocodeAddressDictionary(args[:address], completionHandler: callback) if args[:address].is_a?(Hash)
       return geocoder.geocodeAddressString(args[:address].to_s, completionHandler: callback) unless args[:region]
       return geocoder.geocodeAddressString(args[:address].to_s, inRegion:args[:region].to_s, completionHandler: callback) if args[:region]
+    end
+
+    ########## Cocoa touch methods #################
+    def mapView(mapView, didUpdateUserLocation:userLocation)
+      if self.respond_to?(:on_user_location)
+        on_user_location(userLocation)
+      else
+        PM.logger.info "You're tracking the user's location but have not implemented the #on_user_location(location) method in MapScreen #{self.class.to_s}."
+      end
     end
 
     module MapClassMethods

@@ -122,7 +122,7 @@ module ProMotion
 
       initialLocation = CLLocationCoordinate2D.new(params[:latitude], params[:longitude])
       region = MKCoordinateRegionMakeWithDistance(initialLocation, params[:radius] * meters_per_mile, params[:radius] * meters_per_mile)
-      self.mapview.setRegion(region, animated:false)
+      set_region(region, animated:false)
     end
 
     def set_up_start_position
@@ -163,7 +163,7 @@ module ProMotion
       region = MKCoordinateRegionMake(coord, span)
       fits = self.mapview.regionThatFits(region);
 
-      self.mapview.setRegion(fits, animated:animated)
+      set_region(fits, animated:animated)
     end
 
     def set_region(region, animated=true)

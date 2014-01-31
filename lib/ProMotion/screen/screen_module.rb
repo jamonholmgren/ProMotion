@@ -1,3 +1,8 @@
+motion_require 'screen_navigation'
+motion_require '../view/styling'
+motion_require '../containers/tabs'
+motion_require '../containers/split_screen'
+
 module ProMotion
   module ScreenModule
     include ProMotion::ScreenNavigation

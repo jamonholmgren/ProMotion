@@ -24,7 +24,7 @@ describe "PM::Table module" do
         checked: true # whether it's "checked" or not
       },
       image: { image: @image, radius: 15 },
-      remote_image: {  # remote image, requires SDWebImage CocoaPod
+      remote_image: {  # remote image, requires JMImageCache CocoaPod
         url: "http://placekitten.com/200/300", placeholder: "some-local-image",
         size: 50, radius: 15
       },

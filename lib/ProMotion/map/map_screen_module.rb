@@ -71,7 +71,7 @@ module ProMotion
     end
 
     def user_location
-      self.mapview.userLocation.location.coordinate
+      self.mapview.userLocation.location.nil? ? nil : self.mapview.userLocation.location.coordinate
     end
 
     def zoom_to_user(radius = 0.05, animated=true)

@@ -2,6 +2,7 @@ module ProMotion
   module MapScreenModule
     attr_accessor :mapview
 
+
     def screen_setup
       check_mapkit_included
       self.mapview ||= add MKMapView.new, {
@@ -53,6 +54,32 @@ module ProMotion
       )
     end
 
+    def show_user_location
+      set_show_user_location true
+    end
+
+    def hide_user_location
+      set_show_user_location false
+    end
+
+    def set_show_user_location(show)
+      self.mapview.showsUserLocation = show
+    end
+
+    def showing_user_location?
+      self.mapview.showsUserLocation
+    end
+
+    def user_location
+      self.mapview.userLocation.location.coordinate
+    end
+
+    def zoom_to_user(radius = 0.05, animated=true)
+      show_user_location unless showing_user_location?
+      ap user_location
+      set_region(MKCoordinateRegionMake(user_location, [radius, radius]), animated)
+    end
+
     def annotations
       @promotion_annotation_data
     end
@@ -95,6 +122,8 @@ module ProMotion
     end
 
     def mapView(mapView, viewForAnnotation:annotation)
+      return if annotation.is_a? MKUserLocation
+
       identifier = annotation.annotation_params[:identifier]
       if view = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier)
         view.annotation = annotation

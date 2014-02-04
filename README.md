@@ -129,7 +129,7 @@ If we don't respond within a day, tweet Jamon or Mark a link to the issue.
 
 # Contributing
 
-See [CONTRIBUTING.md](https://github.com/clearsightstudio/ProMotion/edit/master/CONTRIBUTING.md).
+See [CONTRIBUTING.md](https://github.com/clearsightstudio/ProMotion/blob/master/CONTRIBUTING.md).
 
 ## Primary Contributors
 

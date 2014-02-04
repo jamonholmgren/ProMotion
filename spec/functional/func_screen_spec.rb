@@ -18,6 +18,10 @@ describe "ProMotion::Screen functional" do
     view("Functional").should.be.kind_of UINavigationItemView
   end
 
+  it "should allow a string title" do
+    views(UINavigationItemView).include?(UIImageView).should.not.be.true
+  end
+
   it "should allow setting a left nav bar button" do
     @root_screen.set_nav_bar_button :left, title: "Cool", action: :triggered_button
     tap("Cool")

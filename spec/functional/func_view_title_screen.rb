@@ -1,10 +1,10 @@
-describe "ProMotion::Screen UIImage title functionality" do
+describe "ProMotion::Screen UIView title functionality" do
   tests PM::Screen
 
   # Override controller to properly instantiate
   def controller
     rotate_device to: :portrait, button: :bottom
-    @image_title_screen ||= ImageTitleScreen.new(nav_bar: true)
+    @image_title_screen ||= ViewTitleScreen.new(nav_bar: true)
     @root_screen = @image_title_screen
     @image_title_screen.navigationController
   end
@@ -15,6 +15,7 @@ describe "ProMotion::Screen UIImage title functionality" do
   end
 
   it "should allow an image title" do
-    @root_screen.navigationItem.titleView.should.be.kind_of UIImageView
+    @root_screen.navigationItem.titleView.should.not.be.kind_of UIImageView
+    @root_screen.navigationItem.titleView.should.be.kind_of UIView
   end
 end

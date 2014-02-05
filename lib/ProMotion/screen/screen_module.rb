@@ -58,8 +58,12 @@ module ProMotion
     def resolve_title
       if self.class.send(:get_title).kind_of? String
         self.title = self.class.send(:get_title)
-      else
+      elsif self.class.send(:get_title).kind_of? UIView
+        self.navigationItem.titleView = self.class.send(:get_title)
+      elsif self.class.send(:get_title).kind_of? UIImage
         self.navigationItem.titleView = UIImageView.alloc.initWithImage(self.class.send(:get_title))
+      else
+        PM.logger.warn("title expects string, UIView, or UIImage, but #{self.class.send(:get_title).class.to_s} given."
       end
     end
 

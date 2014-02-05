@@ -17,9 +17,11 @@ module ProMotion
         raise StandardError.new("ERROR: Screens must extend UIViewController or a subclass of UIViewController.")
       end
 
-      self.title = self.class.send(:get_title)
+      resolve_title
+
       self.tab_bar_item = self.class.send(:get_tab_bar_item)
       self.refresh_tab_bar_item if self.tab_bar_item
+      self.class.send(:get_title)
 
       args.each { |k, v| self.send("#{k}=", v) if self.respond_to?("#{k}=") }
 
@@ -51,6 +53,18 @@ module ProMotion
 
     def navigationController=(nav)
       @navigationController = nav
+    end
+
+    def resolve_title
+      if self.class.send(:get_title).kind_of? String
+        self.title = self.class.send(:get_title)
+      elsif self.class.send(:get_title).kind_of? UIView
+        self.navigationItem.titleView = self.class.send(:get_title)
+      elsif self.class.send(:get_title).kind_of? UIImage
+        self.navigationItem.titleView = UIImageView.alloc.initWithImage(self.class.send(:get_title))
+      else
+        PM.logger.warn("title expects string, UIView, or UIImage, but #{self.class.send(:get_title).class.to_s} given.")
+      end
     end
 
     def add_nav_bar(args = {})
@@ -287,6 +301,7 @@ module ProMotion
       def title=(t)
         @title = t
       end
+      
       def get_title
         @title ||= self.to_s
       end

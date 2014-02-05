@@ -63,7 +63,7 @@ module ProMotion
       elsif self.class.send(:get_title).kind_of? UIImage
         self.navigationItem.titleView = UIImageView.alloc.initWithImage(self.class.send(:get_title))
       else
-        PM.logger.warn("title expects string, UIView, or UIImage, but #{self.class.send(:get_title).class.to_s} given."
+        PM.logger.warn("title expects string, UIView, or UIImage, but #{self.class.send(:get_title).class.to_s} given.")
       end
     end
 

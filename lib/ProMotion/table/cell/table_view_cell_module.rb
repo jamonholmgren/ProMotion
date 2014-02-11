@@ -75,6 +75,7 @@ module ProMotion
           self.imageView.setImageWithURL(url, placeholder: placeholder)
           self.imageView.layer.masksToBounds = true
           self.imageView.layer.cornerRadius = data_cell[:remote_image][:radius] if data_cell[:remote_image].has_key?(:radius)
+          self.imageView.contentMode = map_content_mode_symbol(data_cell[:remote_image][:content_mode]) if data_cell[:remote_image].has_key?(:content_mode)
         elsif self.imageView.respond_to?("setImageWithURL:placeholderImage:")
           # TODO - Remove this in next major release
           PM.logger.deprecated "The SDWebImage cocoapod is deprecated. Please replace it with 'JMImageCache'."
@@ -156,6 +157,16 @@ module ProMotion
 
     def set_selection_style
       self.selectionStyle = UITableViewCellSelectionStyleNone if data_cell[:no_select]
+    end
+
+    def map_content_mode_symbol(symbol)
+      content_mode = {
+        scale_to_fill:     UIViewContentModeScaleToFill,
+        scale_aspect_fit:  UIViewContentModeScaleAspectFit,
+        scale_aspect_fill: UIViewContentModeScaleAspectFill,
+        mode_redraw:       UIViewContentModeRedraw
+      }[symbol] if symbol.is_a?(Symbol)
+      content_mode || symbol
     end
   end
 end

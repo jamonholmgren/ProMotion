@@ -3,9 +3,9 @@ motion_require '../extensions/conversions'
 module ProMotion
   module Tabs
     include Conversions
-    
+
     attr_accessor :tab_bar, :tab_bar_item
-    
+
     def open_tab_bar(*screens)
       self.tab_bar = PM::TabBarController.new(screens)
 
@@ -45,7 +45,7 @@ module ProMotion
         icon_unselected = icon_image[:unselected]
         icon_image = nil
       end
-      
+
       item = UITabBarItem.alloc.initWithTitle(title, image:icon_image, tag:tag)
 
       if icon_selected || icon_unselected
@@ -68,13 +68,13 @@ module ProMotion
 
       return tab_bar_item
     end
-    
+
     def replace_current_item(tab_bar_controller, view_controller: vc)
       controllers = NSMutableArray.arrayWithArray(tab_bar_controller.viewControllers)
       controllers.replaceObjectAtIndex(tab_bar_controller.selectedIndex, withObject: vc)
       tab_bar_controller.viewControllers = controllers
     end
-    
+
     def map_tab_symbol(symbol)
       @_tab_symbols ||= {
         more:         UITabBarSystemItemMore,
@@ -92,7 +92,7 @@ module ProMotion
       }
       @_tab_symbols[symbol] || symbol
     end
-    
+
     module TabClassMethods
       def tab_bar_item(args={})
         @tab_bar_item = args
@@ -101,10 +101,10 @@ module ProMotion
         @tab_bar_item
       end
     end
-    
+
     def self.included(base)
       base.extend(TabClassMethods)
     end
-    
+
   end
 end

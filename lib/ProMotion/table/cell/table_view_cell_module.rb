@@ -59,6 +59,11 @@ module ProMotion
         end
         self.detailTextLabel.backgroundColor = UIColor.clearColor
         self.detailTextLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth
+
+        if data_cell[:styles] && data_cell[:styles][:subtitle]
+          set_attributes self.detailTextLabel, data_cell[:styles][:subtitle]
+        end
+
       end
       self
     end
@@ -149,6 +154,10 @@ module ProMotion
           self.textLabel.attributedText = cell_title
         else
           self.textLabel.text = cell_title
+        end
+
+        if data_cell[:styles] && data_cell[:styles][:label]
+          set_attributes self.textLabel, data_cell[:styles][:label]
         end
       end
 

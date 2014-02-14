@@ -27,6 +27,24 @@ describe "PM::TableViewCellModule" do
     }
   end
 
+  def styled_cell_labels
+    {
+      title: "Styled Main Label",
+      subtitle: "Styled Subtitle Label",
+      cell_style: UITableViewCellStyleSubtitle,
+      styles: {
+        label: {
+          textAlignment: NSTextAlignmentCenter,
+          textColor: UIColor.blueColor
+        },
+        subtitle: {
+          textAlignment: NSTextAlignmentRight,
+          textColor: UIColor.redColor
+        }
+      }
+    }
+  end
+
   before do
     @screen = TestTableScreen.new
     button = UIButton.buttonWithType(UIButtonTypeRoundedRect).tap{|b| b.titleLabel.text = "ACC" }
@@ -41,7 +59,8 @@ describe "PM::TableViewCellModule" do
             { title: "Test 1", accessory_type: UITableViewCellStateShowingEditControlMask },
             custom_cell,
             { title: "Test2", accessory: { view: button } },
-            attributed_cell
+            attributed_cell,
+            styled_cell_labels
           ]
         }
       ]
@@ -51,11 +70,13 @@ describe "PM::TableViewCellModule" do
 
     @custom_ip = NSIndexPath.indexPathForRow(1, inSection: 1) # Cell "Crazy Full Featured Cell"
     @attributed_ip = NSIndexPath.indexPathForRow(3, inSection: 1) # Attributed Cell
+    @styled_ip = NSIndexPath.indexPathForRow(4, inSection: 1)
 
     @screen.update_table_data
 
     @subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: @custom_ip)
     @attributed_subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: @attributed_ip)
+    @styled_subject = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: @styled_ip)
   end
 
   it "should be a PM::TableViewCell" do
@@ -134,7 +155,15 @@ describe "PM::TableViewCellModule" do
     content_view.subviews[2].class.should == UILabel
   end
 
+  it "should allow styled title" do
+    @styled_subject.textLabel.textColor.should == UIColor.blueColor
+    @styled_subject.textLabel.textAlignment.should == NSTextAlignmentCenter
+  end
 
+  it "should allow styled subtitle" do
+    @styled_subject.detailTextLabel.textColor.should == UIColor.redColor
+    @styled_subject.detailTextLabel.textAlignment.should == NSTextAlignmentRight
+  end
 
 end
 

@@ -1,3 +1,7 @@
 require 'motion-require'
 
-Motion::Require.all(Dir.glob(File.expand_path('../ProMotion/**/*.rb', __FILE__)))
+files = [
+  "core"
+].map { |file| File.expand_path(File.join(File.dirname(__FILE__), "/ProMotion/", "#{file}.rb")) }
+
+Motion::Require.all(files)

@@ -3,7 +3,7 @@ PATH
   specs:
     ProMotion (1.1.1)
       methadone
-      motion-require (>= 0.0.6)
+      motion-require (>= 0.0.7)
 
 GEM
   remote: https://rubygems.org/

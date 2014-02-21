@@ -147,6 +147,10 @@ module ProMotion
       new_attrs
     end
 
+    def objective_c_method_name(str)
+      str.split('_').inject([]){ |buffer,e| buffer.push(buffer.empty? ? e : e.capitalize) }.join
+    end
+
     def map_resize_symbol(symbol)
       @_resize_symbols ||= {
         left:     UIViewAutoresizingFlexibleLeftMargin,

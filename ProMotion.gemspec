@@ -2,14 +2,15 @@
 require File.expand_path('../lib/ProMotion/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.authors       = ["Jamon Holmgren", "Silas Matson", "ClearSight Studio"]
-  gem.email         = ["jamon@clearsightstudio.com", "silas@clearsightstudio.com", "contact@clearsightstudio.com"]
-  gem.description   = "ProMotion is a new way to easily build RubyMotion iOS apps."
+  gem.authors       = ["Jamon Holmgren", "Mark Rickert", "Silas Matson"]
+  gem.email         = ["jamon@clearsightstudio.com", "mark@mohawkapps.com", "silas@clearsightstudio.com"]
+  gem.description   = "ProMotion is a fast way to easily build RubyMotion iOS apps."
   gem.summary       = "
-                        ProMotion is a new way to organize RubyMotion apps. Instead of dealing
-                        with UIViewControllers, you work with Screens. Screens are
-                        a logical way to think of your app and include a ton of great
-                        utilities to make iOS development more like Ruby and less like Objective-C.
+                        ProMotion is a fast way to get started building RubyMotion apps. Instead of dealing
+                        with UIViewControllers, UITableViewControllers, and the like, you work with Screens.
+                        We abstract the view controller boilerplate to make iOS development more like Ruby 
+                        and less like Objective-C. With a memorable, concise syntax and a friendly, helpful
+                        community, ProMotion is the second most popular RubyMotion gem outside of BubbleWrap.
                       "
   gem.homepage      = "https://github.com/clearsightstudio/ProMotion"
   gem.license       = 'MIT'
@@ -21,7 +22,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = ProMotion::VERSION
 
-  gem.add_dependency "motion-require", ">= 0.0.6"
+  gem.add_dependency "motion-require", ">= 0.0.7"
   gem.add_development_dependency("webstub")
   gem.add_development_dependency("motion-stump")
   gem.add_development_dependency("motion-redgreen")

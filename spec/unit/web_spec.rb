@@ -22,14 +22,14 @@ describe "web screen properties" do
     it "should get the current url" do
       @webscreen.open_url(NSURL.URLWithString('http://mixi.jp/'))
 
-      wait_for_change @webscreen, 'load_finished' do
+      wait_for_change @webscreen, 'is_load_finished' do
         @webscreen.current_url.should == 'http://mixi.jp/'
       end
     end
 
     it "should open web page by url string" do
       @webscreen.open_url('http://mixi.jp/')
-      wait_for_change @webscreen, 'load_finished' do
+      wait_for_change @webscreen, 'is_load_finished' do
         @webscreen.html.should =~ /mixi/
       end
     end
@@ -76,7 +76,7 @@ describe "web screen properties" do
 
       wait 0.3 do
         # it should not load request when return false in on_request
-        !!(@webscreen.load_finished.should) == false
+        !!(@webscreen.is_load_finished.should) == false
       end
     end
   end
@@ -97,8 +97,8 @@ describe "web screen properties" do
     end
 
     it "should load the about html page" do
-      wait_for_change @webscreen, 'load_finished' do
-        @webscreen.load_finished.should == true
+      wait_for_change @webscreen, 'is_load_finished' do
+        @webscreen.is_load_finished.should == true
       end
     end
   end

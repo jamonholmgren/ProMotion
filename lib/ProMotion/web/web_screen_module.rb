@@ -79,7 +79,7 @@ module ProMotion
     end
 
     def html
-      self.webview.stringByEvaluatingJavaScriptFromString("document.documentElement.outerHTML")
+      evaluate("document.documentElement.outerHTML")
     end
 
     def evaluate(js)

@@ -1,16 +1,13 @@
 PATH
   remote: .
   specs:
-    ProMotion (1.1.2)
+    ProMotion (1.1.1)
       methadone
+      motion-require (>= 0.0.6)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    bubble-wrap (1.4.0)
-    formotion (1.6)
-      bubble-wrap (~> 1.4.0)
-      motion-require (~> 0.0.3)
     methadone (1.3.1)
       bundler
     motion-redgreen (0.1.0)
@@ -24,8 +21,8 @@ PLATFORMS
 
 DEPENDENCIES
   ProMotion!
-  formotion
   motion-redgreen
+  motion-require
   motion-stump
   rake
   webstub

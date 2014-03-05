@@ -1,3 +1,7 @@
+motion_require '../containers/tabs'
+motion_require '../containers/split_screen'
+motion_require 'delegate_notifications'
+
 module ProMotion
   module DelegateModule
     include ProMotion::Tabs

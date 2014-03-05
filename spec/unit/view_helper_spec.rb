@@ -56,20 +56,37 @@ describe "view helpers" do
   end
 
 
-  describe "content height" do
+  context "content sizing" do
 
     before do
       @child = UIView.alloc.initWithFrame([[20,100],[300,380]])
       @dummy.addSubview @child
     end
 
-    it "should return content height" do
-      @dummy.content_height(@dummy).should == 480
+    describe "content_height" do
+
+      it "should return content height" do
+        @dummy.content_height(@dummy).should == 480
+      end
+
+      it "should ignore hidden subviews" do
+        @child.hidden = true
+        @dummy.content_height(@dummy).should == 0
+      end
+
     end
 
-    it "should ignore hidden subviews" do
-      @child.hidden = true
-      @dummy.content_height(@dummy).should == 0
+    describe "content_width" do
+
+      it "should return content width" do
+        @dummy.content_width(@dummy).should == 320
+      end
+
+      it "should ignore hidden subviews" do
+        @child.hidden = true
+        @dummy.content_width(@dummy).should == 0
+      end
+
     end
 
   end

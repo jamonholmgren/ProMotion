@@ -1,3 +1,5 @@
+motion_require '../extensions/conversions'
+
 module ProMotion
   module Styling
     include Conversions
@@ -45,17 +47,28 @@ module ProMotion
       element
     end
 
-    def content_height(view)
-      height = 0
-      view.subviews.each do |sub_view|
-        next if sub_view.isHidden
-        y = sub_view.frame.origin.y
-        h = sub_view.frame.size.height
-        if (y + h) > height
-          height = y + h
+    def content_max(view, mode = :height)
+      return 0 if view.subviews.empty?
+
+      sizes = view.subviews.map do |sub_view|
+        if sub_view.isHidden
+          0
+        elsif mode == :height
+          sub_view.frame.origin.y + sub_view.frame.size.height
+        else
+          sub_view.frame.origin.x + sub_view.frame.size.width
         end
       end
-      height
+
+      sizes.max
+    end
+
+    def content_height(view)
+      content_max(view, :height)
+    end
+
+    def content_width(view)
+      content_max(view, :width)
     end
 
     def closest_parent(type, this_view = nil)

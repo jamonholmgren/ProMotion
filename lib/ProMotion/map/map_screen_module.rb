@@ -9,7 +9,7 @@ module ProMotion
         resize: [ :width, :height ],
         delegate: self
       }
-      
+
       check_annotation_data
       @promotion_annotation_data = []
       set_up_start_position

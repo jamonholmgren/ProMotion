@@ -139,6 +139,10 @@ module ProMotion
       end
     end
 
+    def parent_screen=(parent)
+      @parent_screen = WeakRef.new(parent)
+    end
+
     def first_screen?
       self.first_screen == true
     end

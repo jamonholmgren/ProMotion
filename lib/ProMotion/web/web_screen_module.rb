@@ -23,7 +23,7 @@ module ProMotion
         delegate: self,
         data_detector_types: self.detector_types
       }
-
+      self.webview.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal
       set_initial_content
     end
 

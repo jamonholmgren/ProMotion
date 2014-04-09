@@ -139,6 +139,7 @@ module ProMotion
         table_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:data_cell[:cell_identifier])
         table_cell.extend PM::TableViewCellModule unless table_cell.is_a?(PM::TableViewCellModule)
         table_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
+        table_cell.clipsToBounds = true # fix for changed default in 7.1
       end
 
       table_cell.setup(data_cell, self)

@@ -1,13 +1,12 @@
-motion_require 'screen_navigation'
-motion_require '../view/styling'
-motion_require '../containers/tabs'
-motion_require '../containers/split_screen'
-
 module ProMotion
   module ScreenModule
+    # @require module:ScreenNavigation
     include ProMotion::ScreenNavigation
+    # @require module:Styling
     include ProMotion::Styling
+    # @require module:Tabs
     include ProMotion::Tabs
+    # @require module:SplitScreen
     include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2")
 
     attr_accessor :parent_screen, :first_screen, :modal, :split_screen

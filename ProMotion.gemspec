@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
                         with UIViewControllers, UITableViewControllers, and the like, you work with Screens.
                         We abstract the view controller boilerplate to make iOS development more like Ruby 
                         and less like Objective-C. With a memorable, concise syntax and a friendly, helpful
-                        community, ProMotion is the second most popular RubyMotion gem outside of BubbleWrap.
+                        community, ProMotion is a great way to get started with iOS development.
                       "
   gem.homepage      = "https://github.com/clearsightstudio/ProMotion"
   gem.license       = 'MIT'
@@ -22,10 +22,10 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = ProMotion::VERSION
 
-  gem.add_dependency "motion-require", ">= 0.0.7"
-  gem.add_development_dependency("webstub")
-  gem.add_development_dependency("motion-stump")
-  gem.add_development_dependency("motion-redgreen")
-  gem.add_development_dependency("rake")
-  gem.add_dependency("methadone")
+  gem.add_dependency "motion-require", "~> 0.2"
+  gem.add_runtime_dependency("methadone", "~> 1.3")
+  gem.add_development_dependency("webstub", "~> 1.0")
+  gem.add_development_dependency("motion-stump", "~> 0.3")
+  gem.add_development_dependency("motion-redgreen", "~> 0.1")
+  gem.add_development_dependency("rake", "~> 10.1")
 end

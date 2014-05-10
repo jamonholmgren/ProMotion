@@ -23,10 +23,10 @@ class RootScreen < PM::Screen
   title "Root Screen"
 
   def on_load
-    set_nav_bar_button :right, title: "Help", action: :help
+    set_nav_bar_button :right, title: "Help", action: :open_help_screen
   end
 
-  def help
+  def open_help_screen
     open HelpScreen
   end
 end
@@ -43,6 +43,14 @@ class HelpScreen < PM::TableScreen
         { title: "Log out", action: :log_out }
       ]
     }]
+  end
+
+  def tapped_about(args={})
+    open AboutScreen
+  end
+
+  def log_out
+    # Log out!
   end
 end
 ```
@@ -72,48 +80,14 @@ end
 
 # What's New?
 
-## Version 1.1.x
+## Version 1.2.x
 
-* Added a [ProMotion executable](https://github.com/clearsightstudio/ProMotion/wiki/Command-Line-Tool) called `promotion`. You can type `promotion new <myapp>` and it will create a ProMotion-specific app. We will be adding more functionality in the future.
-* Can now pass a symbol to `add`, `add_to`, and `set_attributes` to call a method with that name to get styles.
-* Added `button_title:` to `open_split_screen` to [customize the auto-generated button title](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::SplitScreen#open_split_screenmaster-detail-args--)
-* Updates to [set_tab_bar_button](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::Tabs#set_tab_bar_itemargs)
-* Added to PM::Delegate [`on_open_url(args = {})`](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::Delegate#on_open_urlargs--) where `args` contains `:url`, `:source_app`, and `:annotation`
-* Added to PM::Delegate [`tint_color`](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::Delegate#tint_color) to customize the application-wide tint color
-* Added to [PM::MapScreen annotations](https://github.com/clearsightstudio/ProMotion/wiki/API-Reference:-ProMotion::MapScreen) the ability to set an image
-* Removed legacy `navigation_controller` references which were causing confusion.
-* Allowed setting a `custom_view` for `bar_button_item`s.
-* Added `will_begin_search` and `will_end_search` callbacks to PM::TableScreen.
-* Added `title_view` and `title_view_height` to sections in PM::TableScreen.
-* Updated screenshots for iOS 7
-* Refactored code and lots of new passing tests
-
-# Tutorials
-
-Shows how to make a basic app in ProMotion. Updated in May.
-
-[http://www.clearsightstudio.com/insights/ruby-motion-promotion-tutorial](http://www.clearsightstudio.com/insights/ruby-motion-promotion-tutorial)
-
-## Screencasts
-
-MotionInMotion shows how to make a simple demo app in a short time.
-
-[https://motioninmotion.tv/screencasts/8](https://motioninmotion.tv/screencasts/8)
-
-Shows how to create a Youtube app that shows Portland Trailblazer highlights.
-
-[http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/](http://www.clearsightstudio.com/insights/tutorial-make-youtube-video-app-rubymotion-promotion/)
-
-## Sample Apps
-
-Here's a demo app that is used to test new functionality. You might have to change the Gemfile
-source to pull from Github.
-
-[https://github.com/jamonholmgren/promotion-demo](https://github.com/jamonholmgren/promotion-demo)
-
-Here's a demo app showing some styling options.
-
-[https://github.com/jamonholmgren/promotion-styling](https://github.com/jamonholmgren/promotion-styling)
+1. Now uses [motion-require](https://github.com/clayallsopp/motion-require) for better compatibility with other libraries [6046dd7f4](https://github.com/clearsightstudio/ProMotion/commit/6046dd7f49ba174f309baaa428eaac80ce0290b6)
+2. SplitScreen: New option `swipe:` allows you to specify if a splitscreen master screen can be opened with a swipe. [ffbb76caf](https://github.com/clearsightstudio/ProMotion/commit/ffbb76caf3071297347d4cf43784069999a746b3)
+3. FormotionScreen: Removed `PM::FormotionScreen` and the Formotion testing dependency. Use [ProMotion-formotion](https://github.com/rheoli/ProMotion-formotion) instead.
+4. Styling: Added a `content_width` helper to PM::Styling (similar to `content_height`) [08a984815](https://github.com/clearsightstudio/ProMotion/commit/08a984815a7c96b9465c31b2e2664ac0086d2e1c)
+5. TableScreen: Removed SDWebImage in favor of similar but more reliable JDImageCache [59ed747e9](https://github.com/clearsightstudio/ProMotion/commit/59ed747e93567e32bdb5099fed12297161cea05a)
+6. Screen: Allow custom views (including images) for `title` setting [#415](https://github.com/clearsightstudio/ProMotion/pull/415)
 
 # API Reference
 
@@ -123,9 +97,12 @@ We've created a comprehensive and always updated wiki with code examples, usage 
 
 # Help
 
+ProMotion is not only an easy DSL to get started. The community is very helpful and 
+welcoming to new RubyMotion developers. We don't mind newbie questions.
+
 If you need help, feel free to tweet [@jamonholmgren](http://twitter.com/jamonholmgren)
-or open an issue on GitHub. Opening an issue is usually the best and we respond to those pretty quickly.
-If we don't respond within a day, tweet Jamon or Mark a link to the issue.
+or open an issue on GitHub. Opening an issue is usually the best and we respond to those
+pretty quickly. If we don't respond within a day, tweet Jamon or Mark a link to the issue.
 
 # Contributing
 
@@ -138,5 +115,3 @@ See [CONTRIBUTING.md](https://github.com/clearsightstudio/ProMotion/blob/master/
 * Matt Brewer: [@macfanatic](https://twitter.com/macfanatic)
 * Mark Rickert: [@markrickert](https://twitter.com/markrickert)
 * [Many others](https://github.com/clearsightstudio/ProMotion/graphs/contributors)
-* Run `git shortlog -s -n -e` to see everyone who has contributed.
-

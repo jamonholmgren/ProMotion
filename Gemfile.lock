@@ -1,19 +1,19 @@
 PATH
   remote: .
   specs:
-    ProMotion (1.1.1)
-      methadone
-      motion-require (>= 0.0.7)
+    ProMotion (1.2.0)
+      methadone (~> 1.3)
+      motion-require (~> 0.2)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    methadone (1.3.1)
+    methadone (1.4.0)
       bundler
     motion-redgreen (0.1.0)
-    motion-require (0.0.7)
-    motion-stump (0.3.0)
-    rake (10.1.1)
+    motion-require (0.2.0)
+    motion-stump (0.3.2)
+    rake (10.3.1)
     webstub (1.0.1)
 
 PLATFORMS
@@ -21,8 +21,8 @@ PLATFORMS
 
 DEPENDENCIES
   ProMotion!
-  motion-redgreen
+  motion-redgreen (~> 0.1)
   motion-require
-  motion-stump
-  rake
-  webstub
+  motion-stump (~> 0.3)
+  rake (~> 10.1)
+  webstub (~> 1.0)

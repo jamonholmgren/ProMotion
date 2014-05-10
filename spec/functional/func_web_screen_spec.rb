@@ -23,7 +23,7 @@ describe "ProMotion::TestWebScreen functionality" do
     @webscreen.set_content(file_name)
 
     @loaded_file = File.read(File.join(NSBundle.mainBundle.resourcePath, file_name))
-    wait_for_change @webscreen, 'load_finished' do
+    wait_for_change @webscreen, 'is_load_finished' do
       @webscreen.html.delete("\n").should == @loaded_file.delete("\n")
     end
   end
@@ -33,7 +33,7 @@ describe "ProMotion::TestWebScreen functionality" do
       to_return(body: %q{Google! <form action="/search">%}, content_type: "text/html")
 
     @webscreen.open_url(NSURL.URLWithString("https://www.google.com/"))
-    wait_for_change @webscreen, 'load_finished' do
+    wait_for_change @webscreen, 'is_load_finished' do
       @webscreen.html.include?('<form action="/search"').should == true
     end
   end
@@ -41,7 +41,7 @@ describe "ProMotion::TestWebScreen functionality" do
   it "should manipulate the webscreen contents with javascript" do
     @webscreen.set_content('<h1 id="cool">Something Cool</h1>')
 
-    wait_for_change @webscreen, 'load_finished' do
+    wait_for_change @webscreen, 'is_load_finished' do
       @webscreen.evaluate('document.getElementById("cool").innerHTML = "Changed"')
       @webscreen.html.should =~ /<h1 id="cool">Changed<\/h1>/
     end

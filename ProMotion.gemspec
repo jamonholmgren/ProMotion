@@ -5,7 +5,7 @@ Gem::Specification.new do |gem|
   gem.name          = "ProMotion"
   gem.authors       = ["Jamon Holmgren", "Mark Rickert", "Silas Matson"]
   gem.email         = ["jamon@clearsightstudio.com", "mark@mohawkapps.com", "silas@clearsightstudio.com"]
-  gem.description   = "ProMotion is a fast way to easily build RubyMotion iOS apps."
+  gem.description   = "ProMotion is a fast way to get started building RubyMotion iOS apps."
   gem.summary       = "
                         ProMotion is a fast way to get started building RubyMotion apps. Instead of dealing
                         with UIViewControllers, UITableViewControllers, and the like, you work with Screens.

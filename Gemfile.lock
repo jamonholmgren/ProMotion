@@ -12,7 +12,6 @@ GEM
     methadone (1.4.0)
       bundler
     motion-redgreen (0.1.0)
-    motion-require (0.2.0)
     motion-stump (0.3.2)
     rake (10.3.1)
     webstub (1.0.1)
@@ -23,7 +22,6 @@ PLATFORMS
 DEPENDENCIES
   ProMotion!
   motion-redgreen (~> 0.1)
-  motion-require
   motion-stump (~> 0.3)
   rake (~> 10.1)
   webstub (~> 1.0)

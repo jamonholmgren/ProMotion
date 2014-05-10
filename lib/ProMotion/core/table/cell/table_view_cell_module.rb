@@ -1,7 +1,6 @@
-motion_require '../../view/styling'
-
 module ProMotion
   module TableViewCellModule
+    # @requires module:Styling
     include Styling
 
     attr_accessor :data_cell, :table_screen

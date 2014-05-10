@@ -1,9 +1,5 @@
-motion_require '../extensions/conversions'
-
 module ProMotion
   module Styling
-    include Conversions
-
     def set_attributes(element, args = {})
       args = get_attributes_from_symbol(args)
       args.each { |k, v| set_attribute(element, k, v) }

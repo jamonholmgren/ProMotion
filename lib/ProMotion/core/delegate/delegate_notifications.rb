@@ -1,4 +1,5 @@
 module ProMotion
+  # @requires class:PushNotification
   module DelegateNotifications
 
     attr_accessor :aps_notification
@@ -36,7 +37,7 @@ module ProMotion
     end
 
     def received_push_notification(notification, was_launched)
-      @aps_notification = PM::PushNotification.new(notification)
+      @aps_notification = ProMotion::PushNotification.new(notification)
       on_push_notification(@aps_notification, was_launched) if respond_to?(:on_push_notification)
     end
 

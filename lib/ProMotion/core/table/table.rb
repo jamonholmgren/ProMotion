@@ -1,14 +1,12 @@
-motion_require '../view/styling'
-motion_require 'extensions/searchable'
-motion_require 'extensions/refreshable'
-motion_require 'extensions/indexable'
-
 module ProMotion
   module Table
-
+    # @requires module:Styling
     include ProMotion::Styling
+    # @requires module:Searchable
     include ProMotion::Table::Searchable
+    # @requires module:Refreshable
     include ProMotion::Table::Refreshable
+    # @requires module:Indexable
     include ProMotion::Table::Indexable
 
     attr_reader :promotion_table_data

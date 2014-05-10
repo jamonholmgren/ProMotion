@@ -1,11 +1,10 @@
-motion_require '../containers/tabs'
-motion_require '../containers/split_screen'
-motion_require 'delegate_notifications'
-
 module ProMotion
   module DelegateModule
+    # @requires module:Tabs
     include ProMotion::Tabs
+    # @requires module:SplitScreen
     include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
+    # @requires module:DelegateNotifications
     include ProMotion::DelegateNotifications
 
     attr_accessor :window, :aps_notification, :home_screen

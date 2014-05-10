@@ -1,3 +1,4 @@
+# requires class:ProMotion::SplitViewController
 module ProMotion
   module SplitScreen
     def split_screen_controller(master, detail)

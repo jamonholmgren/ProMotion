@@ -1,12 +1,11 @@
-motion_require '../cocoatouch/table_view_controller'
-motion_require '../screen/screen_module'
-motion_require 'table'
-motion_require 'grouped_table'
-
 module ProMotion
+  # @requires class:TableViewController
   class GroupedTableScreen < TableViewController
+    # @requires module:ScreenModule
     include ProMotion::ScreenModule
+    # @requires module:Table
     include ProMotion::Table
+    # @requires module:GroupedTable
     include ProMotion::GroupedTable
   end
 end

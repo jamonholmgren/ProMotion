@@ -2,8 +2,6 @@ module ProMotion
   module DelegateModule
     # @requires module:Tabs
     include ProMotion::Tabs
-    # @requires module:DelegateNotifications
-    include ProMotion::DelegateNotifications
     # @requires module:SplitScreen
     include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
 
@@ -17,7 +15,8 @@ module ProMotion
     def application(application, didFinishLaunchingWithOptions:launch_options)
       apply_status_bar
       on_load application, launch_options
-      check_for_push_notification launch_options
+      # Requires 'ProMotion-push' gem.
+      check_for_push_notification(launch_options) if respond_to?(:check_for_push_notification)
       super rescue true # Can cause error message if no super is found, but it's harmless. Ignore.
     end
 

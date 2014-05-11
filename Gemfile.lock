@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ProMotion (1.2.0)
+    ProMotion (2.0.0)
       dbt (~> 1.1.4)
       methadone (~> 1.3)
 

@@ -10,35 +10,6 @@ describe "PM::Delegate" do
     @subject.application(UIApplication.sharedApplication, didFinishLaunchingWithOptions:{jamon: true})
   end
 
-  it "should return false for was_launched if the app is currently active on screen" do
-    @subject.mock!(:on_push_notification) do |notification, was_launched|
-      was_launched.should.be.false
-    end
-
-    fake_app = Struct.new(:applicationState).new(UIApplicationStateActive)
-    remote_notification = PM::PushNotification.fake_notification.notification
-    @subject.application(fake_app, didReceiveRemoteNotification: remote_notification)
-  end
-
-  it "should return true for was_launched if app was launched from background" do
-    @subject.mock!(:on_push_notification) do |notification, was_launched|
-      was_launched.should.be.true
-    end
-
-    fake_app = Struct.new(:applicationState).new(UIApplicationStateBackground)
-    remote_notification = PM::PushNotification.fake_notification.notification
-    @subject.application(fake_app, didReceiveRemoteNotification: remote_notification)
-  end
-
-  it "should return true for was_launched if the app wasn't running" do
-    @subject.mock!(:on_push_notification) do |notification, was_launched|
-      was_launched.should.be.true
-    end
-
-    launch_options = { UIApplicationLaunchOptionsRemoteNotificationKey => PM::PushNotification.fake_notification.notification }
-    @subject.application(UIApplication.sharedApplication, didFinishLaunchingWithOptions:launch_options )
-  end
-
   it "should set home_screen when opening a new screen" do
     @subject.application(UIApplication.sharedApplication, willFinishLaunchingWithOptions: nil)
     @subject.application(UIApplication.sharedApplication, didFinishLaunchingWithOptions: nil)

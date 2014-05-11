@@ -1,5 +1,5 @@
 unless defined?(Motion::Project::Config)
-  raise "The MotionKit gem must be required within a RubyMotion project Rakefile."
+  raise "The ProMotion gem must be required within a RubyMotion project Rakefile."
 end
 
 require 'dbt'

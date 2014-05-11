@@ -25,24 +25,6 @@ module ProMotion
       element
     end
 
-    def set_easy_attributes(parent, element, args={})
-      attributes = {}
-
-      if args[:resize]
-        attributes[:autoresizingMask]  = UIViewAutoresizingNone
-        args[:resize].each { |r| attributes[:autoresizingMask] |= map_resize_symbol(r) }
-      end
-
-      args[:left] = args.delete(:x) if args[:x]
-      args[:top] = args.delete(:y) if args[:y]
-      if [:left, :top, :width, :height].select{ |a| args[a] && args[a] != :auto }.length == 4
-        attributes[:frame] = CGRectMake(args[:left], args[:top], args[:width], args[:height])
-      end
-
-      set_attributes element, attributes
-      element
-    end
-
     def content_max(view, mode = :height)
       return 0 if view.subviews.empty?
 
@@ -93,10 +75,7 @@ module ProMotion
       attrs = get_attributes_from_symbol(attrs)
       Array(elements).each do |element|
         parent_element.addSubview element
-        if attrs && attrs.length > 0
-          set_attributes(element, attrs)
-          set_easy_attributes(parent_element, element, attrs)
-        end
+        set_attributes(element, attrs) if attrs && attrs.length > 0
       end
       elements
     end

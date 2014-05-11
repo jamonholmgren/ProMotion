@@ -2,12 +2,12 @@ module ProMotion
   module DelegateModule
     # @requires module:Tabs
     include ProMotion::Tabs
-    # @requires module:SplitScreen
-    include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
     # @requires module:DelegateNotifications
     include ProMotion::DelegateNotifications
+    # @requires module:SplitScreen
+    include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
 
-    attr_accessor :window, :aps_notification, :home_screen
+    attr_accessor :window, :home_screen
 
     def application(application, willFinishLaunchingWithOptions:launch_options)
       will_load(application, launch_options) if respond_to?(:will_load)

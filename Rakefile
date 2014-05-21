@@ -9,6 +9,5 @@ Motion::Project::App.setup do |app|
   app.name = 'ProMotion'
   app.device_family = [ :ipad ] # so we can test split screen capability
   app.frameworks += %w(CoreLocation MapKit)
-
-  DBT.analyze(app)
+  app.detect_dependencies = true
 end

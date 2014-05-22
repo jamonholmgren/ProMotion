@@ -157,6 +157,17 @@ module ProMotion
       self.update_table_view_data(self.table_data)
     end
 
+    def on_long_press(gesture)
+      if (gesture.state == UIGestureRecognizerStateBegan)
+        gesture_point = gesture.locationInView(table_view)
+        index_path = table_view.indexPathForRowAtPoint(gesture_point)
+
+        data_cell = self.promotion_table_data.cell(index_path: index_path)
+
+        trigger_action(data_cell[:long_press_action], data_cell[:arguments]) if data_cell[:long_press_action]
+      end
+    end
+    
     ########## Cocoa touch methods #################
     def numberOfSectionsInTableView(table_view)
       Array(self.promotion_table_data.data).length
@@ -201,17 +212,6 @@ module ProMotion
       data_cell[:arguments][:cell] = data_cell if data_cell[:arguments].is_a?(Hash) # TODO: Should we really do this?
 
       trigger_action(data_cell[:action], data_cell[:arguments]) if data_cell[:action]
-    end
-
-    def on_long_press(gesture)
-      if (gesture.state == UIGestureRecognizerStateBegan)
-        gesture_point = gesture.locationInView(table_view)
-        index_path = table_view.indexPathForRowAtPoint(gesture_point)
-
-        data_cell = self.promotion_table_data.cell(index_path: index_path)
-
-        trigger_action(data_cell[:long_press_action], data_cell[:arguments]) if data_cell[:long_press_action]
-    	end
     end
 
     def tableView(table_view, editingStyleForRowAtIndexPath: index_path)

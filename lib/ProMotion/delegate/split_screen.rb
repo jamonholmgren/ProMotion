@@ -1,4 +1,5 @@
 module ProMotion
+  # @requires class:SplitViewController
   module SplitScreen
     def split_screen_controller(master, detail)
       master_main = master.navigationController ? master.navigationController : master
@@ -50,4 +51,5 @@ module ProMotion
       svc.detail_screen.navigationItem.leftBarButtonItem = nil
     end
   end
+
 end

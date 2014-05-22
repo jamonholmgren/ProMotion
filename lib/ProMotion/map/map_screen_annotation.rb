@@ -1,7 +1,7 @@
 module ProMotion
   class MapScreenAnnotation
 
-    #Creates the new crime object
+    # Creates the new annotation object
     def initialize(params = {})
       @params = params
       set_defaults

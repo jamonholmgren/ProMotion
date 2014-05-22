@@ -1,9 +1,5 @@
-motion_require '../extensions/conversions'
-
 module ProMotion
   module Tabs
-    include Conversions
-
     attr_accessor :tab_bar, :tab_bar_item
 
     def open_tab_bar(*screens)

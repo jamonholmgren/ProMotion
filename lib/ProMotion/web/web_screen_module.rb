@@ -9,7 +9,6 @@ module ProMotion
     end
 
     def on_init
-
       self.detector_types ||= UIDataDetectorTypeNone
       if self.detector_types.is_a? Array
         detectors = UIDataDetectorTypeNone
@@ -108,11 +107,11 @@ module ProMotion
     end
 
     def open_in_safari(inRequest)
-      #Open UIWebView delegate links in Safari.
+      # Open UIWebView delegate links in Safari.
       UIApplication.sharedApplication.openURL(inRequest.URL)
     end
 
-    #UIWebViewDelegate Methods - Camelcase
+    # UIWebViewDelegate Methods - Camelcase
     def webView(inWeb, shouldStartLoadWithRequest:inRequest, navigationType:inType)
       if self.external_links == true && inType == UIWebViewNavigationTypeLinkClicked
         if defined?(OpenInChromeController)

@@ -1,14 +1,11 @@
-motion_require '../containers/tabs'
-motion_require '../containers/split_screen'
-motion_require 'delegate_notifications'
-
 module ProMotion
   module DelegateModule
+    # @requires module:Tabs
     include ProMotion::Tabs
+    # @requires module:SplitScreen
     include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
-    include ProMotion::DelegateNotifications
 
-    attr_accessor :window, :aps_notification, :home_screen
+    attr_accessor :window, :home_screen
 
     def application(application, willFinishLaunchingWithOptions:launch_options)
       will_load(application, launch_options) if respond_to?(:will_load)
@@ -18,7 +15,8 @@ module ProMotion
     def application(application, didFinishLaunchingWithOptions:launch_options)
       apply_status_bar
       on_load application, launch_options
-      check_for_push_notification launch_options
+      # Requires 'ProMotion-push' gem.
+      check_for_push_notification(launch_options) if respond_to?(:check_for_push_notification)
       super rescue true # Can cause error message if no super is found, but it's harmless. Ignore.
     end
 

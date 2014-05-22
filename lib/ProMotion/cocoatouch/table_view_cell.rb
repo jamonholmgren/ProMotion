@@ -1,7 +1,6 @@
-motion_require '../table/cell/table_view_cell_module'
-
 module ProMotion
   class TableViewCell < UITableViewCell
+    # @requires module:TableViewCellModule
     include TableViewCellModule
 
     attr_accessor :image_size

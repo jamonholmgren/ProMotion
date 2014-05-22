@@ -1,10 +1,9 @@
-motion_require '../cocoatouch/table_view_controller'
-motion_require '../screen/screen_module'
-motion_require 'table'
-
 module ProMotion
+  # @requires class:TableViewController
   class TableScreen < TableViewController
+    # @requires module:ScreenModule
     include ProMotion::ScreenModule
+    # @requires module:Table
     include ProMotion::Table
   end
 end

@@ -19,6 +19,14 @@ module ProMotion
       check_table_data
       set_up_searchable
       set_up_refreshable
+      set_up_long_press
+    end
+
+    def set_up_long_press
+      long_press_gesture = UILongPressGestureRecognizer.alloc.initWithTarget(self, action:"longPress:")
+      long_press_gesture.minimumPressDuration = 1.0 # seconds
+      long_press_gesture.delegate = self
+      table_view.addGestureRecognizer(long_press_gesture)
     end
 
     def check_table_data
@@ -193,6 +201,20 @@ module ProMotion
       data_cell[:arguments][:cell] = data_cell if data_cell[:arguments].is_a?(Hash) # TODO: Should we really do this?
 
       trigger_action(data_cell[:action], data_cell[:arguments]) if data_cell[:action]
+    end
+
+    def longPress(gesture)
+      if (gesture.state == UIGestureRecognizerStateBegan)
+        gesture_point = gesture.locationInView(table_view)
+        index_path = table_view.indexPathForRowAtPoint(gesture_point)
+
+        data_cell = self.promotion_table_data.cell(index_path: index_path)
+
+        data_cell[:arguments] ||= {}
+        data_cell[:arguments][:cell] = data_cell if data_cell[:arguments].is_a?(Hash) # TODO: Should we really do this?
+
+        trigger_action(data_cell[:long_press_action], data_cell[:arguments]) if data_cell[:long_press_action]
+    	end
     end
 
     def tableView(table_view, editingStyleForRowAtIndexPath: index_path)

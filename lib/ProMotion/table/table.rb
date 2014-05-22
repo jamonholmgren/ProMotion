@@ -8,6 +8,8 @@ module ProMotion
     include ProMotion::Table::Refreshable
     # @requires module:Indexable
     include ProMotion::Table::Indexable
+    # @requires module:Indexable
+    include ProMotion::Table::Longpressable
 
     attr_reader :promotion_table_data
 
@@ -19,14 +21,7 @@ module ProMotion
       check_table_data
       set_up_searchable
       set_up_refreshable
-      set_up_long_press
-    end
-
-    def set_up_long_press
-      long_press_gesture = UILongPressGestureRecognizer.alloc.initWithTarget(self, action:"on_long_press:")
-      long_press_gesture.minimumPressDuration = 1.0 # seconds
-      long_press_gesture.delegate = self
-      table_view.addGestureRecognizer(long_press_gesture)
+      set_up_longpressable
     end
 
     def check_table_data
@@ -50,6 +45,12 @@ module ProMotion
         else
           PM.logger.warn "To use the refresh control on < iOS 6, you need to include the CocoaPod 'CKRefreshControl'."
         end
+      end
+    end
+
+    def set_up_longpressable
+      if self.class.respond_to?(:get_longpressable) && self.class.get_longpressable
+        self.make_longpressable(self.class.get_longpressable_params)
       end
     end
 
@@ -157,17 +158,6 @@ module ProMotion
       self.update_table_view_data(self.table_data)
     end
 
-    def on_long_press(gesture)
-      if (gesture.state == UIGestureRecognizerStateBegan)
-        gesture_point = gesture.locationInView(table_view)
-        index_path = table_view.indexPathForRowAtPoint(gesture_point)
-
-        data_cell = self.promotion_table_data.cell(index_path: index_path)
-
-        trigger_action(data_cell[:long_press_action], data_cell[:arguments]) if data_cell[:long_press_action]
-      end
-    end
-    
     ########## Cocoa touch methods #################
     def numberOfSectionsInTableView(table_view)
       Array(self.promotion_table_data.data).length
@@ -339,6 +329,19 @@ module ProMotion
         @indexable_params ||= nil
       end
 
+      # Longpressable
+      def longpressable(params = {})
+        @longpressable_params = params
+        @longpressable = true
+      end
+
+      def get_longpressable
+        @longpressable ||= false
+      end
+
+      def get_longpressable_params
+        @longpressable_params ||= nil
+      end
     end
 
     def self.included(base)

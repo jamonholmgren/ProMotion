@@ -7,7 +7,7 @@ describe "map properties" do
   end
 
   it "should store title" do
-    @map.get_title.should == "Gorges State Park, NC"
+    @map.title.should == "Gorges State Park, NC"
   end
 
   it "should have 5 annotations" do

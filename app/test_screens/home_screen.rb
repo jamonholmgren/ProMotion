@@ -3,8 +3,8 @@ class HomeScreen < ProMotion::Screen
   title "Home"
 
   def on_load
-    set_nav_bar_right_button "Save", action: :save_something, type: UIBarButtonItemStyleDone
-    set_nav_bar_left_button UIImage.imageNamed("list.png"), action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
+    set_nav_bar_button :left, title: "Save", action: :save_something, type: :done
+    set_nav_bar_button :right, image: UIImage.imageNamed("list.png"), action: :return_to_some_other_screen, type: :plain
   end
 
   def on_return(args={})
@@ -12,7 +12,7 @@ class HomeScreen < ProMotion::Screen
 
   def subview_styles
     {
-      backgroundColor: UIColor.greenColor
+      background_color: UIColor.greenColor
     }
   end
 

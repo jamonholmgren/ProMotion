@@ -2,11 +2,9 @@ class ScreenModuleViewController < UIViewController
   include PM::ScreenModule
   title 'Test Title'
 
-  # Get rid of such hackiness when RubyMotion bug is fixed...
-
   def self.new(args = {})
     s = self.alloc.initWithNibName(nil, bundle:nil)
-    s.on_create(args) if s.respond_to?(:on_create)
+    s.screen_init(args) if s.respond_to?(:screen_init)
     s
   end
 

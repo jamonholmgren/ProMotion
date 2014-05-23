@@ -8,7 +8,7 @@ module ProMotion
     include ProMotion::Table::Refreshable
     # @requires module:Indexable
     include ProMotion::Table::Indexable
-    # @requires module:Indexable
+    # @requires module:Longpressable
     include ProMotion::Table::Longpressable
 
     attr_reader :promotion_table_data

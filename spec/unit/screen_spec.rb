@@ -9,7 +9,7 @@ describe "screen properties" do
   end
 
   it "should store title" do
-    HomeScreen.get_title.should == 'Home'
+    HomeScreen.title.should == 'Home'
   end
 
   it "should set default title on new instances" do
@@ -23,7 +23,7 @@ describe "screen properties" do
 
   it "should not let the instance reset the default title" do
     @screen.title = "instance method"
-    HomeScreen.get_title.should != 'instance method'
+    HomeScreen.title.should != 'instance method'
   end
 
   it "should set the tab bar item with a system icon" do
@@ -43,11 +43,6 @@ describe "screen properties" do
     @screen.tabBarItem.systemItem.should == comparison.systemItem
     @screen.tabBarItem.tag.should == comparison.tag
     @screen.tabBarItem.image.should == comparison.image
-  end
-
-  it "should store debug mode" do
-    HomeScreen.debug_mode = true
-    HomeScreen.debug_mode.should == true
   end
 
   it "#modal? should be true" do
@@ -151,7 +146,7 @@ describe "screen properties" do
   describe "bar button behavior" do
     describe "system bar buttons" do
       before do
-        @screen.set_nav_bar_right_button nil, action: :add_something, system_icon: UIBarButtonSystemItemAdd
+        @screen.set_nav_bar_button :right, title: nil, action: :add_something, system_icon: UIBarButtonSystemItemAdd
       end
 
       it "has a right bar button item of the correct type" do
@@ -165,7 +160,7 @@ describe "screen properties" do
 
     describe 'titled bar buttons' do
       before do
-        @screen.set_nav_bar_right_button "Save", action: :save_something, style: UIBarButtonItemStyleDone
+        @screen.set_nav_bar_button :right, title: "Save", action: :save_something, style: UIBarButtonItemStyleDone
       end
 
       it "has a right bar button item of the correct type" do
@@ -184,7 +179,7 @@ describe "screen properties" do
     describe 'image bar buttons' do
       before do
         @image = UIImage.alloc.init
-        @screen.set_nav_bar_right_button @image, action: :save_something, style: UIBarButtonItemStyleDone
+        @screen.set_nav_bar_button :right, title: @image, action: :save_something, style: UIBarButtonItemStyleDone
       end
 
       it "has a right bar button item of the correct type" do

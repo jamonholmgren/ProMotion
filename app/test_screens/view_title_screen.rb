@@ -1,7 +1,7 @@
 class ViewTitleScreen < PM::Screen
   attr_accessor :button_was_triggered
 
-  title UIView.alloc.init
+  title_view UIView.alloc.init
 
   def will_appear
     self.button_was_triggered = false

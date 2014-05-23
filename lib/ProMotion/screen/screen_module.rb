@@ -4,6 +4,8 @@ module ProMotion
     include ProMotion::ScreenNavigation
     # @require module:Styling
     include ProMotion::Styling
+    # @require module:NavBarModule
+    include ProMotion::NavBarModule
     # @require module:Tabs
     include ProMotion::Tabs
     # @require module:SplitScreen
@@ -11,130 +13,27 @@ module ProMotion
 
     attr_accessor :parent_screen, :first_screen, :modal, :split_screen
 
-    def on_create(args = {})
-      unless self.is_a?(UIViewController)
-        raise StandardError.new("ERROR: Screens must extend UIViewController or a subclass of UIViewController.")
-      end
-
+    def screen_init(args = {})
+      check_ancestry
       resolve_title
-
-      self.tab_bar_item = self.class.send(:get_tab_bar_item)
-      self.refresh_tab_bar_item if self.tab_bar_item
-      self.class.send(:get_title)
-
-      args.each { |k, v| self.send("#{k}=", v) if self.respond_to?("#{k}=") }
-
-      self.add_nav_bar(args) if args[:nav_bar]
-      self.navigationController.toolbarHidden = !args[:toolbar] unless args[:toolbar].nil?
-      self.screen_setup
-      self.on_init if self.respond_to?(:on_init)
-      self
-    end
-
-    def screen_setup
+      tab_bar_setup
+      set_attributes self, args
+      add_nav_bar(args) if args[:nav_bar]
+      screen_setup if self.respond_to?(:screen_setup)
+      on_init if self.respond_to?(:on_init)
     end
 
     def modal?
       self.modal == true
     end
 
-    def nav_bar?
-      !!self.navigationController
-    end
-
-    def navigation_controller
-      self.navigationController
-    end
-
-    def navigation_controller=(nav)
-      @navigationController = nav
-    end
-
-    def navigationController=(nav)
-      @navigationController = nav
-    end
-
     def resolve_title
-      if self.class.send(:get_title).kind_of? String
-        self.title = self.class.send(:get_title)
-      elsif self.class.send(:get_title).kind_of? UIView
-        self.navigationItem.titleView = self.class.send(:get_title)
-      elsif self.class.send(:get_title).kind_of? UIImage
-        self.navigationItem.titleView = UIImageView.alloc.initWithImage(self.class.send(:get_title))
+      case self.class.title_type
+      when :text then self.title = self.class.title
+      when :view then self.navigationItem.titleView = self.class.title
+      when :image then self.navigationItem.titleView = UIImageView.alloc.initWithImage(UIImage.imageNamed(self.class.title))
       else
-        PM.logger.warn("title expects string, UIView, or UIImage, but #{self.class.send(:get_title).class.to_s} given.")
-      end
-    end
-
-    def add_nav_bar(args = {})
-      self.navigationController ||= begin
-        self.first_screen = true if self.respond_to?(:first_screen=)
-        nav = NavigationController.alloc.initWithRootViewController(self)
-        nav.setModalTransitionStyle(args[:transition_style]) if args[:transition_style]
-        nav.setModalPresentationStyle(args[:presentation_style]) if args[:presentation_style]
-        nav
-      end
-    end
-
-    def set_nav_bar_right_button(title, args={})
-      args[:title] = title
-      set_nav_bar_button :right, args
-    end
-
-    def set_nav_bar_left_button(title, args={})
-      args[:title] = title
-      set_nav_bar_button :left, args
-    end
-
-    def set_nav_bar_button(side, args={})
-      button = create_toolbar_button(args)
-
-      self.navigationItem.leftBarButtonItem = button if side == :left
-      self.navigationItem.rightBarButtonItem = button if side == :right
-      self.navigationItem.backBarButtonItem = button if side == :back
-
-      button
-    end
-
-    def create_toolbar_button(args = {})
-      args[:style] = map_bar_button_item_style(args[:style])
-      args[:target] ||= self
-      args[:action] ||= nil
-      args[:custom_view] = args[:custom_view] if args[:custom_view]
-      args[:system_item] ||= args[:system_icon] # backwards compatibility
-      args[:system_item] = map_bar_button_system_item(args[:system_item]) if args[:system_item] && args[:system_item].is_a?(Symbol)
-
-      button_type = args[:image] || args[:button] || args[:system_item] || args[:custom_view] || args[:title] || "Button"
-
-      bar_button_item button_type, args
-    end
-
-    def set_toolbar_items(buttons = [], animated = true)
-      buttons = Array(buttons)
-      self.toolbarItems = buttons.map{|b| b.is_a?(UIBarButtonItem) ? b : create_toolbar_button(b) }
-      navigation_controller.setToolbarHidden(false, animated:animated)
-    end
-    alias_method :set_toolbar_buttons, :set_toolbar_items
-    alias_method :set_toolbar_button,  :set_toolbar_items
-
-    # TODO: Make this better. Not able to do image: "logo", for example.
-    def bar_button_item(button_type, args)
-      case button_type
-      when UIBarButtonItem
-        button_type
-      when UIImage
-        UIBarButtonItem.alloc.initWithImage(button_type, style: args[:style], target: args[:target], action: args[:action])
-      when String
-        UIBarButtonItem.alloc.initWithTitle(button_type, style: args[:style], target: args[:target], action: args[:action])
-      else
-        if args[:custom_view]
-          UIBarButtonItem.alloc.initWithCustomView(args[:custom_view])
-        elsif args[:system_item]
-          UIBarButtonItem.alloc.initWithBarButtonSystemItem(args[:system_item], target: args[:target], action: args[:action])
-        else
-          PM.logger.error("Please supply a title string, a UIImage or :system.")
-          nil
-        end
+        PM.logger.warn("title expects string, UIView, or UIImage, but #{self.class.title.class.to_s} given.")
       end
     end
 
@@ -205,10 +104,6 @@ module ProMotion
     def on_rotate
     end
 
-    def supported_orientation?(orientation)
-      NSBundle.mainBundle.infoDictionary["UISupportedInterfaceOrientations"].include?(orientation)
-    end
-
     def supported_orientations
       orientations = 0
       NSBundle.mainBundle.infoDictionary["UISupportedInterfaceOrientations"].each do |ori|
@@ -226,15 +121,16 @@ module ProMotion
       orientations
     end
 
+    def supported_orientation?(orientation)
+      NSBundle.mainBundle.infoDictionary["UISupportedInterfaceOrientations"].include?(orientation)
+    end
+
     def supported_device_families
       NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].map do |m|
-        # TODO: What about universal apps?
-        case m
-        when "1"
-          :iphone
-        when "2"
-          :ipad
-        end
+        {
+          "1" => :iphone,
+          "2" => :ipad
+        }[m] || :unknown_device
       end
     end
 
@@ -250,63 +146,39 @@ module ProMotion
       return self.view_or_self.frame
     end
 
-    def map_bar_button_item_style(symbol)
-      symbol = {
-        plain:    UIBarButtonItemStylePlain,
-        bordered: UIBarButtonItemStyleBordered,
-        done:     UIBarButtonItemStyleDone
-      }[symbol] if symbol.is_a?(Symbol)
-      symbol || UIBarButtonItemStyleBordered
+  private
+
+    def tab_bar_setup
+      self.tab_bar_item = self.class.send(:get_tab_bar_item)
+      self.refresh_tab_bar_item if self.tab_bar_item
     end
 
-    def map_bar_button_system_item(symbol)
-      {
-        done:         UIBarButtonSystemItemDone,
-        cancel:       UIBarButtonSystemItemCancel,
-        edit:         UIBarButtonSystemItemEdit,
-        save:         UIBarButtonSystemItemSave,
-        add:          UIBarButtonSystemItemAdd,
-        flexible_space: UIBarButtonSystemItemFlexibleSpace,
-        fixed_space:    UIBarButtonSystemItemFixedSpace,
-        compose:      UIBarButtonSystemItemCompose,
-        reply:        UIBarButtonSystemItemReply,
-        action:       UIBarButtonSystemItemAction,
-        organize:     UIBarButtonSystemItemOrganize,
-        bookmarks:    UIBarButtonSystemItemBookmarks,
-        search:       UIBarButtonSystemItemSearch,
-        refresh:      UIBarButtonSystemItemRefresh,
-        stop:         UIBarButtonSystemItemStop,
-        camera:       UIBarButtonSystemItemCamera,
-        trash:        UIBarButtonSystemItemTrash,
-        play:         UIBarButtonSystemItemPlay,
-        pause:        UIBarButtonSystemItemPause,
-        rewind:       UIBarButtonSystemItemRewind,
-        fast_forward: UIBarButtonSystemItemFastForward,
-        undo:         UIBarButtonSystemItemUndo,
-        redo:         UIBarButtonSystemItemRedo,
-        page_curl:    UIBarButtonSystemItemPageCurl
-      }[symbol] ||    UIBarButtonSystemItemDone
+    def check_ancestry
+      unless self.is_a?(UIViewController)
+        raise StandardError.new("ERROR: Screens must extend UIViewController or a subclass of UIViewController.")
+      end
     end
 
     # Class methods
     module ClassMethods
-      def debug_mode
-        @debug_mode
-      end
-
-      def debug_mode=(v)
-        @debug_mode = v
-      end
-
-      def title(t)
-        @title = t
-      end
-      def title=(t)
-        @title = t
-      end
-      
-      def get_title
+      def title(t=nil)
+        @title = t if t
+        @title_type = :text if t
         @title ||= self.to_s
+      end
+
+      def title_type
+        @title_type || :text
+      end
+
+      def title_image(t)
+        @title = t
+        @title_type = :image
+      end
+
+      def title_view(t)
+        @title = t
+        @title_type = :view
       end
     end
 

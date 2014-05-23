@@ -1,7 +1,7 @@
 class ImageTitleScreen < PM::Screen
   attr_accessor :button_was_triggered
 
-  title UIImage.imageNamed('test.png')
+  title_image 'test.png'
 
   def will_appear
     self.button_was_triggered = false

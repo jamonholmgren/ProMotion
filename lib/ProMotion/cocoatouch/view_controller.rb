@@ -2,7 +2,7 @@ module ProMotion
   class ViewController < UIViewController
     def self.new(args = {})
       s = self.alloc.initWithNibName(args[:nib_name] || nil, bundle:args[:bundle] || nil)
-      s.on_create(args) if s.respond_to?(:on_create)
+      s.screen_init(args) if s.respond_to?(:screen_init)
       s
     end
 

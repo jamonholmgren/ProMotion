@@ -1,7 +1,7 @@
 class ImageViewTitleScreen < PM::Screen
   attr_accessor :button_was_triggered
 
-  title UIImageView.alloc.initWithImage(UIImage.imageNamed('test.png'))
+  title_view UIImageView.alloc.initWithImage(UIImage.imageNamed('test.png'))
 
   def will_appear
     self.button_was_triggered = false

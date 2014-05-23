@@ -5,10 +5,6 @@ class TestMapScreen < PM::MapScreen
   start_position latitude: 35.090648651123, longitude: -82.965972900391, radius: 4
   title "Gorges State Park, NC"
 
-  def get_title
-    self.title
-  end
-
   def promotion_annotation_data
     @promotion_annotation_data
   end

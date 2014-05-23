@@ -85,7 +85,7 @@ module ProMotion
       nav_controller.pushViewController(vc, animated: animated)
     end
 
-    protected
+  protected
 
     def set_up_screen_for_open(screen, args={})
 

@@ -39,10 +39,10 @@ class TestTableScreen < ProMotion::TableScreen
       cells: [{
         title: "Switch With Action",
         accessory: {
-            view: :switch,
-            action: :increment_counter,
-            accessibility_label: "switch_1"
-          } ,
+          view: :switch,
+          action: :increment_counter,
+          accessibility_label: "switch_1"
+        },
       }, {
         title: "Switch With Action And Parameters",
         accessory: {
@@ -50,7 +50,7 @@ class TestTableScreen < ProMotion::TableScreen
           action: :increment_counter_by,
           arguments: { number: 3 },
           accessibility_label: "switch_2"
-        } ,
+        },
       }, {
         title: "Switch With Cell Tap, Switch Action And Parameters",
         accessory:{

@@ -4,7 +4,7 @@ module ProMotion
 
     def initialize(data, table_view)
       self.data = data
-      self.table_view = table_view
+      self.table_view = WeakRef.new(table_view)
     end
 
     def section(index)

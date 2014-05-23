@@ -57,6 +57,14 @@ describe "map properties" do
     @map.annotations.count.should == 0
   end
 
+  it "should return false when user location is not being shown" do
+    @map.showing_user_location?.should == false
+  end
+
+  it "should return nil for user location when not being shown" do
+    @map.user_location.should == nil
+  end
+
   # it "keeps breaking travis" do DELETED end
   # it "should geocode an address" do
   #   @map.lookup_infinite_loop

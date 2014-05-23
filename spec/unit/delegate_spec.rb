@@ -88,13 +88,13 @@ if TestHelper.ios7
 
     before do
       @subject = TestDelegateRed.new
-      @map = TestMapScreen.new modal: true, nav_bar: true
-      @map.view_will_appear(false)
-      @subject.open @map
+      @screen = BasicScreen.new nav_bar: true
+      @screen.view_will_appear(false)
+      @subject.open @screen
     end
 
     it 'should set the application tint color on iOS 7' do
-      @map.view.tintColor.should == UIColor.redColor
+      @screen.view.tintColor.should == UIColor.redColor
     end
 
   end

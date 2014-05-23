@@ -73,18 +73,9 @@ module ProMotion
     end
 
     def trigger_action(action, arguments)
-      if self.respond_to?(action)
-        expected_arguments = self.method(action).arity
-        if expected_arguments == 0
-          self.send(action)
-        elsif expected_arguments == 1 || expected_arguments == -1
-          self.send(action, arguments)
-        else
-          PM.logger.warn "#{action} expects #{expected_arguments} arguments. Maximum number of required arguments for an action is 1."
-        end
-      else
-        PM.logger.info "Action not implemented: #{action.to_s}"
-      end
+      return PM.logger.info "Action not implemented: #{action.to_s}" unless self.respond_to?(action)
+      return self.send(action) if self.method(action).arity == 0
+      self.send(action, arguments)
     end
 
     def accessory_toggled_switch(switch)
@@ -95,7 +86,6 @@ module ProMotion
         data_cell = cell_at_section_and_index(index_path.section, index_path.row)
         data_cell[:accessory][:arguments] ||= {}
         data_cell[:accessory][:arguments][:value] = switch.isOn if data_cell[:accessory][:arguments].is_a?(Hash)
-
         trigger_action(data_cell[:accessory][:action], data_cell[:accessory][:arguments]) if data_cell[:accessory][:action]
       end
     end

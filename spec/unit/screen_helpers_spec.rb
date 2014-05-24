@@ -140,7 +140,7 @@ describe "screen helpers" do
           animated.should == true
           completion.should == nil
         end
-        @screen.send(:present_modal_view_controller, new_screen, true, nil)
+        @screen.send(:present_modal_view_controller, new_screen, { animated: true, completion: nil })
       end
 
       # it "should push screen onto nav controller stack inside a tab bar" do
@@ -158,20 +158,20 @@ describe "screen helpers" do
       end
 
       it "should present a modal screen if :modal is provided" do
-        @screen.mock!(:present_modal_view_controller) do |screen, animated, completion|
+        @screen.mock!(:present_modal_view_controller) do |screen, args|
           screen.should.be.instance_of BasicScreen
-          animated.should == true
-          completion.should.be.kind_of Proc
+          args[:animated].should == true
+          args[:completion].should.be.kind_of Proc
         end
         screen = @screen.open BasicScreen, modal: true, completion: lambda{}
         screen.should.be.kind_of BasicScreen
       end
 
       it "should present a modal screen if open_modal is used" do
-        @screen.mock!(:present_modal_view_controller) do |screen, animated, completion|
+        @screen.mock!(:present_modal_view_controller) do |screen, args|
           screen.should.be.instance_of BasicScreen
-          animated.should == true
-          completion.should == nil
+          args[:animated].should == true
+          args[:completion].should == nil
         end
         screen = @screen.open_modal BasicScreen
         screen.should.be.kind_of BasicScreen
@@ -191,7 +191,7 @@ describe "screen helpers" do
 
       it "should open screen in tab bar if :in_tab is provided" do
         @screen.stub!(:tab_bar, return: true)
-        @screen.mock!(:present_view_controller_in_tab_bar_controller) do |screen, tab_name|
+        @screen.mock!(:open_in_tab) do |screen, tab_name|
           screen.should.be.instance_of BasicScreen
           tab_name.should == 'my_tab'
         end

@@ -11,7 +11,7 @@ module ProMotion
       tag_index = 0
       screens.each do |s|
         s.tabBarItem.tag = tag_index
-        s.tab_bar = tab_bar_controller if s.respond_to?("tab_bar=")
+        s.tab_bar = WeakRef.new(tab_bar_controller) if s.respond_to?("tab_bar=")
         view_controllers << (s.navigationController || s)
         tag_index += 1
       end

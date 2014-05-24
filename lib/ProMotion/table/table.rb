@@ -62,16 +62,6 @@ module ProMotion
       table_view.reloadData
     end
 
-    # Methods to retrieve data
-
-    def section_at_index(index)
-      self.promotion_table_data.section(index)
-    end
-
-    def cell_at_section_and_index(section, index)
-      self.promotion_table_data.cell(section: section, index: index)
-    end
-
     def trigger_action(action, arguments)
       return PM.logger.info "Action not implemented: #{action.to_s}" unless self.respond_to?(action)
       return self.send(action) if self.method(action).arity == 0
@@ -83,7 +73,7 @@ module ProMotion
       index_path = closest_parent(UITableView, table_cell).indexPathForCell(table_cell)
 
       if index_path
-        data_cell = cell_at_section_and_index(index_path.section, index_path.row)
+        data_cell = promotion_table_data.cell(section: index_path.section, index: index_path.row)
         data_cell[:accessory][:arguments] ||= {}
         data_cell[:accessory][:arguments][:value] = switch.isOn if data_cell[:accessory][:arguments].is_a?(Hash)
         trigger_action(data_cell[:accessory][:action], data_cell[:accessory][:arguments]) if data_cell[:accessory][:action]
@@ -91,11 +81,8 @@ module ProMotion
     end
 
     def delete_row(index_paths, animation = nil)
-      animation = map_row_animation_symbol(animation)
-      index_paths = [index_paths] if index_paths.kind_of?(NSIndexPath)
       deletable_index_paths = []
-
-      index_paths.each do |index_path|
+      Array(index_paths).each do |index_path|
         delete_cell = false
         delete_cell = send(:on_cell_deleted, self.promotion_table_data.cell(index_path: index_path)) if self.respond_to?("on_cell_deleted:")
         unless delete_cell == false
@@ -103,35 +90,33 @@ module ProMotion
           deletable_index_paths << index_path
         end
       end
-      table_view.deleteRowsAtIndexPaths(deletable_index_paths, withRowAnimation:animation) if deletable_index_paths.length > 0
+      table_view.deleteRowsAtIndexPaths(deletable_index_paths, withRowAnimation:map_row_animation_symbol(animation)) if deletable_index_paths.length > 0
     end
 
     def table_view_cell(params={})
+      params = index_path_to_section_index(params)
+      data_cell = self.promotion_table_data.cell(section: params[:section], index: params[:index])
+      return UITableViewCell.alloc.init unless data_cell
+      create_table_cell(data_cell)
+    end
+
+    def index_path_to_section_index(params)
       if params[:index_path]
         params[:section] = params[:index_path].section
         params[:index] = params[:index_path].row
       end
-
-      data_cell = self.promotion_table_data.cell(section: params[:section], index: params[:index])
-      return UITableViewCell.alloc.init unless data_cell # No data?
-
-      table_cell = create_table_cell(data_cell)
-
-      table_cell
+      params
     end
 
     def create_table_cell(data_cell)
-      table_cell = table_view.dequeueReusableCellWithIdentifier(data_cell[:cell_identifier])
-
-      unless table_cell
+      table_cell = table_view.dequeueReusableCellWithIdentifier(data_cell[:cell_identifier]) || begin
         table_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:data_cell[:cell_identifier])
-        table_cell.extend PM::TableViewCellModule unless table_cell.is_a?(PM::TableViewCellModule)
+        table_cell.extend(PM::TableViewCellModule) unless table_cell.is_a?(PM::TableViewCellModule)
         table_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
         table_cell.clipsToBounds = true # fix for changed default in 7.1
+        table_cell
       end
-
       table_cell.setup(data_cell, self)
-
       table_cell
     end
 
@@ -141,7 +126,7 @@ module ProMotion
 
     ########## Cocoa touch methods #################
     def numberOfSectionsInTableView(table_view)
-      Array(self.promotion_table_data.data).length
+      self.promotion_table_data.sections.length
     end
 
     # Number of cells
@@ -150,8 +135,8 @@ module ProMotion
     end
 
     def tableView(table_view, titleForHeaderInSection:section)
-      section = section_at_index(section) || return
-      section[:title]
+      section = promotion_table_data.section(section)
+      section && section[:title]
     end
 
     # Set table_data_index if you want the right hand index column (jumplist)
@@ -188,17 +173,7 @@ module ProMotion
 
     def tableView(table_view, editingStyleForRowAtIndexPath: index_path)
       data_cell = self.promotion_table_data.cell(index_path: index_path)
-
-      case data_cell[:editing_style]
-      when nil, :none
-        UITableViewCellEditingStyleNone
-      when :delete
-        UITableViewCellEditingStyleDelete
-      when :insert
-        UITableViewCellEditingStyleInsert
-      else
-        data_cell[:editing_style]
-      end
+      map_cell_editing_style(data_cell[:editing_style])
     end
 
     def tableView(table_view, commitEditingStyle: editing_style, forRowAtIndexPath: index_path)
@@ -225,22 +200,16 @@ module ProMotion
 
     # Section view methods
     def tableView(table_view, viewForHeaderInSection: index)
-      section = section_at_index(index)
-
-      if section[:title_view]
-        klass      = section[:title_view]
-        view       = klass.new if klass.respond_to?(:new)
-        view.title = section[:title] if view.respond_to?(:title=)
-        view
-      else
-        nil
-      end
+      section = promotion_table_data.section(index)
+      view = nil
+      view = section[:title_view].new if section[:title_view].respond_to?(:new)
+      view.title = section[:title] if view.respond_to?(:title=)
+      view
     end
 
     def tableView(table_view, heightForHeaderInSection: index)
-      section = section_at_index(index)
-
-      if section[:title_view] || (section[:title] && !section[:title].empty?)
+      section = promotion_table_data.section(index)
+      if section[:title_view] || section[:title].to_s.length > 0
         section[:title_view_height] || tableView.sectionHeaderHeight
       else
         0.0
@@ -248,6 +217,14 @@ module ProMotion
     end
 
     protected
+
+    def map_cell_editing_style(symbol)
+      {
+        none:   UITableViewCellEditingStyleNone,
+        delete: UITableViewCellEditingStyleDelete,
+        insert: UITableViewCellEditingStyleInsert
+      }[symbol] || symbol
+    end
 
     def map_row_animation_symbol(symbol)
       symbol ||= UITableViewRowAnimationAutomatic

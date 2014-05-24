@@ -36,6 +36,12 @@ describe "tab bar functionality" do
     @tab_bar.tabBar.items.first.title.should == "Custom"
   end
 
+  it "should allow replacing a view controller with `open`" do
+    new_screen = BasicScreen.new
+    @tab_4.open new_screen, in_tab: "Home"
+    @tab_bar.viewControllers[2].should == new_screen
+  end
+
 end
 
 

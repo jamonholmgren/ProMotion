@@ -30,6 +30,7 @@ module ProMotion
 
     def set_nav_bar_button(side, args={})
       button = create_toolbar_button(args)
+      button.setTintColor args[:tint_color] if args[:tint_color]
 
       self.navigationItem.leftBarButtonItem = button if side == :left
       self.navigationItem.rightBarButtonItem = button if side == :right

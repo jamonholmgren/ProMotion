@@ -158,6 +158,16 @@ describe "screen properties" do
       end
     end
 
+    describe "bar button tint colors" do
+      before do
+        @screen.set_nav_bar_button :right, title: nil, action: :add_something, system_icon: UIBarButtonSystemItemAdd, tint_color: UIColor.blueColor
+      end
+
+      it "sets the tint color" do
+        CGColorEqualToColor(@screen.navigationItem.rightBarButtonItem.tintColor, UIColor.blueColor).should == true
+      end
+    end
+
     describe 'titled bar buttons' do
       before do
         @screen.set_nav_bar_button :right, title: "Save", action: :save_something, style: UIBarButtonItemStyleDone
@@ -251,4 +261,3 @@ describe "screen with toolbar" do
     screen.navigationController.toolbarHidden?.should == false
   end
 end
-

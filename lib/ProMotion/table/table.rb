@@ -8,6 +8,8 @@ module ProMotion
     include ProMotion::Table::Refreshable
     # @requires module:Indexable
     include ProMotion::Table::Indexable
+    # @requires module:Longpressable
+    include ProMotion::Table::Longpressable
 
     attr_reader :promotion_table_data
 
@@ -19,6 +21,7 @@ module ProMotion
       check_table_data
       set_up_searchable
       set_up_refreshable
+      set_up_longpressable
     end
 
     def check_table_data
@@ -42,6 +45,12 @@ module ProMotion
         else
           PM.logger.warn "To use the refresh control on < iOS 6, you need to include the CocoaPod 'CKRefreshControl'."
         end
+      end
+    end
+
+    def set_up_longpressable
+      if self.class.respond_to?(:get_longpressable) && self.class.get_longpressable
+        self.make_longpressable(self.class.get_longpressable_params)
       end
     end
 
@@ -288,6 +297,19 @@ module ProMotion
         @indexable_params ||= nil
       end
 
+      # Longpressable
+      def longpressable(params = {})
+        @longpressable_params = params
+        @longpressable = true
+      end
+
+      def get_longpressable
+        @longpressable ||= false
+      end
+
+      def get_longpressable_params
+        @longpressable_params ||= nil
+      end
     end
 
     def self.included(base)

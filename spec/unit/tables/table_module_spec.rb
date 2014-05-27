@@ -11,6 +11,7 @@ describe "PM::Table module" do
       subtitle: "This is way too huge..see note",
       arguments: { data: [ "lots", "of", "data" ] },
       action: :tapped_cell_1,
+      long_press_action: :long_press_cell_1,
       height: 50, # manually changes the cell's height
       cell_style: UITableViewCellStyleSubtitle,
       cell_identifier: "Cell",
@@ -113,6 +114,16 @@ describe "PM::Table module" do
 
     @subject.tableView(@subject.table_view, didSelectRowAtIndexPath:@custom_ip)
   end
+
+  # TODO - make this test work when MacBacon supports long press gestures
+  # https://github.com/HipByte/RubyMotion/issues/160
+  #
+  # it "should trigger the right action on a long_press" do
+  #   @subject.mock! :long_press_cell_1 do |args|
+  #     args[:data].should == [ "lots", "of", "data" ]
+  #   end
+  #   tap(@subject.table_view, :at => location, :times => number_of_taps, :touches => number_of_fingers)
+  # end
 
   it "should set a custom cell background image" do
     @image.should.not.be.nil

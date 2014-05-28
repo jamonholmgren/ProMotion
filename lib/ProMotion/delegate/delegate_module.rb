@@ -21,27 +21,27 @@ module ProMotion
     end
 
     def applicationDidBecomeActive(application)
-      on_activate if respond_to?(:on_activate)
+      try :on_activate
     end
 
     def applicationWillResignActive(application)
-      will_deactivate if respond_to?(:will_deactivate)
+      try :will_deactivate
     end
 
     def applicationDidEnterBackground(application)
-      on_enter_background if respond_to?(:on_enter_background)
+      try :on_enter_background
     end
 
     def applicationWillEnterForeground(application)
-      will_enter_foreground if respond_to?(:will_enter_foreground)
+      try :will_enter_foreground
     end
 
     def applicationWillTerminate(application)
-      on_unload if respond_to?(:on_unload)
+      try :on_unload
     end
 
     def application(application, openURL: url, sourceApplication:source_app, annotation: annotation)
-      on_open_url({ url: url, source_app: source_app, annotation: annotation }) if respond_to?(:on_open_url)
+      try :on_open_url, { url: url, source_app: source_app, annotation: annotation }
     end
 
     def app_delegate
@@ -49,15 +49,14 @@ module ProMotion
     end
 
     def app_window
-      self.window
+      window
     end
 
     def ui_window
       (defined?(Motion) && defined?(Motion::Xray) && defined?(Motion::Xray::XrayWindow)) ? Motion::Xray::XrayWindow : UIWindow
     end
 
-    def open_screen(screen, args={})
-
+    def open(screen, args={})
       screen = screen.new if screen.respond_to?(:new)
 
       self.home_screen = screen
@@ -69,17 +68,24 @@ module ProMotion
 
       screen
     end
-    alias :open :open_screen
+    alias :open_screen :open
     alias :open_root_screen :open_screen
-    alias :home :open_screen
+
+    def status_bar?
+      UIApplication.sharedApplication.statusBarHidden
+    end
+
+  # private
 
     def apply_status_bar
       self.class.send(:apply_status_bar)
     end
 
-    def status_bar?
-      UIApplication.sharedApplication.statusBarHidden
+    def try(method, *args)
+      send(method, *args) if respond_to?(method)
     end
+
+  # public
 
     module ClassMethods
 
@@ -105,9 +111,11 @@ module ProMotion
       def tint_color(c)
         @tint_color = c
       end
+
       def tint_color=(c)
         @tint_color = c
       end
+
       def get_tint_color
         @tint_color || nil
       end

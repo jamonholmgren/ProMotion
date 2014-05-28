@@ -9,7 +9,7 @@ module ProMotion
     # @require module:Tabs
     include ProMotion::Tabs
     # @require module:SplitScreen
-    include ProMotion::SplitScreen if NSBundle.mainBundle.infoDictionary["UIDeviceFamily"].include?("2")
+    include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
 
     attr_accessor :parent_screen, :first_screen, :modal, :split_screen
 
@@ -19,8 +19,8 @@ module ProMotion
       tab_bar_setup
       set_attributes self, args
       add_nav_bar(args) if args[:nav_bar]
-      screen_setup if self.respond_to?(:screen_setup)
-      on_init if self.respond_to?(:on_init)
+      try :screen_setup
+      try :on_init
     end
 
     def modal?
@@ -157,6 +157,10 @@ module ProMotion
       unless self.is_a?(UIViewController)
         raise StandardError.new("ERROR: Screens must extend UIViewController or a subclass of UIViewController.")
       end
+    end
+
+    def try(method, *args)
+      send(method, *args) if respond_to?(method)
     end
 
     # Class methods

@@ -123,7 +123,7 @@ describe "screen helpers" do
       end
 
       it "should apply properties when opening a new screen" do
-        new_screen = @screen.send(:set_up_screen_for_open, BasicScreen, title: 'Some Title', modal: true, hide_tab_bar: true, nav_bar: true)
+        new_screen = @screen.send(:set_up_screen_for_open, BasicScreen, { title: 'Some Title', modal: true, hide_tab_bar: true, nav_bar: true })
 
         new_screen.parent_screen.should == @screen
         new_screen.title.should == 'Some Title'
@@ -142,14 +142,6 @@ describe "screen helpers" do
         end
         @screen.send(:present_modal_view_controller, new_screen, { animated: true, completion: nil })
       end
-
-      # it "should push screen onto nav controller stack inside a tab bar" do
-      #   # TODO: Implement this test
-      # end
-
-      # it "should set the tab bar selectedIndex when opening a screen inside a tab bar" do
-      #   # TODO: Implement this test
-      # end
 
       it "should open a root screen if :close_all is provided" do
         @screen.mock!(:open_root_screen) { |screen| screen.should.be.instance_of BasicScreen }

@@ -9,7 +9,7 @@ describe "ProMotion::Screen functional" do
   end
 
   it "should have a navigation bar" do
-    wait 1 do
+    wait 0.5 do
       view("Functional").should.be.kind_of UINavigationItemView
     end
   end

@@ -10,22 +10,11 @@ module ProMotion
     end
 
     def navigation_controller=(nav)
-      @navigationController = nav
+      self.navigationController = nav
     end
 
     def navigationController=(nav)
       @navigationController = nav
-    end
-
-    def add_nav_bar(args = {})
-      self.navigationController ||= begin
-        self.first_screen = true if self.respond_to?(:first_screen=)
-        nav = NavigationController.alloc.initWithRootViewController(self)
-        nav.setModalTransitionStyle(args[:transition_style]) if args[:transition_style]
-        nav.setModalPresentationStyle(args[:presentation_style]) if args[:presentation_style]
-        nav
-      end
-      self.navigationController.toolbarHidden = !args[:toolbar] unless args[:toolbar].nil?
     end
 
     def set_nav_bar_button(side, args={})
@@ -39,17 +28,30 @@ module ProMotion
       button
     end
 
-    def create_toolbar_button(args = {})
-      button_type = args[:image] || args[:button] || args[:custom_view] || args[:title] || "Button"
-      bar_button_item button_type, args
-    end
-
     def set_toolbar_items(buttons = [], animated = true)
       self.toolbarItems = Array(buttons).map{|b| b.is_a?(UIBarButtonItem) ? b : create_toolbar_button(b) }
       navigationController.setToolbarHidden(false, animated:animated)
     end
     alias_method :set_toolbar_buttons, :set_toolbar_items
     alias_method :set_toolbar_button,  :set_toolbar_items
+
+    def add_nav_bar(args = {})
+      self.navigationController ||= begin
+        self.first_screen = true if self.respond_to?(:first_screen=)
+        nav = NavigationController.alloc.initWithRootViewController(self)
+        nav.setModalTransitionStyle(args[:transition_style]) if args[:transition_style]
+        nav.setModalPresentationStyle(args[:presentation_style]) if args[:presentation_style]
+        nav
+      end
+      self.navigationController.toolbarHidden = !args[:toolbar] unless args[:toolbar].nil?
+    end
+
+  private
+
+    def create_toolbar_button(args = {})
+      button_type = args[:image] || args[:button] || args[:custom_view] || args[:title] || "Button"
+      bar_button_item button_type, args
+    end
 
     def bar_button_item(button_type, args)
       return button_type if button_type.is_a?(UIBarButtonItem)
@@ -107,9 +109,9 @@ module ProMotion
 
     def map_bar_button_item_style(symbol)
       {
-        plain:    UIBarButtonItemStylePlain,
-        bordered: UIBarButtonItemStyleBordered,
-        done:     UIBarButtonItemStyleDone
+        plain:     UIBarButtonItemStylePlain,
+        bordered:  UIBarButtonItemStyleBordered,
+        done:      UIBarButtonItemStyleDone
       }[symbol] || UIBarButtonItemStyleDone
     end
 

@@ -39,23 +39,23 @@ module ProMotion
     end
 
     def error(message)
-      self.log('ERROR', message, :red) if self.levels.include?(:error)
+      log('ERROR', message, :red) if self.levels.include?(:error)
     end
 
     def deprecated(message)
-      self.log('DEPRECATED', message, :yellow) if self.levels.include?(:warn)
+      log('DEPRECATED', message, :yellow) if self.levels.include?(:warn)
     end
 
     def warn(message)
-      self.log('WARN', message, :yellow) if self.levels.include?(:warn)
+      log('WARN', message, :yellow) if self.levels.include?(:warn)
     end
 
     def debug(message)
-      self.log('DEBUG', message, :purple) if self.levels.include?(:debug)
+      log('DEBUG', message, :purple) if self.levels.include?(:debug)
     end
 
     def info(message)
-      self.log('INFO', message, :green) if self.levels.include?(:info)
+      log('INFO', message, :green) if self.levels.include?(:info)
     end
 
   end

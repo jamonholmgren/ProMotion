@@ -75,7 +75,7 @@ module ProMotion
       UIApplication.sharedApplication.statusBarHidden
     end
 
-  # private
+  private
 
     def apply_status_bar
       self.class.send(:apply_status_bar)
@@ -85,7 +85,7 @@ module ProMotion
       send(method, *args) if respond_to?(method)
     end
 
-  # public
+  public
 
     module ClassMethods
 

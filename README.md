@@ -7,12 +7,15 @@ It introduces a clean, Ruby-style syntax for building screens that is easy to le
 abstracts a ton of boilerplate UIViewController, UINavigationController, and other iOS code into a
 simple, Ruby-like DSL.
 
-Watch the [September Motion Meetup](http://www.youtube.com/watch?v=rf7h-3AiMRQ) where Gant Laborde
+* Watch Jamon Holmgren give a talk about ProMotion at [RubyMotion #inspect2014](#) (coming soon)
+* Watch the [September 2013 Motion Meetup](http://www.youtube.com/watch?v=rf7h-3AiMRQ) where Gant Laborde
 interviews Jamon Holmgren about ProMotion!
 
 ```ruby
 # app/app_delegate.rb
 class AppDelegate < PM::Delegate
+  status_bar true, animation: :fade
+
   def on_load(app, options)
     open RootScreen.new(nav_bar: true)
   end
@@ -80,7 +83,7 @@ end
 
 # What's New?
 
-## Version 1.2.x
+## Version 2.0.0
 
 1. Now uses [motion-require](https://github.com/clayallsopp/motion-require) for better compatibility with other libraries [6046dd7f4](https://github.com/clearsightstudio/ProMotion/commit/6046dd7f49ba174f309baaa428eaac80ce0290b6)
 2. SplitScreen: New option `swipe:` allows you to specify if a splitscreen master screen can be opened with a swipe. [ffbb76caf](https://github.com/clearsightstudio/ProMotion/commit/ffbb76caf3071297347d4cf43784069999a746b3)
@@ -97,7 +100,7 @@ We've created a comprehensive and always updated wiki with code examples, usage 
 
 # Help
 
-ProMotion is not only an easy DSL to get started. The community is very helpful and 
+ProMotion is not only an easy DSL to get started. The community is very helpful and
 welcoming to new RubyMotion developers. We don't mind newbie questions.
 
 If you need help, feel free to tweet [@jamonholmgren](http://twitter.com/jamonholmgren)

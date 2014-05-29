@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
   gem.summary       = "
                         ProMotion is a fast way to get started building RubyMotion apps. Instead of dealing
                         with UIViewControllers, UITableViewControllers, and the like, you work with Screens.
-                        We abstract the view controller boilerplate to make iOS development more like Ruby 
+                        We abstract the view controller boilerplate to make iOS development more like Ruby
                         and less like Objective-C. With a memorable, concise syntax and a friendly, helpful
                         community, ProMotion is a great way to get started with iOS development.
                       "
@@ -24,7 +24,6 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = ProMotion::VERSION
 
-  gem.add_dependency "dbt", "~> 1.1.4"
   gem.add_runtime_dependency("methadone", "~> 1.4")
   gem.add_development_dependency("webstub", "~> 1.0")
   gem.add_development_dependency("motion-stump", "~> 0.3")

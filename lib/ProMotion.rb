@@ -2,8 +2,6 @@ unless defined?(Motion::Project::Config)
   raise "The ProMotion gem must be required within a RubyMotion project Rakefile."
 end
 
-require 'dbt'
-
 Motion::Project::App.setup do |app|
   core_lib = File.join(File.dirname(__FILE__), 'ProMotion')
   insert_point = app.files.find_index { |file| file =~ /^(?:\.\/)?app\// } || 0

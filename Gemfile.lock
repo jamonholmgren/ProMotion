@@ -2,13 +2,11 @@ PATH
   remote: .
   specs:
     ProMotion (2.0.0)
-      dbt (~> 1.1.4)
       methadone (~> 1.4)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    dbt (1.1.4)
     methadone (1.4.0)
       bundler
     motion-redgreen (0.1.0)

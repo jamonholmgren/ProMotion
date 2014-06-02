@@ -54,6 +54,7 @@ module ProMotion
     end
 
     def bar_button_item(button_type, args)
+      return PM.logger.deprecated("`system_icon:` no longer supported. Use `system_item:` instead.") if args[:system_icon]
       return button_type if button_type.is_a?(UIBarButtonItem)
       return bar_button_item_system_item(args) if args[:system_item]
       return bar_button_item_image(button_type, args) if button_type.is_a?(UIImage)

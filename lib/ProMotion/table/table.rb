@@ -69,6 +69,7 @@ module ProMotion
     def update_table_view_data(data)
       self.promotion_table_data.data = data
       table_view.reloadData
+      @table_search_display_controller.searchResultsTableView.reloadData if searching?
     end
 
     def trigger_action(action, arguments)
@@ -131,6 +132,7 @@ module ProMotion
 
     def update_table_data
       self.update_table_view_data(self.table_data)
+      searchDisplayController(nil, shouldReloadTableForSearchString:search_string) if searching?
     end
 
     ########## Cocoa touch methods #################

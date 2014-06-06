@@ -102,6 +102,7 @@ Overview: In ProMotion 2.0, we removed deprecated APIs, refactored and cleaned u
 11. Actually, there is one new feature. It's called `longpressable`. By adding `longpressable` at the top of your `PM::TableScreen` and then supplying a `long_press_action:` in your cell hash, you can implement a different action for long presses on table cells.
 12. We no longer insert the cell hash into the arguments hash passed into your cell tap action. If you need that data, pass it in manually.
 13. Removed `add_element`, `add_view`, `remove_element`, `remove_view` aliases for `add` and `remove`.
+14. `on_load` now fires on `viewDidLoad` instead of `loadView`. Added a new `load_view` hook for that method & you can set your own view in there. If you don't implement `load_view`, one will be created for you (per Apple's recommendations). This change shouldn't change much in your app except that if you're setting `self.view = something`, you should do it in `load_view`.
 
 **Internal changes:**
 

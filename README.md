@@ -101,11 +101,11 @@ Overview: In ProMotion 2.0, we removed deprecated APIs, refactored and cleaned u
 10. Removed cell hash `:subviews` attribute. Instead, subclass `PM::TableViewCell` and add your own subviews there.
 11. Actually, there is one new feature. It's called `longpressable`. By adding `longpressable` at the top of your `PM::TableScreen` and then supplying a `long_press_action:` in your cell hash, you can implement a different action for long presses on table cells.
 12. We no longer insert the cell hash into the arguments hash passed into your cell tap action. If you need that data, pass it in manually.
-13.
+13. Removed `add_element`, `add_view`, `remove_element`, `remove_view` aliases for `add` and `remove`.
 
 **Internal changes:**
 
-1. Removed `motion-require`. ProMotion now relies entirely on RubyMotion's built-in dependency detector. Most classes now have [DBT](https://github.com/colinta/dbt/) definitions so, if we need it in the future, ProMotion will be ready. But no DBT yet.
+1. Removed `motion-require`. ProMotion now relies entirely on RubyMotion's built-in dependency detector.
 2. Removed `rake spec:unit`, `rake spec:func`, `rake spec:single filename`. We don't really use these for development anymore.
 3. Moved many files around into a more logical, simpler structure.
 4. Removed `PM::Conversions`. The only helper we were using was the `objective_c_method_name` method, and that was only used in `PM::Styling`. So we moved it there.

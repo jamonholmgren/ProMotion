@@ -28,6 +28,12 @@ module ProMotion
       button
     end
 
+    # TODO: In PM 2.1+, entirely remove this deprecated method.
+    def set_nav_bar_left_button(title, args={})
+      PM.logger.deprecated "set_nav_bar_right_button and set_nav_bar_left_button have been removed. Use set_nav_bar_button :right/:left instead."
+    end
+    alias_method :set_nav_bar_right_button, :set_nav_bar_left_button
+
     def set_toolbar_items(buttons = [], animated = true)
       self.toolbarItems = Array(buttons).map{|b| b.is_a?(UIBarButtonItem) ? b : create_toolbar_button(b) }
       navigationController.setToolbarHidden(false, animated:animated)
@@ -54,6 +60,7 @@ module ProMotion
     end
 
     def bar_button_item(button_type, args)
+      return PM.logger.deprecated("`system_icon:` no longer supported. Use `system_item:` instead.") if args[:system_icon]
       return button_type if button_type.is_a?(UIBarButtonItem)
       return bar_button_item_system_item(args) if args[:system_item]
       return bar_button_item_image(button_type, args) if button_type.is_a?(UIImage)

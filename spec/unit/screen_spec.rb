@@ -27,7 +27,7 @@ describe "screen properties" do
   end
 
   it "should set the tab bar item with a system icon" do
-    @screen.set_tab_bar_item system_icon: :contacts
+    @screen.set_tab_bar_item system_item: :contacts
     comparison = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemContacts, tag: 0)
     @screen.tabBarItem.systemItem.should == comparison.systemItem
     @screen.tabBarItem.tag.should == comparison.tag
@@ -146,7 +146,7 @@ describe "screen properties" do
   describe "bar button behavior" do
     describe "system bar buttons" do
       before do
-        @screen.set_nav_bar_button :right, title: nil, action: :add_something, system_icon: UIBarButtonSystemItemAdd
+        @screen.set_nav_bar_button :right, title: nil, action: :add_something, system_item: UIBarButtonSystemItemAdd
       end
 
       it "has a right bar button item of the correct type" do
@@ -160,7 +160,7 @@ describe "screen properties" do
 
     describe "bar button tint colors" do
       before do
-        @screen.set_nav_bar_button :right, title: nil, action: :add_something, system_icon: UIBarButtonSystemItemAdd, tint_color: UIColor.blueColor
+        @screen.set_nav_bar_button :right, title: nil, action: :add_something, system_item: UIBarButtonSystemItemAdd, tint_color: UIColor.blueColor
       end
 
       it "sets the tint color" do

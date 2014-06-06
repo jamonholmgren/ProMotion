@@ -1,14 +1,9 @@
 module ProMotion
   module Table
-    # @requires module:Styling
     include ProMotion::Styling
-    # @requires module:Searchable
     include ProMotion::Table::Searchable
-    # @requires module:Refreshable
     include ProMotion::Table::Refreshable
-    # @requires module:Indexable
     include ProMotion::Table::Indexable
-    # @requires module:Longpressable
     include ProMotion::Table::Longpressable
 
     attr_reader :promotion_table_data

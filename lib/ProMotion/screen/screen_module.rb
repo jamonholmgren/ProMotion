@@ -1,14 +1,9 @@
 module ProMotion
   module ScreenModule
-    # @require module:ScreenNavigation
     include ProMotion::ScreenNavigation
-    # @require module:Styling
     include ProMotion::Styling
-    # @require module:NavBarModule
     include ProMotion::NavBarModule
-    # @require module:Tabs
     include ProMotion::Tabs
-    # @require module:SplitScreen
     include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
 
     attr_accessor :parent_screen, :first_screen, :modal, :split_screen
@@ -21,6 +16,7 @@ module ProMotion
       add_nav_bar(args) if args[:nav_bar]
       try :screen_setup
       try :on_init
+      PM.logger.deprecated "In #{self.class.to_s}, #on_create has been deprecated and removed. Use #screen_init instead." if respond_to?(:on_create)
     end
 
     def modal?
@@ -166,6 +162,10 @@ module ProMotion
     # Class methods
     module ClassMethods
       def title(t=nil)
+        if t && t.is_a?(String) == false
+          PM.logger.deprecated "You're trying to set the title of #{self.to_s} to an instance of #{t.class.to_s}. In ProMotion 2+, you must use `title_image` or `title_view` instead."
+          return raise StandardError
+        end
         @title = t if t
         @title_type = :text if t
         @title ||= self.to_s

@@ -1,5 +1,4 @@
 module ProMotion
-  # @requires class:SplitViewController
   module SplitScreen
     def split_screen_controller(master, detail)
       split = SplitViewController.alloc.init

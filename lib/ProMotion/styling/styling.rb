@@ -18,17 +18,13 @@ module ProMotion
         element.send("#{k}", *v)
       else
         # Doesn't respond. Check if snake case.
-        if k.to_s.include?("_")
-          set_attribute(element, objective_c_method_name(k), v)
-        end
+        set_attribute(element, camelize(k), v) if k.to_s.include?("_")
       end
       element
     end
 
     def content_max(view, mode = :height)
-      return 0 if view.subviews.empty?
-
-      sizes = view.subviews.map do |sub_view|
+      view.subviews.map do |sub_view|
         if sub_view.isHidden
           0
         elsif mode == :height
@@ -36,9 +32,7 @@ module ProMotion
         else
           sub_view.frame.origin.x + sub_view.frame.size.width
         end
-      end
-
-      sizes.max
+      end.max.to_f
     end
 
     def content_height(view)
@@ -49,8 +43,9 @@ module ProMotion
       content_max(view, :width)
     end
 
+    # iterate up the view hierarchy to find the parent element
+    # of "type" containing this view
     def closest_parent(type, this_view = nil)
-      # iterate up the view hierarchy to find the parent element of "type" containing this view
       this_view ||= view_or_self.superview
       while this_view != nil do
         return this_view if this_view.is_a? type
@@ -62,14 +57,10 @@ module ProMotion
     def add(element, attrs = {})
       add_to view_or_self, element, attrs
     end
-    alias :add_element :add
-    alias :add_view :add
 
     def remove(elements)
       Array(elements).each(&:removeFromSuperview)
     end
-    alias :remove_element :remove
-    alias :remove_view :remove
 
     def add_to(parent_element, elements, attrs = {})
       attrs = get_attributes_from_symbol(attrs)
@@ -105,14 +96,16 @@ module ProMotion
         raise ArgumentError
       end
 
-      if colors.size == 3
-        rgb_color(colors[0], colors[1], colors[2])
-      else
-        raise ArgumentError
-      end
+      raise ArgumentError unless colors.size == 3
+      rgb_color(colors[0], colors[1], colors[2])
     end
 
-    protected
+    # Turns a snake_case string into a camelCase string.
+    def camelize(str)
+      str.split('_').inject([]){ |buffer,e| buffer.push(buffer.empty? ? e : e.capitalize) }.join
+    end
+
+  protected
 
     def get_attributes_from_symbol(attrs)
       return attrs if attrs.is_a?(Hash)
@@ -120,10 +113,6 @@ module ProMotion
       new_attrs = send(attrs)
       PM.logger.error "#{attrs} should return a hash" unless new_attrs.is_a?(Hash)
       new_attrs
-    end
-
-    def objective_c_method_name(str)
-      str.split('_').inject([]){ |buffer,e| buffer.push(buffer.empty? ? e : e.capitalize) }.join
     end
 
     def map_resize_symbol(symbol)

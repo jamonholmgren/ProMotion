@@ -1,8 +1,6 @@
 module ProMotion
   module DelegateModule
-    # @requires module:Tabs
     include ProMotion::Tabs
-    # @requires module:SplitScreen
     include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
 
     attr_accessor :window, :home_screen

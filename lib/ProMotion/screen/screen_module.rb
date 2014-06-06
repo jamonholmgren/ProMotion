@@ -41,7 +41,9 @@ module ProMotion
       self.first_screen == true
     end
 
-    def view_did_load; end
+    def view_did_load
+      self.send(:on_load) if self.respond_to?(:on_load)
+    end
 
     def view_will_appear(animated)
       self.will_appear

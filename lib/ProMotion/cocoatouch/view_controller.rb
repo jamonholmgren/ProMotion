@@ -7,8 +7,7 @@ module ProMotion
     end
 
     def loadView
-      super
-      self.send(:on_load) if self.respond_to?(:on_load)
+      self.respond_to?(:load_view) ? self.load_view : super
     end
 
     def viewDidLoad

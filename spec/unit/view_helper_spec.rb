@@ -41,6 +41,12 @@ describe "view helpers" do
     layered_view.layer.mask.backgroundColor.should == UIColor.redColor.CGColor
   end
 
+  it "should allow you to set an accessor to a hash" do
+    view_with_attr = CustomTitleView.new
+    @dummy.set_attributes view_with_attr, { title: { jamon: 1 } }
+    view_with_attr.title.should == { jamon: 1 }
+  end
+
   it "should allow you to set snake_case attributes" do
     layered_view = UIView.alloc.initWithFrame(CGRectMake(0, 0, 10, 10))
 

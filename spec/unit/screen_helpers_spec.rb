@@ -212,6 +212,20 @@ describe "screen helpers" do
         screen.should == new_screen
       end
 
+      it "should not double-open a view controller if it's already been opened" do
+        parent_screen = HomeScreen.new(nav_bar: true)
+        new_screen = BasicScreen.new
+        @pushed = 0
+        parent_screen.navigationController.mock!("pushViewController:animated:") do |vc, animated|
+          @pushed += 1
+          parent_screen.navigationController.stub!("topViewController", return: vc)
+        end
+        parent_screen.open new_screen
+        @pushed.should == 1
+        parent_screen.open new_screen
+        @pushed.should == 1
+      end
+
     end
 
 

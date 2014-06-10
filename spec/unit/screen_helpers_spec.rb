@@ -152,7 +152,7 @@ describe "screen helpers" do
       # end
 
       it "should open a root screen if :close_all is provided" do
-        @screen.mock!(:open_root_screen) { |screen| screen.should.be.instance_of BasicScreen }
+        @screen.mock!(:open_root_screen) { |screen, args| screen.should.be.instance_of BasicScreen }
         screen = @screen.open BasicScreen, close_all: true
         screen.should.be.kind_of BasicScreen
       end

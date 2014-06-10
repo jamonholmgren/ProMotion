@@ -15,7 +15,7 @@ module ProMotion
         self.split_screen.master_screen = screen
 
       elsif args[:close_all]
-        open_root_screen screen
+        open_root_screen screen, args
 
       elsif args[:modal]
         present_modal_view_controller screen, args[:animated], args[:completion]
@@ -35,8 +35,8 @@ module ProMotion
     end
     alias :open :open_screen
 
-    def open_root_screen(screen)
-      app_delegate.open_root_screen(screen)
+    def open_root_screen(screen, args = {})
+      app_delegate.open_root_screen(screen, args)
     end
 
     def open_modal(screen, args = {})

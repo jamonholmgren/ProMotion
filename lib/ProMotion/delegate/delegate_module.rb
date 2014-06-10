@@ -58,18 +58,20 @@ module ProMotion
       (defined?(Motion) && defined?(Motion::Xray) && defined?(Motion::Xray::XrayWindow)) ? Motion::Xray::XrayWindow : UIWindow
     end
 
-    def open_screen(screen, args={})
-
+    def open_screen(screen, args = {})
       screen = screen.new if screen.respond_to?(:new)
-
-      self.home_screen = screen
-
       self.window ||= self.ui_window.alloc.initWithFrame(UIScreen.mainScreen.bounds)
-      self.window.rootViewController = (screen.navigationController || screen)
+
+
+      if home_screen && args[:animated]
+        home_screen.navigationController.setViewControllers([screen], animated: true)
+      else
+        self.window.rootViewController = (screen.navigationController || screen)
+      end
+
       self.window.tintColor = self.class.send(:get_tint_color) if self.window.respond_to?("tintColor=")
       self.window.makeKeyAndVisible
-
-      screen
+      self.home_screen = screen
     end
     alias :open :open_screen
     alias :open_root_screen :open_screen

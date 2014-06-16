@@ -22,7 +22,7 @@ module ProMotion
 
     # TODO: Remove this in ProMotion 2.1. Just for migration purposes.
     def check_deprecated_styles
-      whitelist = [ :title, :subtitle, :image, :remote_image, :accessory, :selection_style, :action, :arguments, :cell_style, :cell_class, :cell_identifier, :editing_style, :search_text, :keep_selection ]
+      whitelist = [ :title, :subtitle, :image, :remote_image, :accessory, :selection_style, :action, :arguments, :cell_style, :cell_class, :cell_identifier, :editing_style, :search_text, :keep_selection, :height ]
       if (data_cell.keys - whitelist).length > 0
         PM.logger.deprecated("In #{self.table_screen.class.to_s}#table_data, you should set :#{(data_cell.keys - whitelist).join(", :")} in a `styles:` hash. See TableScreen documentation.")
       end

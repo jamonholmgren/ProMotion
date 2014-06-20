@@ -6,14 +6,16 @@ module ProMotion
     def screen_setup
       check_content_data
       self.external_links ||= false
+      self.detector_types ||= :none
     end
 
     def on_init
-      self.detector_types ||= UIDataDetectorTypeNone
       if self.detector_types.is_a? Array
         detectors = UIDataDetectorTypeNone
         self.detector_types.each { |dt| detectors |= map_detector_symbol(dt) }
         self.detector_types = detectors
+      else
+        self.detector_types = map_detector_symbol(self.detector_types)
       end
 
       self.webview ||= add UIWebView.new, {

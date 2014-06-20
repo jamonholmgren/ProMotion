@@ -1,11 +1,12 @@
 module ProMotion
   module WebScreenModule
 
-    attr_accessor :webview, :external_links, :detector_types
+    attr_accessor :webview, :external_links, :detector_types, :scale_to_fit
 
     def screen_setup
       check_content_data
       self.external_links ||= false
+      self.scale_to_fit ||= false
       self.detector_types ||= :none
     end
 
@@ -24,6 +25,7 @@ module ProMotion
         delegate: self,
         data_detector_types: self.detector_types
       }
+      self.webview.scalesPageToFit = self.scale_to_fit
       self.webview.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal
       set_initial_content
     end

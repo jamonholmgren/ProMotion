@@ -72,6 +72,7 @@ describe "web screen properties" do
     it "should have a default values" do
       webscreen = TestWebScreen.new()
       webscreen.web.dataDetectorTypes.should == UIDataDetectorTypeNone
+      webscreen.web.scalesPageToFit.should == false
       webscreen.external_links.should == false
     end
 
@@ -83,6 +84,11 @@ describe "web screen properties" do
     it "should set multiple data detectors" do
       webscreen = TestWebScreen.new(detector_types: [:phone, :link])
       webscreen.web.dataDetectorTypes.should == UIDataDetectorTypePhoneNumber | UIDataDetectorTypeLink
+    end
+
+    it "should set the scaling mode of the screen" do
+      webscreen = TestWebScreen.new(scale_to_fit: true)
+      webscreen.web.scalesPageToFit.should == true
     end
 
     it "should have the ability to open links externally" do

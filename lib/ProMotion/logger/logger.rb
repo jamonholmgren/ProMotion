@@ -36,6 +36,7 @@ module ProMotion
       return if defined?(RUBYMOTION_ENV) && RUBYMOTION_ENV == "test"
       color = COLORS[color] || COLORS[:default]
       puts color[0] + NAME + "[#{label}] #{message_text}" + color[1]
+      nil
     end
 
     def error(message)

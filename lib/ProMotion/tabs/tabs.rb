@@ -21,7 +21,7 @@ module ProMotion
     end
 
     def refresh_tab_bar_item
-      self.tabBarItem = create_tab_bar_item(self.tab_bar_item) if self.tab_bar_item && self.respond_to?(:tabBarItem=)
+      self.tabBarItem = create_tab_bar_item(self.tab_bar_item) if self.tab_bar_item && self.respond_to?("tabBarItem=")
     end
 
     def set_tab_bar_badge(number)
@@ -29,36 +29,35 @@ module ProMotion
       refresh_tab_bar_item
     end
 
-    def create_tab_bar_icon(icon, tag)
-      return UITabBarItem.alloc.initWithTabBarSystemItem(icon, tag: tag)
-    end
-
-    def create_tab_bar_icon_custom(title, icon_image, tag)
-      if icon_image.is_a?(String)
-        icon_image = UIImage.imageNamed(icon_image)
-      elsif icon_image.is_a?(Hash)
-        icon_selected = icon_image[:selected]
-        icon_unselected = icon_image[:unselected]
-        icon_image = nil
+    def create_tab_bar_item_custom(title, item_image, tag)
+      if item_image.is_a?(String)
+        item_image = UIImage.imageNamed(item_image)
+      elsif item_image.is_a?(Hash)
+        item_selected = item_image[:selected]
+        item_unselected = item_image[:unselected]
+        item_image = nil
       end
 
-      item = UITabBarItem.alloc.initWithTitle(title, image:icon_image, tag:tag)
+      item = UITabBarItem.alloc.initWithTitle(title, image:item_image, tag:tag)
 
-      if icon_selected || icon_unselected
-        item.setFinishedSelectedImage(icon_selected, withFinishedUnselectedImage: icon_unselected)
+      if item_selected || item_unselected
+        item.setFinishedSelectedImage(item_selected, withFinishedUnselectedImage: item_unselected)
       end
 
       return item
     end
 
     def create_tab_bar_item(tab={})
+      return PM.logger.deprecated("`system_icon:` no longer supported. Use `system_item:` instead.") if tab[:system_icon]
+      return PM.logger.deprecated("`icon:` no longer supported. Use `system_item:` instead.") if tab[:icon]
+
       title = "Untitled"
       title = tab[:title] if tab[:title]
       tab[:tag] ||= @current_tag ||= 0
       @current_tag = tab[:tag] + 1
 
-      tab_bar_item = create_tab_bar_icon(map_tab_symbol(tab[:system_item]), tab[:tag]) if tab[:system_item]
-      tab_bar_item = create_tab_bar_icon_custom(title, tab[:icon], tab[:tag]) if tab[:icon]
+      tab_bar_item = UITabBarItem.alloc.initWithTabBarSystemItem(map_tab_symbol(tab[:system_item]), tag: tab[:tag]) if tab[:system_item]
+      tab_bar_item = create_tab_bar_item_custom(title, tab[:item], tab[:tag]) if tab[:item]
 
       tab_bar_item.badgeValue = tab[:badge_number].to_s unless tab[:badge_number].nil? || tab[:badge_number] <= 0
 

@@ -26,7 +26,7 @@ describe "screen properties" do
     HomeScreen.title.should != 'instance method'
   end
 
-  it "should set the tab bar item with a system icon" do
+  it "should set the tab bar item with a system item" do
     @screen.set_tab_bar_item system_item: :contacts
     comparison = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemContacts, tag: 0)
     @screen.tabBarItem.systemItem.should == comparison.systemItem
@@ -34,11 +34,11 @@ describe "screen properties" do
     @screen.tabBarItem.image.should == comparison.image
   end
 
-  it "should set the tab bar item with a custom icon and title" do
-    @screen.set_tab_bar_item title: "My Screen", icon: "list"
+  it "should set the tab bar item with a custom item and title" do
+    @screen.set_tab_bar_item title: "My Screen", item: "list"
 
-    icon_image = UIImage.imageNamed("list")
-    comparison = UITabBarItem.alloc.initWithTitle("My Screen", image: icon_image, tag: 0)
+    item_image = UIImage.imageNamed("list")
+    comparison = UITabBarItem.alloc.initWithTitle("My Screen", image: item_image, tag: 0)
 
     @screen.tabBarItem.systemItem.should == comparison.systemItem
     @screen.tabBarItem.tag.should == comparison.tag

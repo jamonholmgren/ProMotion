@@ -38,7 +38,7 @@ module ProMotion
   private
 
     def split_screen_setup(split, args)
-      if (args[:icon] || args[:title]) && respond_to?(:create_tab_bar_item)
+      if (args[:item] || args[:title]) && respond_to?(:create_tab_bar_item)
         split.tabBarItem = create_tab_bar_item(args)
       end
       @pm_split_screen_button_title = args[:button_title] if args.has_key?(:button_title)

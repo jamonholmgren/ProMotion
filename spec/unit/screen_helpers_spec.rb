@@ -123,7 +123,7 @@ describe "screen helpers" do
       end
 
       it "should apply properties when opening a new screen" do
-        new_screen = @screen.send(:set_up_screen_for_open, BasicScreen, title: 'Some Title', modal: true, hide_tab_bar: true, nav_bar: true)
+        new_screen = @screen.send(:set_up_screen_for_open, BasicScreen, { title: 'Some Title', modal: true, hide_tab_bar: true, nav_bar: true })
 
         new_screen.parent_screen.should == @screen
         new_screen.title.should == 'Some Title'
@@ -140,16 +140,8 @@ describe "screen helpers" do
           animated.should == true
           completion.should == nil
         end
-        @screen.send(:present_modal_view_controller, new_screen, true, nil)
+        @screen.send(:present_modal_view_controller, new_screen, { animated: true, completion: nil })
       end
-
-      # it "should push screen onto nav controller stack inside a tab bar" do
-      #   # TODO: Implement this test
-      # end
-
-      # it "should set the tab bar selectedIndex when opening a screen inside a tab bar" do
-      #   # TODO: Implement this test
-      # end
 
       it "should open a root screen if :close_all is provided" do
         @screen.mock!(:open_root_screen) { |screen| screen.should.be.instance_of BasicScreen }
@@ -158,20 +150,20 @@ describe "screen helpers" do
       end
 
       it "should present a modal screen if :modal is provided" do
-        @screen.mock!(:present_modal_view_controller) do |screen, animated, completion|
+        @screen.mock!(:present_modal_view_controller) do |screen, args|
           screen.should.be.instance_of BasicScreen
-          animated.should == true
-          completion.should.be.kind_of Proc
+          args[:animated].should == true
+          args[:completion].should.be.kind_of Proc
         end
         screen = @screen.open BasicScreen, modal: true, completion: lambda{}
         screen.should.be.kind_of BasicScreen
       end
 
       it "should present a modal screen if open_modal is used" do
-        @screen.mock!(:present_modal_view_controller) do |screen, animated, completion|
+        @screen.mock!(:present_modal_view_controller) do |screen, args|
           screen.should.be.instance_of BasicScreen
-          animated.should == true
-          completion.should == nil
+          args[:animated].should == true
+          args[:completion].should == nil
         end
         screen = @screen.open_modal BasicScreen
         screen.should.be.kind_of BasicScreen
@@ -191,7 +183,7 @@ describe "screen helpers" do
 
       it "should open screen in tab bar if :in_tab is provided" do
         @screen.stub!(:tab_bar, return: true)
-        @screen.mock!(:present_view_controller_in_tab_bar_controller) do |screen, tab_name|
+        @screen.mock!(:open_in_tab) do |screen, tab_name|
           screen.should.be.instance_of BasicScreen
           tab_name.should == 'my_tab'
         end
@@ -218,6 +210,20 @@ describe "screen helpers" do
         parent_screen.mock!(:open_root_screen) { |vc| vc.should.be == new_screen }
         screen = parent_screen.open_screen new_screen
         screen.should == new_screen
+      end
+
+      it "should not double-open a view controller if it's already been opened" do
+        parent_screen = HomeScreen.new(nav_bar: true)
+        new_screen = BasicScreen.new
+        @pushed = 0
+        parent_screen.navigationController.mock!("pushViewController:animated:") do |vc, animated|
+          @pushed += 1
+          parent_screen.navigationController.stub!("topViewController", return: vc)
+        end
+        parent_screen.open new_screen
+        @pushed.should == 1
+        parent_screen.open new_screen
+        @pushed.should == 1
       end
 
     end

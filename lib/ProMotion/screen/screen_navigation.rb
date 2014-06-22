@@ -2,38 +2,27 @@ module ProMotion
   module ScreenNavigation
 
     def open_screen(screen, args = {})
-      args = { in_detail: false, in_master: false, close_all: false, modal: false, in_tab: false, animated: true }.merge args
+      args = { animated: true }.merge(args)
 
       # Apply properties to instance
       screen = set_up_screen_for_open(screen, args)
       ensure_wrapper_controller_in_place(screen, args)
 
-      if args[:in_detail] && self.split_screen
-        self.split_screen.detail_screen = screen
-
-      elsif args[:in_master] && self.split_screen
-        self.split_screen.master_screen = screen
-
-      elsif args[:close_all]
-        open_root_screen screen
-
-      elsif args[:modal]
-        present_modal_view_controller screen, args[:animated], args[:completion]
-
-      elsif args[:in_tab] && self.tab_bar
-        present_view_controller_in_tab_bar_controller screen, args[:in_tab]
-
-      elsif self.navigationController
-        push_view_controller screen, self.navigationController, args[:animated].nil? ? true : args[:animated]
-
-      else
-        open_root_screen (screen.navigationController || screen)
-
-      end
-
+      opened ||= open_in_split_screen(screen, args) if self.split_screen
+      opened ||= open_root_screen(screen) if args[:close_all]
+      opened ||= present_modal_view_controller(screen, args) if args[:modal]
+      opened ||= open_in_tab(screen, args[:in_tab]) if args[:in_tab]
+      opened ||= push_view_controller(screen, self.navigationController, !!args[:animated]) if self.navigationController
+      opened ||= open_root_screen(screen.navigationController || screen)
       screen
     end
     alias :open :open_screen
+
+    def open_in_split_screen(screen, args)
+      self.split_screen.detail_screen = screen if args[:in_detail]
+      self.split_screen.master_screen = screen if args[:in_master]
+      args[:in_detail] || args[:in_master]
+    end
 
     def open_root_screen(screen)
       app_delegate.open_root_screen(screen)
@@ -81,11 +70,12 @@ module ProMotion
         PM.logger.error "You need a nav_bar if you are going to push #{vc.to_s} onto it."
       end
       nav_controller ||= self.navigationController
+      return if nav_controller.topViewController == vc
       vc.first_screen = false if vc.respond_to?(:first_screen=)
       nav_controller.pushViewController(vc, animated: animated)
     end
 
-    protected
+  protected
 
     def set_up_screen_for_open(screen, args={})
 
@@ -117,24 +107,23 @@ module ProMotion
       end
     end
 
-    def present_modal_view_controller(screen, animated, completion)
-      self.presentViewController((screen.navigationController || screen), animated:animated, completion:completion)
+    def present_modal_view_controller(screen, args={})
+      self.presentViewController((screen.navigationController || screen), animated: args[:animated], completion: args[:completion])
     end
 
-    def present_view_controller_in_tab_bar_controller(screen, tab_name)
-      vc = open_tab tab_name
-      if vc
-
-        if vc.is_a?(UINavigationController)
-          push_view_controller(screen, vc)
-        else
-          # TODO: This should probably open the vc, shouldn't it?
-          # This isn't well tested and needs to work better.
-          self.tab_bar.selectedIndex = vc.tabBarItem.tag
-        end
-
+    def open_in_tab(screen, tab_name)
+      vc = open_tab(tab_name)
+      return PM.logger.error("No tab bar item '#{tab_name}'") && nil unless vc
+      if vc.is_a?(UINavigationController)
+        push_view_controller(screen, vc)
       else
-        PM.logger.error "No tab bar item '#{tab_name}'"
+        replace_view_controller(screen, vc)
+      end
+    end
+
+    def replace_view_controller(new_vc, old_vc)
+      self.tab_bar.viewControllers = self.tab_bar.viewControllers.map do |vc|
+        vc == old_vc ? new_vc : vc
       end
     end
 

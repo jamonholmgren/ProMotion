@@ -1,6 +1,3 @@
-motion_require '../cocoatouch/view_controller'
-motion_require 'screen_module'
-
 module ProMotion
   class Screen < ViewController
     # You can inherit a screen from any UIViewController if you include the ScreenModule

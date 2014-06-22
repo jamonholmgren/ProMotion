@@ -64,7 +64,7 @@ describe "table screens" do
     end
 
     it "should create a search header" do
-      @screen.table_view.tableHeaderView.should.be.kind_of UISearchBar
+      @screen.tableView.tableHeaderView.should.be.kind_of UISearchBar
     end
 
   end

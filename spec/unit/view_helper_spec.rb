@@ -41,6 +41,12 @@ describe "view helpers" do
     layered_view.layer.mask.backgroundColor.should == UIColor.redColor.CGColor
   end
 
+  it "should allow you to set an accessor to a hash" do
+    view_with_attr = CustomTitleView.new
+    @dummy.set_attributes view_with_attr, { title: { jamon: 1 } }
+    view_with_attr.title.should == { jamon: 1 }
+  end
+
   it "should allow you to set snake_case attributes" do
     layered_view = UIView.alloc.initWithFrame(CGRectMake(0, 0, 10, 10))
 
@@ -87,87 +93,6 @@ describe "view helpers" do
         @dummy.content_width(@dummy).should == 0
       end
 
-    end
-
-  end
-
-  describe "set_easy_attributes" do
-
-    before do
-      @dummy = UIView.alloc.initWithFrame CGRectZero
-      @dummy.extend ProMotion::Styling
-
-      @parent = UIView.alloc.initWithFrame(CGRectMake(0, 0, 320, 480))
-      @child = UIView.alloc.initWithFrame(CGRectZero)
-    end
-
-    it "Should set the autoresizingMask for all" do
-      @dummy.set_easy_attributes @parent, @child, {
-        resize: [:left, :right, :top, :bottom, :width, :height]
-      }
-
-      mask =  UIViewAutoresizingFlexibleLeftMargin |
-              UIViewAutoresizingFlexibleRightMargin |
-              UIViewAutoresizingFlexibleTopMargin |
-              UIViewAutoresizingFlexibleBottomMargin |
-              UIViewAutoresizingFlexibleWidth |
-              UIViewAutoresizingFlexibleHeight
-
-      @child.autoresizingMask.should == mask
-    end
-
-    it "Should set the autoresizingMask for half" do
-      @dummy.set_easy_attributes @parent, @child, {
-        resize: [:left, :right, :top]
-      }
-
-      mask =  UIViewAutoresizingFlexibleLeftMargin |
-              UIViewAutoresizingFlexibleRightMargin |
-              UIViewAutoresizingFlexibleTopMargin
-
-      @child.autoresizingMask.should == mask
-    end
-
-    it "Should set the autoresizingMask for the second half" do
-      @dummy.set_easy_attributes @parent, @child, {
-        resize: [:bottom, :width, :height]
-      }
-
-      mask =  UIViewAutoresizingFlexibleBottomMargin |
-              UIViewAutoresizingFlexibleWidth |
-              UIViewAutoresizingFlexibleHeight
-
-      @child.autoresizingMask.should == mask
-    end
-
-    it "Should not set the autoresizingMask" do
-      @dummy.set_easy_attributes @parent, @child, {}
-
-      mask =  UIViewAutoresizingNone
-
-      @child.autoresizingMask.should == mask
-    end
-
-    it "Should create a frame" do
-      @dummy.set_easy_attributes @parent, @child, {
-        left: 10,
-        top: 20,
-        width: 100,
-        height: 50
-      }
-
-      @child.frame.should == CGRectMake(10, 20, 100, 50)
-    end
-
-    it "Should create a frame with x & y" do
-      @dummy.set_easy_attributes @parent, @child, {
-        x: 10,
-        y: 20,
-        width: 100,
-        height: 50
-      }
-
-      @child.frame.should == CGRectMake(10, 20, 100, 50)
     end
 
   end

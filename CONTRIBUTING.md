@@ -1,4 +1,4 @@
-Over 20 developers have contributed to ProMotion. We love it when ProMotion users become ProMotion contributors.
+Over 30 developers have contributed to ProMotion. We love it when ProMotion users become ProMotion contributors.
 
 ## Working on New Features
 
@@ -13,8 +13,8 @@ Over 20 developers have contributed to ProMotion. We love it when ProMotion user
 1. Fork the project
 2. Create a feature branch
 3. Code
-4. Update or create new specs ** NOTE: your PR is far more likely to be merged if you include comprehensive tests! **
-5. Make sure tests are passing by running `rake spec` *(you can run functional and unit specs separately with `rake spec:func` and `rake spec:unit`, and a single spec with `rake spec:single f=test_file_name`)*
-6. Submit pull request to `edge` (for new features) or `master` (for bugfixes)
+4. Update or create new specs **NOTE: your PR is far more likely to be merged if you include comprehensive tests!**
+5. Make sure tests are passing by running `rake spec`
+6. Submit pull request to `master`
 7. Make a million little nitpicky changes that @jamonholmgren wants
 8. Merged, then fame, adoration, kudos everywhere

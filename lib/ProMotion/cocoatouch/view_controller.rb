@@ -2,13 +2,12 @@ module ProMotion
   class ViewController < UIViewController
     def self.new(args = {})
       s = self.alloc.initWithNibName(args[:nib_name] || nil, bundle:args[:bundle] || nil)
-      s.on_create(args) if s.respond_to?(:on_create)
+      s.screen_init(args) if s.respond_to?(:screen_init)
       s
     end
 
     def loadView
-      super
-      self.send(:on_load) if self.respond_to?(:on_load)
+      self.respond_to?(:load_view) ? self.load_view : super
     end
 
     def viewDidLoad
@@ -32,9 +31,7 @@ module ProMotion
     end
 
     def viewDidDisappear(animated)
-      if self.respond_to?("view_did_disappear:")
-        self.view_did_disappear(animated)
-      end
+      self.view_did_disappear(animated) if self.respond_to?("view_did_disappear:")
       super
     end
 

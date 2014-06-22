@@ -45,7 +45,13 @@ module ProMotion
 
     def set_remote_image
       return unless data_cell[:remote_image] && jm_image_cache?
-      self.imageView.setImageWithURL(data_cell[:remote_image][:url].to_url, placeholder: remote_placeholder)
+
+      self.imageView.image = remote_placeholder
+      JMImageCache.sharedCache.imageForURL(data_cell[:remote_image][:url].to_url, completionBlock:proc { |downloaded_image|
+        self.imageView.image = downloaded_image
+        self.setNeedsLayout
+      })
+
       self.imageView.layer.masksToBounds = true
       self.imageView.layer.cornerRadius = data_cell[:remote_image][:radius] if data_cell[:remote_image][:radius]
       self.imageView.contentMode = map_content_mode_symbol(data_cell[:remote_image][:content_mode]) if data_cell[:remote_image][:content_mode]

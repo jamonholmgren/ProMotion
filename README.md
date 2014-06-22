@@ -87,6 +87,8 @@ end
 
 Overview: In ProMotion 2.0, we removed deprecated APIs, refactored and cleaned up a ton of code, pulled `PushNotification` and `MapScreen` into their own gems, and simplified the API. It now builds 55% faster and is 20%+ lighter.
 
+Follow our [Migration Guide](https://github.com/clearsightstudio/ProMotion/wiki/Migration-Guide:-ProMotion-1.2-to-2.0) for a painless upgrade.
+
 **API changes**
 
 1. Extracted `PM::MapScreen` into [ProMotion-map](https://github.com/clearsightstudio/ProMotion-map)

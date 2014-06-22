@@ -7,7 +7,7 @@ It introduces a clean, Ruby-style syntax for building screens that is easy to le
 abstracts a ton of boilerplate UIViewController, UINavigationController, and other iOS code into a
 simple, Ruby-like DSL.
 
-* Watch Jamon Holmgren give a talk about ProMotion at [RubyMotion #inspect2014](#) (coming soon)
+* Watch Jamon Holmgren give a talk about ProMotion at [RubyMotion #inspect2014](http://confreaks.com/videos/3813-inspect-going-pro-with-promotion-from-prototype-to-production) (video)
 * Watch the [September 2013 Motion Meetup](http://www.youtube.com/watch?v=rf7h-3AiMRQ) where Gant Laborde
 interviews Jamon Holmgren about ProMotion!
 

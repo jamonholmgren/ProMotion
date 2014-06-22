@@ -225,13 +225,12 @@ module ProMotion
         none:   UITableViewCellEditingStyleNone,
         delete: UITableViewCellEditingStyleDelete,
         insert: UITableViewCellEditingStyleInsert
-      }[symbol] || symbol
+      }[symbol] || symbol || UITableViewCellEditingStyleNone
     end
 
     def map_row_animation_symbol(symbol)
       symbol ||= UITableViewRowAnimationAutomatic
       {
-        automatic:  UITableViewRowAnimationAutomatic,
         fade:       UITableViewRowAnimationFade,
         right:      UITableViewRowAnimationRight,
         left:       UITableViewRowAnimationLeft,
@@ -240,7 +239,7 @@ module ProMotion
         none:       UITableViewRowAnimationNone,
         middle:     UITableViewRowAnimationMiddle,
         automatic:  UITableViewRowAnimationAutomatic
-      }[symbol] || symbol
+      }[symbol] || symbol || UITableViewRowAnimationAutomatic
     end
 
     module TableClassMethods

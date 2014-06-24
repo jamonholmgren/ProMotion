@@ -13,7 +13,7 @@ describe "PM::TableViewCellModule" do
       accessory: {
         view: :switch, # currently only :switch is supported
         value: true
-      }, 
+      },
       image: {
         image: UIImage.imageNamed("list"),
         radius: 15
@@ -24,7 +24,8 @@ describe "PM::TableViewCellModule" do
           masks_to_bounds: true
         },
         background_color: UIColor.redColor
-      }
+      },
+      accessory_type: :disclosure_indicator
     }
   end
 
@@ -136,6 +137,8 @@ describe "PM::TableViewCellModule" do
     @subject.imageView.layer.cornerRadius.should == 15.0
   end
 
+  it "should have the proper accessory type" do
+    @subject.accessoryType.should == UITableViewCellAccessoryDisclosureIndicator
+  end
+
 end
-
-

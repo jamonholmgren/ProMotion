@@ -87,6 +87,8 @@ end
 
 Overview: In ProMotion 2.0, we removed deprecated APIs, refactored and cleaned up a ton of code, pulled `PushNotification` and `MapScreen` into their own gems, and simplified the API. It now builds 55% faster and is 20%+ lighter.
 
+Follow our [Migration Guide](https://github.com/clearsightstudio/ProMotion/wiki/Migration-Guide:-ProMotion-1.2-to-2.0) for a painless upgrade.
+
 **API changes**
 
 1. Extracted `PM::MapScreen` into [ProMotion-map](https://github.com/clearsightstudio/ProMotion-map)
@@ -111,7 +113,7 @@ Overview: In ProMotion 2.0, we removed deprecated APIs, refactored and cleaned u
 3. Moved many files around into a more logical, simpler structure.
 4. Removed `PM::Conversions`. The only helper we were using was the `objective_c_method_name` method, and that was only used in `PM::Styling`. So we moved it there.
 5. New module, `PM::NavBarModule`. Moved any navigation controller methods into this module, cleaning up the `PM::ScreenModule` quite a bit.
-6. Lots of code refactoring -- CodeClimate went from 2.47 to 3.42 GPA.
+6. Lots of code refactoring -- CodeClimate went from [2.47 to 3.35 GPA](http://clrsight.co/jh/8fi5l31nzs.png).
 7. Much cleaner `open` code!
 8. Converted several *slow* functional tests into *fast* unit tests with the same coverage.
 

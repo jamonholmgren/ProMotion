@@ -68,6 +68,15 @@ describe "ProMotion::Screen functional" do
     end
   end
 
+  it "should call the on_back method on the root controller when navigating back" do
+    @nav_screen = NavigationScreen.new nav_bar: true
+    @presented_screen = PresentScreen.new
+    @nav_screen.open @presented_screen
+    wait 0.6 do
+      @presented_screen.close
+      @nav_screen.on_back_fired.should == true
+    end
+  end
 
   it "should allow opening and closing a modal screen" do
     @basic = BasicScreen.new(nav_bar: true)

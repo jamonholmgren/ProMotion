@@ -125,12 +125,18 @@ describe "screen properties" do
 
   describe "navigation controller behavior" do
 
-    it "should have a nav bar" do
-      @screen.nav_bar?.should == true
+    it "should let the instance set the nav_controller" do
+      screen = HomeScreen.new nav_bar: true, nav_controller: CustomNavigationController
+      screen.on_load
+      screen.navigationController.should.be.instance_of CustomNavigationController
     end
 
     it "#navigationController should return a navigation controller" do
       @screen.navigationController.should.be.instance_of ProMotion::NavigationController
+    end
+
+    it "should have a nav bar" do
+      @screen.nav_bar?.should == true
     end
 
     it "have a right bar button item" do
@@ -260,4 +266,5 @@ describe "screen with toolbar" do
     screen.set_toolbar_button([{title: "Testing Toolbar"}], false)
     screen.navigationController.toolbarHidden?.should == false
   end
+
 end

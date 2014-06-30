@@ -44,7 +44,7 @@ module ProMotion
     def add_nav_bar(args = {})
       self.navigationController ||= begin
         self.first_screen = true if self.respond_to?(:first_screen=)
-        nav = NavigationController.alloc.initWithRootViewController(self)
+        nav = (args[:nav_controller] || NavigationController).alloc.initWithRootViewController(self)
         nav.setModalTransitionStyle(args[:transition_style]) if args[:transition_style]
         nav.setModalPresentationStyle(args[:presentation_style]) if args[:presentation_style]
         nav

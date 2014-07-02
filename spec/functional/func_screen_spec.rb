@@ -72,10 +72,20 @@ describe "ProMotion::Screen functional" do
     @nav_screen = NavigationScreen.new nav_bar: true
     @presented_screen = PresentScreen.new
     @nav_screen.open @presented_screen
-    wait 0.6 do
-      @presented_screen.close
-      @nav_screen.on_back_fired.should == true
-    end
+    @presented_screen.close
+    @nav_screen.on_back_fired.should == true
+  end
+
+  it "should call the correct on_back method when nesting screens" do
+    @base_screen = NavigationScreen.new nav_bar: true
+    @child_screen = @base_screen.open NavigationScreen.new
+    @grandchild_screen = @child_screen.open NavigationScreen.new
+
+    # start closing
+    @grandchild_screen.close
+    @child_screen.on_back_fired.should == true
+    @child_screen.close
+    @base_screen.on_back.should == true
   end
 
   it "should allow opening and closing a modal screen" do

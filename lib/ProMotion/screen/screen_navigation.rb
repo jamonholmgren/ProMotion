@@ -42,6 +42,7 @@ module ProMotion
       args[:animated] = true unless args.has_key?(:animated)
 
       if self.modal?
+        close_nav_screen args if self.navigationController
         close_modal_screen args
 
       elsif self.navigationController
@@ -144,10 +145,8 @@ module ProMotion
       else
         self.navigationController.popViewControllerAnimated(args[:animated])
       end
+      self.navigationController = nil
     end
 
   end
 end
-
-
-

@@ -21,10 +21,10 @@ module ProMotion
 
       self.webview ||= add UIWebView.new, {
         frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height),
-        resize: [ :width, :height ],
         delegate: self,
         data_detector_types: self.detector_types
       }
+      self.webview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
       self.webview.scalesPageToFit = self.scale_to_fit
       self.webview.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal
       set_initial_content

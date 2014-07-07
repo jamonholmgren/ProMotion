@@ -17,7 +17,8 @@ module ProMotion
         gesture_point = gesture.locationInView(table_view)
         index_path = table_view.indexPathForRowAtPoint(gesture_point)
         data_cell = self.promotion_table_data.cell(index_path: index_path)
-        trigger_action(data_cell[:long_press_action], data_cell[:arguments]) if data_cell[:long_press_action]
+        data_cell[:arguments] ||= {}
+        trigger_action(data_cell[:long_press_action], data_cell[:arguments].merge({index_path: index_path})) if data_cell[:long_press_action]
       end
     end
   end

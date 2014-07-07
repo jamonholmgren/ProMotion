@@ -1,4 +1,4 @@
-describe "ProMotion::TestTableScreen functionality" do
+describe "ProMotion::TableScreen functionality" do
   tests PM::TestTableScreen
 
   def table_screen

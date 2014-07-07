@@ -1,4 +1,4 @@
-describe "ProMotion::Screen functional" do
+describe "ProMotion::Screen functionality" do
   tests PM::Screen
 
   # Override controller to properly instantiate
@@ -44,7 +44,7 @@ describe "ProMotion::Screen functional" do
       end
 
     end
-    
+
   end
 
   it "should push another screen with animation by default" do

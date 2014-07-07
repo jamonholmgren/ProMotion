@@ -115,6 +115,16 @@ describe "PM::Table module" do
     @subject.tableView(@subject.table_view, didSelectRowAtIndexPath:@custom_ip)
   end
 
+  it "should return an NSIndexPath in the arguments" do
+    @subject.mock! :tapped_cell_1 do |args|
+      args[:index_path].should.be.kind_of NSIndexPath
+      args[:index_path].section.should == 3
+      args[:index_path].row.should == 0
+    end
+
+    @subject.tableView(@subject.table_view, didSelectRowAtIndexPath:@custom_ip)
+  end
+
   # TODO - make this test work when MacBacon supports long press gestures
   # https://github.com/HipByte/RubyMotion/issues/160
   #

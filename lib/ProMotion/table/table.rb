@@ -125,8 +125,16 @@ module ProMotion
       table_cell
     end
 
-    def update_table_data
-      self.update_table_view_data(self.table_data)
+    def update_table_data(index_paths = nil)
+      if index_paths
+        index_paths = [index_paths] unless index_paths.is_a?(Array)
+
+        table_view.beginUpdates
+        table_view.reloadRowsAtIndexPaths(index_path, withRowAnimation:UITableViewRowAnimationNone)
+        table_view.endUpdates
+      else
+        self.update_table_view_data(self.table_data)
+      end
       self.promotion_table_data.search(search_string) if searching?
     end
 

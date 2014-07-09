@@ -85,7 +85,7 @@ describe "ProMotion::Screen functional" do
     @grandchild_screen.close
     @child_screen.on_back_fired.should == true
     @child_screen.close
-    @base_screen.on_back.should == true
+    @base_screen.on_back_fired.should == true
   end
 
   it "should allow opening and closing a modal screen" do

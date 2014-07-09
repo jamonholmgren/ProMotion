@@ -1,4 +1,4 @@
-describe "Split screen functional" do
+describe "Split screen functionality" do
   tests PM::SplitViewController
 
   # Override controller to properly instantiate

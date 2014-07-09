@@ -111,5 +111,34 @@ describe "table screens" do
     end
   end
 
+  describe "test PM::TableScreen's updating functionality" do
+    before do
+      class UpdateTestTableScreen < PM::TableScreen
+        def table_data; @table_data ||= []; end
+        def on_load
+          @table_data = [{cells: []}]
+          update_table_data
+        end
+
+        def make_more_cells
+          @table_data = [{cells: [{title: "Cell 1"},{title: "Cell 2"}]}]
+        end
+      end
+    end
+
+    it 'should update the table data when update_table_data is called' do
+      @screen = UpdateTestTableScreen.new
+      @screen.tableView(@screen.tableView, numberOfRowsInSection:0).should == 0
+      @screen.make_more_cells
+
+      # We made them, but they shouldn't be in the table yet.
+      @screen.tableView(@screen.tableView, numberOfRowsInSection:0).should == 0
+
+      @screen.update_table_data
+      @screen.tableView(@screen.tableView, numberOfRowsInSection:0).should == 2
+    end
+
+  end
+
 end
 

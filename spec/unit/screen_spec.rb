@@ -9,7 +9,7 @@ describe "screen properties" do
   end
 
   it "should store title" do
-    HomeScreen.get_title.should == 'Home'
+    HomeScreen.title.should == 'Home'
   end
 
   it "should set default title on new instances" do
@@ -23,31 +23,26 @@ describe "screen properties" do
 
   it "should not let the instance reset the default title" do
     @screen.title = "instance method"
-    HomeScreen.get_title.should != 'instance method'
+    HomeScreen.title.should != 'instance method'
   end
 
-  it "should set the tab bar item with a system icon" do
-    @screen.set_tab_bar_item system_icon: :contacts
+  it "should set the tab bar item with a system item" do
+    @screen.set_tab_bar_item system_item: :contacts
     comparison = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemContacts, tag: 0)
     @screen.tabBarItem.systemItem.should == comparison.systemItem
     @screen.tabBarItem.tag.should == comparison.tag
     @screen.tabBarItem.image.should == comparison.image
   end
 
-  it "should set the tab bar item with a custom icon and title" do
-    @screen.set_tab_bar_item title: "My Screen", icon: "list"
+  it "should set the tab bar item with a custom item and title" do
+    @screen.set_tab_bar_item title: "My Screen", item: "list"
 
-    icon_image = UIImage.imageNamed("list")
-    comparison = UITabBarItem.alloc.initWithTitle("My Screen", image: icon_image, tag: 0)
+    item_image = UIImage.imageNamed("list")
+    comparison = UITabBarItem.alloc.initWithTitle("My Screen", image: item_image, tag: 0)
 
     @screen.tabBarItem.systemItem.should == comparison.systemItem
     @screen.tabBarItem.tag.should == comparison.tag
     @screen.tabBarItem.image.should == comparison.image
-  end
-
-  it "should store debug mode" do
-    HomeScreen.debug_mode = true
-    HomeScreen.debug_mode.should == true
   end
 
   it "#modal? should be true" do
@@ -130,12 +125,18 @@ describe "screen properties" do
 
   describe "navigation controller behavior" do
 
-    it "should have a nav bar" do
-      @screen.nav_bar?.should == true
+    it "should let the instance set the nav_controller" do
+      screen = HomeScreen.new nav_bar: true, nav_controller: CustomNavigationController
+      screen.on_load
+      screen.navigationController.should.be.instance_of CustomNavigationController
     end
 
     it "#navigationController should return a navigation controller" do
       @screen.navigationController.should.be.instance_of ProMotion::NavigationController
+    end
+
+    it "should have a nav bar" do
+      @screen.nav_bar?.should == true
     end
 
     it "have a right bar button item" do
@@ -151,7 +152,7 @@ describe "screen properties" do
   describe "bar button behavior" do
     describe "system bar buttons" do
       before do
-        @screen.set_nav_bar_right_button nil, action: :add_something, system_icon: UIBarButtonSystemItemAdd
+        @screen.set_nav_bar_button :right, title: nil, action: :add_something, system_item: UIBarButtonSystemItemAdd
       end
 
       it "has a right bar button item of the correct type" do
@@ -163,9 +164,19 @@ describe "screen properties" do
       end
     end
 
+    describe "bar button tint colors" do
+      before do
+        @screen.set_nav_bar_button :right, title: nil, action: :add_something, system_item: UIBarButtonSystemItemAdd, tint_color: UIColor.blueColor
+      end
+
+      it "sets the tint color" do
+        CGColorEqualToColor(@screen.navigationItem.rightBarButtonItem.tintColor, UIColor.blueColor).should == true
+      end
+    end
+
     describe 'titled bar buttons' do
       before do
-        @screen.set_nav_bar_right_button "Save", action: :save_something, style: UIBarButtonItemStyleDone
+        @screen.set_nav_bar_button :right, title: "Save", action: :save_something, style: UIBarButtonItemStyleDone
       end
 
       it "has a right bar button item of the correct type" do
@@ -184,7 +195,7 @@ describe "screen properties" do
     describe 'image bar buttons' do
       before do
         @image = UIImage.alloc.init
-        @screen.set_nav_bar_right_button @image, action: :save_something, style: UIBarButtonItemStyleDone
+        @screen.set_nav_bar_button :right, title: @image, action: :save_something, style: UIBarButtonItemStyleDone
       end
 
       it "has a right bar button item of the correct type" do
@@ -255,5 +266,28 @@ describe "screen with toolbar" do
     screen.set_toolbar_button([{title: "Testing Toolbar"}], false)
     screen.navigationController.toolbarHidden?.should == false
   end
+
 end
 
+describe 'toolbar tinted buttons' do
+  before do
+    @screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    @screen.on_load
+  end
+
+  it "creates string toolbar buttons with tint colors" do
+    @screen.set_toolbar_button([{title: "Testing Toolbar", tint_color: UIColor.redColor}])
+    @screen.navigationController.toolbar.items.first.tintColor.should == UIColor.redColor
+  end
+
+  it "creates image toolbar buttons with tint colors" do
+    @screen.set_toolbar_button([{image: UIImage.imageNamed("list"), tint_color: UIColor.redColor}])
+    @screen.navigationController.toolbar.items.first.tintColor.should == UIColor.redColor
+  end
+
+  it "creates system item toolbar buttons with tint colors" do
+    @screen.set_toolbar_button([{system_item: :reply, tint_color: UIColor.redColor}])
+    @screen.navigationController.toolbar.items.first.tintColor.should == UIColor.redColor
+  end
+
+end

@@ -31,3 +31,5 @@ tmp
 *.tmproject
 tmtags
 *.sublime-workspace
+
+lib/ProMotion/delegate/delegate_module.rb

@@ -10,12 +10,22 @@ describe "PM::TableViewCellModule" do
       cell_style: UITableViewCellStyleSubtitle,
       cell_identifier: "Custom Cell",
       cell_class: PM::TableViewCell,
-      layer: { masks_to_bounds: true },
-      background_color: UIColor.redColor,
-      selection_style: UITableViewCellSelectionStyleGray,
-      accessory:{view: :switch, value: true}, # currently only :switch is supported
-      image: { image: UIImage.imageNamed("list"), radius: 15 },
-      subviews: [ UIView.alloc.initWithFrame(CGRectZero), UILabel.alloc.initWithFrame(CGRectZero) ] # arbitrary views added to the cell
+      accessory: {
+        view: :switch, # currently only :switch is supported
+        value: true
+      },
+      image: {
+        image: UIImage.imageNamed("list"),
+        radius: 15
+      },
+      selection_style: :gray,
+      style: {
+        layer: {
+          masks_to_bounds: true
+        },
+        background_color: UIColor.redColor
+      },
+      accessory_type: :disclosure_indicator
     }
   end
 
@@ -38,7 +48,7 @@ describe "PM::TableViewCellModule" do
         {
           title: "",
           cells: [
-            { title: "Test 1", accessory_type: UITableViewCellStateShowingEditControlMask },
+            { title: "Test 1", style: { accessory_type: UITableViewCellStateShowingEditControlMask } },
             custom_cell,
             { title: "Test2", accessory: { view: button } },
             attributed_cell
@@ -127,15 +137,8 @@ describe "PM::TableViewCellModule" do
     @subject.imageView.layer.cornerRadius.should == 15.0
   end
 
-  it "should create two extra subviews" do
-    content_view = TestHelper.ios7 ? @subject.subviews.first : @subject
-    content_view.subviews.length.should == 3
-    content_view.subviews[1].class.should == UIView
-    content_view.subviews[2].class.should == UILabel
+  it "should have the proper accessory type" do
+    @subject.accessoryType.should == UITableViewCellAccessoryDisclosureIndicator
   end
 
-
-
 end
-
-

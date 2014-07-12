@@ -1,29 +1,32 @@
 module ProMotion
   module WebScreenModule
 
-    attr_accessor :webview, :external_links, :detector_types
+    attr_accessor :webview, :external_links, :detector_types, :scale_to_fit
 
     def screen_setup
       check_content_data
       self.external_links ||= false
+      self.scale_to_fit ||= false
+      self.detector_types ||= :none
     end
 
     def on_init
-
-      self.detector_types ||= UIDataDetectorTypeNone
       if self.detector_types.is_a? Array
         detectors = UIDataDetectorTypeNone
         self.detector_types.each { |dt| detectors |= map_detector_symbol(dt) }
         self.detector_types = detectors
+      else
+        self.detector_types = map_detector_symbol(self.detector_types)
       end
 
       self.webview ||= add UIWebView.new, {
         frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height),
-        resize: [ :width, :height ],
         delegate: self,
         data_detector_types: self.detector_types
       }
-
+      self.webview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
+      self.webview.scalesPageToFit = self.scale_to_fit
+      self.webview.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal
       set_initial_content
     end
 
@@ -108,11 +111,11 @@ module ProMotion
     end
 
     def open_in_safari(inRequest)
-      #Open UIWebView delegate links in Safari.
+      # Open UIWebView delegate links in Safari.
       UIApplication.sharedApplication.openURL(inRequest.URL)
     end
 
-    #UIWebViewDelegate Methods - Camelcase
+    # UIWebViewDelegate Methods - Camelcase
     def webView(inWeb, shouldStartLoadWithRequest:inRequest, navigationType:inType)
       if self.external_links == true && inType == UIWebViewNavigationTypeLinkClicked
         if defined?(OpenInChromeController)

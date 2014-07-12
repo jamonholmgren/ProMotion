@@ -37,9 +37,9 @@ describe "split screen functionality" do
   end
 
   it "should set the title on both screens" do
-    @master_screen.class.send(:get_title).should == "Master"
+    @master_screen.class.title.should == "Master"
     @master_screen.title.should == "Master"
-    @detail_screen.class.send(:get_title).should == "Detail"
+    @detail_screen.class.title.should == "Detail"
     @detail_screen.title.should == "Detail"
   end
 end
@@ -57,9 +57,9 @@ describe "split screen with UIViewControllers with ScreenModule" do
   end
 
   it "should set the title on both screens" do
-    @master_screen.class.send(:get_title).should == "Test Title"
+    @master_screen.class.title.should == "Test Title"
     @master_screen.title.should == "Test Title"
-    @detail_screen.class.send(:get_title).should == "Detail"
+    @detail_screen.class.title.should == "Detail"
     @detail_screen.title.should == "Detail"
   end
 

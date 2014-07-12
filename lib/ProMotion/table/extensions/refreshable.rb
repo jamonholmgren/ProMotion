@@ -1,6 +1,7 @@
 module ProMotion
   module Table
     module Refreshable
+
       def make_refreshable(params={})
         pull_message = params[:pull_message] || "Pull to refresh"
         @refreshing = params[:refreshing] || "Refreshing data..."

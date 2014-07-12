@@ -1,15 +1,10 @@
-motion_require '../view/styling'
-motion_require 'extensions/searchable'
-motion_require 'extensions/refreshable'
-motion_require 'extensions/indexable'
-
 module ProMotion
   module Table
-
     include ProMotion::Styling
     include ProMotion::Table::Searchable
     include ProMotion::Table::Refreshable
     include ProMotion::Table::Indexable
+    include ProMotion::Table::Longpressable
 
     attr_reader :promotion_table_data
 
@@ -21,6 +16,7 @@ module ProMotion
       check_table_data
       set_up_searchable
       set_up_refreshable
+      set_up_longpressable
     end
 
     def check_table_data
@@ -47,6 +43,12 @@ module ProMotion
       end
     end
 
+    def set_up_longpressable
+      if self.class.respond_to?(:get_longpressable) && self.class.get_longpressable
+        self.make_longpressable(self.class.get_longpressable_params)
+      end
+    end
+
     def searching?
       self.promotion_table_data.filtered
     end
@@ -62,31 +64,13 @@ module ProMotion
     def update_table_view_data(data)
       self.promotion_table_data.data = data
       table_view.reloadData
-    end
-
-    # Methods to retrieve data
-
-    def section_at_index(index)
-      self.promotion_table_data.section(index)
-    end
-
-    def cell_at_section_and_index(section, index)
-      self.promotion_table_data.cell(section: section, index: index)
+      @table_search_display_controller.searchResultsTableView.reloadData if searching?
     end
 
     def trigger_action(action, arguments)
-      if self.respond_to?(action)
-        expected_arguments = self.method(action).arity
-        if expected_arguments == 0
-          self.send(action)
-        elsif expected_arguments == 1 || expected_arguments == -1
-          self.send(action, arguments)
-        else
-          PM.logger.warn "#{action} expects #{expected_arguments} arguments. Maximum number of required arguments for an action is 1."
-        end
-      else
-        PM.logger.info "Action not implemented: #{action.to_s}"
-      end
+      return PM.logger.info "Action not implemented: #{action.to_s}" unless self.respond_to?(action)
+      return self.send(action) if self.method(action).arity == 0
+      self.send(action, arguments)
     end
 
     def accessory_toggled_switch(switch)
@@ -94,20 +78,16 @@ module ProMotion
       index_path = closest_parent(UITableView, table_cell).indexPathForCell(table_cell)
 
       if index_path
-        data_cell = cell_at_section_and_index(index_path.section, index_path.row)
+        data_cell = promotion_table_data.cell(section: index_path.section, index: index_path.row)
         data_cell[:accessory][:arguments] ||= {}
         data_cell[:accessory][:arguments][:value] = switch.isOn if data_cell[:accessory][:arguments].is_a?(Hash)
-
         trigger_action(data_cell[:accessory][:action], data_cell[:accessory][:arguments]) if data_cell[:accessory][:action]
       end
     end
 
     def delete_row(index_paths, animation = nil)
-      animation = map_row_animation_symbol(animation)
-      index_paths = [index_paths] if index_paths.kind_of?(NSIndexPath)
       deletable_index_paths = []
-
-      index_paths.each do |index_path|
+      Array(index_paths).each do |index_path|
         delete_cell = false
         delete_cell = send(:on_cell_deleted, self.promotion_table_data.cell(index_path: index_path)) if self.respond_to?("on_cell_deleted:")
         unless delete_cell == false
@@ -115,44 +95,44 @@ module ProMotion
           deletable_index_paths << index_path
         end
       end
-      table_view.deleteRowsAtIndexPaths(deletable_index_paths, withRowAnimation:animation) if deletable_index_paths.length > 0
+      table_view.deleteRowsAtIndexPaths(deletable_index_paths, withRowAnimation:map_row_animation_symbol(animation)) if deletable_index_paths.length > 0
     end
 
     def table_view_cell(params={})
+      params = index_path_to_section_index(params)
+      data_cell = self.promotion_table_data.cell(section: params[:section], index: params[:index])
+      return UITableViewCell.alloc.init unless data_cell
+      create_table_cell(data_cell)
+    end
+
+    def index_path_to_section_index(params)
       if params[:index_path]
         params[:section] = params[:index_path].section
         params[:index] = params[:index_path].row
       end
-
-      data_cell = self.promotion_table_data.cell(section: params[:section], index: params[:index])
-      return UITableViewCell.alloc.init unless data_cell # No data?
-
-      table_cell = create_table_cell(data_cell)
-
-      table_cell
+      params
     end
 
     def create_table_cell(data_cell)
-      table_cell = table_view.dequeueReusableCellWithIdentifier(data_cell[:cell_identifier])
-
-      unless table_cell
+      table_cell = table_view.dequeueReusableCellWithIdentifier(data_cell[:cell_identifier]) || begin
         table_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:data_cell[:cell_identifier])
-        table_cell.extend PM::TableViewCellModule unless table_cell.is_a?(PM::TableViewCellModule)
+        table_cell.extend(PM::TableViewCellModule) unless table_cell.is_a?(PM::TableViewCellModule)
         table_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
+        table_cell.clipsToBounds = true # fix for changed default in 7.1
+        table_cell
       end
-
       table_cell.setup(data_cell, self)
-
       table_cell
     end
 
     def update_table_data
       self.update_table_view_data(self.table_data)
+      self.promotion_table_data.search(search_string) if searching?
     end
 
     ########## Cocoa touch methods #################
     def numberOfSectionsInTableView(table_view)
-      Array(self.promotion_table_data.data).length
+      self.promotion_table_data.sections.length
     end
 
     # Number of cells
@@ -161,8 +141,8 @@ module ProMotion
     end
 
     def tableView(table_view, titleForHeaderInSection:section)
-      section = section_at_index(section) || return
-      section[:title]
+      section = promotion_table_data.section(section)
+      section && section[:title]
     end
 
     # Set table_data_index if you want the right hand index column (jumplist)
@@ -178,8 +158,9 @@ module ProMotion
 
     def tableView(table_view, willDisplayCell: table_cell, forRowAtIndexPath: index_path)
       data_cell = self.promotion_table_data.cell(index_path: index_path)
-      table_cell.backgroundColor = data_cell[:background_color] || UIColor.whiteColor
-      table_cell.send(:restyle!) if table_cell.respond_to?(:restyle!)
+      set_attributes table_cell, data_cell[:style] if data_cell[:style]
+      table_cell.send(:will_display) if table_cell.respond_to?(:will_display)
+      table_cell.send(:restyle!) if table_cell.respond_to?(:restyle!) # Teacup compatibility
     end
 
     def tableView(table_view, heightForRowAtIndexPath:index_path)
@@ -189,26 +170,12 @@ module ProMotion
     def tableView(table_view, didSelectRowAtIndexPath:index_path)
       data_cell = self.promotion_table_data.cell(index_path: index_path)
       table_view.deselectRowAtIndexPath(index_path, animated: true) unless data_cell[:keep_selection] == true
-
-      data_cell[:arguments] ||= {}
-      data_cell[:arguments][:cell] = data_cell if data_cell[:arguments].is_a?(Hash) # TODO: Should we really do this?
-
       trigger_action(data_cell[:action], data_cell[:arguments]) if data_cell[:action]
     end
 
     def tableView(table_view, editingStyleForRowAtIndexPath: index_path)
       data_cell = self.promotion_table_data.cell(index_path: index_path)
-
-      case data_cell[:editing_style]
-      when nil, :none
-        UITableViewCellEditingStyleNone
-      when :delete
-        UITableViewCellEditingStyleDelete
-      when :insert
-        UITableViewCellEditingStyleInsert
-      else
-        data_cell[:editing_style]
-      end
+      map_cell_editing_style(data_cell[:editing_style])
     end
 
     def tableView(table_view, commitEditingStyle: editing_style, forRowAtIndexPath: index_path)
@@ -235,22 +202,16 @@ module ProMotion
 
     # Section view methods
     def tableView(table_view, viewForHeaderInSection: index)
-      section = section_at_index(index)
-
-      if section[:title_view]
-        klass      = section[:title_view]
-        view       = klass.new if klass.respond_to?(:new)
-        view.title = section[:title] if view.respond_to?(:title=)
-        view
-      else
-        nil
-      end
+      section = promotion_table_data.section(index)
+      view = nil
+      view = section[:title_view].new if section[:title_view].respond_to?(:new)
+      view.title = section[:title] if view.respond_to?(:title=)
+      view
     end
 
     def tableView(table_view, heightForHeaderInSection: index)
-      section = section_at_index(index)
-
-      if section[:title_view] || (section[:title] && !section[:title].empty?)
+      section = promotion_table_data.section(index)
+      if section[:title_view] || section[:title].to_s.length > 0
         section[:title_view_height] || tableView.sectionHeaderHeight
       else
         0.0
@@ -259,10 +220,17 @@ module ProMotion
 
     protected
 
+    def map_cell_editing_style(symbol)
+      {
+        none:   UITableViewCellEditingStyleNone,
+        delete: UITableViewCellEditingStyleDelete,
+        insert: UITableViewCellEditingStyleInsert
+      }[symbol] || symbol || UITableViewCellEditingStyleNone
+    end
+
     def map_row_animation_symbol(symbol)
       symbol ||= UITableViewRowAnimationAutomatic
       {
-        automatic:  UITableViewRowAnimationAutomatic,
         fade:       UITableViewRowAnimationFade,
         right:      UITableViewRowAnimationRight,
         left:       UITableViewRowAnimationLeft,
@@ -271,7 +239,7 @@ module ProMotion
         none:       UITableViewRowAnimationNone,
         middle:     UITableViewRowAnimationMiddle,
         automatic:  UITableViewRowAnimationAutomatic
-      }[symbol] || symbol
+      }[symbol] || symbol || UITableViewRowAnimationAutomatic
     end
 
     module TableClassMethods
@@ -321,6 +289,19 @@ module ProMotion
         @indexable_params ||= nil
       end
 
+      # Longpressable
+      def longpressable(params = {})
+        @longpressable_params = params
+        @longpressable = true
+      end
+
+      def get_longpressable
+        @longpressable ||= false
+      end
+
+      def get_longpressable_params
+        @longpressable_params ||= nil
+      end
     end
 
     def self.included(base)

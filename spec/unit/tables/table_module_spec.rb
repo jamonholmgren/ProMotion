@@ -11,24 +11,28 @@ describe "PM::Table module" do
       subtitle: "This is way too huge..see note",
       arguments: { data: [ "lots", "of", "data" ] },
       action: :tapped_cell_1,
+      long_press_action: :long_press_cell_1,
       height: 50, # manually changes the cell's height
       cell_style: UITableViewCellStyleSubtitle,
       cell_identifier: "Cell",
       cell_class: PM::TableViewCell,
-      masks_to_bounds: true,
-      background_color: UIColor.colorWithPatternImage(@image),
-      selection_style: UITableViewCellSelectionStyleGray,
+      selection_style: :gray,
       accessory: {
         view: :switch, # currently only :switch is supported
         type: UITableViewCellAccessoryCheckmark,
-        checked: true # whether it's "checked" or not
+        value: true # whether it's "checked" or not
       },
       image: { image: @image, radius: 15 },
-      remote_image: {  # remote image, requires SDWebImage CocoaPod
-        url: "http://placekitten.com/200/300", placeholder: "some-local-image",
-        size: 50, radius: 15
+      remote_image: {  # remote image, requires JMImageCache CocoaPod
+        url: "http://placekitten.com/200/300",
+        placeholder: "some-local-image",
+        size: 50,
+        radius: 15
       },
-      subviews: [ @some_view, @some_other_view ] # arbitrary views added to the cell
+      style: {
+        masks_to_bounds: true,
+        background_color: UIColor.colorWithPatternImage(@image)
+      }
     })
   end
 
@@ -40,7 +44,7 @@ describe "PM::Table module" do
       },{
         title: "Table cell group 2", cells: [ cell_factory ]
       },{
-        title: "Table cell group 3", cells: [ cell_factory(title: "3-1"), cell_factory(title: "3-2", background_color: UIColor.blueColor) ]
+        title: "Table cell group 3", cells: [ cell_factory(title: "3-1"), cell_factory({title: "3-2", style: { background_color: UIColor.blueColor } }) ]
       },{
         title: "Table cell group 4", cells: [ custom_cell, cell_factory(title: "4-2"), cell_factory(title: "4-3"), cell_factory(title: "4-4") ]
       },{
@@ -110,6 +114,16 @@ describe "PM::Table module" do
 
     @subject.tableView(@subject.table_view, didSelectRowAtIndexPath:@custom_ip)
   end
+
+  # TODO - make this test work when MacBacon supports long press gestures
+  # https://github.com/HipByte/RubyMotion/issues/160
+  #
+  # it "should trigger the right action on a long_press" do
+  #   @subject.mock! :long_press_cell_1 do |args|
+  #     args[:data].should == [ "lots", "of", "data" ]
+  #   end
+  #   tap(@subject.table_view, :at => location, :times => number_of_taps, :touches => number_of_fingers)
+  # end
 
   it "should set a custom cell background image" do
     @image.should.not.be.nil

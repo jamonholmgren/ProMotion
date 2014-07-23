@@ -1,6 +1,6 @@
 class TableScreenSearchable < TestTableScreen
 
-  searchable
+  searchable scoped: ['North', 'South', 'Midwest', 'West', 'Other']
 
   attr_accessor :will_end_search_called, :will_begin_search_called
 
@@ -12,65 +12,66 @@ class TableScreenSearchable < TestTableScreen
   def table_data
     @search_table_data = [{
       cells: [
-        build_cell("Alabama"),
-        build_cell("Alaska"),
-        build_cell("Arizona"),
-        build_cell("Arkansas"),
-        build_cell("California"),
-        build_cell("Colorado"),
-        build_cell("Connecticut"),
-        build_cell("Delaware"),
-        build_cell("Florida"),
-        build_cell("Georgia"),
-        build_cell("Hawaii"),
-        build_cell("Idaho"),
-        build_cell("Illinois"),
-        build_cell("Indiana"),
-        build_cell("Iowa"),
-        build_cell("Kansas"),
-        build_cell("Kentucky"),
-        build_cell("Louisiana"),
-        build_cell("Maine"),
-        build_cell("Maryland"),
-        build_cell("Massachusetts"),
-        build_cell("Michigan"),
-        build_cell("Minnesota"),
-        build_cell("Mississippi"),
-        build_cell("Missouri"),
-        build_cell("Montana"),
-        build_cell("Nebraska"),
-        build_cell("Nevada"),
-        build_cell("New Hampshire"),
-        build_cell("New Jersey"),
-        build_cell("New Mexico"),
-        build_cell("New York"),
-        build_cell("North Carolina"),
-        build_cell("North Dakota"),
-        build_cell("Ohio"),
-        build_cell("Oklahoma"),
-        build_cell("Oregon"),
-        build_cell("Pennsylvania"),
-        build_cell("Rhode Island"),
-        build_cell("South Carolina"),
-        build_cell("South Dakota"),
-        build_cell("Tennessee"),
-        build_cell("Texas"),
-        build_cell("Utah"),
-        build_cell("Vermont"),
-        build_cell("Virginia"),
-        build_cell("Washington"),
-        build_cell("West Virginia"),
-        build_cell("Wisconsin"),
-        build_cell("Wyoming")
+        build_cell("Alabama", :south),
+        build_cell("Alaska", :other),
+        build_cell("Arizona", :west),
+        build_cell("Arkansas", :midwest),
+        build_cell("California", :west),
+        build_cell("Colorado", :midwest),
+        build_cell("Connecticut", :north),
+        build_cell("Delaware", :north),
+        build_cell("Florida", :south),
+        build_cell("Georgia", :south),
+        build_cell("Hawaii", :other),
+        build_cell("Idaho", :midwest),
+        build_cell("Illinois", :midwest),
+        build_cell("Indiana", :midwest),
+        build_cell("Iowa", :midwest),
+        build_cell("Kansas", :midwest),
+        build_cell("Kentucky", :south),
+        build_cell("Louisiana", :south),
+        build_cell("Maine", :north),
+        build_cell("Maryland", :north),
+        build_cell("Massachusetts", :north),
+        build_cell("Michigan", :midwest),
+        build_cell("Minnesota", :midwest),
+        build_cell("Mississippi", :south),
+        build_cell("Missouri", :midwest),
+        build_cell("Montana", :midwest),
+        build_cell("Nebraska", :midwest),
+        build_cell("Nevada", :west),
+        build_cell("New Hampshire", :north),
+        build_cell("New Jersey", :north),
+        build_cell("New Mexico", :west),
+        build_cell("New York", :north),
+        build_cell("North Carolina", :south),
+        build_cell("North Dakota", :midwest),
+        build_cell("Ohio", :midwest),
+        build_cell("Oklahoma", :midwest),
+        build_cell("Oregon", :west),
+        build_cell("Pennsylvania", :north),
+        build_cell("Rhode Island", :north),
+        build_cell("South Carolina", :south),
+        build_cell("South Dakota", :midwest),
+        build_cell("Tennessee", :south),
+        build_cell("Texas", :south),
+        build_cell("Utah", :west),
+        build_cell("Vermont", :north),
+        build_cell("Virginia", :south),
+        build_cell("Washington", :west),
+        build_cell("West Virginia", :north),
+        build_cell("Wisconsin", :midwest),
+        build_cell("Wyoming", :midwest)
       ]
     }]
   end
 
-  def build_cell(title)
+  def build_cell(title, scope)
     {
       title: title,
       subtitle: @subtitle.to_s,
-      action: :update_subtitle
+      action: :update_subtitle,
+      scoped: scope
     }
   end
 

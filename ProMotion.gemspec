@@ -29,4 +29,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency("motion-stump", "~> 0.3")
   gem.add_development_dependency("motion-redgreen", "~> 0.1")
   gem.add_development_dependency("rake", ">= 10.0")
+  gem.add_development_dependency("motion_print")
 end

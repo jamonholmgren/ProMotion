@@ -127,7 +127,7 @@ module ProMotion
 
     def update_table_data
       self.update_table_view_data(self.table_data)
-      self.promotion_table_data.search(search_string) if searching?
+      self.promotion_table_data.search(search_string, scope_enabled? ? selected_scope_title : nil) if searching?
     end
 
     ########## Cocoa touch methods #################

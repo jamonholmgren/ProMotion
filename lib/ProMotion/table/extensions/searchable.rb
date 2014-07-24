@@ -33,19 +33,17 @@ module ProMotion
         params[:search_results_delegate] ||= self
         params[:search_bar][:scoped] ||= false
         params[:search_bar][:scoped_all] ||= false
-
         if params[:search_bar][:scoped_all]
-          params[:search_bar][:scoped_all] = 'All' unless params[:search_bar][:scoped_all].is_a?(String)
           params[:search_bar][:scoped].unshift(params[:search_bar][:scoped_all])
+          @scoped_all = true
         end
-
         params
       end
 
       def create_search_bar(params)
         search_bar = UISearchBar.alloc.initWithFrame(params[:frame])
         search_bar.autoresizingMask = UIViewAutoresizingFlexibleWidth
-        if params[:search_bar][:scoped]
+        if params[:search_bar] && params[:search_bar][:scoped]
           search_bar.showsScopeBar = true
           search_bar.scopeButtonTitles = params[:search_bar][:scoped]
         end
@@ -65,7 +63,11 @@ module ProMotion
       end
 
       def selected_scope_title
-        scope_button_titles[selected_scope_index]
+        scope_searching_all? ? :all : scope_button_titles[selected_scope_index]
+      end
+
+      def scope_searching_all?
+        @scoped_all == true && selected_scope_index == 0
       end
 
       ######### iOS methods, headless camel case #######

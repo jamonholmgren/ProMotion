@@ -1,6 +1,6 @@
 class TableScreenSearchable < TestTableScreen
 
-  searchable scoped: ['North', 'South', 'Midwest', 'West', 'Other'], scoped_all: "All"
+  searchable scoped: ['North', 'South', 'Midwest', 'West', 'Other'], scoped_all: "Everything"
 
   attr_accessor :will_end_search_called, :will_begin_search_called
 

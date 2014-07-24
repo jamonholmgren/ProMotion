@@ -1,6 +1,6 @@
 module ProMotion
   class TableData
-    attr_accessor :data, :filtered_data, :search_string, :original_search_string, :filtered, :table_view
+    attr_accessor :data, :filtered_data, :search_string, :search_scope, :original_search_string, :filtered, :table_view
 
     def initialize(data, table_view)
       self.data = data
@@ -41,19 +41,28 @@ module ProMotion
       table_section[:cells].delete_at(params[:index].to_i)
     end
 
-    def search(search_string)
+    def search(search_string, scope = nil)
       self.filtered_data = []
       self.filtered = true
 
       self.original_search_string = search_string
       self.search_string = search_string.downcase.strip
+      self.search_scope = scope.downcase.to_sym
 
       self.data.compact.each do |section|
         new_section = {}
         new_section[:cells] = []
 
         new_section[:cells] = section[:cells].map do |cell|
-          cell[:searchable] != false && "#{cell[:title]}\n#{cell[:search_text]}".downcase.strip.include?(self.search_string) ? cell : nil
+          if cell[:searchable] != false
+            if self.search_scope.nil?
+              cell_text_match?(cell) ? cell : nil
+            else
+              cell_scope_match?(cell) && cell_text_match?(cell) ? cell : nil
+            end
+          else
+            nil
+          end
         end.compact
 
         if new_section[:cells] && new_section[:cells].length > 0
@@ -65,10 +74,19 @@ module ProMotion
       self.filtered_data
     end
 
+    def cell_text_match?(cell)
+      "#{cell[:title]}\n#{cell[:search_text]}".downcase.strip.include?(self.search_string)
+    end
+
+    def cell_scope_match?(cell)
+      Array(cell[:scoped]).include?(self.search_scope)
+    end
+
     def stop_searching
       self.filtered_data = []
       self.filtered = false
       self.search_string = false
+      self.search_scope = false
       self.original_search_string = false
     end
 

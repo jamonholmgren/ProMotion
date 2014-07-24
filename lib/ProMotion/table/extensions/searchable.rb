@@ -11,6 +11,7 @@ module ProMotion
           search_bar.placeholder = params[:search_bar][:placeholder]
         end
 
+        @scoped = params[:search_bar][:scoped]
         @table_search_display_controller = UISearchDisplayController.alloc.initWithSearchBar(search_bar, contentsController: params[:content_controller])
         @table_search_display_controller.delegate = params[:delegate]
         @table_search_display_controller.searchResultsDataSource = params[:data_source]
@@ -30,19 +31,46 @@ module ProMotion
         params[:delegate] ||= self
         params[:data_source] ||= self
         params[:search_results_delegate] ||= self
+        params[:search_bar][:scoped] ||= false
         params
       end
 
       def create_search_bar(params)
         search_bar = UISearchBar.alloc.initWithFrame(params[:frame])
         search_bar.autoresizingMask = UIViewAutoresizingFlexibleWidth
+        if params[:search_bar][:scoped]
+          search_bar.showsScopeBar = true
+          search_bar.scopeButtonTitles = params[:search_bar][:scoped]
+        end
         search_bar
+      end
+
+      def scope_enabled?
+        @table_search_display_controller.searchBar.showsScopeBar && scope_button_titles.count > 0
+      end
+
+      def scope_button_titles
+        @table_search_display_controller.searchBar.scopeButtonTitles
+      end
+
+      def selected_scope_index
+        @table_search_display_controller.searchBar.selectedScopeButtonIndex
+      end
+
+      def selected_scope_title
+        scope_button_titles[selected_scope_index]
       end
 
       ######### iOS methods, headless camel case #######
 
       def searchDisplayController(controller, shouldReloadTableForSearchString:search_string)
-        self.promotion_table_data.search(search_string)
+        self.promotion_table_data.search(search_string, scope_enabled? ? selected_scope_title : nil)
+        true
+      end
+
+      def searchDisplayController(controller, shouldReloadTableForSearchScope:scope_index)
+        p "Searching with scope: #{scope_index} (#{@scoped[scope_index]})"
+        self.promotion_table_data.search(controller.searchBar.text, @scoped[scope_index])
         true
       end
 

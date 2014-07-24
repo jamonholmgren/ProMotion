@@ -1,6 +1,6 @@
 class TableScreenSearchable < TestTableScreen
 
-  searchable scoped: ['North', 'South', 'Midwest', 'West', 'Other']
+  searchable scoped: ['North', 'South', 'Midwest', 'West', 'Other'], scoped_all: "All"
 
   attr_accessor :will_end_search_called, :will_begin_search_called
 
@@ -12,7 +12,7 @@ class TableScreenSearchable < TestTableScreen
   def table_data
     @search_table_data = [{
       cells: [
-        build_cell("Alabama", :south),
+        build_cell("Alabama"), # Alabama should show up in All, but not in South
         build_cell("Alaska", :other),
         build_cell("Arizona", :west),
         build_cell("Arkansas", :midwest),
@@ -66,7 +66,7 @@ class TableScreenSearchable < TestTableScreen
     }]
   end
 
-  def build_cell(title, scope)
+  def build_cell(title, scope = nil)
     {
       title: title,
       subtitle: @subtitle.to_s,

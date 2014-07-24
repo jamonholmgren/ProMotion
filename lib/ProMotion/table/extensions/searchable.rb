@@ -32,6 +32,13 @@ module ProMotion
         params[:data_source] ||= self
         params[:search_results_delegate] ||= self
         params[:search_bar][:scoped] ||= false
+        params[:search_bar][:scoped_all] ||= false
+
+        if params[:search_bar][:scoped_all]
+          params[:search_bar][:scoped_all] = 'All' unless params[:search_bar][:scoped_all].is_a?(String)
+          params[:search_bar][:scoped].unshift(params[:search_bar][:scoped_all])
+        end
+
         params
       end
 

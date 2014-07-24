@@ -79,7 +79,7 @@ module ProMotion
     end
 
     def cell_scope_match?(cell)
-      Array(cell[:scoped]).include?(self.search_scope)
+      self.search_scope == :all || Array(cell[:scoped]).include?(self.search_scope)
     end
 
     def stop_searching

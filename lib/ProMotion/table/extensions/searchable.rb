@@ -69,8 +69,7 @@ module ProMotion
       end
 
       def searchDisplayController(controller, shouldReloadTableForSearchScope:scope_index)
-        p "Searching with scope: #{scope_index} (#{@scoped[scope_index]})"
-        self.promotion_table_data.search(controller.searchBar.text, @scoped[scope_index])
+        self.promotion_table_data.search(controller.searchBar.text, scope_enabled? ? selected_scope_title : nil)
         true
       end
 

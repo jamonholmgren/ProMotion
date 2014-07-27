@@ -188,7 +188,7 @@ module ProMotion
       return index unless ["{search}", UITableViewIndexSearch].include?(self.table_data_index[0])
 
       if index == 0
-        tableView.setContentOffset(CGPointZero, animated:false)
+        tableView.scrollRectToVisible(CGRectMake(0.0, 0.0, 1.0, 1.0), animated:false)
         NSNotFound
       else
         index - 1

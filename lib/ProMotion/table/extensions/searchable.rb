@@ -34,8 +34,9 @@ module ProMotion
         params[:search_bar][:scoped] ||= false
         params[:search_bar][:scoped_all] ||= false
         if params[:search_bar][:scoped_all]
-          params[:search_bar][:scoped].unshift(params[:search_bar][:scoped_all])
+          params[:search_bar][:scoped].unshift(params[:search_bar][:scoped_all]) unless params[:search_bar][:scoped].include?(params[:search_bar][:scoped_all])
           @scoped_all = true
+          @scoped_all_index = params[:search_bar][:scoped].index(params[:search_bar][:scoped_all])
         end
         params
       end
@@ -67,7 +68,7 @@ module ProMotion
       end
 
       def scope_searching_all?
-        @scoped_all == true && selected_scope_index == 0
+        @scoped_all == true && selected_scope_index == @scoped_all_index
       end
 
       ######### iOS methods, headless camel case #######

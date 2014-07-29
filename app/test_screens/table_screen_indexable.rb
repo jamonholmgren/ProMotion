@@ -12,6 +12,14 @@ class TableScreenIndexable < PM::TableScreen
 
 end
 
+class TableScreenIndexableNil < TableScreenIndexable
+  indexable
+
+  def table_data
+    super.push({title: nil, cells: [{ title: "Single cell for group nil" }]})
+  end
+end
+
 class TableScreenIndexableSearchable < TableScreenIndexable
   indexable
   searchable

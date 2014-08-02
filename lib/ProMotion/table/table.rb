@@ -87,7 +87,8 @@ module ProMotion
 
     def delete_row(index_paths, animation = nil)
       deletable_index_paths = []
-      Array(index_paths).each do |index_path|
+      index_paths = [index_paths] if index_paths.kind_of?(NSIndexPath)
+      index_paths.each do |index_path|
         delete_cell = false
         delete_cell = send(:on_cell_deleted, self.promotion_table_data.cell(index_path: index_path)) if self.respond_to?("on_cell_deleted:")
         unless delete_cell == false

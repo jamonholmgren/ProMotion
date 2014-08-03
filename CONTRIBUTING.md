@@ -3,7 +3,7 @@ Over 30 developers have contributed to ProMotion. We love it when ProMotion user
 ## Working on New Features
 
 1. Clone the repo into `<My iOS Projects Folder>/ProMotion`
-2. Update your `Gemfile`to reference the project as `gem 'ProMotion', :path => "../ProMotion"`
+2. Update your `Gemfile`to reference the project as `gem 'ProMotion', path: "../ProMotion"`
 3. Run `bundle`
 4. Run `rake clean` and then `rake`
 5. Contribute!

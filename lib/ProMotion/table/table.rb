@@ -67,10 +67,20 @@ module ProMotion
       @table_search_display_controller.searchResultsTableView.reloadData if searching?
     end
 
-    def trigger_action(action, arguments)
+    def trigger_action(action, arguments, index_path)
       return PM.logger.info "Action not implemented: #{action.to_s}" unless self.respond_to?(action)
-      return self.send(action) if self.method(action).arity == 0
-      self.send(action, arguments)
+
+      case self.method(action).arity
+      when 0
+        # Just call the method
+        self.send(action)
+      when 2
+        # Send arguments and index path
+        self.send(action, arguments, index_path)
+      else
+        # Send arguments
+        self.send(action, arguments)
+      end
     end
 
     def accessory_toggled_switch(switch)
@@ -81,7 +91,7 @@ module ProMotion
         data_cell = promotion_table_data.cell(section: index_path.section, index: index_path.row)
         data_cell[:accessory][:arguments] ||= {}
         data_cell[:accessory][:arguments][:value] = switch.isOn if data_cell[:accessory][:arguments].is_a?(Hash)
-        trigger_action(data_cell[:accessory][:action], data_cell[:accessory][:arguments].merge({index_path: index_path})) if data_cell[:accessory][:action]
+        trigger_action(data_cell[:accessory][:action], data_cell[:accessory][:arguments], index_path) if data_cell[:accessory][:action]
       end
     end
 
@@ -172,7 +182,7 @@ module ProMotion
       data_cell = self.promotion_table_data.cell(index_path: index_path)
       table_view.deselectRowAtIndexPath(index_path, animated: true) unless data_cell[:keep_selection] == true
       data_cell[:arguments] ||= {}
-      trigger_action(data_cell[:action], data_cell[:arguments].merge({index_path: index_path})) if data_cell[:action]
+      trigger_action(data_cell[:action], data_cell[:arguments], index_path) if data_cell[:action]
     end
 
     def tableView(table_view, editingStyleForRowAtIndexPath: index_path)

@@ -51,6 +51,8 @@ describe "PM::Table module" do
         title: "Custom section title 1", title_view: CustomTitleView, cells: [ ]
       },{
         title: "Custom section title 2", title_view: CustomTitleView.new, title_view_height: 50, cells: [ ]
+      },{
+        title: "Action WIth Index Path Group", cells: [ cell_factory(title: "IndexPath Group 1", action: :tests_index_path) ]
       }]
     end
 
@@ -63,7 +65,7 @@ describe "PM::Table module" do
   end
 
   it "should have the right number of sections" do
-    @subject.numberOfSectionsInTableView(@subject.table_view).should == 6
+    @subject.numberOfSectionsInTableView(@subject.table_view).should == 7
   end
 
   it "should set the section titles" do
@@ -115,14 +117,15 @@ describe "PM::Table module" do
     @subject.tableView(@subject.table_view, didSelectRowAtIndexPath:@custom_ip)
   end
 
-  it "should return an NSIndexPath in the arguments" do
-    @subject.mock! :tapped_cell_1 do |args|
-      args[:index_path].should.be.kind_of NSIndexPath
-      args[:index_path].section.should == 3
-      args[:index_path].row.should == 0
-    end
+  it "should return an NSIndexPath when the action has two parameters" do
+    ip = NSIndexPath.indexPathForRow(0, inSection: 6)
 
-    @subject.tableView(@subject.table_view, didSelectRowAtIndexPath:@custom_ip)
+    @subject.tableView(@subject.table_view, didSelectRowAtIndexPath:ip)
+
+    tapped_ip = @subject.got_index_path
+    tapped_ip.should.be.kind_of NSIndexPath
+    tapped_ip.section.should == 6
+    tapped_ip.row.should == 0
   end
 
   # TODO - make this test work when MacBacon supports long press gestures

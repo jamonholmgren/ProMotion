@@ -47,7 +47,7 @@ module ProMotion
 
       elsif self.navigationController
         close_nav_screen args
-        send_on_return(args) # TODO: this would be better implemented in a callback or view_did_disappear.
+        send_on_return(args)
 
       else
         PM.logger.warn "Tried to close #{self.to_s}; however, this screen isn't modal or in a nav bar."
@@ -138,6 +138,7 @@ module ProMotion
     def close_nav_screen(args={})
       args[:animated] = true unless args.has_key?(:animated)
       if args[:to_screen] == :root
+        self.parent_screen = self.navigationController.viewControllers.first
         self.navigationController.popToRootViewControllerAnimated args[:animated]
       elsif args[:to_screen] && args[:to_screen].is_a?(UIViewController)
         self.parent_screen = args[:to_screen]

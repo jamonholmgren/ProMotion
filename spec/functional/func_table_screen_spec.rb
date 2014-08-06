@@ -1,4 +1,4 @@
-describe "ProMotion::TestTableScreen functionality" do
+describe "ProMotion::TableScreen functionality" do
   tests PM::TestTableScreen
 
   def table_screen
@@ -117,14 +117,6 @@ describe "ProMotion::TestTableScreen functionality" do
       wait 0.3 do
         table_screen.tap_counter.should == 13
       end
-    end
-  end
-
-  it "should call the method with arguments when the switch is flipped" do
-    table_screen.scroll_to_bottom
-    tap "switch_2"
-    wait 0.3 do
-      table_screen.tap_counter.should == 3
     end
   end
 

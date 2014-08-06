@@ -87,7 +87,8 @@ module ProMotion
 
     def delete_row(index_paths, animation = nil)
       deletable_index_paths = []
-      Array(index_paths).each do |index_path|
+      index_paths = [index_paths] if index_paths.kind_of?(NSIndexPath)
+      index_paths.each do |index_path|
         delete_cell = false
         delete_cell = send(:on_cell_deleted, self.promotion_table_data.cell(index_path: index_path)) if self.respond_to?("on_cell_deleted:")
         unless delete_cell == false
@@ -189,7 +190,7 @@ module ProMotion
       return index unless ["{search}", UITableViewIndexSearch].include?(self.table_data_index[0])
 
       if index == 0
-        tableView.setContentOffset(CGPointZero, animated:false)
+        tableView.scrollRectToVisible(CGRectMake(0.0, 0.0, 1.0, 1.0), animated:false)
         NSNotFound
       else
         index - 1

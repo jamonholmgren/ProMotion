@@ -71,15 +71,9 @@ module ProMotion
       return PM.logger.info "Action not implemented: #{action.to_s}" unless self.respond_to?(action)
 
       case self.method(action).arity
-      when 0
-        # Just call the method
-        self.send(action)
-      when 2
-        # Send arguments and index path
-        self.send(action, arguments, index_path)
-      else
-        # Send arguments
-        self.send(action, arguments)
+      when 0 then self.send(action) # Just call the method
+      when 2 then self.send(action, arguments, index_path) # Send arguments and index path
+      else self.send(action, arguments) # Send arguments
       end
     end
 

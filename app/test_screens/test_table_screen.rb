@@ -24,7 +24,6 @@ class TestTableScreen < ProMotion::TableScreen
       title: "App Stuff",
       cells: [
         { title: "Increment One", action: :increment_counter },
-        { title: "What? IndexPath!", action: :tests_index_path },
         { title: "Feedback", cell_identifier: "ImagedCell", remote_image: { url: "http://placekitten.com/100/100", placeholder: "some-local-image", size: 50, radius: 15 } }
       ]
     }, {

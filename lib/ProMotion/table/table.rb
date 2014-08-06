@@ -89,7 +89,6 @@ module ProMotion
 
       if index_path
         data_cell = promotion_table_data.cell(section: index_path.section, index: index_path.row)
-        data_cell[:accessory][:arguments] ||= {}
         data_cell[:accessory][:arguments][:value] = switch.isOn if data_cell[:accessory][:arguments].is_a?(Hash)
         trigger_action(data_cell[:accessory][:action], data_cell[:accessory][:arguments], index_path) if data_cell[:accessory][:action]
       end
@@ -181,7 +180,6 @@ module ProMotion
     def tableView(table_view, didSelectRowAtIndexPath:index_path)
       data_cell = self.promotion_table_data.cell(index_path: index_path)
       table_view.deselectRowAtIndexPath(index_path, animated: true) unless data_cell[:keep_selection] == true
-      data_cell[:arguments] ||= {}
       trigger_action(data_cell[:action], data_cell[:arguments], index_path) if data_cell[:action]
     end
 

@@ -1,6 +1,6 @@
 class TestTableScreen < ProMotion::TableScreen
 
-  attr_accessor :tap_counter, :cell_was_deleted
+  attr_accessor :tap_counter, :cell_was_deleted, :got_index_path
 
   def on_load
     self.tap_counter = 0
@@ -87,10 +87,14 @@ class TestTableScreen < ProMotion::TableScreen
 
   def on_cell_deleted(cell)
     if cell[:title] == "A non-deletable blank row"
-      false 
+      false
     else
       self.cell_was_deleted = true
     end
+  end
+
+  def tests_index_path(args, index_path)
+    @got_index_path = index_path
   end
 
   def increment_counter

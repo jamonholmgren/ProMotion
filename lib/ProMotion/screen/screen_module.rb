@@ -27,7 +27,7 @@ module ProMotion
       case self.class.title_type
       when :text then self.title = self.class.title
       when :view then self.navigationItem.titleView = self.class.title
-      when :image then self.navigationItem.titleView = UIImageView.alloc.initWithImage(UIImage.imageNamed(self.class.title))
+      when :image then self.navigationItem.titleView = UIImageView.alloc.initWithImage(self.class.title)
       else
         PM.logger.warn("title expects string, UIView, or UIImage, but #{self.class.title.class.to_s} given.")
       end
@@ -178,7 +178,7 @@ module ProMotion
       end
 
       def title_image(t)
-        @title = t
+        @title = t.is_a?(UIImage) ? t : UIImage.imageNamed(t)
         @title_type = :image
       end
 

@@ -34,14 +34,10 @@ module ProMotion
     end
 
     def search(search_string)
-      self.filtered_data = []
-      self.filtered = true
-
-      self.original_search_string = search_string
-      self.search_string = search_string.downcase.strip
+      start_searching(search_string)
 
       self.data.compact.each do |section|
-        new_section = { cells: [] }
+        new_section = {}
 
         new_section[:cells] = section[:cells].map do |cell|
           cell[:searchable] != false && "#{cell[:title]}\n#{cell[:search_text]}".downcase.strip.include?(self.search_string) ? cell : nil
@@ -91,6 +87,13 @@ module ProMotion
     end
 
   private
+
+    def start_searching(search_string)
+      self.filtered_data = []
+      self.filtered = true
+      self.search_string = search_string.downcase.strip
+      self.original_search_string = search_string
+    end
 
     def index_path_to_section_index(params)
       if params[:index_path]

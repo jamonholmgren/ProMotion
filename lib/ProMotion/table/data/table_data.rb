@@ -21,23 +21,13 @@ module ProMotion
     end
 
     def cell(params={})
-      if params[:index_path]
-        params[:section] = params[:index_path].section
-        params[:index] = params[:index_path].row
-      end
-
-      table_section = self.section(params[:section])
+      table_section = set_table_section(params)
       c = table_section[:cells].at(params[:index].to_i)
       set_data_cell_defaults c
     end
 
     def delete_cell(params={})
-      if params[:index_path]
-        params[:section] = params[:index_path].section
-        params[:index] = params[:index_path].row
-      end
-
-      table_section = self.section(params[:section])
+      table_section = set_table_section(params)
       table_section[:cells].delete_at(params[:index].to_i)
     end
 
@@ -49,8 +39,7 @@ module ProMotion
       self.search_string = search_string.downcase.strip
 
       self.data.compact.each do |section|
-        new_section = {}
-        new_section[:cells] = []
+        new_section = { cells: [] }
 
         new_section[:cells] = section[:cells].map do |cell|
           cell[:searchable] != false && "#{cell[:title]}\n#{cell[:search_text]}".downcase.strip.include?(self.search_string) ? cell : nil
@@ -99,5 +88,13 @@ module ProMotion
       ident
     end
 
+    def set_table_section(params={})
+      if params[:index_path]
+        params[:section] = params[:index_path].section
+        params[:index] = params[:index_path].row
+      end
+
+      self.section(params[:section])
+    end
   end
 end

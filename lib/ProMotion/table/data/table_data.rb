@@ -21,13 +21,15 @@ module ProMotion
     end
 
     def cell(params={})
-      table_section = set_table_section(params)
+      params = index_path_to_section_index(params)
+      table_section = self.section(params[:section])
       c = table_section[:cells].at(params[:index].to_i)
       set_data_cell_defaults c
     end
 
     def delete_cell(params={})
-      table_section = set_table_section(params)
+      params = index_path_to_section_index(params)
+      table_section = self.section(params[:section])
       table_section[:cells].delete_at(params[:index].to_i)
     end
 
@@ -88,13 +90,14 @@ module ProMotion
       ident
     end
 
-    def set_table_section(params={})
+  private
+
+    def index_path_to_section_index(params)
       if params[:index_path]
         params[:section] = params[:index_path].section
         params[:index] = params[:index_path].row
       end
-
-      self.section(params[:section])
+      params
     end
   end
 end

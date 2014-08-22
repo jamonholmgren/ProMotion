@@ -5,6 +5,7 @@ module ProMotion
     include ProMotion::Table::Refreshable
     include ProMotion::Table::Indexable
     include ProMotion::Table::Longpressable
+    include ProMotion::Table::Utils
 
     attr_reader :promotion_table_data
 
@@ -104,14 +105,6 @@ module ProMotion
       data_cell = self.promotion_table_data.cell(section: params[:section], index: params[:index])
       return UITableViewCell.alloc.init unless data_cell
       create_table_cell(data_cell)
-    end
-
-    def index_path_to_section_index(params)
-      if params[:index_path]
-        params[:section] = params[:index_path].section
-        params[:index] = params[:index_path].row
-      end
-      params
     end
 
     def create_table_cell(data_cell)

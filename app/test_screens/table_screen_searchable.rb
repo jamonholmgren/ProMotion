@@ -4,6 +4,59 @@ class TableScreenSearchable < TestTableScreen
 
   attr_accessor :will_end_search_called, :will_begin_search_called
 
+  STATES = [
+    "Alabama",
+    "Alaska",
+    "Arizona",
+    "Arkansas",
+    "California",
+    "Colorado",
+    "Connecticut",
+    "Delaware",
+    "Florida",
+    "Georgia",
+    "Hawaii",
+    "Idaho",
+    "Illinois",
+    "Indiana",
+    "Iowa",
+    "Kansas",
+    "Kentucky",
+    "Louisiana",
+    "Maine",
+    "Maryland",
+    "Massachusetts",
+    "Michigan",
+    "Minnesota",
+    "Mississippi",
+    "Missouri",
+    "Montana",
+    "Nebraska",
+    "Nevada",
+    "New Hampshire",
+    "New Jersey",
+    "New Mexico",
+    "New York",
+    "North Carolina",
+    "North Dakota",
+    "Ohio",
+    "Oklahoma",
+    "Oregon",
+    "Pennsylvania",
+    "Rhode Island",
+    "South Carolina",
+    "South Dakota",
+    "Tennessee",
+    "Texas",
+    "Utah",
+    "Vermont",
+    "Virginia",
+    "Washington",
+    "West Virginia",
+    "Wisconsin",
+    "Wyoming"
+  ].freeze
+
   def on_load
     super
     @subtitle ||= 0
@@ -11,58 +64,7 @@ class TableScreenSearchable < TestTableScreen
 
   def table_data
     @search_table_data = [{
-      cells: [
-        build_cell("Alabama"),
-        build_cell("Alaska"),
-        build_cell("Arizona"),
-        build_cell("Arkansas"),
-        build_cell("California"),
-        build_cell("Colorado"),
-        build_cell("Connecticut"),
-        build_cell("Delaware"),
-        build_cell("Florida"),
-        build_cell("Georgia"),
-        build_cell("Hawaii"),
-        build_cell("Idaho"),
-        build_cell("Illinois"),
-        build_cell("Indiana"),
-        build_cell("Iowa"),
-        build_cell("Kansas"),
-        build_cell("Kentucky"),
-        build_cell("Louisiana"),
-        build_cell("Maine"),
-        build_cell("Maryland"),
-        build_cell("Massachusetts"),
-        build_cell("Michigan"),
-        build_cell("Minnesota"),
-        build_cell("Mississippi"),
-        build_cell("Missouri"),
-        build_cell("Montana"),
-        build_cell("Nebraska"),
-        build_cell("Nevada"),
-        build_cell("New Hampshire"),
-        build_cell("New Jersey"),
-        build_cell("New Mexico"),
-        build_cell("New York"),
-        build_cell("North Carolina"),
-        build_cell("North Dakota"),
-        build_cell("Ohio"),
-        build_cell("Oklahoma"),
-        build_cell("Oregon"),
-        build_cell("Pennsylvania"),
-        build_cell("Rhode Island"),
-        build_cell("South Carolina"),
-        build_cell("South Dakota"),
-        build_cell("Tennessee"),
-        build_cell("Texas"),
-        build_cell("Utah"),
-        build_cell("Vermont"),
-        build_cell("Virginia"),
-        build_cell("Washington"),
-        build_cell("West Virginia"),
-        build_cell("Wisconsin"),
-        build_cell("Wyoming")
-      ]
+      cells: state_cells
     }]
   end
 
@@ -85,6 +87,10 @@ class TableScreenSearchable < TestTableScreen
 
   def will_end_search
     self.will_end_search_called = true
+  end
+
+  def state_cells
+    STATES.map{ |state| build_cell(state) }
   end
 
 end

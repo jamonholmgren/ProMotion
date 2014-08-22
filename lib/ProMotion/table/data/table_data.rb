@@ -1,5 +1,7 @@
 module ProMotion
   class TableData
+    include ProMotion::Table::Utils
+
     attr_accessor :data, :filtered_data, :search_string, :original_search_string, :filtered, :table_view
 
     def initialize(data, table_view)
@@ -93,14 +95,6 @@ module ProMotion
       self.filtered = true
       self.search_string = search_string.downcase.strip
       self.original_search_string = search_string
-    end
-
-    def index_path_to_section_index(params)
-      if params[:index_path]
-        params[:section] = params[:index_path].section
-        params[:index] = params[:index_path].row
-      end
-      params
     end
   end
 end

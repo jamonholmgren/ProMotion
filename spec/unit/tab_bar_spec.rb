@@ -74,6 +74,9 @@ describe "PM::Tabs" do
     tab_bar.selectedIndex.should == 0
   end
 
-
+  it "should recognize setting #should_autorotate in screen" do
+    @screen1.stub! :should_autorotate, return: false
+    @tab_bar.shouldAutorotate.should == false
+  end
 
 end

@@ -99,20 +99,6 @@ describe "ProMotion::TableScreen functionality" do
     end
   end
 
-  it "should call the method with arguments when the switch is flipped and when the cell is tapped" do
-    table_screen.scroll_to_bottom
-    tap "switch_3"
-    view("switch_3").should.not == nil
-    wait 0.3 do
-      table_screen.tap_counter.should == 3
-
-      tap "Switch With Cell Tap, Switch Action And Parameters"
-      wait 0.3 do
-        table_screen.tap_counter.should == 13
-      end
-    end
-  end
-
   it "should not crash if cell with editing_style is swiped left" do
     Proc.new { flick("Just another deletable blank row", to: :left) }.should.not.raise(StandardError)
   end

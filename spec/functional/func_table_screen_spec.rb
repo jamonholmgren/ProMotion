@@ -99,17 +99,10 @@ describe "ProMotion::TableScreen functionality" do
     end
   end
 
-  it "should call a method when the switch is flipped" do
-    table_screen.scroll_to_bottom
-    tap "switch_1"
-    wait 0.3 do
-      table_screen.tap_counter.should == 1
-    end
-  end
-
   it "should call the method with arguments when the switch is flipped and when the cell is tapped" do
     table_screen.scroll_to_bottom
     tap "switch_3"
+    view("switch_3").should.not == nil
     wait 0.3 do
       table_screen.tap_counter.should == 3
 

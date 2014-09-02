@@ -268,3 +268,26 @@ describe "screen with toolbar" do
   end
 
 end
+
+describe 'toolbar tinted buttons' do
+  before do
+    @screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    @screen.on_load
+  end
+
+  it "creates string toolbar buttons with tint colors" do
+    @screen.set_toolbar_button([{title: "Testing Toolbar", tint_color: UIColor.redColor}])
+    @screen.navigationController.toolbar.items.first.tintColor.should == UIColor.redColor
+  end
+
+  it "creates image toolbar buttons with tint colors" do
+    @screen.set_toolbar_button([{image: UIImage.imageNamed("list"), tint_color: UIColor.redColor}])
+    @screen.navigationController.toolbar.items.first.tintColor.should == UIColor.redColor
+  end
+
+  it "creates system item toolbar buttons with tint colors" do
+    @screen.set_toolbar_button([{system_item: :reply, tint_color: UIColor.redColor}])
+    @screen.navigationController.toolbar.items.first.tintColor.should == UIColor.redColor
+  end
+
+end

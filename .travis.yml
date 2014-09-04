@@ -3,7 +3,7 @@ before_install:
     - (ruby --version)
     - sudo chown -R travis ~/Library/RubyMotion
     - mkdir -p ~/Library/RubyMotion/build
-    - sudo motion update
+    - sudo motion update --cache-version=2.32
 gemfile:
   - Gemfile
 script:

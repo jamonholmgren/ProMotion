@@ -40,18 +40,25 @@ module ProMotion
     # Cocoa touch methods below
 
     def shouldAutorotate
-      vc = selectedViewController.visibleViewController ? selectedViewController : moreNavigationController.visibleViewController
-      vc.shouldAutorotate if vc.respond_to?(:shouldAutorotate)
+      current_view_controller_try(:shouldAutorotate)
     end
 
     def supportedInterfaceOrientations
-      vc = selectedViewController.visibleViewController ? selectedViewController : moreNavigationController.visibleViewController
-      vc.supportedInterfaceOrientations if vc.respond_to?(:supportedInterfaceOrientations)
+      current_view_controller_try(:supportedInterfaceOrientations)
     end
 
     def preferredInterfaceOrientationForPresentation
-      vc = selectedViewController.visibleViewController ? selectedViewController : moreNavigationController.visibleViewController
-      vc.preferredInterfaceOrientationForPresentation if vc.respond_to?(:preferredInterfaceOrientationForPresentation)
+      current_view_controller_try(:preferredInterfaceOrientationForPresentation)
+    end
+
+    private
+
+    def current_view_controller
+      selectedViewController || viewControllers.first
+    end
+
+    def current_view_controller_try(method, *args)
+      current_view_controller.send(method, *args) if current_view_controller.respond_to?(method)
     end
 
   end

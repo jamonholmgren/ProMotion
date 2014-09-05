@@ -123,13 +123,14 @@ describe "screen helpers" do
       end
 
       it "should apply properties when opening a new screen" do
-        new_screen = @screen.send(:set_up_screen_for_open, BasicScreen, { title: 'Some Title', modal: true, hide_tab_bar: true, nav_bar: true })
+        new_screen = @screen.send(:set_up_screen_for_open, BasicScreen, { title: 'Some Title', modal: true, hide_tab_bar: true, nav_bar: true, hide_nav_bar: true })
 
         new_screen.parent_screen.should == @screen
         new_screen.title.should == 'Some Title'
         new_screen.modal?.should == true
         new_screen.hidesBottomBarWhenPushed.should == true
         new_screen.nav_bar?.should == true
+        new_screen.navigationController.isNavigationBarHidden.should == true
       end
 
       it "should present the navigationController when showing a modal screen" do

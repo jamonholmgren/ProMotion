@@ -29,7 +29,7 @@ describe "ProMotion::TableScreen updating functionality" do
 
     # Array of NSIndexPaths
     Proc.new {
-    table_screen.update_table_data([NSIndexPath.indexPathForRow(0, inSection:0), NSIndexPath.indexPathForRow(1, inSection:0)])
+      table_screen.update_table_data([NSIndexPath.indexPathForRow(0, inSection:0), NSIndexPath.indexPathForRow(1, inSection:0)])
     }.should.not.raise(StandardError)
 
     # # Hash with single NSIndexPath

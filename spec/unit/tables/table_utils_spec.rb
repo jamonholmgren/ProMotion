@@ -18,6 +18,10 @@ describe "PM::Table utils" do
     @subject.index_path_to_section_index(given).should == expected
   end
 
+  it "return the original param when converting an index path with incorrect values" do
+    @subject.index_path_to_section_index(17).should == 17
+  end
+
   it "should properly determine if all members of an array are the same class" do
     @subject.array_all_members_of([1, 2, 3, 4], Fixnum).should == true
     @subject.array_all_members_of(["string", 'string2'], String).should == true

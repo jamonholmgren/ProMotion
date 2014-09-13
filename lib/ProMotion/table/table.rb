@@ -127,7 +127,7 @@ module ProMotion
 
     def update_table_data(args = {})
       # Try and detect if the args param is a NSIndexPath or an array of them
-      args = { index_paths: args } if args.is_a?(NSIndexPath) || (args.is_a?(Array) && args.first.is_a?(NSIndexPath))
+      args = { index_paths: args } if args.is_a?(NSIndexPath) || (args.is_a?(Array) && args.map(&:class).uniq.count == 1 && args.map(&:class).uniq.first == NSIndexPath)
 
       if args[:index_paths]
         args[:animation] ||= UITableViewRowAnimationNone

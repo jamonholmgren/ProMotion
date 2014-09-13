@@ -8,6 +8,12 @@ module ProMotion
         end
         params
       end
+
+      # Determines if all members of an array are a certain class
+      def array_all_members_of(arr, kalss)
+        unique_classes = arr.map(&:class).uniq
+        (unique_classes.count == 1 && unique_classes.first == kalss)
+      end
     end
   end
 end

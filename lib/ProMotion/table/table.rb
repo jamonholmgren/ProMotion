@@ -125,12 +125,16 @@ module ProMotion
       table_cell
     end
 
-    def update_table_data(index_paths = nil)
-      if index_paths
-        index_paths = [index_paths] unless index_paths.is_a?(Array)
+    def update_table_data(args = {})
+      # Try and detect if the args param is a NSIndexPath or an array of them
+      args = { index_paths: args } if args.is_a?(NSIndexPath) || (args.is_a?(Array) && args.first.is_a?(NSIndexPath))
+
+      if args[:index_paths]
+        args[:animation] ||= UITableViewRowAnimationNone
+        index_paths = [args[:index_paths]] unless args[:index_paths].is_a?(Array)
 
         table_view.beginUpdates
-        table_view.reloadRowsAtIndexPaths(index_path, withRowAnimation:UITableViewRowAnimationNone)
+        table_view.reloadRowsAtIndexPaths(index_paths, withRowAnimation:args[:animation])
         table_view.endUpdates
       else
         self.update_table_view_data(self.table_data)

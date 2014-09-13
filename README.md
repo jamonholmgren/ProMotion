@@ -9,7 +9,7 @@ simple, Ruby-like DSL.
 
 * Watch Jamon Holmgren give a talk about ProMotion at [RubyMotion #inspect2014](http://confreaks.com/videos/3813-inspect-going-pro-with-promotion-from-prototype-to-production) (video)
 * Watch the [September 2013 Motion Meetup](http://www.youtube.com/watch?v=rf7h-3AiMRQ) where Gant Laborde
-interviews Jamon Holmgren about ProMotion!
+interviews Jamon Holmgren about ProMotion
 
 ```ruby
 # app/app_delegate.rb
@@ -80,6 +80,7 @@ end
 1. Check out the [Getting Started Guide](https://github.com/clearsightstudio/ProMotion/wiki/Guide:-Getting-Started) in the wiki
 2. Watch the excellent [MotionInMotion screencast about ProMotion](https://motioninmotion.tv/screencasts/8) (very reasonably priced subscription required)
 3. Follow a tutorial: [Building an ESPN app using RubyMotion, ProMotion, and TDD](http://jamonholmgren.com/building-an-espn-app-using-rubymotion-promotion-and-tdd)
+4. Read the updated and exhaustive [Wiki](https://github.com/clearsightstudio/ProMotion/wiki)
 
 # Changelog
 
@@ -128,9 +129,7 @@ We've created a comprehensive and always updated wiki with code examples, usage 
 ProMotion is not only an easy DSL to get started. The community is very helpful and
 welcoming to new RubyMotion developers. We don't mind newbie questions.
 
-If you need help, feel free to tweet [@jamonholmgren](http://twitter.com/jamonholmgren)
-or open an issue on GitHub. Opening an issue is usually the best and we respond to those
-pretty quickly. If we don't respond within a day, tweet Jamon or Mark a link to the issue.
+If you need help, feel free to open an issue on GitHub. If we don't respond within a day, tweet us a link to the issue -- sometimes we get busy.
 
 # Contributing
 
@@ -140,6 +139,6 @@ See [CONTRIBUTING.md](https://github.com/clearsightstudio/ProMotion/blob/master/
 
 * Jamon Holmgren: [@jamonholmgren](https://twitter.com/jamonholmgren)
 * Silas Matson: [@silasjmatson](https://twitter.com/silasjmatson)
-* Matt Brewer: [@macfanatic](https://twitter.com/macfanatic)
 * Mark Rickert: [@markrickert](https://twitter.com/markrickert)
+* Ryan Linton: [@ryanlntn](https://twitter.com/ryanlntn)
 * [Many others](https://github.com/clearsightstudio/ProMotion/graphs/contributors)

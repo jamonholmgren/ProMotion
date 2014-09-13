@@ -11,6 +11,19 @@ describe "PM::Table module indexable" do
 
 end
 
+describe "PM::Table module indexable with nil section title" do
+
+  before do
+    @screen = TableScreenIndexableNil.new
+  end
+
+  it "should not crash when a section title is nil" do
+    result = %w{ A G M O S U }
+    @screen.sectionIndexTitlesForTableView(@screen.table_view).should == result.push(" ")
+  end
+
+end
+
 describe "PM::Table module indexable/searchable" do
 
   before do

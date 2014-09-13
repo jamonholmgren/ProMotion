@@ -5,6 +5,7 @@ module ProMotion
     include ProMotion::Table::Refreshable
     include ProMotion::Table::Indexable
     include ProMotion::Table::Longpressable
+    include ProMotion::Table::Utils
 
     attr_reader :promotion_table_data
 
@@ -67,10 +68,14 @@ module ProMotion
       @table_search_display_controller.searchResultsTableView.reloadData if searching?
     end
 
-    def trigger_action(action, arguments)
+    def trigger_action(action, arguments, index_path)
       return PM.logger.info "Action not implemented: #{action.to_s}" unless self.respond_to?(action)
-      return self.send(action) if self.method(action).arity == 0
-      self.send(action, arguments)
+
+      case self.method(action).arity
+      when 0 then self.send(action) # Just call the method
+      when 2 then self.send(action, arguments, index_path) # Send arguments and index path
+      else self.send(action, arguments) # Send arguments
+      end
     end
 
     def accessory_toggled_switch(switch)
@@ -79,15 +84,15 @@ module ProMotion
 
       if index_path
         data_cell = promotion_table_data.cell(section: index_path.section, index: index_path.row)
-        data_cell[:accessory][:arguments] ||= {}
         data_cell[:accessory][:arguments][:value] = switch.isOn if data_cell[:accessory][:arguments].is_a?(Hash)
-        trigger_action(data_cell[:accessory][:action], data_cell[:accessory][:arguments]) if data_cell[:accessory][:action]
+        trigger_action(data_cell[:accessory][:action], data_cell[:accessory][:arguments], index_path) if data_cell[:accessory][:action]
       end
     end
 
     def delete_row(index_paths, animation = nil)
       deletable_index_paths = []
-      Array(index_paths).each do |index_path|
+      index_paths = [index_paths] if index_paths.kind_of?(NSIndexPath)
+      index_paths.each do |index_path|
         delete_cell = false
         delete_cell = send(:on_cell_deleted, self.promotion_table_data.cell(index_path: index_path)) if self.respond_to?("on_cell_deleted:")
         unless delete_cell == false
@@ -103,14 +108,6 @@ module ProMotion
       data_cell = self.promotion_table_data.cell(section: params[:section], index: params[:index])
       return UITableViewCell.alloc.init unless data_cell
       create_table_cell(data_cell)
-    end
-
-    def index_path_to_section_index(params)
-      if params[:index_path]
-        params[:section] = params[:index_path].section
-        params[:index] = params[:index_path].row
-      end
-      params
     end
 
     def create_table_cell(data_cell)
@@ -170,7 +167,7 @@ module ProMotion
     def tableView(table_view, didSelectRowAtIndexPath:index_path)
       data_cell = self.promotion_table_data.cell(index_path: index_path)
       table_view.deselectRowAtIndexPath(index_path, animated: true) unless data_cell[:keep_selection] == true
-      trigger_action(data_cell[:action], data_cell[:arguments]) if data_cell[:action]
+      trigger_action(data_cell[:action], data_cell[:arguments], index_path) if data_cell[:action]
     end
 
     def tableView(table_view, editingStyleForRowAtIndexPath: index_path)
@@ -188,7 +185,7 @@ module ProMotion
       return index unless ["{search}", UITableViewIndexSearch].include?(self.table_data_index[0])
 
       if index == 0
-        tableView.setContentOffset(CGPointZero, animated:false)
+        tableView.scrollRectToVisible(CGRectMake(0.0, 0.0, 1.0, 1.0), animated:false)
         NSNotFound
       else
         index - 1

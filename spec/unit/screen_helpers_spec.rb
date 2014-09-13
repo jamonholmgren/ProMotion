@@ -231,10 +231,6 @@ describe "screen helpers" do
 
     describe "closing a screen" do
 
-      before do
-        @second_screen = BasicScreen.new
-      end
-
       it "should close a modal screen" do
         parent_screen = HomeScreen.new
         @screen.parent_screen = parent_screen
@@ -289,6 +285,30 @@ describe "screen helpers" do
 
         parent_screen.mock!(:on_return) { |args| args[:key].should == :value }
         @screen.send_on_return key: :value
+      end
+
+      context "there are two parent screens and we're closing to the first" do
+        it "#send_on_return should pass args to the first screen" do
+          first_screen = HomeScreen.new(nav_bar: true)
+          second_screen = first_screen.open(BasicScreen)
+          second_screen.open @screen
+
+
+          second_screen.stub!(:on_return) { |args| should.flunk "shouldn't call on_return on second_screen!" }
+          first_screen.mock!(:on_return) { |args| args[:key].should == :value }
+          @screen.close({ key: :value, to_screen: first_screen })
+        end
+
+        it "#send_on_return should pass args to the first screen with :root" do
+          first_screen = HomeScreen.new(nav_bar: true)
+          second_screen = first_screen.open(BasicScreen)
+          second_screen.open @screen
+
+
+          second_screen.stub!(:on_return) { |args| should.flunk "shouldn't call on_return on second_screen!" }
+          first_screen.mock!(:on_return) { |args| args[:key].should == :value }
+          @screen.close({ key: :value, to_screen: :root })
+        end
       end
 
     end

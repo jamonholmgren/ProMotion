@@ -1,5 +1,6 @@
 module ProMotion
   class TableData
+    include ProMotion::Table::Utils
     attr_accessor :data, :filtered_data, :search_string, :search_scope, :original_search_string, :filtered, :table_view
 
     def initialize(data, table_view)
@@ -21,37 +22,23 @@ module ProMotion
     end
 
     def cell(params={})
-      if params[:index_path]
-        params[:section] = params[:index_path].section
-        params[:index] = params[:index_path].row
-      end
-
+      params = index_path_to_section_index(params)
       table_section = self.section(params[:section])
       c = table_section[:cells].at(params[:index].to_i)
       set_data_cell_defaults c
     end
 
     def delete_cell(params={})
-      if params[:index_path]
-        params[:section] = params[:index_path].section
-        params[:index] = params[:index_path].row
-      end
-
+      params = index_path_to_section_index(params)
       table_section = self.section(params[:section])
       table_section[:cells].delete_at(params[:index].to_i)
     end
 
     def search(search_string, scope = nil)
-      self.filtered_data = []
-      self.filtered = true
-
-      self.original_search_string = search_string
-      self.search_string = search_string.downcase.strip
-      self.search_scope = scope.downcase.to_sym
+      start_searching(search_string, scope.downcase.to_sym)
 
       self.data.compact.each do |section|
         new_section = {}
-        new_section[:cells] = []
 
         new_section[:cells] = section[:cells].map do |cell|
           if cell[:searchable] != false
@@ -117,5 +104,14 @@ module ProMotion
       ident
     end
 
+  private
+
+    def start_searching(search_string, scope)
+      self.filtered_data = []
+      self.filtered = true
+      self.search_string = search_string.downcase.strip
+      self.original_search_string = search_string
+      self.search_scope = scope
+    end
   end
 end

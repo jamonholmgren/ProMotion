@@ -34,7 +34,31 @@ module ProMotion
     end
 
     def find_tab(tab_title)
-      self.viewControllers.find { |vc| vc.tabBarItem.title == tab_title }
+      viewControllers.find { |vc| vc.tabBarItem.title == tab_title }
+    end
+
+    # Cocoa touch methods below
+
+    def shouldAutorotate
+      current_view_controller_try(:shouldAutorotate)
+    end
+
+    def supportedInterfaceOrientations
+      current_view_controller_try(:supportedInterfaceOrientations)
+    end
+
+    def preferredInterfaceOrientationForPresentation
+      current_view_controller_try(:preferredInterfaceOrientationForPresentation)
+    end
+
+    private
+
+    def current_view_controller
+      selectedViewController || viewControllers.first
+    end
+
+    def current_view_controller_try(method, *args)
+      current_view_controller.send(method, *args) if current_view_controller.respond_to?(method)
     end
 
   end

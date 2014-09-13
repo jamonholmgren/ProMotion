@@ -70,15 +70,21 @@ module ProMotion
     end
 
     def bar_button_item_image(img, args)
-      UIBarButtonItem.alloc.initWithImage(img, style: map_bar_button_item_style(args[:style]), target: args[:target] || self, action: args[:action])
+      button = UIBarButtonItem.alloc.initWithImage(img, style: map_bar_button_item_style(args[:style]), target: args[:target] || self, action: args[:action])
+      button.setTintColor args[:tint_color] if args[:tint_color]
+      button
     end
 
     def bar_button_item_string(str, args)
-      UIBarButtonItem.alloc.initWithTitle(str, style: map_bar_button_item_style(args[:style]), target: args[:target] || self, action: args[:action])
+      button = UIBarButtonItem.alloc.initWithTitle(str, style: map_bar_button_item_style(args[:style]), target: args[:target] || self, action: args[:action])
+      button.setTintColor args[:tint_color] if args[:tint_color]
+      button
     end
 
     def bar_button_item_system_item(args)
-      UIBarButtonItem.alloc.initWithBarButtonSystemItem(map_bar_button_system_item(args[:system_item]), target: args[:target] || self, action: args[:action])
+      button = UIBarButtonItem.alloc.initWithBarButtonSystemItem(map_bar_button_system_item(args[:system_item]), target: args[:target] || self, action: args[:action])
+      button.setTintColor args[:tint_color] if args[:tint_color]
+      button
     end
 
     def bar_button_item_custom(custom_view)

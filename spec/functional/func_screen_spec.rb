@@ -1,4 +1,4 @@
-describe "ProMotion::Screen functional" do
+describe "ProMotion::Screen functionality" do
   tests PM::Screen
 
   # Override controller to properly instantiate
@@ -44,7 +44,7 @@ describe "ProMotion::Screen functional" do
       end
 
     end
-    
+
   end
 
   it "should push another screen with animation by default" do
@@ -68,6 +68,25 @@ describe "ProMotion::Screen functional" do
     end
   end
 
+  it "should call the on_back method on the root controller when navigating back" do
+    @nav_screen = NavigationScreen.new nav_bar: true
+    @presented_screen = PresentScreen.new
+    @nav_screen.open @presented_screen
+    @presented_screen.close
+    @nav_screen.on_back_fired.should == true
+  end
+
+  it "should call the correct on_back method when nesting screens" do
+    @base_screen = NavigationScreen.new nav_bar: true
+    @child_screen = @base_screen.open NavigationScreen.new
+    @grandchild_screen = @child_screen.open NavigationScreen.new
+
+    # start closing
+    @grandchild_screen.close
+    @child_screen.on_back_fired.should == true
+    @child_screen.close
+    @base_screen.on_back_fired.should == true
+  end
 
   it "should allow opening and closing a modal screen" do
     @basic = BasicScreen.new(nav_bar: true)

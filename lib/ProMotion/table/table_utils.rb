@@ -10,7 +10,7 @@ module ProMotion
       end
 
       # Determines if all members of an array are a certain class
-      def array_all_members_of?(arr, kalss)
+      def array_all_members_of?(arr, klass)
         arr.select{ |e| e.is_a?(klass) }.length == arr.length
       end
     end

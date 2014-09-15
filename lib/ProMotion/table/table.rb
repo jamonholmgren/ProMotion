@@ -62,9 +62,17 @@ module ProMotion
       self.promotion_table_data.search_string
     end
 
-    def update_table_view_data(data)
+    def update_table_view_data(data, args = {})
       self.promotion_table_data.data = data
-      table_view.reloadData
+      if args[:index_paths]
+        args[:animation] ||= UITableViewRowAnimationNone
+
+        table_view.beginUpdates
+        table_view.reloadRowsAtIndexPaths(Array(args[:index_paths]), withRowAnimation:args[:animation])
+        table_view.endUpdates
+      else
+        table_view.reloadData
+      end
       @table_search_display_controller.searchResultsTableView.reloadData if searching?
     end
 
@@ -122,8 +130,11 @@ module ProMotion
       table_cell
     end
 
-    def update_table_data
-      self.update_table_view_data(self.table_data)
+    def update_table_data(args = {})
+      # Try and detect if the args param is a NSIndexPath or an array of them
+      args = { index_paths: args } if args.is_a?(NSIndexPath) || (args.is_a?(Array) && array_all_members_of?(args, NSIndexPath))
+
+      self.update_table_view_data(self.table_data, args)
       self.promotion_table_data.search(search_string) if searching?
     end
 

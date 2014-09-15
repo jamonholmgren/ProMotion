@@ -19,7 +19,7 @@ describe "PM::TableViewCellModule" do
         radius: 15
       },
       selection_style: :gray,
-      style: {
+      properties: {
         layer: {
           masks_to_bounds: true
         },
@@ -48,7 +48,7 @@ describe "PM::TableViewCellModule" do
         {
           title: "",
           cells: [
-            { title: "Test 1", style: { accessory_type: UITableViewCellStateShowingEditControlMask } },
+            { title: "Test 1", properties: { accessory_type: UITableViewCellStateShowingEditControlMask } },
             custom_cell,
             { title: "Test2", accessory: { view: button } },
             attributed_cell

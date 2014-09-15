@@ -67,6 +67,7 @@ module ProMotion
       end
       data_cell[:cell_class] ||= PM::TableViewCell
       data_cell[:cell_identifier] ||= build_cell_identifier(data_cell)
+      data_cell[:properties] ||= data_cell[:style] || data_cell[:styles]
 
       data_cell[:accessory] = {
         view: data_cell[:accessory],

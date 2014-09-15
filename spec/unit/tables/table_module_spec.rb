@@ -29,7 +29,7 @@ describe "PM::Table module" do
         size: 50,
         radius: 15
       },
-      style: {
+      properties: {
         masks_to_bounds: true,
         background_color: UIColor.colorWithPatternImage(@image)
       }
@@ -44,7 +44,7 @@ describe "PM::Table module" do
       },{
         title: "Table cell group 2", cells: [ cell_factory ]
       },{
-        title: "Table cell group 3", cells: [ cell_factory(title: "3-1"), cell_factory({title: "3-2", style: { background_color: UIColor.blueColor } }) ]
+        title: "Table cell group 3", cells: [ cell_factory(title: "3-1"), cell_factory({title: "3-2", properties: { background_color: UIColor.blueColor } }) ]
       },{
         title: "Table cell group 4", cells: [ custom_cell, cell_factory(title: "4-2"), cell_factory(title: "4-3"), cell_factory(title: "4-4") ]
       },{

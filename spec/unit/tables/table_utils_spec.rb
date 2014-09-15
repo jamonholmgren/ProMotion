@@ -23,12 +23,12 @@ describe "PM::Table utils" do
   end
 
   it "should properly determine if all members of an array are the same class" do
-    @subject.array_all_members_of([1, 2, 3, 4], Fixnum).should == true
-    @subject.array_all_members_of(["string", 'string2'], String).should == true
-    @subject.array_all_members_of([:sym1, :sym2, :sym3], Symbol).should == true
+    @subject.array_all_members_of?([1, 2, 3, 4], Fixnum).should == true
+    @subject.array_all_members_of?(["string", 'string2'], String).should == true
+    @subject.array_all_members_of?([:sym1, :sym2, :sym3], Symbol).should == true
 
-    @subject.array_all_members_of([1, 2, 3, 4, 'String'], Fixnum).should == false
-    @subject.array_all_members_of([4.4, 2], Fixnum).should == false
+    @subject.array_all_members_of?([1, 2, 3, 4, 'String'], Fixnum).should == false
+    @subject.array_all_members_of?([4.4, 2], Fixnum).should == false
   end
 
 end

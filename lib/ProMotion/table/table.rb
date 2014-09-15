@@ -132,7 +132,7 @@ module ProMotion
 
     def update_table_data(args = {})
       # Try and detect if the args param is a NSIndexPath or an array of them
-      args = { index_paths: args } if args.is_a?(NSIndexPath) || (args.is_a?(Array) && array_all_members_of(args, NSIndexPath))
+      args = { index_paths: args } if args.is_a?(NSIndexPath) || (args.is_a?(Array) && array_all_members_of?(args, NSIndexPath))
 
       self.update_table_view_data(self.table_data, args)
       self.promotion_table_data.search(search_string) if searching?

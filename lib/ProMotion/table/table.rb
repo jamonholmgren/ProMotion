@@ -166,7 +166,7 @@ module ProMotion
 
     def tableView(table_view, willDisplayCell: table_cell, forRowAtIndexPath: index_path)
       data_cell = self.promotion_table_data.cell(index_path: index_path)
-      set_attributes table_cell, data_cell[:style] if data_cell[:style]
+      set_attributes table_cell, data_cell[:properties] if data_cell[:properties]
       table_cell.send(:will_display) if table_cell.respond_to?(:will_display)
       table_cell.send(:restyle!) if table_cell.respond_to?(:restyle!) # Teacup compatibility
     end

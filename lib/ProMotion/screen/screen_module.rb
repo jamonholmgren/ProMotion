@@ -12,7 +12,7 @@ module ProMotion
       check_ancestry
       resolve_title
       tab_bar_setup
-      set_attributes self, args
+      apply_properties(args)
       add_nav_bar(args) if args[:nav_bar]
       try :screen_setup
       try :on_init
@@ -145,6 +145,11 @@ module ProMotion
     end
 
   private
+
+    def apply_properties(args)
+      reserved_args = [ :nav_bar, :hide_nav_bar, :hide_tab_bar, :animated, :close_all, :modal, :in_tab, :in_detail, :in_master, :to_screen ]
+      set_attributes self, args.dup.delete_if { |k,v| reserved_args.include?(k) }
+    end
 
     def tab_bar_setup
       self.tab_bar_item = self.class.send(:get_tab_bar_item)

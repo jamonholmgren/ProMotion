@@ -21,7 +21,8 @@ module ProMotion
       elsif k.to_s.include?("_") # Snake case?
         set_attribute(element, camelize(k), v)
       else # Warn
-        PM.logger.warn "set_attribute: #{element.inspect} does not respond to #{k}="
+        PM.logger.warn "set_attribute: #{element.inspect} does not respond to #{k}=."
+        PM.logger.log("BACKTRACE", caller(0).join("\n"), :default) if PM.logger.level == :verbose
       end
       element
     end

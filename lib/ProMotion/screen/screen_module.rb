@@ -147,7 +147,7 @@ module ProMotion
   private
 
     def apply_properties(args)
-      reserved_args = [ :nav_bar, :hide_nav_bar, :hide_tab_bar, :animated, :close_all, :modal, :in_tab, :in_detail, :in_master, :to_screen ]
+      reserved_args = [ :nav_bar, :hide_nav_bar, :hide_tab_bar, :animated, :close_all, :in_tab, :in_detail, :in_master, :to_screen ]
       set_attributes self, args.dup.delete_if { |k,v| reserved_args.include?(k) }
     end
 

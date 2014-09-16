@@ -18,9 +18,10 @@ module ProMotion
         element.send("#{k}=", v)
       elsif v.is_a?(Array) && element.respond_to?("#{k}") && element.method("#{k}").arity == v.length
         element.send("#{k}", *v)
-      else
-        # Doesn't respond. Check if snake case.
-        set_attribute(element, camelize(k), v) if k.to_s.include?("_")
+      elsif k.to_s.include?("_") # Snake case?
+        set_attribute(element, camelize(k), v)
+      else # Warn
+        PM.logger.warn "set_attribute: #{element.inspect} does not respond to #{k}="
       end
       element
     end

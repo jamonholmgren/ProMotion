@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+unless File.exist?("/Library/RubyMotion2.32/lib")
+  abort "Couldn't find RubyMotion 2.32. Run `sudo motion update --cache-version=2.32`."
+end
 $:.unshift("/Library/RubyMotion2.32/lib")
 require 'motion/project/template/ios'
 require 'bundler'

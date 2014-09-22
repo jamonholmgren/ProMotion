@@ -1,5 +1,7 @@
 module ProMotion
   module WebScreenModule
+    include WKWebScreenModule if defined?(WKWebView)
+    include UIWebScreenModule unless defined?(WKWebView)
 
     attr_accessor :webview, :external_links, :detector_types, :scale_to_fit
 
@@ -19,14 +21,7 @@ module ProMotion
         self.detector_types = map_detector_symbol(self.detector_types)
       end
 
-      self.webview ||= add UIWebView.new, {
-        frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height),
-        delegate: self,
-        data_detector_types: self.detector_types
-      }
-      self.webview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
-      self.webview.scalesPageToFit = self.scale_to_fit
-      self.webview.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal
+      build_web_view
       set_initial_content
     end
 
@@ -85,10 +80,6 @@ module ProMotion
       evaluate("document.documentElement.outerHTML")
     end
 
-    def evaluate(js)
-      self.webview.stringByEvaluatingJavaScriptFromString(js)
-    end
-
     def current_url
       evaluate('document.URL')
     end
@@ -115,34 +106,6 @@ module ProMotion
       UIApplication.sharedApplication.openURL(inRequest.URL)
     end
 
-    # UIWebViewDelegate Methods - Camelcase
-    def webView(inWeb, shouldStartLoadWithRequest:inRequest, navigationType:inType)
-      if self.external_links == true && inType == UIWebViewNavigationTypeLinkClicked
-        if defined?(OpenInChromeController)
-          open_in_chrome inRequest
-        else
-          open_in_safari inRequest
-        end
-        return false #don't allow the web view to load the link.
-      end
-
-      load_request_enable = true #return true on default for local file loading.
-      load_request_enable = !!on_request(inRequest, inType) if self.respond_to?(:on_request)
-      load_request_enable
-    end
-
-    def webViewDidStartLoad(webView)
-      load_started if self.respond_to?(:load_started)
-    end
-
-    def webViewDidFinishLoad(webView)
-      load_finished if self.respond_to?(:load_finished)
-    end
-
-    def webView(webView, didFailLoadWithError:error)
-      load_failed(error) if self.respond_to?("load_failed:")
-    end
-
     protected
 
     def map_detector_symbol(symbol)
@@ -154,6 +117,5 @@ module ProMotion
         all:      UIDataDetectorTypeAll
       }[symbol] || UIDataDetectorTypeNone
     end
-
   end
 end

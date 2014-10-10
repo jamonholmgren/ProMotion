@@ -1,4 +1,10 @@
-# ProMotion [![Gem Version](https://badge.fury.io/rb/ProMotion.png)](http://badge.fury.io/rb/ProMotion) [![Build Status](https://travis-ci.org/clearsightstudio/ProMotion.png)](https://travis-ci.org/clearsightstudio/ProMotion) [![Code Climate](https://codeclimate.com/github/clearsightstudio/ProMotion.png)](https://codeclimate.com/github/clearsightstudio/ProMotion) [![Dependency Status](https://gemnasium.com/clearsightstudio/ProMotion.png)](https://gemnasium.com/clearsightstudio/ProMotion) [![ProMotion OmniRef Documentation](https://www.omniref.com/ruby/gems/ProMotion.png)](https://www.omniref.com/ruby/gems/ProMotion)
+# ProMotion
+
+[![Gem Version](https://badge.fury.io/rb/ProMotion.png)](http://badge.fury.io/rb/ProMotion)
+[![Build Status](https://travis-ci.org/clearsightstudio/ProMotion.png)](https://travis-ci.org/clearsightstudio/ProMotion)
+[![Code Climate](https://codeclimate.com/github/clearsightstudio/ProMotion.png)](https://codeclimate.com/github/clearsightstudio/ProMotion)
+[![Dependency Status](https://gemnasium.com/clearsightstudio/ProMotion.png)](https://gemnasium.com/clearsightstudio/ProMotion)
+[![omniref](https://www.omniref.com/ruby/gems/ProMotion.png)](https://www.omniref.com/ruby/gems/ProMotion)
 
 ## iPhone Apps, Ruby-style
 

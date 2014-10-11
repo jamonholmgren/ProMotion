@@ -1,6 +1,8 @@
 describe "ProMotion::Screen functionality" do
   tests PM::Screen
 
+  before { UIView.setAnimationDuration 0.01 }
+
   # Override controller to properly instantiate
   def controller
     rotate_device to: :portrait, button: :bottom
@@ -69,23 +71,22 @@ describe "ProMotion::Screen functionality" do
   end
 
   it "should call the on_back method on the root controller when navigating back" do
-    @nav_screen = NavigationScreen.new nav_bar: true
-    @presented_screen = PresentScreen.new
-    @nav_screen.open @presented_screen
-    @presented_screen.close
-    @nav_screen.on_back_fired.should == true
+    presented_screen = PresentScreen.new
+    @controller.open presented_screen, animated: false
+    @controller.navigationController.viewControllers.should == [ @controller, presented_screen ]
+    presented_screen.close animated: false
+    @controller.on_back_fired.should == true
   end
 
   it "should call the correct on_back method when nesting screens" do
-    @base_screen = NavigationScreen.new nav_bar: true
-    @child_screen = @base_screen.open NavigationScreen.new
-    @grandchild_screen = @child_screen.open NavigationScreen.new
+    child_screen = @controller.open NavigationScreen.new, animated: false
+    grandchild_screen = child_screen.open NavigationScreen.new, animated: false
 
     # start closing
-    @grandchild_screen.close
-    @child_screen.on_back_fired.should == true
-    @child_screen.close
-    @base_screen.on_back_fired.should == true
+    grandchild_screen.close animated: false
+    child_screen.on_back_fired.should == true
+    child_screen.close animated: false
+    @controller.on_back_fired.should == true
   end
 
   it "should allow opening and closing a modal screen" do

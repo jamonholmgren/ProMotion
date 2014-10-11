@@ -100,13 +100,13 @@ describe "screen helpers" do
 
     it "#push_view_controller should use the default navigation controller if not provided" do
       vcs = @screen.navigationController.viewControllers
-      @screen.push_view_controller @second_vc
+      @screen.push_view_controller @second_vc, @screen.navigationController, false
       @screen.navigationController.viewControllers.count.should == vcs.count + 1
     end
 
     it "#push_view_controller should use a provided navigation controller" do
       second_nav_controller = UINavigationController.alloc.initWithRootViewController @screen
-      @screen.push_view_controller @second_vc, second_nav_controller
+      @screen.push_view_controller @second_vc, second_nav_controller, false
       second_nav_controller.viewControllers.count.should == 2
     end
 
@@ -200,7 +200,7 @@ describe "screen helpers" do
 
       it "should ignore its own navigation controller if current screen has a navigation controller" do
         basic = BasicScreen.new(nav_bar: true) # creates a dangling nav_bar that will be discarded.
-        screen = @screen.open basic
+        screen = @screen.open basic, animated: false
         screen.should.be.kind_of BasicScreen
         basic.navigationController.should == @screen.navigationController
       end
@@ -302,13 +302,13 @@ describe "screen helpers" do
 
         it "#send_on_return should pass args to the first screen with :root" do
           first_screen = HomeScreen.new(nav_bar: true)
-          second_screen = first_screen.open(BasicScreen)
-          second_screen.open @screen
+          second_screen = first_screen.open(BasicScreen, animated: false)
+          second_screen.open @screen, animated: false
 
 
           second_screen.stub!(:on_return) { |args| should.flunk "shouldn't call on_return on second_screen!" }
           first_screen.mock!(:on_return) { |args| args[:key].should == :value }
-          @screen.close({ key: :value, to_screen: :root })
+          @screen.close key: :value, to_screen: :root, animated: false
         end
       end
 

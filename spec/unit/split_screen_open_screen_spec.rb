@@ -31,14 +31,14 @@ describe "split screen `open` functionality" do
   end
 
   it "should open a new screen in the master view's navigation controller" do
-    screen = @master_screen.open @detail_screen_2
+    screen = @master_screen.open @detail_screen_2, animated: false
     @split_screen.detail_screen.should == @detail_screen_1 # no change
     @master_screen.navigationController.topViewController.should == @detail_screen_2
     screen.should == @detail_screen_2
   end
 
   it "should open a new modal screen in the detail view" do
-    screen = @detail_screen_1.open @detail_screen_2, modal: true
+    screen = @detail_screen_1.open @detail_screen_2, modal: true, animated: false
     @split_screen.detail_screen.should == @detail_screen_1
     @detail_screen_1.presentedViewController.should == (@detail_screen_2.navigationController || @detail_screen_2)
     screen.should == @detail_screen_2
@@ -47,7 +47,7 @@ describe "split screen `open` functionality" do
   it "should not interfere with normal non-split screen navigation" do
     home = HomeScreen.new(nav_bar: true)
     child = BasicScreen.new
-    screen = home.open child, in_detail: true, in_master: true
+    screen = home.open child, in_detail: true, in_master: true, animated: false
     home.navigationController.topViewController.should == child
     screen.should == child
   end

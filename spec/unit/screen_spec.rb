@@ -60,7 +60,7 @@ describe "screen properties" do
   # Issue https://github.com/clearsightstudio/ProMotion/issues/109
   it "#should_autorotate should fire when shouldAutorotate fires when in a navigation bar" do
     parent_screen = BasicScreen.new(nav_bar: true)
-    parent_screen.open @screen
+    parent_screen.open @screen, animated: false
     @screen.mock!(:should_autorotate) { true.should == true }
     parent_screen.navigationController.shouldAutorotate
   end

@@ -10,6 +10,7 @@ describe "Split screen functionality" do
   end
 
   before do
+    UIView.setAnimationDuration 0.01
     rotate_device to: :landscape, button: :right
   end
 

@@ -15,8 +15,14 @@ describe "ProMotion::TableScreen functionality" do
   end
 
   def confirmation_class
-    TestHelper.ios7 ? UITableViewCellDeleteConfirmationButton : UITableViewCellDeleteConfirmationControl
+    TestHelper.ios7 ? "UITableViewCellDeleteConfirmationButton" : "UITableViewCellDeleteConfirmationControl"
   end
+
+  def table_label_class
+    TestHelper.ios7 ? "UILabel" : "UITableViewLabel"
+  end
+
+  before { UIView.setAnimationDuration 0.01 }
 
   after { @table_screen = nil }
 
@@ -31,7 +37,7 @@ describe "ProMotion::TableScreen functionality" do
 
   it "should add a new table cell on tap" do
     tap("Add New Row")
-    view("Dynamically Added").class.should == UILabel
+    view("Dynamically Added").class.to_s.should == table_label_class
   end
 
   it "should do nothing when no action specified" do
@@ -47,7 +53,7 @@ describe "ProMotion::TableScreen functionality" do
   it "should delete the specified row from the table view on tap" do
     table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 7
     tap("Delete the row below")
-    wait 0.3 do
+    wait 0.11 do
       table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 6
     end
   end
@@ -55,7 +61,7 @@ describe "ProMotion::TableScreen functionality" do
   it "should delete the specified row from the table view on tap with an animation" do
     table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 7
     tap("Delete the row below with an animation")
-    wait 0.3 do
+    wait 0.11 do
       table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 6
     end
   end
@@ -66,12 +72,12 @@ describe "ProMotion::TableScreen functionality" do
     table_screen.cell_was_deleted.should != true
     flick("Just another deletable blank row", :to => :left)
 
-    wait 0.25 do
+    wait 0.11 do
       # Tap the delete button
       view('Just another deletable blank row').superview.superview.subviews.each do |subview|
-        if subview.class == confirmation_class
+        if subview.class.to_s == confirmation_class
           tap subview
-          wait 0.25 do
+          wait 0.11 do
             table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 6
             table_screen.cell_was_deleted.should == true
           end
@@ -85,12 +91,12 @@ describe "ProMotion::TableScreen functionality" do
     table_screen.cell_was_deleted.should != true
     flick("A non-deletable blank row", :to => :left)
 
-    wait 0.25 do
+    wait 0.11 do
       # Tap the delete button
       view('A non-deletable blank row').superview.superview.subviews.each do |subview|
         if subview.class == confirmation_class
           tap subview
-          wait 0.25 do
+          wait 0.11 do
             table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 7
             table_screen.cell_was_deleted.should != false
           end

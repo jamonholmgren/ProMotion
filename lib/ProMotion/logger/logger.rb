@@ -19,12 +19,17 @@ module ProMotion
       error:      [:error],
       warn:       [:error, :warn],
       info:       [:error, :warn, :info],
+      debug:      [:error, :warn, :info, :debug],
       verbose:    [:error, :warn, :info, :debug, :verbose],
-      debug:      [:error, :warn, :info, :debug, :verbose]
     }
 
     def level
-      @level ||= :debug
+      @level ||= (RUBYMOTION_ENV == "release" ? :error : :debug)
+    end
+
+    def level=(new_level)
+      log('LOG LEVEL', 'Setting PM.logger to :verbose will make everything REALLY SLOW!', :purple) if new_level == :verbose
+      @level = new_level
     end
 
     def levels

@@ -1,6 +1,8 @@
 describe "ProMotion::TableScreen updating functionality" do
   tests PM::UpdateTestTableScreen
 
+  before { UIView.setAnimationDuration 0.01 }
+
   it 'should update a single row in the table view' do
     table_screen = UpdateTestTableScreen.new
     table_screen.make_more_cells

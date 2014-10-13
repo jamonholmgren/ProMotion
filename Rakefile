@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-unless File.exist?("/Library/RubyMotion2.34/lib")
-  abort "Couldn't find RubyMotion 2.34. Run `sudo motion update --cache-version=2.34`."
+RM_VERSION = "2.35"
+unless File.exist?("/Library/RubyMotion#{RM_VERSION}/lib")
+  abort "Couldn't find RubyMotion #{RM_VERSION}. Run `sudo motion update --cache-version=#{RM_VERSION}`."
 end
-$:.unshift("/Library/RubyMotion2.34/lib")
+$:.unshift("/Library/RubyMotion#{RM_VERSION}/lib")
 require 'motion/project/template/ios'
 require 'bundler'
 Bundler.require(:development)
@@ -11,7 +12,13 @@ require 'ProMotion'
 Motion::Project::App.setup do |app|
   app.name = 'ProMotion'
   app.device_family = [ :ipad ] # so we can test split screen capability
-  app.detect_dependencies = true
+  app.detect_dependencies = false
+  
+  # Adding file dependencies for tests
+  # Not too many dependencies necessary
+  app.files_dependencies({
+    "app/test_screens/table_screen_refreshable.rb" => [ "app/test_screens/test_table_screen.rb" ],
+  })
 end
 
 namespace :spec do

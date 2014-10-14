@@ -15,6 +15,7 @@ module ProMotion
 
     def screen_setup
       check_table_data
+      set_up_header_view
       set_up_searchable
       set_up_refreshable
       set_up_longpressable
@@ -26,6 +27,17 @@ module ProMotion
 
     def promotion_table_data
       @promotion_table_data ||= TableData.new(table_data, table_view)
+    end
+
+    def set_up_header_view
+      if self.respond_to?(:table_header_view)
+        header_view = self.table_header_view
+        if header_view.is_a? UIView
+          self.tableView.tableHeaderView = header_view
+        else
+          PM.logger.warn "Table header views must be a UIView."
+        end
+      end
     end
 
     def set_up_searchable

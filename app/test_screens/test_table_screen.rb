@@ -118,4 +118,8 @@ class TestTableScreen < ProMotion::TableScreen
     end
   end
 
+  def table_header_view
+    UIImageView.alloc.initWithImage(UIImage.imageNamed('test'))
+  end
+
 end

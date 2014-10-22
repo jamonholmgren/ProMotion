@@ -50,6 +50,11 @@ describe "table screens" do
       end
     end
 
+    it "should return nil when the index given is not found" do
+      index_path = NSIndexPath.indexPathForRow(7, inSection:0)
+      @screen.tableView(@screen.tableView, cellForRowAtIndexPath: index_path).should.be.nil
+    end
+
   end
 
   describe "search functionality" do

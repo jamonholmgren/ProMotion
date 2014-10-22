@@ -114,6 +114,7 @@ module ProMotion
     def table_view_cell(params={})
       params = index_path_to_section_index(params)
       data_cell = self.promotion_table_data.cell(section: params[:section], index: params[:index])
+      return nil if data_cell.nil?
       return UITableViewCell.alloc.init unless data_cell
       create_table_cell(data_cell)
     end

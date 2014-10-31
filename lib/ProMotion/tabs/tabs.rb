@@ -55,6 +55,11 @@ module ProMotion
         tab[:item] ||= tab[:icon]
       end
 
+      unless tab[:system_item] || tab[:item]
+        PM.logger.warn("You must provide either a `system_item:` or custom `item:` in `tab_bar_item`")
+        abort
+      end
+
       title = tab[:title] || "Untitled"
 
       tab_bar_item = UITabBarItem.alloc.initWithTabBarSystemItem(map_tab_symbol(tab[:system_item]), tag: current_tag) if tab[:system_item]

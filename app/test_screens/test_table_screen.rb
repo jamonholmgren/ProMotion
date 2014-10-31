@@ -1,6 +1,8 @@
 class TestTableScreen < ProMotion::TableScreen
 
   attr_accessor :tap_counter, :cell_was_deleted, :got_index_path
+  title 'Test title'
+  tab_bar_item title: 'Test tab title', item: 'test'
 
   def on_load
     self.tap_counter = 0

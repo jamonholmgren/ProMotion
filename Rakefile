@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-RM_VERSION = "2.35"
+RM_VERSION = "2.37"
 unless File.exist?("/Library/RubyMotion#{RM_VERSION}/lib")
   abort "Couldn't find RubyMotion #{RM_VERSION}. Run `sudo motion update --cache-version=#{RM_VERSION}`."
 end
@@ -13,7 +13,7 @@ Motion::Project::App.setup do |app|
   app.name = 'ProMotion'
   app.device_family = [ :ipad ] # so we can test split screen capability
   app.detect_dependencies = false
-  
+
   # Adding file dependencies for tests
   # Not too many dependencies necessary
   app.files_dependencies({

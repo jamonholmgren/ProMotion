@@ -68,7 +68,7 @@ module ProMotion
         args[:animation] ||= UITableViewRowAnimationNone
 
         table_view.beginUpdates
-        table_view.reloadRowsAtIndexPaths(Array(args[:index_paths]), withRowAnimation:args[:animation])
+        table_view.reloadRowsAtIndexPaths(Array(args[:index_paths]), withRowAnimation: args[:animation])
         table_view.endUpdates
       else
         table_view.reloadData
@@ -108,7 +108,7 @@ module ProMotion
           deletable_index_paths << index_path
         end
       end
-      table_view.deleteRowsAtIndexPaths(deletable_index_paths, withRowAnimation:map_row_animation_symbol(animation)) if deletable_index_paths.length > 0
+      table_view.deleteRowsAtIndexPaths(deletable_index_paths, withRowAnimation: map_row_animation_symbol(animation)) if deletable_index_paths.length > 0
     end
 
     def table_view_cell(params={})
@@ -144,11 +144,11 @@ module ProMotion
     end
 
     # Number of cells
-    def tableView(table_view, numberOfRowsInSection:section)
+    def tableView(table_view, numberOfRowsInSection: section)
       self.promotion_table_data.section_length(section)
     end
 
-    def tableView(table_view, titleForHeaderInSection:section)
+    def tableView(table_view, titleForHeaderInSection: section)
       section = promotion_table_data.section(section)
       section && section[:title]
     end
@@ -160,7 +160,7 @@ module ProMotion
       nil
     end
 
-    def tableView(table_view, cellForRowAtIndexPath:index_path)
+    def tableView(table_view, cellForRowAtIndexPath: index_path)
       table_view_cell(index_path: index_path)
     end
 
@@ -192,18 +192,18 @@ module ProMotion
       end
     end
 
-    def tableView(tableView, sectionForSectionIndexTitle:title, atIndex:index)
+    def tableView(tableView, sectionForSectionIndexTitle: title, atIndex: index)
       return index unless ["{search}", UITableViewIndexSearch].include?(self.table_data_index[0])
 
       if index == 0
-        tableView.scrollRectToVisible(CGRectMake(0.0, 0.0, 1.0, 1.0), animated:false)
+        tableView.scrollRectToVisible(CGRectMake(0.0, 0.0, 1.0, 1.0), animated: false)
         NSNotFound
       else
         index - 1
       end
     end
 
-    def deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)
+    def deleteRowsAtIndexPaths(index_paths, withRowAnimation: animation)
       PM.logger.warn "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)'."
       delete_row(index_paths, animation)
     end

@@ -23,6 +23,13 @@ describe "PM::Tabs" do
     tab_bar.viewControllers.length.should == 4
   end
 
+  it "should have correct tags on each tabBarItem" do
+    @screen1.tabBarItem.tag.should == 0
+    @screen2.tabBarItem.tag.should == 1
+    @screen3.tabBarItem.tag.should == 2
+    @screen4.tabBarItem.tag.should == 3
+  end
+
   it "should have the right screens in the right places" do
     tab_bar.viewControllers[0].should == @screen1.navigationController
     tab_bar.viewControllers[1].should == @screen2.navigationController

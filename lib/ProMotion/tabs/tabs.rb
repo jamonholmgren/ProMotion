@@ -55,6 +55,11 @@ module ProMotion
         tab[:item] ||= tab[:icon]
       end
 
+      unless tab[:system_item] || tab[:item]
+        PM.logger.warn("You must provide either a `system_item:` or custom `item:` in `tab_bar_item`")
+        abort
+      end
+
       title = "Untitled"
       title = tab[:title] if tab[:title]
       tab[:tag] ||= @current_tag ||= 0

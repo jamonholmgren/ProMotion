@@ -38,9 +38,9 @@ module ProMotion
 
     # Usage: PM.logger.log("ERROR", "message here", :red)
     def log(label, message_text, color)
-      return if defined?(RUBYMOTION_ENV) && RUBYMOTION_ENV == "test"
+      # return if defined?(RUBYMOTION_ENV) && RUBYMOTION_ENV == "test"
       color = COLORS[color] || COLORS[:default]
-      puts color[0] + NAME + "[#{label}] #{message_text}" + color[1]
+      $stderr.puts color[0] + NAME + "[#{label}] #{message_text}" + color[1]
       nil
     end
 

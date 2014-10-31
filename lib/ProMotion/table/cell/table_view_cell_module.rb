@@ -89,6 +89,7 @@ module ProMotion
   private
 
     def jm_image_cache?
+      return false if RUBYMOTION_ENV == 'test'
       return true if self.imageView.respond_to?("setImageWithURL:placeholder:")
       PM.logger.error "ProMotion Warning: to use remote_image with TableScreen you need to include the CocoaPod 'JMImageCache'."
       false

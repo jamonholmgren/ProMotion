@@ -38,13 +38,13 @@ module ProMotion
         item_image = nil
       end
 
-      item = UITabBarItem.alloc.initWithTitle(title, image:item_image, tag:tag)
+      item = UITabBarItem.alloc.initWithTitle(title, image: item_image, tag: tag)
 
       if item_selected || item_unselected
         item.setFinishedSelectedImage(item_selected, withFinishedUnselectedImage: item_unselected)
       end
 
-      return item
+      item
     end
 
     def create_tab_bar_item(tab={})
@@ -55,17 +55,19 @@ module ProMotion
         tab[:item] ||= tab[:icon]
       end
 
-      title = "Untitled"
-      title = tab[:title] if tab[:title]
-      tab[:tag] ||= @current_tag ||= 0
-      @current_tag = tab[:tag] + 1
+      title = tab[:title] || "Untitled"
 
-      tab_bar_item = UITabBarItem.alloc.initWithTabBarSystemItem(map_tab_symbol(tab[:system_item]), tag: tab[:tag]) if tab[:system_item]
-      tab_bar_item = create_tab_bar_item_custom(title, tab[:item], tab[:tag]) if tab[:item]
+      tab_bar_item = UITabBarItem.alloc.initWithTabBarSystemItem(map_tab_symbol(tab[:system_item]), tag: current_tag) if tab[:system_item]
+      tab_bar_item = create_tab_bar_item_custom(title, tab[:item], current_tag) if tab[:item]
 
       tab_bar_item.badgeValue = tab[:badge_number].to_s unless tab[:badge_number].nil? || tab[:badge_number] <= 0
 
-      return tab_bar_item
+      tab_bar_item
+    end
+
+    def current_tag
+      return @prev_tag = 0 unless @prev_tag
+      @prev_tag += 1
     end
 
     def replace_current_item(tab_bar_controller, view_controller: vc)
@@ -96,6 +98,7 @@ module ProMotion
       def tab_bar_item(args={})
         @tab_bar_item = args
       end
+
       def get_tab_bar_item
         @tab_bar_item
       end

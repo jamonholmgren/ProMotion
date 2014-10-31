@@ -24,7 +24,7 @@ module ProMotion
 
     def cell(params={})
       params = index_path_to_section_index(params)
-      table_section = self.section(params[:section])
+      table_section = params[:unfiltered] ? self.data[params[:section]] : self.section(params[:section])
       c = table_section[:cells].at(params[:index].to_i)
       set_data_cell_defaults c
     end

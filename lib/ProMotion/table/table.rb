@@ -171,18 +171,18 @@ module ProMotion
       table_cell.send(:restyle!) if table_cell.respond_to?(:restyle!) # Teacup compatibility
     end
 
-    def tableView(table_view, heightForRowAtIndexPath:index_path)
+    def tableView(table_view, heightForRowAtIndexPath: index_path)
       (self.promotion_table_data.cell(index_path: index_path)[:height] || table_view.rowHeight).to_f
     end
 
-    def tableView(table_view, didSelectRowAtIndexPath:index_path)
+    def tableView(table_view, didSelectRowAtIndexPath: index_path)
       data_cell = self.promotion_table_data.cell(index_path: index_path)
       table_view.deselectRowAtIndexPath(index_path, animated: true) unless data_cell[:keep_selection] == true
       trigger_action(data_cell[:action], data_cell[:arguments], index_path) if data_cell[:action]
     end
 
     def tableView(table_view, editingStyleForRowAtIndexPath: index_path)
-      data_cell = self.promotion_table_data.cell(index_path: index_path)
+      data_cell = self.promotion_table_data.cell(index_path: index_path, unfiltered: true)
       map_cell_editing_style(data_cell[:editing_style])
     end
 

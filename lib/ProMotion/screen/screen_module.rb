@@ -33,6 +33,27 @@ module ProMotion
       end
     end
 
+    def resolve_status_bar
+      case self.class.status_bar_type
+      when :none
+        status_bar_hidden true
+      when :light
+        status_bar_hidden false
+        status_bar_style UIStatusBarStyleLightContent
+      else
+        status_bar_hidden false
+        status_bar_style UIStatusBarStyleDefault
+      end
+    end
+
+    def status_bar_hidden(hidden)
+      UIApplication.sharedApplication.setStatusBarHidden(hidden, withAnimation:self.class.status_bar_animation)
+    end
+
+    def status_bar_style(style)
+      UIApplication.sharedApplication.setStatusBarStyle(style)
+    end
+
     def parent_screen=(parent)
       @parent_screen = WeakRef.new(parent)
     end
@@ -46,6 +67,7 @@ module ProMotion
     end
 
     def view_will_appear(animated)
+      resolve_status_bar
       self.will_appear
 
       self.will_present if isMovingToParentViewController
@@ -190,6 +212,22 @@ module ProMotion
       def title_view(t)
         @title = t
         @title_type = :view
+      end
+
+      def status_bar(c=nil, animation=nil)
+        if NSBundle.mainBundle.objectForInfoDictionaryKey('UIViewControllerBasedStatusBarAppearance').nil?
+          PM.logger.warn("status_bar will have no effect unless you set 'UIViewControllerBasedStatusBarAppearance' to false in your info.plist")
+        end
+        @status_bar_style = c
+        @status_bar_animation = animation
+      end
+
+      def status_bar_type
+        @status_bar_style || :default
+      end
+
+      def status_bar_animation
+        @status_bar_animation || UIStatusBarAnimationSlide
       end
     end
 

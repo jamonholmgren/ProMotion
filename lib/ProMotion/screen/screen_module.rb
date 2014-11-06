@@ -214,12 +214,12 @@ module ProMotion
         @title_type = :view
       end
 
-      def status_bar(c=nil, animation=nil)
+      def status_bar(style=nil, args={})
         if NSBundle.mainBundle.objectForInfoDictionaryKey('UIViewControllerBasedStatusBarAppearance').nil?
           PM.logger.warn("status_bar will have no effect unless you set 'UIViewControllerBasedStatusBarAppearance' to false in your info.plist")
         end
-        @status_bar_style = c
-        @status_bar_animation = animation
+        @status_bar_style = style
+        @status_bar_animation = args[:animation] if args[:animation]
       end
 
       def status_bar_type

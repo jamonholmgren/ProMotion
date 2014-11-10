@@ -1,6 +1,6 @@
 class TestTableScreen < ProMotion::TableScreen
 
-  attr_accessor :tap_counter, :cell_was_deleted, :got_index_path
+  attr_accessor :tap_counter, :cell_was_deleted, :got_index_path, :got_header_will_display
   title 'Test title'
   tab_bar_item title: 'Test tab title', item: 'test'
 
@@ -118,6 +118,10 @@ class TestTableScreen < ProMotion::TableScreen
         offset = CGPointMake(0, table_view.contentSize.height - table_view.frame.size.height)
         table_view.setContentOffset(offset, animated:false)
     end
+  end
+
+  def header_will_display(view, section)
+    @got_header_will_display = {view: view, section: section}
   end
 
 end

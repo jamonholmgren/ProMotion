@@ -1,3 +1,16 @@
+class TestView < UIView
+  attr_accessor :on_load_fired
+  attr_accessor :on_styled_fired
+
+  def on_load
+    self.on_load_fired = true
+  end
+
+  def on_styled
+    self.on_styled_fired = true
+  end
+end
+
 describe "view helpers" do
 
   def equal_rect(rect)
@@ -59,6 +72,18 @@ describe "view helpers" do
 
     layered_view.contentMode.should == UIViewContentModeBottom
     layered_view.layer.backgroundColor.should == UIColor.redColor.CGColor
+  end
+
+  it "should trigger on_load on a view that supports it" do
+    v = TestView.new
+    @dummy.add v
+    v.on_load_fired.should == true
+  end
+
+  it "should trigger on_styled on a view that supports it" do
+    v = TestView.new
+    @dummy.set_attributes v, { background_color: UIColor.blueColor }
+    v.on_styled_fired.should == true
   end
 
 

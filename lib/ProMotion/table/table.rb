@@ -211,7 +211,23 @@ module ProMotion
 
     def tableView(tableView, canMoveRowAtIndexPath:index_path)
       data_cell = self.promotion_table_data.cell(index_path: index_path, unfiltered: true)
-      data_cell[:moveable] || false
+
+      puts data_cell[:moveable].to_s
+      if (!data_cell[:moveable].nil? || data_cell[:moveable].is_a?(Symbol)) && data_cell[:moveable] != false
+        true
+      else
+        false
+      end
+    end
+
+    def tableView(tableView, targetIndexPathForMoveFromRowAtIndexPath:source_index_path, toProposedIndexPath:proposed_destination_index_path)
+      data_cell = self.promotion_table_data.cell(index_path: source_index_path, unfiltered: true)
+
+      if data_cell[:moveable] == :section && source_index_path.section != proposed_destination_index_path.section
+        source_index_path
+      else
+        proposed_destination_index_path
+      end
     end
 
     def tableView(tableView, moveRowAtIndexPath:from_index_path, toIndexPath:to_index_path)

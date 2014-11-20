@@ -5,6 +5,8 @@ class TestTableScreen < ProMotion::TableScreen
   tab_bar_item title: 'Test tab title', item: 'test'
 
   def on_load
+    UIView.animationsEnabled = false if RUBYMOTION_ENV == 'test'
+
     self.tap_counter = 0
     set_attributes self.view, { backgroundView: nil, backgroundColor: UIColor.whiteColor }
     set_nav_bar_button :right, title: UIImage.imageNamed("list.png"), action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain
@@ -64,6 +66,23 @@ class TestTableScreen < ProMotion::TableScreen
         action: :increment_counter_by,
         arguments: { number: 10 }
       }]
+      },{
+        title: "Moveable Tests",
+        cells: [{
+          title: 'Cell 1',
+          moveable: true
+        },{
+          title: 'Cell 2',
+          moveable: true
+        },{
+          title: 'Cell 3'
+        },{
+          title: 'Cell 4',
+          moveable: true
+        },{
+          title: 'Cell 5',
+          moveable: false
+        }]
   }]
   end
 
@@ -118,6 +137,10 @@ class TestTableScreen < ProMotion::TableScreen
         offset = CGPointMake(0, table_view.contentSize.height - table_view.frame.size.height)
         table_view.setContentOffset(offset, animated:false)
     end
+  end
+
+  def cell_moved(args={})
+    update_table_data
   end
 
 end

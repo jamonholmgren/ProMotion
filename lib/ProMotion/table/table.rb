@@ -138,6 +138,21 @@ module ProMotion
       self.promotion_table_data.search(search_string) if searching?
     end
 
+    def toggle_edit_mode(animated = true)
+      edit_mode({enabled: !editing?, animated: animated})
+    end
+
+    def edit_mode(args = {})
+      args[:enabled]  ||= false
+      args[:animated] ||= true
+
+      setEditing(args[:enabled], animated:args[:animated])
+    end
+
+    def editing?
+      !!isEditing
+    end
+
     ########## Cocoa touch methods #################
     def numberOfSectionsInTableView(table_view)
       self.promotion_table_data.sections.length
@@ -190,6 +205,28 @@ module ProMotion
       if editing_style == UITableViewCellEditingStyleDelete
         delete_row(index_path)
       end
+    end
+
+    def tableView(tableView, canMoveRowAtIndexPath:index_path)
+      data_cell = self.promotion_table_data.cell(index_path: index_path, unfiltered: true)
+      data_cell[:moveable] || false
+    end
+
+    def tableView(tableView, moveRowAtIndexPath:from_index_path, toIndexPath:to_index_path)
+      # TODO - Make this more readable
+      self.promotion_table_data.section(to_index_path.section)[:cells].insert(to_index_path.row, self.promotion_table_data.section(from_index_path.section)[:cells].delete_at(from_index_path.row))
+
+      args = {
+        paths: {
+          from: from_index_path,
+          to: to_index_path
+        },
+        cells: {
+          from: self.promotion_table_data.section(from_index_path.section)[:cells][from_index_path.row],
+          to:   self.promotion_table_data.section(to_index_path.section)[:cells][to_index_path.row]
+        }
+      }
+      try(:cell_moved, args)
     end
 
     def tableView(tableView, sectionForSectionIndexTitle: title, atIndex: index)

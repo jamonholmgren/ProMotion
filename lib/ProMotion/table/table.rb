@@ -149,7 +149,7 @@ module ProMotion
       setEditing(args[:enabled], animated:args[:animated])
     end
 
-    def editing?
+    def edit_mode?
       !!isEditing
     end
 

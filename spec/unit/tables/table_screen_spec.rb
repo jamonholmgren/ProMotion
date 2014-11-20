@@ -140,9 +140,9 @@ describe "table screens" do
     end
 
     it "should use a convenience method to see if the table is editing" do
-      @screen.isEditing.should == @screen.editing?
+      @screen.isEditing.should == @screen.edit_mode?
       @screen.edit_mode(enabled:true, animated:false)
-      @screen.isEditing.should == @screen.editing?
+      @screen.isEditing.should == @screen.edit_mode?
     end
 
     it "should return true for cells that are moveable" do

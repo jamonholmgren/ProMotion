@@ -139,7 +139,7 @@ class TestTableScreen < ProMotion::TableScreen
     end
   end
 
-  def cell_moved(args={})
+  def on_cell_moved(args={})
     update_table_data
   end
 

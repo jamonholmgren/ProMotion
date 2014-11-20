@@ -216,17 +216,21 @@ module ProMotion
       # TODO - Make this more readable
       self.promotion_table_data.section(to_index_path.section)[:cells].insert(to_index_path.row, self.promotion_table_data.section(from_index_path.section)[:cells].delete_at(from_index_path.row))
 
-      args = {
-        paths: {
-          from: from_index_path,
-          to: to_index_path
-        },
-        cells: {
-          from: self.promotion_table_data.section(from_index_path.section)[:cells][from_index_path.row],
-          to:   self.promotion_table_data.section(to_index_path.section)[:cells][to_index_path.row]
+      if self.respond_to?("on_cell_moved:")
+        args = {
+          paths: {
+            from: from_index_path,
+            to: to_index_path
+          },
+          cells: {
+            from: self.promotion_table_data.section(from_index_path.section)[:cells][from_index_path.row],
+            to:   self.promotion_table_data.section(to_index_path.section)[:cells][to_index_path.row]
+          }
         }
-      }
-      try(:cell_moved, args)
+        send(:on_cell_moved, args)
+      else
+        PM.logger.warn "Implement the on_cell_moved method in your PM::TableScreen to be notified when a user moves a cell."
+      end
     end
 
     def tableView(tableView, sectionForSectionIndexTitle: title, atIndex: index)

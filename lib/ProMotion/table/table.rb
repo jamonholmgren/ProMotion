@@ -222,10 +222,7 @@ module ProMotion
             from: from_index_path,
             to: to_index_path
           },
-          cells: {
-            from: self.promotion_table_data.section(from_index_path.section)[:cells][from_index_path.row],
-            to:   self.promotion_table_data.section(to_index_path.section)[:cells][to_index_path.row]
-          }
+          cell: self.promotion_table_data.section(to_index_path.section)[:cells][to_index_path.row]
         }
         send(:on_cell_moved, args)
       else

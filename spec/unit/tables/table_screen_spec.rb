@@ -145,6 +145,14 @@ describe "table screens" do
       @screen.isEditing.should == @screen.edit_mode?
     end
 
+    it "should toggle editing mode" do
+      @screen.edit_mode?.should == false
+      @screen.toggle_edit_mode(false)
+      @screen.edit_mode?.should == true
+      @screen.toggle_edit_mode(false)
+      @screen.edit_mode?.should == false
+    end
+
     it "should return true for cells that are moveable" do
       # Index path with :moveable = true
       index_path = NSIndexPath.indexPathForRow(0, inSection:4)
@@ -157,6 +165,43 @@ describe "table screens" do
       # Index path with :moveable = false
       index_path = NSIndexPath.indexPathForRow(4, inSection:4)
       @screen.tableView(@screen.tableView, canMoveRowAtIndexPath: index_path).should == false
+    end
+
+    it "should rearrange the data object when a cell is moved" do
+      move_from = NSIndexPath.indexPathForRow(0, inSection:4)
+      move_to   = NSIndexPath.indexPathForRow(2, inSection:4)
+
+      @screen.promotion_table_data.section(4)[:cells].map{|c| c[:title]}.should == [
+        'Cell 1',
+        'Cell 2',
+        'Cell 3',
+        'Cell 4',
+        'Cell 5'
+      ]
+      @screen.tableView(@screen.tableView, moveRowAtIndexPath:move_from, toIndexPath:move_to)
+      @screen.promotion_table_data.section(4)[:cells].map{|c| c[:title]}.should == [
+        'Cell 2',
+        'Cell 3',
+        'Cell 1',
+        'Cell 4',
+        'Cell 5'
+      ]
+    end
+
+    it "should call :cell_moved when moving a cell" do
+      move_from = NSIndexPath.indexPathForRow(0, inSection:4)
+      move_to   = NSIndexPath.indexPathForRow(2, inSection:4)
+
+      @screen.cell_was_moved.nil?.should == true
+      @screen.tableView(@screen.tableView, moveRowAtIndexPath:move_from, toIndexPath:move_to)
+      @screen.cell_was_moved.is_a?(Hash).should == true
+
+      cell = @screen.cell_was_moved
+
+      cell[:paths][:from].should == move_from
+      cell[:paths][:to].should == move_to
+
+      cell[:cell][:title].should == "Cell 1"
     end
 
   end

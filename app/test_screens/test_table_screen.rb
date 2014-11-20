@@ -1,6 +1,6 @@
 class TestTableScreen < ProMotion::TableScreen
 
-  attr_accessor :tap_counter, :cell_was_deleted, :got_index_path
+  attr_accessor :tap_counter, :cell_was_deleted, :got_index_path, :cell_was_moved
   title 'Test title'
   tab_bar_item title: 'Test tab title', item: 'test'
 
@@ -140,7 +140,7 @@ class TestTableScreen < ProMotion::TableScreen
   end
 
   def on_cell_moved(args={})
-    update_table_data
+    self.cell_was_moved = args
   end
 
 end

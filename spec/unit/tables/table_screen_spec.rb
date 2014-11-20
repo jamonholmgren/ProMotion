@@ -126,5 +126,40 @@ describe "table screens" do
 
   end
 
+  describe "test PM::TableScreen's moving cells functionality" do
+    before do
+      UIView.animationsEnabled = false
+      @screen = TestTableScreen.new
+      @screen.on_load
+    end
+
+    it "should allow the table screen to enter editing mode" do
+      @screen.isEditing.should == false
+      @screen.edit_mode(enabled:true, animated:false)
+      @screen.isEditing.should == true
+    end
+
+    it "should use a convenience method to see if the table is editing" do
+      @screen.isEditing.should == @screen.editing?
+      @screen.edit_mode(enabled:true, animated:false)
+      @screen.isEditing.should == @screen.editing?
+    end
+
+    it "should return true for cells that are moveable" do
+      # Index path with :moveable = true
+      index_path = NSIndexPath.indexPathForRow(0, inSection:4)
+      @screen.tableView(@screen.tableView, canMoveRowAtIndexPath: index_path).should == true
+
+      # Index path with no :moveable set
+      index_path = NSIndexPath.indexPathForRow(2, inSection:4)
+      @screen.tableView(@screen.tableView, canMoveRowAtIndexPath: index_path).should == false
+
+      # Index path with :moveable = false
+      index_path = NSIndexPath.indexPathForRow(4, inSection:4)
+      @screen.tableView(@screen.tableView, canMoveRowAtIndexPath: index_path).should == false
+    end
+
+  end
+
 end
 

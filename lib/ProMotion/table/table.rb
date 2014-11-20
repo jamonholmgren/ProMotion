@@ -140,6 +140,21 @@ module ProMotion
       self.promotion_table_data.search(search_string) if searching?
     end
 
+    def toggle_edit_mode(animated = true)
+      edit_mode({enabled: !editing?, animated: animated})
+    end
+
+    def edit_mode(args = {})
+      args[:enabled] = false if args[:enabled].nil?
+      args[:animated] = true if args[:animated].nil?
+
+      setEditing(args[:enabled], animated:args[:animated])
+    end
+
+    def edit_mode?
+      !!isEditing
+    end
+
     ########## Cocoa touch methods #################
     def numberOfSectionsInTableView(table_view)
       self.promotion_table_data.sections.length
@@ -191,6 +206,29 @@ module ProMotion
     def tableView(table_view, commitEditingStyle: editing_style, forRowAtIndexPath: index_path)
       if editing_style == UITableViewCellEditingStyleDelete
         delete_row(index_path)
+      end
+    end
+
+    def tableView(tableView, canMoveRowAtIndexPath:index_path)
+      data_cell = self.promotion_table_data.cell(index_path: index_path, unfiltered: true)
+      data_cell[:moveable] || false
+    end
+
+    def tableView(tableView, moveRowAtIndexPath:from_index_path, toIndexPath:to_index_path)
+      # TODO - Make this more readable
+      self.promotion_table_data.section(to_index_path.section)[:cells].insert(to_index_path.row, self.promotion_table_data.section(from_index_path.section)[:cells].delete_at(from_index_path.row))
+
+      if self.respond_to?("on_cell_moved:")
+        args = {
+          paths: {
+            from: from_index_path,
+            to: to_index_path
+          },
+          cell: self.promotion_table_data.section(to_index_path.section)[:cells][to_index_path.row]
+        }
+        send(:on_cell_moved, args)
+      else
+        PM.logger.warn "Implement the on_cell_moved method in your PM::TableScreen to be notified when a user moves a cell."
       end
     end
 

@@ -1,6 +1,6 @@
 class TestTableScreen < ProMotion::TableScreen
 
-  attr_accessor :tap_counter, :cell_was_deleted, :got_index_path
+  attr_accessor :tap_counter, :cell_was_deleted, :got_index_path, :cell_was_moved
   title 'Test title'
   tab_bar_item title: 'Test tab title', item: 'test'
 
@@ -64,6 +64,23 @@ class TestTableScreen < ProMotion::TableScreen
         action: :increment_counter_by,
         arguments: { number: 10 }
       }]
+      },{
+        title: "Moveable Tests",
+        cells: [{
+          title: 'Cell 1',
+          moveable: true
+        },{
+          title: 'Cell 2',
+          moveable: true
+        },{
+          title: 'Cell 3'
+        },{
+          title: 'Cell 4',
+          moveable: true
+        },{
+          title: 'Cell 5',
+          moveable: false
+        }]
   }]
   end
 
@@ -118,6 +135,10 @@ class TestTableScreen < ProMotion::TableScreen
         offset = CGPointMake(0, table_view.contentSize.height - table_view.frame.size.height)
         table_view.setContentOffset(offset, animated:false)
     end
+  end
+
+  def on_cell_moved(args={})
+    self.cell_was_moved = args
   end
 
 end

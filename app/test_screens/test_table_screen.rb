@@ -5,8 +5,6 @@ class TestTableScreen < ProMotion::TableScreen
   tab_bar_item title: 'Test tab title', item: 'test'
 
   def on_load
-    UIView.animationsEnabled = false if RUBYMOTION_ENV == 'test'
-
     self.tap_counter = 0
     set_attributes self.view, { backgroundView: nil, backgroundColor: UIColor.whiteColor }
     set_nav_bar_button :right, title: UIImage.imageNamed("list.png"), action: :return_to_some_other_screen, type: UIBarButtonItemStylePlain

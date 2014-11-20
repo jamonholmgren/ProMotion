@@ -212,7 +212,6 @@ module ProMotion
     def tableView(tableView, canMoveRowAtIndexPath:index_path)
       data_cell = self.promotion_table_data.cell(index_path: index_path, unfiltered: true)
 
-      puts data_cell[:moveable].to_s
       if (!data_cell[:moveable].nil? || data_cell[:moveable].is_a?(Symbol)) && data_cell[:moveable] != false
         true
       else
@@ -231,8 +230,7 @@ module ProMotion
     end
 
     def tableView(tableView, moveRowAtIndexPath:from_index_path, toIndexPath:to_index_path)
-      # TODO - Make this more readable
-      self.promotion_table_data.section(to_index_path.section)[:cells].insert(to_index_path.row, self.promotion_table_data.section(from_index_path.section)[:cells].delete_at(from_index_path.row))
+      self.promotion_table_data.move_cell(from_index_path, to_index_path)
 
       if self.respond_to?("on_cell_moved:")
         args = {

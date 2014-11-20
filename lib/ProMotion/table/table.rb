@@ -143,8 +143,8 @@ module ProMotion
     end
 
     def edit_mode(args = {})
-      args[:enabled]  ||= false
-      args[:animated] ||= true
+      args[:enabled] = false if args[:enabled].nil?
+      args[:animated] = true if args[:animated].nil?
 
       setEditing(args[:enabled], animated:args[:animated])
     end

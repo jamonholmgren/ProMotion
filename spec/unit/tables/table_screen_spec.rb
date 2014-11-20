@@ -204,6 +204,24 @@ describe "table screens" do
       cell[:cell][:title].should == "Cell 1"
     end
 
+    it "should allow cells to move to other sections" do
+      move_from = NSIndexPath.indexPathForRow(1, inSection:4)
+      move_to   = NSIndexPath.indexPathForRow(0, inSection:3)
+
+      moving_to = @screen.tableView(@screen.tableView, targetIndexPathForMoveFromRowAtIndexPath:move_from, toProposedIndexPath:move_to)
+
+      moving_to.should == move_to
+    end
+
+    it "should not allow cells to move to other sections" do
+      move_from = NSIndexPath.indexPathForRow(0, inSection:4)
+      move_to   = NSIndexPath.indexPathForRow(0, inSection:3)
+
+      moving_to = @screen.tableView(@screen.tableView, targetIndexPathForMoveFromRowAtIndexPath:move_from, toProposedIndexPath:move_to)
+
+      moving_to.should == move_from
+    end
+
   end
 
 end

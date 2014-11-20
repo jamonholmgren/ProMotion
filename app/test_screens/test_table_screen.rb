@@ -68,7 +68,7 @@ class TestTableScreen < ProMotion::TableScreen
         title: "Moveable Tests",
         cells: [{
           title: 'Cell 1',
-          moveable: true
+          moveable: :section
         },{
           title: 'Cell 2',
           moveable: true

@@ -50,6 +50,18 @@ describe "table screens" do
       end
     end
 
+    it "sets the auto row height and estimated row height properly" do
+      @screen.view.rowHeight.should == UITableViewAutomaticDimension
+      @screen.view.estimatedRowHeight.should == 97
+    end
+
+    it "sets the fixed row height properly" do
+      screen = UpdateTestTableScreen.new
+
+      screen.view.rowHeight.should == 77
+      screen.view.estimatedRowHeight.should == 77
+    end
+
   end
 
   describe "search functionality" do

@@ -1,4 +1,6 @@
 class UpdateTestTableScreen < PM::TableScreen
+  row_height 77
+
   def table_data; @table_data ||= []; end
   def on_load
     @table_data = [{cells: []}]

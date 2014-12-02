@@ -1,6 +1,7 @@
 module ProMotion
   module Table
     module Longpressable
+
       def make_longpressable(params={})
         params = {
           min_duration: 1.0

@@ -35,8 +35,12 @@ module ProMotion
     alias_method :set_nav_bar_right_button, :set_nav_bar_left_button
 
     def set_toolbar_items(buttons = [], animated = true)
-      self.toolbarItems = Array(buttons).map{|b| b.is_a?(UIBarButtonItem) ? b : create_toolbar_button(b) }
-      navigationController.setToolbarHidden(false, animated:animated)
+      if buttons.nil? || buttons == false
+        navigationController.setToolbarHidden(true, animated:animated)
+      else
+        self.toolbarItems = Array(buttons).map{|b| b.is_a?(UIBarButtonItem) ? b : create_toolbar_button(b) }
+        navigationController.setToolbarHidden(false, animated:animated)
+      end
     end
     alias_method :set_toolbar_buttons, :set_toolbar_items
     alias_method :set_toolbar_button,  :set_toolbar_items

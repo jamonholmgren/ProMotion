@@ -267,6 +267,29 @@ describe "screen with toolbar" do
     screen.navigationController.toolbarHidden?.should == false
   end
 
+  it "doesn't show the toolbar when passed nil" do
+    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen.on_load
+    screen.set_toolbar_button(nil, false)
+    screen.navigationController.toolbarHidden?.should == true
+  end
+
+  it "doesn't show the toolbar when passed false" do
+    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen.on_load
+    screen.set_toolbar_button(false, false)
+    screen.navigationController.toolbarHidden?.should == true
+  end
+
+  it "hides the toolbar when passed nil" do
+    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen.on_load
+    screen.set_toolbar_button([{title: "Testing Toolbar"}], false)
+    screen.navigationController.toolbarHidden?.should == false
+    screen.set_toolbar_button(nil, false)
+    screen.navigationController.toolbarHidden?.should == true
+  end
+
 end
 
 describe 'toolbar tinted buttons' do

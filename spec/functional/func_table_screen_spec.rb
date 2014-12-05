@@ -70,7 +70,7 @@ describe "ProMotion::TableScreen functionality" do
   it "should use editing_style to delete the table row" do
     table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 7
     table_screen.cell_was_deleted.should != true
-    flick("Just another deletable blank row", :to => :left)
+    flick("Just another deletable blank row", to: :left)
 
     wait 0.11 do
       # Tap the delete button
@@ -89,7 +89,7 @@ describe "ProMotion::TableScreen functionality" do
   it "should not allow deleting if on_cell_delete returns `false`" do
     table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 7
     table_screen.cell_was_deleted.should != true
-    flick("A non-deletable blank row", :to => :left)
+    flick("A non-deletable blank row", to: :left)
 
     wait 0.11 do
       # Tap the delete button

@@ -125,20 +125,22 @@ class TestTableScreen < ProMotion::TableScreen
   end
 
   def custom_accessory_view
-    set_attributes UIView.new, {
-      background_color: UIColor.orangeColor
-    }
+    set_attributes UIView.new, background_color: UIColor.orangeColor
   end
 
   def scroll_to_bottom
     if table_view.contentSize.height > table_view.frame.size.height
-        offset = CGPointMake(0, table_view.contentSize.height - table_view.frame.size.height)
-        table_view.setContentOffset(offset, animated:false)
+      offset = CGPointMake(0, table_view.contentSize.height - table_view.frame.size.height)
+      table_view.setContentOffset(offset, animated:false)
     end
   end
 
   def on_cell_moved(args={})
     self.cell_was_moved = args
+  end
+
+  def table_header_view
+    UIImageView.alloc.initWithImage(UIImage.imageNamed('test'))
   end
 
 end

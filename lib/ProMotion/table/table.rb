@@ -15,6 +15,7 @@ module ProMotion
 
     def screen_setup
       check_table_data
+      set_up_header_view
       set_up_searchable
       set_up_refreshable
       set_up_longpressable
@@ -26,6 +27,17 @@ module ProMotion
 
     def promotion_table_data
       @promotion_table_data ||= TableData.new(table_data, table_view)
+    end
+
+    def set_up_header_view
+      if self.respond_to?(:table_header_view)
+        header_view = self.table_header_view
+        if header_view.is_a? UIView
+          self.tableView.tableHeaderView = header_view
+        else
+          PM.logger.warn "Table header views must be a UIView."
+        end
+      end
     end
 
     def set_up_searchable
@@ -119,14 +131,16 @@ module ProMotion
     end
 
     def create_table_cell(data_cell)
+      new_cell = nil
       table_cell = table_view.dequeueReusableCellWithIdentifier(data_cell[:cell_identifier]) || begin
-        table_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:data_cell[:cell_identifier])
-        table_cell.extend(PM::TableViewCellModule) unless table_cell.is_a?(PM::TableViewCellModule)
-        table_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
-        table_cell.clipsToBounds = true # fix for changed default in 7.1
-        table_cell
+        new_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:data_cell[:cell_identifier])
+        new_cell.extend(PM::TableViewCellModule) unless new_cell.is_a?(PM::TableViewCellModule)
+        new_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
+        new_cell.clipsToBounds = true # fix for changed default in 7.1
+        new_cell
       end
       table_cell.setup(data_cell, self)
+      table_cell.send(:on_reuse) if !new_cell && table_cell.respond_to?(:on_reuse)
       table_cell
     end
 

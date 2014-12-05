@@ -26,6 +26,25 @@ describe "screen properties" do
     HomeScreen.title.should != 'instance method'
   end
 
+  it "should have a default UIStatusBar style" do
+    @screen.view_will_appear(false)
+    UIApplication.sharedApplication.isStatusBarHidden.should == false
+    UIApplication.sharedApplication.statusBarStyle.should == UIStatusBarStyleDefault
+  end
+
+  it "should set the UIStatusBar style to :none" do
+    @screen.class.status_bar :none
+    @screen.view_will_appear(false)
+    UIApplication.sharedApplication.isStatusBarHidden.should == true
+  end
+
+  it "should set the UIStatusBar style to :light" do
+    @screen.class.status_bar :light
+    @screen.view_will_appear(false)
+    UIApplication.sharedApplication.isStatusBarHidden.should == false
+    UIApplication.sharedApplication.statusBarStyle.should == UIStatusBarStyleLightContent
+  end
+
   it "should set the tab bar item with a system item" do
     @screen.set_tab_bar_item system_item: :contacts
     comparison = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemContacts, tag: 0)

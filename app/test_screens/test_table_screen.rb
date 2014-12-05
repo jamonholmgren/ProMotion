@@ -3,6 +3,7 @@ class TestTableScreen < ProMotion::TableScreen
   attr_accessor :tap_counter, :cell_was_deleted, :got_index_path, :cell_was_moved
   title 'Test title'
   tab_bar_item title: 'Test tab title', item: 'test'
+  row_height :auto, estimated: 97
 
   def on_load
     self.tap_counter = 0

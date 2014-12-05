@@ -19,6 +19,7 @@ module ProMotion
       set_up_searchable
       set_up_refreshable
       set_up_longpressable
+      set_up_row_height
     end
 
     def check_table_data
@@ -59,6 +60,13 @@ module ProMotion
     def set_up_longpressable
       if self.class.respond_to?(:get_longpressable) && self.class.get_longpressable
         self.make_longpressable(self.class.get_longpressable_params)
+      end
+    end
+
+    def set_up_row_height
+      if self.class.respond_to?(:get_row_height) && params = self.class.get_row_height
+        self.view.rowHeight = params[:height]
+        self.view.estimatedRowHeight = params[:estimated]
       end
     end
 
@@ -314,6 +322,16 @@ module ProMotion
     module TableClassMethods
       def table_style
         UITableViewStylePlain
+      end
+
+      def row_height(height, args={})
+        height = UITableViewAutomaticDimension if height == :auto
+        args[:estimated] ||= height unless height == UITableViewAutomaticDimension
+        @row_height = { height: height, estimated: args[:estimated] || 44.0 }
+      end
+
+      def get_row_height
+        @row_height ||= nil
       end
 
       # Searchable

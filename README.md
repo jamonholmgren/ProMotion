@@ -90,13 +90,18 @@ end
 
 # Changelog
 
-## Version 2.1.0
+## Version 2.2.0
 
-This release includes a few minor new features, but mainly it's a bugfix release and upgrading should go smoothly.
+This release includes several new features and is backwards compatible with all 2.x releases.
 
-* Added `hide_nav_bar` option to screen init args
-* `update_table_data` can now take `index_paths:` array to selectively update cells
-* Table cell `style` has been changed to `properties`. `style` will persist as an alias for backwards-compatibility
+* PM::TableScreen: You can now set a custom table view header view ([thanks Mark Rickert](https://github.com/clearsightstudio/ProMotion/pull/556))
+* PM::TableScreen refreshable: Refresh controls now show when programmatically initiating refresh ([thanks Mark Rickert](https://github.com/clearsightstudio/ProMotion/pull/569))
+* PM::TableScreen: Added reorderable ([thanks Mark Rickert](https://github.com/clearsightstudio/ProMotion/pull/569))
+* PM::TableScreen: Added auto height feature ([thanks Carlin Isaacson](https://github.com/clearsightstudio/ProMotion/pull/574))
+* PM::Screen: The navigation controller bottom toolbar will auto-hide when passed nil or false ([thanks Mark Rickert](https://github.com/clearsightstudio/ProMotion/pull/577))
+* PM::Screen: You can now choose a status bar style ([thanks Mark Rickert](https://github.com/clearsightstudio/ProMotion/pull/563))
+* Added `on_load` and `on_styled` hooks for UIViews that implement those methods ([Jamon Holmgren](https://github.com/clearsightstudio/ProMotion/pull/567))
+* Fixed an issue where cell properties would be applied twice unnecessarily ([Jamon Holmgren](https://github.com/clearsightstudio/ProMotion/pull/573))
 
 # API Reference
 

@@ -3,11 +3,12 @@ module ProMotion
     def set_attributes(element, args = {})
       args = get_attributes_from_symbol(args)
       args.each { |k, v| set_attribute(element, k, v) }
+      element.send(:on_styled) if element.respond_to?(:on_styled)
       element
     end
 
     def set_attribute(element, k, v)
-      return element unless element
+      return unless element
 
       if !element.is_a?(CALayer) && v.is_a?(Hash) && element.respond_to?("#{k}=")
         element.send("#{k}=", v)
@@ -71,6 +72,7 @@ module ProMotion
       Array(elements).each do |element|
         parent_element.addSubview element
         set_attributes(element, attrs) if attrs && attrs.length > 0
+        element.send(:on_load) if element.respond_to?(:on_load)
       end
       elements
     end

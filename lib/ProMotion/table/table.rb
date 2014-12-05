@@ -15,6 +15,7 @@ module ProMotion
 
     def screen_setup
       check_table_data
+      set_up_header_view
       set_up_searchable
       set_up_refreshable
       set_up_longpressable
@@ -26,6 +27,17 @@ module ProMotion
 
     def promotion_table_data
       @promotion_table_data ||= TableData.new(table_data, table_view)
+    end
+
+    def set_up_header_view
+      if self.respond_to?(:table_header_view)
+        header_view = self.table_header_view
+        if header_view.is_a? UIView
+          self.tableView.tableHeaderView = header_view
+        else
+          PM.logger.warn "Table header views must be a UIView."
+        end
+      end
     end
 
     def set_up_searchable
@@ -111,14 +123,16 @@ module ProMotion
     end
 
     def create_table_cell(data_cell)
+      new_cell = nil
       table_cell = table_view.dequeueReusableCellWithIdentifier(data_cell[:cell_identifier]) || begin
-        table_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:data_cell[:cell_identifier])
-        table_cell.extend(PM::TableViewCellModule) unless table_cell.is_a?(PM::TableViewCellModule)
-        table_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
-        table_cell.clipsToBounds = true # fix for changed default in 7.1
-        table_cell.setup(data_cell, self)
-        table_cell
+        new_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:data_cell[:cell_identifier])
+        new_cell.extend(PM::TableViewCellModule) unless new_cell.is_a?(PM::TableViewCellModule)
+        new_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
+        new_cell.clipsToBounds = true # fix for changed default in 7.1
+        new_cell.setup(data_cell, self)
+        new_cell
       end
+      table_cell.send(:on_reuse) if !new_cell && table_cell.respond_to?(:on_reuse)
       table_cell
     end
 
@@ -128,6 +142,21 @@ module ProMotion
 
       self.update_table_view_data(self.table_data, args)
       self.promotion_table_data.search(search_string) if searching?
+    end
+
+    def toggle_edit_mode(animated = true)
+      edit_mode({enabled: !editing?, animated: animated})
+    end
+
+    def edit_mode(args = {})
+      args[:enabled] = false if args[:enabled].nil?
+      args[:animated] = true if args[:animated].nil?
+
+      setEditing(args[:enabled], animated:args[:animated])
+    end
+
+    def edit_mode?
+      !!isEditing
     end
 
     ########## Cocoa touch methods #################
@@ -184,6 +213,43 @@ module ProMotion
     def tableView(table_view, commitEditingStyle: editing_style, forRowAtIndexPath: index_path)
       if editing_style == UITableViewCellEditingStyleDelete
         delete_row(index_path)
+      end
+    end
+
+    def tableView(tableView, canMoveRowAtIndexPath:index_path)
+      data_cell = self.promotion_table_data.cell(index_path: index_path, unfiltered: true)
+
+      if (!data_cell[:moveable].nil? || data_cell[:moveable].is_a?(Symbol)) && data_cell[:moveable] != false
+        true
+      else
+        false
+      end
+    end
+
+    def tableView(tableView, targetIndexPathForMoveFromRowAtIndexPath:source_index_path, toProposedIndexPath:proposed_destination_index_path)
+      data_cell = self.promotion_table_data.cell(index_path: source_index_path, unfiltered: true)
+
+      if data_cell[:moveable] == :section && source_index_path.section != proposed_destination_index_path.section
+        source_index_path
+      else
+        proposed_destination_index_path
+      end
+    end
+
+    def tableView(tableView, moveRowAtIndexPath:from_index_path, toIndexPath:to_index_path)
+      self.promotion_table_data.move_cell(from_index_path, to_index_path)
+
+      if self.respond_to?("on_cell_moved:")
+        args = {
+          paths: {
+            from: from_index_path,
+            to: to_index_path
+          },
+          cell: self.promotion_table_data.section(to_index_path.section)[:cells][to_index_path.row]
+        }
+        send(:on_cell_moved, args)
+      else
+        PM.logger.warn "Implement the on_cell_moved method in your PM::TableScreen to be notified when a user moves a cell."
       end
     end
 

@@ -172,6 +172,10 @@ describe "PM::Table module" do
     cell.backgroundColor.should == UIColor.blueColor
   end
 
+  it "should have a header view" do
+    @subject.tableView.tableHeaderView.class.should == UIImageView
+  end
+
   describe("section with custom title_view") do
 
     it "should use the correct class for section view" do

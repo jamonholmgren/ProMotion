@@ -90,7 +90,6 @@ module ProMotion
 
     def trigger_action(action, arguments, index_path)
       return PM.logger.info "Action not implemented: #{action.to_s}" unless self.respond_to?(action)
-
       case self.method(action).arity
       when 0 then self.send(action) # Just call the method
       when 2 then self.send(action, arguments, index_path) # Send arguments and index path
@@ -123,13 +122,6 @@ module ProMotion
       table_view.deleteRowsAtIndexPaths(deletable_index_paths, withRowAnimation: map_row_animation_symbol(animation)) if deletable_index_paths.length > 0
     end
 
-    def table_view_cell(params={})
-      params = index_path_to_section_index(params)
-      data_cell = self.promotion_table_data.cell(section: params[:section], index: params[:index])
-      return UITableViewCell.alloc.init unless data_cell
-      create_table_cell(data_cell)
-    end
-
     def create_table_cell(data_cell)
       new_cell = nil
       table_cell = table_view.dequeueReusableCellWithIdentifier(data_cell[:cell_identifier]) || begin
@@ -137,9 +129,9 @@ module ProMotion
         new_cell.extend(PM::TableViewCellModule) unless new_cell.is_a?(PM::TableViewCellModule)
         new_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
         new_cell.clipsToBounds = true # fix for changed default in 7.1
+        new_cell.setup(data_cell, self)
         new_cell
       end
-      table_cell.setup(data_cell, self)
       table_cell.send(:on_reuse) if !new_cell && table_cell.respond_to?(:on_reuse)
       table_cell
     end
@@ -190,12 +182,15 @@ module ProMotion
     end
 
     def tableView(table_view, cellForRowAtIndexPath: index_path)
-      table_view_cell(index_path: index_path)
+      params = index_path_to_section_index(index_path: index_path)
+      data_cell = self.promotion_table_data.cell(section: params[:section], index: params[:index])
+      return UITableViewCell.alloc.init unless data_cell
+      create_table_cell(data_cell)
     end
 
     def tableView(table_view, willDisplayCell: table_cell, forRowAtIndexPath: index_path)
       data_cell = self.promotion_table_data.cell(index_path: index_path)
-      set_attributes table_cell, data_cell[:properties] if data_cell[:properties]
+      table_cell.setup(data_cell, self) if table_cell.respond_to?(:setup)
       table_cell.send(:will_display) if table_cell.respond_to?(:will_display)
       table_cell.send(:restyle!) if table_cell.respond_to?(:restyle!) # Teacup compatibility
     end

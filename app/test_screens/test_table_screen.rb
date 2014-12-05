@@ -17,6 +17,7 @@ class TestTableScreen < ProMotion::TableScreen
       cells: [
         { title: "Increment", action: :increment_counter_by, arguments: {number: 3} },
         { title: "Add New Row", action: :add_tableview_row },
+        nil,
         { title: "Delete the row below", action: :delete_cell, arguments: {section: 0, row:3} },
         { title: "Just another deletable blank row", editing_style: :delete },
         { title: "A non-deletable blank row", editing_style: :delete },

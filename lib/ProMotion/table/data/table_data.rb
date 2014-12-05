@@ -35,6 +35,10 @@ module ProMotion
       table_section[:cells].delete_at(params[:index].to_i)
     end
 
+    def move_cell(from, to)
+      section(to.section)[:cells].insert(to.row, section(from.section)[:cells].delete_at(from.row))
+    end
+
     def search(search_string)
       start_searching(search_string)
 

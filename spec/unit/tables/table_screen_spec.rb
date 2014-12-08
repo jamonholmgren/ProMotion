@@ -50,6 +50,18 @@ describe "table screens" do
       end
     end
 
+    it "sets the auto row height and estimated row height properly" do
+      @screen.view.rowHeight.should == UITableViewAutomaticDimension
+      @screen.view.estimatedRowHeight.should == 97
+    end
+
+    it "sets the fixed row height properly" do
+      screen = UpdateTestTableScreen.new
+
+      screen.view.rowHeight.should == 77
+      screen.view.estimatedRowHeight.should == 77
+    end
+
   end
 
   describe "search functionality" do
@@ -122,6 +134,104 @@ describe "table screens" do
 
       @screen.update_table_data
       @screen.tableView(@screen.tableView, numberOfRowsInSection:0).should == 2
+    end
+
+  end
+
+  describe "test PM::TableScreen's moving cells functionality" do
+    before do
+      UIView.animationsEnabled = false
+      @screen = TestTableScreen.new
+      @screen.on_load
+    end
+
+    it "should allow the table screen to enter editing mode" do
+      @screen.isEditing.should == false
+      @screen.edit_mode(enabled:true, animated:false)
+      @screen.isEditing.should == true
+    end
+
+    it "should use a convenience method to see if the table is editing" do
+      @screen.isEditing.should == @screen.edit_mode?
+      @screen.edit_mode(enabled:true, animated:false)
+      @screen.isEditing.should == @screen.edit_mode?
+    end
+
+    it "should toggle editing mode" do
+      @screen.edit_mode?.should == false
+      @screen.toggle_edit_mode(false)
+      @screen.edit_mode?.should == true
+      @screen.toggle_edit_mode(false)
+      @screen.edit_mode?.should == false
+    end
+
+    it "should return true for cells that are moveable" do
+      # Index path with :moveable = true
+      index_path = NSIndexPath.indexPathForRow(0, inSection:4)
+      @screen.tableView(@screen.tableView, canMoveRowAtIndexPath: index_path).should == true
+
+      # Index path with no :moveable set
+      index_path = NSIndexPath.indexPathForRow(2, inSection:4)
+      @screen.tableView(@screen.tableView, canMoveRowAtIndexPath: index_path).should == false
+
+      # Index path with :moveable = false
+      index_path = NSIndexPath.indexPathForRow(4, inSection:4)
+      @screen.tableView(@screen.tableView, canMoveRowAtIndexPath: index_path).should == false
+    end
+
+    it "should rearrange the data object when a cell is moved" do
+      move_from = NSIndexPath.indexPathForRow(0, inSection:4)
+      move_to   = NSIndexPath.indexPathForRow(2, inSection:4)
+
+      @screen.promotion_table_data.section(4)[:cells].map{|c| c[:title]}.should == [
+        'Cell 1',
+        'Cell 2',
+        'Cell 3',
+        'Cell 4',
+        'Cell 5'
+      ]
+      @screen.tableView(@screen.tableView, moveRowAtIndexPath:move_from, toIndexPath:move_to)
+      @screen.promotion_table_data.section(4)[:cells].map{|c| c[:title]}.should == [
+        'Cell 2',
+        'Cell 3',
+        'Cell 1',
+        'Cell 4',
+        'Cell 5'
+      ]
+    end
+
+    it "should call :cell_moved when moving a cell" do
+      move_from = NSIndexPath.indexPathForRow(0, inSection:4)
+      move_to   = NSIndexPath.indexPathForRow(2, inSection:4)
+
+      @screen.cell_was_moved.nil?.should == true
+      @screen.tableView(@screen.tableView, moveRowAtIndexPath:move_from, toIndexPath:move_to)
+      @screen.cell_was_moved.is_a?(Hash).should == true
+
+      cell = @screen.cell_was_moved
+
+      cell[:paths][:from].should == move_from
+      cell[:paths][:to].should == move_to
+
+      cell[:cell][:title].should == "Cell 1"
+    end
+
+    it "should allow cells to move to other sections" do
+      move_from = NSIndexPath.indexPathForRow(1, inSection:4)
+      move_to   = NSIndexPath.indexPathForRow(0, inSection:3)
+
+      moving_to = @screen.tableView(@screen.tableView, targetIndexPathForMoveFromRowAtIndexPath:move_from, toProposedIndexPath:move_to)
+
+      moving_to.should == move_to
+    end
+
+    it "should not allow cells to move to other sections" do
+      move_from = NSIndexPath.indexPathForRow(0, inSection:4)
+      move_to   = NSIndexPath.indexPathForRow(0, inSection:3)
+
+      moving_to = @screen.tableView(@screen.tableView, targetIndexPathForMoveFromRowAtIndexPath:move_from, toProposedIndexPath:move_to)
+
+      moving_to.should == move_from
     end
 
   end

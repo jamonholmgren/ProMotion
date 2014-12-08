@@ -26,6 +26,25 @@ describe "screen properties" do
     HomeScreen.title.should != 'instance method'
   end
 
+  it "should have a default UIStatusBar style" do
+    @screen.view_will_appear(false)
+    UIApplication.sharedApplication.isStatusBarHidden.should == false
+    UIApplication.sharedApplication.statusBarStyle.should == UIStatusBarStyleDefault
+  end
+
+  it "should set the UIStatusBar style to :none" do
+    @screen.class.status_bar :none
+    @screen.view_will_appear(false)
+    UIApplication.sharedApplication.isStatusBarHidden.should == true
+  end
+
+  it "should set the UIStatusBar style to :light" do
+    @screen.class.status_bar :light
+    @screen.view_will_appear(false)
+    UIApplication.sharedApplication.isStatusBarHidden.should == false
+    UIApplication.sharedApplication.statusBarStyle.should == UIStatusBarStyleLightContent
+  end
+
   it "should set the tab bar item with a system item" do
     @screen.set_tab_bar_item system_item: :contacts
     comparison = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemContacts, tag: 0)
@@ -265,6 +284,29 @@ describe "screen with toolbar" do
     screen.navigationController.toolbarHidden?.should == true
     screen.set_toolbar_button([{title: "Testing Toolbar"}], false)
     screen.navigationController.toolbarHidden?.should == false
+  end
+
+  it "doesn't show the toolbar when passed nil" do
+    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen.on_load
+    screen.set_toolbar_button(nil, false)
+    screen.navigationController.toolbarHidden?.should == true
+  end
+
+  it "doesn't show the toolbar when passed false" do
+    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen.on_load
+    screen.set_toolbar_button(false, false)
+    screen.navigationController.toolbarHidden?.should == true
+  end
+
+  it "hides the toolbar when passed nil" do
+    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen.on_load
+    screen.set_toolbar_button([{title: "Testing Toolbar"}], false)
+    screen.navigationController.toolbarHidden?.should == false
+    screen.set_toolbar_button(nil, false)
+    screen.navigationController.toolbarHidden?.should == true
   end
 
 end

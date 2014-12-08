@@ -19,6 +19,9 @@ module ProMotion
         return unless @refresh_control
 
         @refresh_control.beginRefreshing
+
+        # Scrolls the table down to show the refresh control when invoked programatically
+        table_view.setContentOffset(CGPointMake(0, table_view.contentOffset.y-@refresh_control.frame.size.height), animated:true) if table_view.contentOffset.y > -65.0
       end
       alias :begin_refreshing :start_refreshing
 

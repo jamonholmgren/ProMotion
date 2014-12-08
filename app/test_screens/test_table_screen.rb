@@ -1,5 +1,5 @@
 class TestTableScreen < ProMotion::TableScreen
-  attr_accessor :tap_counter, :cell_was_deleted, :got_index_path, :cell_was_moved, :got_header_will_display
+  attr_accessor :tap_counter, :cell_was_deleted, :got_index_path, :cell_was_moved, :got_will_display_header
 
   title 'Test title'
   tab_bar_item title: 'Test tab title', item: 'test'
@@ -136,8 +136,8 @@ class TestTableScreen < ProMotion::TableScreen
     end
   end
 
-  def header_will_display(view, section)
-    @got_header_will_display = {view: view, section: section}
+  def will_display_header(view, section)
+    @got_will_display_header = {view: view, section: section}
   end
 
   def table_header_view

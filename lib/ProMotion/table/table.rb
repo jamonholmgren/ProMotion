@@ -296,7 +296,7 @@ module ProMotion
     end
 
     def tableView(tableView, willDisplayHeaderView:view, forSection:section)
-      action = :header_will_display
+      action = :will_display_header
       if respond_to?(action)
         case self.method(action).arity
         when 0 then self.send(action)

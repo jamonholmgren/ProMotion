@@ -28,6 +28,13 @@ module ProMotion
       button
     end
 
+    def set_nav_bar_buttons(side, buttons=[])
+      buttons = buttons.map{ |b| create_toolbar_button(b) }.reverse
+
+      self.navigationItem.setLeftBarButtonItems(buttons) if side == :left
+      self.navigationItem.setRightBarButtonItems(buttons) if side == :right
+    end
+
     # TODO: In PM 2.1+, entirely remove this deprecated method.
     def set_nav_bar_left_button(title, args={})
       PM.logger.deprecated "set_nav_bar_right_button and set_nav_bar_left_button have been removed. Use set_nav_bar_button :right/:left instead."

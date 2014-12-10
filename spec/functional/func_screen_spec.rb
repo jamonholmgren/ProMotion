@@ -32,6 +32,32 @@ describe "ProMotion::Screen functionality" do
     @controller.button_was_triggered.should.be.true
   end
 
+  it "should allow setting multiple left nav bar buttons" do
+    button1 = {title: "CoolL1", action: :triggered_button}
+    button2 = {title: "CoolL2", action: :triggered_button2}
+
+    @controller.set_nav_bar_buttons(:left, [button1, button2])
+    tap("CoolL1")
+    @controller.button_was_triggered.should.be.true
+    @controller.button2_was_triggered.should.be.false
+    tap("CoolL2")
+    @controller.button_was_triggered.should.be.true
+    @controller.button2_was_triggered.should.be.true
+  end
+
+  it "should allow setting multiple right nav bar buttons" do
+    button1 = {title: "CoolR1", action: :triggered_button}
+    button2 = {title: "CoolR2", action: :triggered_button2}
+
+    @controller.set_nav_bar_buttons(:right, [button1, button2])
+    tap("CoolR1")
+    @controller.button_was_triggered.should.be.true
+    @controller.button2_was_triggered.should.be.false
+    tap("CoolR2")
+    @controller.button_was_triggered.should.be.true
+    @controller.button2_was_triggered.should.be.true
+  end
+
   it "should allow opening another screen in the same nav bar and have a back button that is operational" do
     @controller.open BasicScreen
 

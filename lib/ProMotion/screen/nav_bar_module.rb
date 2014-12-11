@@ -18,8 +18,8 @@ module ProMotion
     end
 
     def set_nav_bar_button(side, args={})
-      button = create_toolbar_button(args)
-      button.setTintColor args[:tint_color] if args[:tint_color]
+      button = (args.is_a?(UIBarButtonItem)) ? args : create_toolbar_button(args)
+      button.setTintColor args[:tint_color] if args.is_a?(Hash) && args[:tint_color]
 
       self.navigationItem.leftBarButtonItem = button if side == :left
       self.navigationItem.rightBarButtonItem = button if side == :right
@@ -29,7 +29,7 @@ module ProMotion
     end
 
     def set_nav_bar_buttons(side, buttons=[])
-      buttons = buttons.map{ |b| create_toolbar_button(b) }.reverse
+      buttons = buttons.map{ |b| b.is_a?(UIBarButtonItem) ? b : create_toolbar_button(b) }.reverse
 
       self.navigationItem.setLeftBarButtonItems(buttons) if side == :left
       self.navigationItem.setRightBarButtonItems(buttons) if side == :right

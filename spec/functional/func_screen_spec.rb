@@ -26,6 +26,13 @@ describe "ProMotion::Screen functionality" do
     @controller.button_was_triggered.should.be.true
   end
 
+  it "should allow setting a nav bar button with an instance of UIBarButtonItem" do
+    bar_button = UIBarButtonItem.alloc.initWithTitle("Cool", style:UIBarButtonItemStylePlain, target:@controller, action: :triggered_button)
+    @controller.set_nav_bar_button :left, bar_button
+    tap("Cool")
+    @controller.button_was_triggered.should.be.true
+  end
+
   it "should allow setting a right nav bar button" do
     @controller.set_nav_bar_button :right, title: "Cool2", action: :triggered_button
     tap("Cool2")

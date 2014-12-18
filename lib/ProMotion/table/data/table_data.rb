@@ -5,10 +5,7 @@ module ProMotion
     attr_accessor :data, :filtered_data, :search_string, :original_search_string, :filtered, :table_view
 
     def initialize(data, table_view)
-      self.data = data.map do |section|
-        section[:cells].compact!
-        section
-      end
+      self.data = data
       self.table_view = WeakRef.new(table_view)
     end
 

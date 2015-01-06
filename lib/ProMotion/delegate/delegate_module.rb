@@ -39,7 +39,7 @@ module ProMotion
     end
 
     def application(application, openURL: url, sourceApplication:source_app, annotation: annotation)
-      try :on_open_url, { url: url, source_app: source_app, annotation: annotation }
+      try :on_open_url, { application: application, url: url, source_app: source_app, annotation: annotation }
     end
 
     def app_delegate

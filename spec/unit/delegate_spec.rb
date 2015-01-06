@@ -72,6 +72,7 @@ describe "PM::Delegate" do
     sourceApplication = 'com.example'
     annotation = {jamon: true}
     @subject.mock!(:on_open_url) do |parameters|
+      parameters[:application].should == UIApplication.sharedApplication
       parameters[:url].should == url
       parameters[:source_app].should == sourceApplication
       parameters[:annotation][:jamon].should.be.true

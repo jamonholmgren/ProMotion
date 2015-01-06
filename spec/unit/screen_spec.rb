@@ -1,11 +1,9 @@
 describe "screen properties" do
 
   before do
-
     # Simulate AppDelegate setup of main screen
     @screen = HomeScreen.new modal: true, nav_bar: true
     @screen.on_load
-
   end
 
   it "should store title" do
@@ -88,6 +86,10 @@ describe "screen properties" do
   it "#should_rotate(orientation) should fire when shouldAutorotateToInterfaceOrientation(orientation) fires" do
     @screen.mock!(:should_rotate) { |orientation| orientation.should == UIInterfaceOrientationMaskPortrait }
     @screen.shouldAutorotateToInterfaceOrientation(UIInterfaceOrientationMaskPortrait)
+  end
+
+  it "should have an awesome convenience method for UIApplication.sharedApplication" do
+    @screen.app.should == UIApplication.sharedApplication
   end
 
   describe "iOS lifecycle methods" do

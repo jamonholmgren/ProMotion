@@ -80,6 +80,10 @@ describe "PM::Delegate" do
     @subject.application(UIApplication.sharedApplication, openURL: url, sourceApplication:sourceApplication, annotation: annotation)
   end
 
+  it "should have an awesome convenience method for UIApplication.sharedApplication" do
+    @subject.app.should == UIApplication.sharedApplication
+  end
+
 end
 
 # iOS 7 ONLY tests

@@ -32,6 +32,10 @@ module ProMotion
       open screen, args.merge({ modal: true })
     end
 
+    def app
+      UIApplication.sharedApplication
+    end
+
     def app_delegate
       UIApplication.sharedApplication.delegate
     end

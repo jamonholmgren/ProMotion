@@ -191,6 +191,10 @@ describe "PM::Table module" do
       @subject.tableView(@subject.table_view, heightForHeaderInSection:5).should == 50.0
     end
 
+    it "should use the instantiated section view if one is specified" do
+      cell = @subject.tableView(@subject.table_view, viewForHeaderInSection: 5)
+      cell.should.be.kind_of(CustomTitleView)
+    end
   end
 
 end

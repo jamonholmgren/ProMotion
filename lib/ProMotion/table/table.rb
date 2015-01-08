@@ -280,7 +280,7 @@ module ProMotion
     # Section view methods
     def tableView(table_view, viewForHeaderInSection: index)
       section = promotion_table_data.section(index)
-      view = nil
+      view = section[:title_view]
       view = section[:title_view].new if section[:title_view].respond_to?(:new)
       view.title = section[:title] if view.respond_to?(:title=)
       view

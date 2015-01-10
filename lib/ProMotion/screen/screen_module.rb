@@ -191,7 +191,7 @@ module ProMotion
     # Class methods
     module ClassMethods
       def title(t=nil)
-        if !t.nil? && !t.is_a?(String) && !t.is_a?(NSAttributedString)
+        if t && t.is_a?(String) == false
           PM.logger.deprecated "You're trying to set the title of #{self.to_s} to an instance of #{t.class.to_s}. In ProMotion 2+, you must use `title_image` or `title_view` instead."
           return raise StandardError
         end

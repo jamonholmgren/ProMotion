@@ -10,4 +10,9 @@ describe "PM::ScreenModule" do
     @subject.title.should == 'Test Title'
   end
 
+  it 'should allow a NSAttributedString' do
+    @subject.title = NSAttributedString.alloc.initWithString("Test Title")
+    @subject.title.string.should == "Test Title"
+  end
+
 end

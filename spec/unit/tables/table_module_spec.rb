@@ -43,7 +43,7 @@ describe "PM::Table module" do
 
   def default_cell_height
     return UITableViewAutomaticDimension if TestHelper.ios8
-    return 44.0 if TestHelper.ios7
+    return 97.0 if TestHelper.ios7 # Normally 44, but 97 because of `row_height` designation
   end
 
   def default_header_height

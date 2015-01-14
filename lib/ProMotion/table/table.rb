@@ -323,8 +323,14 @@ module ProMotion
       end
 
       def row_height(height, args={})
-        height = 44.0 if height == :auto && UIDevice.currentDevice.systemVersion.to_f < 8.0
-        height = UITableViewAutomaticDimension if height == :auto
+        if height == :auto
+          if UIDevice.currentDevice.systemVersion.to_f < 8.0
+            height = args[:estimated] || 44.0
+            PM.logger.warn "Using `row_height :auto` is not supported in iOS 7 apps. Setting to #{height}."
+          else
+            height = UITableViewAutomaticDimension
+          end
+        end
         args[:estimated] ||= height unless height == UITableViewAutomaticDimension
         @row_height = { height: height, estimated: args[:estimated] || 44.0 }
       end

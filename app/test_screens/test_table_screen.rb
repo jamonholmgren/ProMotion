@@ -12,7 +12,7 @@ class TestTableScreen < ProMotion::TableScreen
   end
 
   def table_data
-    [{
+    @data ||= [{
       title: "Your Account",
       cells: [
         { title: "Increment", action: :increment_counter_by, arguments: {number: 3} },

@@ -14,6 +14,7 @@ Motion::Project::App.setup do |app|
   app.device_family = [ :ipad ] # so we can test split screen capability
   app.detect_dependencies = false
   app.info_plist["UIViewControllerBasedStatusBarAppearance"] = false
+  app.deployment_target = "7.1"
 
   # Adding file dependencies for tests
   # Not too many dependencies necessary

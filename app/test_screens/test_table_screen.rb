@@ -12,7 +12,7 @@ class TestTableScreen < ProMotion::TableScreen
   end
 
   def table_data
-    @data ||= [{
+    [{
       title: "Your Account",
       cells: [
         { title: "Increment", action: :increment_counter_by, arguments: {number: 3} },
@@ -65,24 +65,24 @@ class TestTableScreen < ProMotion::TableScreen
         action: :increment_counter_by,
         arguments: { number: 10 }
       }]
+    },{
+      title: "Moveable Tests",
+      cells: [{
+        title: 'Cell 1',
+        moveable: :section
       },{
-        title: "Moveable Tests",
-        cells: [{
-          title: 'Cell 1',
-          moveable: :section
-        },{
-          title: 'Cell 2',
-          moveable: true
-        },{
-          title: 'Cell 3'
-        },{
-          title: 'Cell 4',
-          moveable: true
-        },{
-          title: 'Cell 5',
-          moveable: false
-        }]
-  }]
+        title: 'Cell 2',
+        moveable: true
+      },{
+        title: 'Cell 3'
+      },{
+        title: 'Cell 4',
+        moveable: true
+      },{
+        title: 'Cell 5',
+        moveable: false
+      }]
+    }]
   end
 
   def edit_profile(args={})

@@ -323,6 +323,7 @@ module ProMotion
       end
 
       def row_height(height, args={})
+        height = 44.0 if height == :auto && UIDevice.currentDevice.systemVersion.to_f < 8.0
         height = UITableViewAutomaticDimension if height == :auto
         args[:estimated] ||= height unless height == UITableViewAutomaticDimension
         @row_height = { height: height, estimated: args[:estimated] || 44.0 }

@@ -1,5 +1,6 @@
 module ProMotion
   module ScreenModule
+    include ProMotion::Support
     include ProMotion::ScreenNavigation
     include ProMotion::Styling
     include ProMotion::NavBarModule
@@ -182,10 +183,6 @@ module ProMotion
       unless self.is_a?(UIViewController)
         raise StandardError.new("ERROR: Screens must extend UIViewController or a subclass of UIViewController.")
       end
-    end
-
-    def try(method, *args)
-      send(method, *args) if respond_to?(method)
     end
 
     # Class methods

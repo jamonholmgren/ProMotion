@@ -140,7 +140,6 @@ describe "PM::Table module" do
     @subject.tableView(@subject.table_view, didSelectRowAtIndexPath:ip)
 
     tapped_ip = @subject.got_index_path
-    tapped_ip.should.be.kind_of NSIndexPath
     tapped_ip.section.should == 6
     tapped_ip.row.should == 0
   end

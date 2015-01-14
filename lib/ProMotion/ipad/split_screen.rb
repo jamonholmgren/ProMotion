@@ -16,13 +16,33 @@ module ProMotion
 
     # UISplitViewControllerDelegate methods
 
-    def splitViewController(svc, willHideViewController: vc, withBarButtonItem: button, forPopoverController: pc)
+    # iOS 7 and below
+    def splitViewController(svc, willHideViewController: vc, withBarButtonItem: button, forPopoverController: _)
+      button ||= self.displayModeButtonItem if self.respond_to?(:displayModeButtonItem)
+      return unless button
       button.title = @pm_split_screen_button_title || vc.title
       svc.detail_screen.navigationItem.leftBarButtonItem = button
     end
 
-    def splitViewController(svc, willShowViewController: vc, invalidatingBarButtonItem: barButtonItem)
+    def splitViewController(svc, willShowViewController: _, invalidatingBarButtonItem: _)
       svc.detail_screen.navigationItem.leftBarButtonItem = nil
+    end
+
+    # iOS 8 and above
+    def splitViewController(svc, willChangeToDisplayMode: display_mode)
+      vc = svc.viewControllers.first
+      vc = vc.topViewController if vc.respond_to?(:topViewController)
+      case display_mode
+      # when UISplitViewControllerDisplayModeAutomatic then do_something?
+      when UISplitViewControllerDisplayModePrimaryHidden
+        self.splitViewController(svc, willHideViewController: vc, withBarButtonItem: nil, forPopoverController: nil)
+        # TODO: Add `self.master_screen.try(:will_hide_split_screen)` or similar?
+      when UISplitViewControllerDisplayModeAllVisible
+        self.splitViewController(svc, willShowViewController: vc, invalidatingBarButtonItem: nil)
+        # TODO: Add `self.master_screen.try(:will_show_split_screen)` or similar?
+      # when UISplitViewControllerDisplayModePrimaryOverlay
+        # TODO: Add `self.master_screen.try(:will_show_split_screen_overlay)` or similar?
+      end
     end
 
   private

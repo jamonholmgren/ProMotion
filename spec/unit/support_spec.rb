@@ -20,6 +20,11 @@ describe "PM::Support" do
     @screen.app_window.should == UIApplication.sharedApplication.delegate.window
   end
 
+  it "has a try method" do
+    @app.try(:some_method).should == nil
+    @screen.try(:some_method).should == nil
+  end
+
 end
 
 

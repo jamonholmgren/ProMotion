@@ -2,15 +2,11 @@ describe "ProMotion::TableScreen functionality" do
   tests PM::TestTableScreen
 
   def table_screen
-    @table_screen ||= begin
-      t = TestTableScreen.new(nav_bar: true)
-      t.on_load
-      t
-    end
+    @table_screen ||= TestTableScreen.new(nav_bar: true)
   end
 
   def controller
-    rotate_device to: :portrait, button: :bottom
+    # rotate_device to: :portrait, button: :bottom
     table_screen.navigationController
   end
 
@@ -21,8 +17,6 @@ describe "ProMotion::TableScreen functionality" do
   def table_label_class
     TestHelper.ios7 ? "UILabel" : "UITableViewLabel"
   end
-
-  before { UIView.setAnimationDuration 0.01 }
 
   after { @table_screen = nil }
 

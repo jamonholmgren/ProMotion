@@ -118,8 +118,7 @@ module ProMotion
 
     def delete_row(index_paths, animation = nil)
       deletable_index_paths = []
-      index_paths = [index_paths] if index_paths.kind_of?(NSIndexPath)
-      index_paths.each do |index_path|
+      Array(index_paths).each do |index_path|
         delete_cell = false
         delete_cell = send(:on_cell_deleted, self.promotion_table_data.cell(index_path: index_path)) if self.respond_to?("on_cell_deleted:")
         unless delete_cell == false
@@ -145,8 +144,7 @@ module ProMotion
     end
 
     def update_table_data(args = {})
-      # Try and detect if the args param is a NSIndexPath or an array of them
-      args = { index_paths: args } if args.is_a?(NSIndexPath) || (args.is_a?(Array) && array_all_members_of?(args, NSIndexPath))
+      args = { index_paths: args } unless args.is_a?(Hash)
 
       self.update_table_view_data(self.table_data, args)
       self.promotion_table_data.search(search_string) if searching?
@@ -325,7 +323,14 @@ module ProMotion
       end
 
       def row_height(height, args={})
-        height = UITableViewAutomaticDimension if height == :auto
+        if height == :auto
+          if UIDevice.currentDevice.systemVersion.to_f < 8.0
+            height = args[:estimated] || 44.0
+            PM.logger.warn "Using `row_height :auto` is not supported in iOS 7 apps. Setting to #{height}."
+          else
+            height = UITableViewAutomaticDimension
+          end
+        end
         args[:estimated] ||= height unless height == UITableViewAutomaticDimension
         @row_height = { height: height, estimated: args[:estimated] || 44.0 }
       end

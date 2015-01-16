@@ -13,6 +13,10 @@ class TestHelper
     UIDevice.currentDevice.systemVersion.to_f >= 8.0 &&
     UIDevice.currentDevice.systemVersion.to_f < 9.0
   end
+
+  def self.gte_ios8
+    UIDevice.currentDevice.systemVersion.to_f >= 8.0
+  end
 end
 
 def silence_warnings(&block)

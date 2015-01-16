@@ -9,4 +9,4 @@ gemfile:
 script:
     - bundle install
     - bundle exec rake clean
-    - TRAVIS_CI=1 bundle exec rake spec
+    - bundle exec rake spec

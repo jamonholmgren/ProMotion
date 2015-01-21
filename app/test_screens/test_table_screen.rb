@@ -1,6 +1,6 @@
 class TestTableScreen < ProMotion::TableScreen
+  attr_accessor :tap_counter, :cell_was_deleted, :got_index_path, :cell_was_moved, :got_will_display_header
 
-  attr_accessor :tap_counter, :cell_was_deleted, :got_index_path, :cell_was_moved
   title 'Test title'
   tab_bar_item title: 'Test tab title', item: 'test'
   row_height :auto, estimated: 97
@@ -136,12 +136,16 @@ class TestTableScreen < ProMotion::TableScreen
     end
   end
 
-  def on_cell_moved(args={})
-    self.cell_was_moved = args
+  def will_display_header(view, section)
+    @got_will_display_header = {view: view, section: section}
   end
 
   def table_header_view
     UIImageView.alloc.initWithImage(UIImage.imageNamed('test'))
+  end
+
+  def on_cell_moved(args={})
+    self.cell_was_moved = args
   end
 
 end

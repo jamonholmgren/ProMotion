@@ -57,7 +57,7 @@ describe "Split screen functionality" do
 
   end
 
-  unless ENV['TRAVIS_CI'] # TODO: Why won't Travis pass this test??
+  unless ENV['TRAVIS_CI'] # TODO: Why won't Travis pass these tests??
     it "should override the title on the button" do
       rotate_device to: :portrait, button: :bottom
 
@@ -65,13 +65,13 @@ describe "Split screen functionality" do
       @detail.navigationItem.leftBarButtonItem.should.be.kind_of UIBarButtonItem
       @detail.navigationItem.leftBarButtonItem.title.should == "Test Title"
     end
-  end
 
-  it "should override the default swipe action, that reveals the menu" do
-    rotate_device to: :portrait, button: :bottom
+    it "should override the default swipe action, that reveals the menu" do
+      rotate_device to: :portrait, button: :bottom
 
-    @alt_controller = @app.open_split_screen @master, @detail, swipe: false
-    @app.home_screen.presentsWithGesture.should == false
+      @alt_controller = @app.open_split_screen @master, @detail, swipe: false
+      @app.home_screen.presentsWithGesture.should == false
+    end
   end
 
 end

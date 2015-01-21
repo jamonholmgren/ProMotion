@@ -44,13 +44,13 @@ describe "ProMotion::TableScreen functionality" do
       tap("Increment One")
       table_screen.tap_counter.should == 1
     end
-  end
 
-  it "should delete the specified row from the table view on tap" do
-    table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 7
-    tap("Delete the row below")
-    wait 0.11 do
-      table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 6
+    it "should delete the specified row from the table view on tap" do
+      table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 7
+      tap("Delete the row below")
+      wait 0.11 do
+        table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 6
+      end
     end
   end
 

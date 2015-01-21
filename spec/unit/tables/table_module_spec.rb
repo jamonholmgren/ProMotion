@@ -197,4 +197,19 @@ describe "PM::Table module" do
     end
   end
 
+  describe "header view modifications" do
+
+    it "should call will_display_header" do
+      header = @subject.tableView(@subject.table_view, viewForHeaderInSection: 4)
+      @subject.tableView(@subject.table_view, willDisplayHeaderView:header, forSection:1)
+
+      @subject.got_will_display_header.tap do |h|
+        h.nil?.should == false
+        h[:section].should == 1
+        h[:view].should == header
+      end
+    end
+
+  end
+
 end

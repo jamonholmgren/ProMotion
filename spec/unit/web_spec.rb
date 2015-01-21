@@ -4,6 +4,11 @@ describe "web screen properties" do
   before  { disable_network_access! }
   after   { enable_network_access! }
 
+  it "should leave on_init available as a hook" do
+    webscreen = TestWebScreen.new()
+    webscreen.on_init_available?.should == true
+  end
+
   describe "when open web page with http request" do
     before do
       class TestWebScreenWithHTTPRequest < TestWebScreen

@@ -4,6 +4,7 @@ module ProMotion
 
     def open_tab_bar(*screens)
       self.tab_bar = PM::TabBarController.new(screens)
+      self.tab_bar.pm_tab_delegate = WeakRef.new(self)
 
       delegate = self.respond_to?(:open_root_screen) ? self : UIApplication.sharedApplication.delegate
 

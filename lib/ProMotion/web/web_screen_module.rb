@@ -8,26 +8,24 @@ module ProMotion
       self.external_links ||= false
       self.scale_to_fit ||= false
       self.detector_types ||= :none
+
+      web_view_setup
+      set_initial_content
     end
 
     def on_init
-      if self.detector_types.is_a? Array
-        detectors = UIDataDetectorTypeNone
-        self.detector_types.each { |dt| detectors |= map_detector_symbol(dt) }
-        self.detector_types = detectors
-      else
-        self.detector_types = map_detector_symbol(self.detector_types)
-      end
+      # TODO: Remove in 3.0
+    end
 
+    def web_view_setup
       self.webview ||= add UIWebView.new, {
         frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height),
         delegate: self,
-        data_detector_types: self.detector_types
+        data_detector_types: data_detector_types
       }
       self.webview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
       self.webview.scalesPageToFit = self.scale_to_fit
       self.webview.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal
-      set_initial_content
     end
 
     def web
@@ -35,10 +33,8 @@ module ProMotion
     end
 
     def set_initial_content
-      return unless self.respond_to?(:content)
-      current_content = content
-      return unless current_content
-      current_content.is_a?(NSURL) ? open_url(current_content) : set_content(current_content)
+      return unless self.respond_to?(:content) && self.content
+      self.content.is_a?(NSURL) ? open_url(self.content) : set_content(self.content)
     end
 
     def set_content(content)
@@ -104,32 +100,34 @@ module ProMotion
     def stop; web.stopLoading; end
     alias :reload :refresh
 
-    def open_in_chrome(inRequest)
+    def open_in_chrome(in_request)
       # Add pod 'OpenInChrome' to your Rakefile if you want links to open in Google Chrome for users.
       # This will fall back to Safari if the user doesn't have Chrome installed.
       chrome_controller = OpenInChromeController.sharedInstance
-      return open_in_safari(inRequest) unless chrome_controller.isChromeInstalled
-      chrome_controller.openInChrome(inRequest.URL)
+      return open_in_safari(in_request) unless chrome_controller.isChromeInstalled
+      chrome_controller.openInChrome(in_request.URL)
     end
 
-    def open_in_safari(inRequest)
+    def open_in_safari(in_request)
       # Open UIWebView delegate links in Safari.
-      UIApplication.sharedApplication.openURL(inRequest.URL)
+      UIApplication.sharedApplication.openURL(in_request.URL)
     end
 
     # UIWebViewDelegate Methods - Camelcase
-    def webView(inWeb, shouldStartLoadWithRequest:inRequest, navigationType:inType)
-      if self.external_links == true && inType == UIWebViewNavigationTypeLinkClicked
-        if defined?(OpenInChromeController)
-          open_in_chrome inRequest
-        else
-          open_in_safari inRequest
+    def webView(in_web, shouldStartLoadWithRequest:in_request, navigationType:in_type)
+      if %w(http https).include?(in_request.URL.scheme)
+        if self.external_links == true && in_type == UIWebViewNavigationTypeLinkClicked
+          if defined?(OpenInChromeController)
+            open_in_chrome in_request
+          else
+            open_in_safari in_request
+          end
+          return false # don't allow the web view to load the link.
         end
-        return false #don't allow the web view to load the link.
       end
 
       load_request_enable = true #return true on default for local file loading.
-      load_request_enable = !!on_request(inRequest, inType) if self.respond_to?(:on_request)
+      load_request_enable = !!on_request(in_request, in_type) if self.respond_to?(:on_request)
       load_request_enable
     end
 
@@ -146,6 +144,12 @@ module ProMotion
     end
 
     protected
+
+    def data_detector_types
+      Array(self.detector_types).reduce(UIDataDetectorTypeNone) do |detectors, dt|
+        detectors | map_detector_symbol(dt)
+      end
+    end
 
     def map_detector_symbol(symbol)
       {

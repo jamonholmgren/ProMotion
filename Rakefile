@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-RM_VERSION = "2.38" # Update .travis.yml too
+RM_VERSION = "3.2" # Update .travis.yml too
 unless File.exist?("/Library/RubyMotion#{RM_VERSION}/lib")
   abort "Couldn't find RubyMotion #{RM_VERSION}. Run `sudo motion update --cache-version=#{RM_VERSION}`."
 end
@@ -14,6 +14,7 @@ Motion::Project::App.setup do |app|
   app.device_family = [ :ipad ] # so we can test split screen capability
   app.detect_dependencies = false
   app.info_plist["UIViewControllerBasedStatusBarAppearance"] = false
+  app.deployment_target = "7.1"
 
   # Adding file dependencies for tests
   # Not too many dependencies necessary

@@ -82,6 +82,13 @@ describe "screen properties" do
     parent_screen.navigationController.shouldAutorotate
   end
 
+  it "#should_autorotate shouldn't crash when NavigationController's visibleViewController is nil" do
+    parent_screen = BasicScreen.new(nav_bar: true)
+    parent_screen.open @screen, animated: false
+    @screen.navigationController.mock!(:visibleViewController) { nil }
+    parent_screen.navigationController.shouldAutorotate
+  end
+
   # <= iOS 5 only
   it "#should_rotate(orientation) should fire when shouldAutorotateToInterfaceOrientation(orientation) fires" do
     @screen.mock!(:should_rotate) { |orientation| orientation.should == UIInterfaceOrientationMaskPortrait }

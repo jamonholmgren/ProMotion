@@ -8,26 +8,24 @@ module ProMotion
       self.external_links ||= false
       self.scale_to_fit ||= false
       self.detector_types ||= :none
+
+      web_view_setup
+      set_initial_content
     end
 
     def on_init
-      if self.detector_types.is_a? Array
-        detectors = UIDataDetectorTypeNone
-        self.detector_types.each { |dt| detectors |= map_detector_symbol(dt) }
-        self.detector_types = detectors
-      else
-        self.detector_types = map_detector_symbol(self.detector_types)
-      end
+      # TODO: Remove in 3.0
+    end
 
+    def web_view_setup
       self.webview ||= add UIWebView.new, {
         frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height),
         delegate: self,
-        data_detector_types: self.detector_types
+        data_detector_types: data_detector_types
       }
       self.webview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
       self.webview.scalesPageToFit = self.scale_to_fit
       self.webview.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal
-      set_initial_content
     end
 
     def web
@@ -35,10 +33,8 @@ module ProMotion
     end
 
     def set_initial_content
-      return unless self.respond_to?(:content)
-      current_content = content
-      return unless current_content
-      current_content.is_a?(NSURL) ? open_url(current_content) : set_content(current_content)
+      return unless self.respond_to?(:content) && self.content
+      self.content.is_a?(NSURL) ? open_url(self.content) : set_content(self.content)
     end
 
     def set_content(content)
@@ -146,6 +142,12 @@ module ProMotion
     end
 
     protected
+
+    def data_detector_types
+      Array(self.detector_types).reduce(UIDataDetectorTypeNone) do |detectors, dt|
+        detectors | map_detector_symbol(dt)
+      end
+    end
 
     def map_detector_symbol(symbol)
       {

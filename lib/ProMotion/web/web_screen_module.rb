@@ -119,13 +119,15 @@ module ProMotion
 
     # UIWebViewDelegate Methods - Camelcase
     def webView(inWeb, shouldStartLoadWithRequest:inRequest, navigationType:inType)
-      if self.external_links == true && inType == UIWebViewNavigationTypeLinkClicked
-        if defined?(OpenInChromeController)
-          open_in_chrome inRequest
-        else
-          open_in_safari inRequest
+      if %w(http https).include?(inRequest.URL.scheme)
+        if self.external_links == true && inType == UIWebViewNavigationTypeLinkClicked
+          if defined?(OpenInChromeController)
+            open_in_chrome inRequest
+          else
+            open_in_safari inRequest
+          end
+          return false # don't allow the web view to load the link.
         end
-        return false #don't allow the web view to load the link.
       end
 
       load_request_enable = true #return true on default for local file loading.

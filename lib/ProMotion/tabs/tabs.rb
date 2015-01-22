@@ -66,6 +66,7 @@ module ProMotion
       tab_bar_item = create_tab_bar_item_custom(title, tab[:item], current_tag) if tab[:item]
 
       tab_bar_item.badgeValue = tab[:badge_number].to_s unless tab[:badge_number].nil? || tab[:badge_number] <= 0
+      tab_bar_item.imageInsets = tab[:image_insets] if tab[:image_insets]
 
       tab_bar_item
     end

@@ -15,7 +15,7 @@ describe "split screen `open` functionality" do
   end
 
   it "should open a new screen in the detail view" do
-    screen = @master_screen.open @detail_screen_2, in_detail: true
+    screen = @master_screen.open @detail_screen_2, in_detail: true, animated: false
     @split_screen.detail_screen.should == @detail_screen_2
     @split_screen.viewControllers.first.should == (@master_screen.navigationController || @master_screen)
     @split_screen.viewControllers.last.should == (@detail_screen_2.navigationController || @detail_screen_2)
@@ -23,7 +23,7 @@ describe "split screen `open` functionality" do
   end
 
   it "should open a new screen in the master view" do
-    screen = @detail_screen_1.open @detail_screen_2, in_master: true
+    screen = @detail_screen_1.open @detail_screen_2, in_master: true, animated: false
     @split_screen.master_screen.should == @detail_screen_2
     @split_screen.viewControllers.first.should == (@detail_screen_2.navigationController || @detail_screen_2)
     @split_screen.viewControllers.last.should == (@detail_screen_1.navigationController || @detail_screen_1)

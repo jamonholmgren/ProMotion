@@ -166,6 +166,10 @@ module ProMotion
       return self.view_or_self.frame
     end
 
+    def try(method, *args)
+      send(method, *args) if respond_to?(method)
+    end
+
   private
 
     def apply_properties(args)
@@ -182,10 +186,6 @@ module ProMotion
       unless self.is_a?(UIViewController)
         raise StandardError.new("ERROR: Screens must extend UIViewController or a subclass of UIViewController.")
       end
-    end
-
-    def try(method, *args)
-      send(method, *args) if respond_to?(method)
     end
 
     # Class methods

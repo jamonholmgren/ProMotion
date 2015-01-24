@@ -51,7 +51,8 @@ describe "table screens" do
     end
 
     it "sets the auto row height and estimated row height properly" do
-      @screen.view.rowHeight.should == UITableViewAutomaticDimension
+      @screen.view.rowHeight.should == UITableViewAutomaticDimension if TestHelper.gte_ios8
+      @screen.view.rowHeight.should == 97 unless TestHelper.gte_ios8
       @screen.view.estimatedRowHeight.should == 97
     end
 

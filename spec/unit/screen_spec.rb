@@ -1,11 +1,9 @@
 describe "screen properties" do
 
   before do
-
     # Simulate AppDelegate setup of main screen
     @screen = HomeScreen.new modal: true, nav_bar: true
     @screen.on_load
-
   end
 
   it "should store title" do
@@ -84,10 +82,21 @@ describe "screen properties" do
     parent_screen.navigationController.shouldAutorotate
   end
 
+  it "#should_autorotate shouldn't crash when NavigationController's visibleViewController is nil" do
+    parent_screen = BasicScreen.new(nav_bar: true)
+    parent_screen.open @screen, animated: false
+    @screen.navigationController.mock!(:visibleViewController) { nil }
+    parent_screen.navigationController.shouldAutorotate
+  end
+
   # <= iOS 5 only
   it "#should_rotate(orientation) should fire when shouldAutorotateToInterfaceOrientation(orientation) fires" do
     @screen.mock!(:should_rotate) { |orientation| orientation.should == UIInterfaceOrientationMaskPortrait }
     @screen.shouldAutorotateToInterfaceOrientation(UIInterfaceOrientationMaskPortrait)
+  end
+
+  it "should have an awesome convenience method for UIApplication.sharedApplication" do
+    @screen.app.should == UIApplication.sharedApplication
   end
 
   describe "iOS lifecycle methods" do

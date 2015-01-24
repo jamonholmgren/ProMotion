@@ -42,6 +42,10 @@ module ProMotion
       try :on_open_url, { url: url, source_app: source_app, annotation: annotation }
     end
 
+    def app
+      UIApplication.sharedApplication
+    end
+
     def app_delegate
       self
     end

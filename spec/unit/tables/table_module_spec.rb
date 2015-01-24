@@ -175,6 +175,10 @@ describe "PM::Table module" do
     @subject.tableView.tableHeaderView.class.should == UIImageView
   end
 
+  it "should have a footer view" do
+    @subject.tableView.tableFooterView.class.should == UIView
+  end
+
   describe("section with custom title_view") do
 
     it "should use the correct class for section view" do

@@ -144,4 +144,12 @@ class TestTableScreen < ProMotion::TableScreen
     UIImageView.alloc.initWithImage(UIImage.imageNamed('test'))
   end
 
+  def table_footer_view
+    UIView.alloc.initWithFrame(CGRectZero)
+  end
+
+  def on_cell_moved(args={})
+    self.cell_was_moved = args
+  end
+
 end

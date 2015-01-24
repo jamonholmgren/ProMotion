@@ -15,7 +15,7 @@ module ProMotion
 
     def screen_setup
       check_table_data
-      set_up_header_view
+      set_up_header_footer_views
       set_up_searchable
       set_up_refreshable
       set_up_longpressable
@@ -30,13 +30,15 @@ module ProMotion
       @promotion_table_data ||= TableData.new(table_data, table_view)
     end
 
-    def set_up_header_view
-      if self.respond_to?(:table_header_view)
-        header_view = self.table_header_view
-        if header_view.is_a? UIView
-          self.tableView.tableHeaderView = header_view
-        else
-          PM.logger.warn "Table header views must be a UIView."
+    def set_up_header_footer_views
+      [:header, :footer].each do |hf_view|
+        if self.respond_to?("table_#{hf_view}_view".to_sym)
+          view = self.send("table_#{hf_view}_view")
+          if view.is_a? UIView
+            self.tableView.send(camelize("set_table_#{hf_view}_view:"), view)
+          else
+            PM.logger.warn "Table #{hf_view} view must be a UIView."
+          end
         end
       end
     end

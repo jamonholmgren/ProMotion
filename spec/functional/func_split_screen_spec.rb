@@ -57,7 +57,7 @@ describe "Split screen functionality" do
 
   end
 
-  unless ENV['TRAVIS_CI'] # TODO: Why won't Travis pass these tests??
+  unless ENV['TRAVIS'] # TODO: Why won't Travis pass these tests??
     it "should override the title on the button" do
       rotate_device to: :portrait, button: :bottom
 

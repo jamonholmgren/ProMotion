@@ -39,7 +39,7 @@ describe "ProMotion::TableScreen functionality" do
     table_screen.should == table_screen
   end
 
-  unless ENV['TRAVIS_CI']
+  unless ENV['TRAVIS']
     it "should increment the tap counter by one on tap" do
       tap("Increment One")
       table_screen.tap_counter.should == 1

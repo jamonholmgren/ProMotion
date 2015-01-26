@@ -2,7 +2,10 @@ module ProMotion
   module Styling
     def set_attributes(element, args = {})
       args = get_attributes_from_symbol(args)
-      args.each { |k, v| set_attribute(element, k, v) }
+      ignore_keys = [:transition_style, :presentation_style]
+      args.each do |k, v|
+        set_attribute(element, k, v) unless ignore_keys.include?(k)
+      end
       element.send(:on_styled) if element.respond_to?(:on_styled)
       element
     end

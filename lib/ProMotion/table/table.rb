@@ -15,7 +15,7 @@ module ProMotion
 
     def screen_setup
       check_table_data
-      set_up_header_view
+      set_up_header_footer_views
       set_up_searchable
       set_up_refreshable
       set_up_longpressable
@@ -30,13 +30,15 @@ module ProMotion
       @promotion_table_data ||= TableData.new(table_data, table_view)
     end
 
-    def set_up_header_view
-      if self.respond_to?(:table_header_view)
-        header_view = self.table_header_view
-        if header_view.is_a? UIView
-          self.tableView.tableHeaderView = header_view
-        else
-          PM.logger.warn "Table header views must be a UIView."
+    def set_up_header_footer_views
+      [:header, :footer].each do |hf_view|
+        if self.respond_to?("table_#{hf_view}_view".to_sym)
+          view = self.send("table_#{hf_view}_view")
+          if view.is_a? UIView
+            self.tableView.send(camelize("set_table_#{hf_view}_view:"), view)
+          else
+            PM.logger.warn "Table #{hf_view} view must be a UIView."
+          end
         end
       end
     end
@@ -136,9 +138,10 @@ module ProMotion
         new_cell.extend(PM::TableViewCellModule) unless new_cell.is_a?(PM::TableViewCellModule)
         new_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
         new_cell.clipsToBounds = true # fix for changed default in 7.1
-        new_cell.setup(data_cell, self)
         new_cell
       end
+
+      table_cell.setup(data_cell, self) if table_cell.respond_to?(:setup)
       table_cell.send(:on_reuse) if !new_cell && table_cell.respond_to?(:on_reuse)
       table_cell
     end
@@ -196,7 +199,6 @@ module ProMotion
 
     def tableView(table_view, willDisplayCell: table_cell, forRowAtIndexPath: index_path)
       data_cell = self.promotion_table_data.cell(index_path: index_path)
-      table_cell.setup(data_cell, self) if table_cell.respond_to?(:setup)
       table_cell.send(:will_display) if table_cell.respond_to?(:will_display)
       table_cell.send(:restyle!) if table_cell.respond_to?(:restyle!) # Teacup compatibility
     end

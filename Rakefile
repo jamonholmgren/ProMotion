@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-RM_VERSION = "3.2" # Update .travis.yml too
+RM_VERSION = "3.3" # Update .travis.yml too
 unless File.exist?("/Library/RubyMotion#{RM_VERSION}/lib")
   abort "Couldn't find RubyMotion #{RM_VERSION}. Run `sudo motion update --cache-version=#{RM_VERSION}`."
 end

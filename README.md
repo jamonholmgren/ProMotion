@@ -103,6 +103,14 @@ This release includes several new features and is backwards compatible with all 
 * Added `on_load` and `on_styled` hooks for UIViews that implement those methods ([Jamon Holmgren](https://github.com/clearsightstudio/ProMotion/pull/567))
 * Fixed an issue where cell properties would be applied twice unnecessarily ([Jamon Holmgren](https://github.com/clearsightstudio/ProMotion/pull/573))
 
+# Apps built on ProMotion
+
+[Apps built on ProMotion](https://github.com/clearsightstudio/ProMotion/wiki/Apps-built-on-ProMotion)
+
+##Your app
+
+Tweet [@jamonholmgren](https://twitter.com/jamonholmgren) if you built an app in ProMotion and want it included!
+
 # API Reference
 
 We've created a comprehensive and always updated wiki with code examples, usage examples, and API reference.

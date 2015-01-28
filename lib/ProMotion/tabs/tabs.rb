@@ -41,7 +41,8 @@ module ProMotion
       item = UITabBarItem.alloc.initWithTitle(title, image: item_image, tag: tag)
 
       if item_selected || item_unselected
-        item.setFinishedSelectedImage(item_selected, withFinishedUnselectedImage: item_unselected)
+        item.image = item_unselected
+        item.selectedImage = item_selected
       end
 
       item

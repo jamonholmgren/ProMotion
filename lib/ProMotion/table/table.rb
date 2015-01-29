@@ -46,6 +46,9 @@ module ProMotion
     def set_up_searchable
       if self.class.respond_to?(:get_searchable) && self.class.get_searchable
         self.make_searchable(content_controller: self, search_bar: self.class.get_searchable_params)
+        if self.class.get_searchable_params[:hide_initially]
+          self.tableView.contentOffset = CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height)
+        end
       end
     end
 

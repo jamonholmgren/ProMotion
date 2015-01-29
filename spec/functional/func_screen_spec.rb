@@ -29,23 +29,6 @@ describe "ProMotion::Screen functionality" do
     @controller.on_back_fired.should == true
   end
 
-  it "should allow opening and closing a modal screen" do
-    @basic = BasicScreen.new(nav_bar: true)
-    wait 0.1 do
-      @controller.open_modal @basic
-
-      wait 0.5 do
-        view("Basic").should.be.kind_of UINavigationItemView
-        @basic.close
-
-        wait 0.5 do
-          @basic = nil
-          view("Functional").should.be.kind_of UINavigationItemView
-        end
-      end
-    end
-  end
-
   it "should fire the will_present, on_present, will_dismiss, and on_dismiss_methods" do
     @presented_screen = PresentScreen.new
     @controller.open @presented_screen

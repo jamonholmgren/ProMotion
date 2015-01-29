@@ -74,6 +74,18 @@ describe "screen properties" do
     @screen.should_autorotate.should == true
   end
 
+  it "should allow opening and closing a modal screen" do
+    parent_screen = BasicScreen.new(nav_bar: true)
+    parent_screen.mock!(:"presentViewController:animated:completion:") do |controller, animated, completion|
+      controller.should == @screen.navigationController
+    end
+    parent_screen.open_modal @screen
+    parent_screen.mock!(:"dismissViewControllerAnimated:completion:") do |animated, completion|
+      animated.should == true
+    end
+    @screen.close
+  end
+
   it "should push another screen with animation by default" do
     parent_screen = BasicScreen.new(nav_bar: true)
     parent_screen.navigationController.mock!(:"pushViewController:animated:") do |controller, animated|

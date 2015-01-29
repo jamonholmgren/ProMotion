@@ -12,6 +12,7 @@ Motion::Project::App.setup do |app|
 
   # For compatibility with libraries that don't use detect_dependencies. :-(
   app.files_dependencies({
+    "#{core_lib}/version.rb" => [ "#{core_lib}/pro_motion.rb" ],
     "#{core_lib}/cocoatouch/table_view_cell.rb" => [ "#{core_lib}/table/cell/table_view_cell_module.rb" ],
     "#{core_lib}/table/cell/table_view_cell_module.rb" => [ "#{core_lib}/styling/styling.rb" ],
     "#{core_lib}/delegate/delegate.rb" => [ "#{core_lib}/delegate/delegate_parent.rb" ],

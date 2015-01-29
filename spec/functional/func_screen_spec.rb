@@ -31,9 +31,9 @@ describe "ProMotion::Screen functionality" do
 
   it "should fire the will_present, on_present, will_dismiss, and on_dismiss_methods" do
     @presented_screen = PresentScreen.new
-    @controller.open @presented_screen
+    @controller.open @presented_screen, animated: false
 
-    wait 0.6 do
+    wait 0.01 do
       @presented_screen.will_present_fired.should == true
       @presented_screen.on_present_fired.should == true
 
@@ -41,9 +41,9 @@ describe "ProMotion::Screen functionality" do
       @presented_screen.on_dismiss_fired.should.not == true
 
       @presented_screen.reset
-      @presented_screen.close
+      @presented_screen.close animated: false
 
-      wait 0.6 do
+      wait 0.01 do
         @presented_screen.will_dismiss_fired.should == true
         @presented_screen.on_dismiss_fired.should == true
 
@@ -58,15 +58,15 @@ describe "ProMotion::Screen functionality" do
   it "should pop to the root view controller" do
     @root_vc = @controller.navigationController.visibleViewController
     @controller.navigationController.viewControllers.count.should == 1
-    @controller.open BasicScreen.new
-    wait 0.6 do
-      @controller.open BasicScreen.new
-      wait 0.6 do
-        @controller.open BasicScreen.new
-        wait 0.6 do
+    @controller.open BasicScreen.new, animated: false
+    wait 0.01 do
+      @controller.open BasicScreen.new, animated: false
+      wait 0.01 do
+        @controller.open BasicScreen.new, animated: false
+        wait 0.01 do
           @controller.navigationController.viewControllers.count.should == 4
-          @controller.close to_screen: :root
-          wait 0.6 do
+          @controller.close to_screen: :root, animated: false
+          wait 0.01 do
             @controller.navigationController.viewControllers.count.should == 1
             @controller.navigationController.topViewController.should == @root_vc
           end
@@ -74,5 +74,4 @@ describe "ProMotion::Screen functionality" do
       end
     end
   end
-
 end

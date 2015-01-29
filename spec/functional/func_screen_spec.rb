@@ -10,27 +10,6 @@ describe "ProMotion::Screen functionality" do
     @controller.navigationController
   end
 
-  it "should push another screen with animation by default" do
-    basic = @controller.open BasicScreen
-    wait 0.5 do
-      basic.animation_ts.should.be > 0.2
-    end
-  end
-
-  it "should push another screen with animation when animated: true" do
-    basic = @controller.open BasicScreen, animated: true
-    wait 0.5 do
-      basic.animation_ts.should.be > 0.2
-    end
-  end
-
-  it "should push another screen without animation when animated: false" do
-    basic = @controller.open BasicScreen, animated: false
-    wait 0.5 do
-      basic.animation_ts.should.be < 0.2
-    end
-  end
-
   it "should call the on_back method on the root controller when navigating back" do
     presented_screen = PresentScreen.new
     @controller.open presented_screen, animated: false

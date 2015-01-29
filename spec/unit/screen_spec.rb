@@ -74,6 +74,30 @@ describe "screen properties" do
     @screen.should_autorotate.should == true
   end
 
+  it "should push another screen with animation by default" do
+    parent_screen = BasicScreen.new(nav_bar: true)
+    parent_screen.navigationController.mock!(:"pushViewController:animated:") do |controller, animated|
+      animated.should == true
+    end
+    parent_screen.open @screen
+  end
+
+  it "should push another screen with animation when animated: true" do
+    parent_screen = BasicScreen.new(nav_bar: true)
+    parent_screen.navigationController.mock!(:"pushViewController:animated:") do |controller, animated|
+      animated.should == true
+    end
+    parent_screen.open @screen, animated: true
+  end
+
+  it "should push another screen without animation when animated: false" do
+    parent_screen = BasicScreen.new(nav_bar: true)
+    parent_screen.navigationController.mock!(:"pushViewController:animated:") do |controller, animated|
+      animated.should == false
+    end
+    parent_screen.open @screen, animated: false
+  end
+
   # Issue https://github.com/clearsightstudio/ProMotion/issues/109
   it "#should_autorotate should fire when shouldAutorotate fires when in a navigation bar" do
     parent_screen = BasicScreen.new(nav_bar: true)

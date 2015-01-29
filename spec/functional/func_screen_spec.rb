@@ -20,23 +20,10 @@ describe "ProMotion::Screen functionality" do
     views(UINavigationItemView).include?(UIImageView).should.not.be.true
   end
 
-  it "should allow setting a left nav bar button" do
-    @controller.set_nav_bar_button :left, title: "Cool", action: :triggered_button
-    tap("Cool")
-    @controller.button_was_triggered.should.be.true
-  end
-
-  it "should allow setting a right nav bar button" do
-    @controller.set_nav_bar_button :right, title: "Cool2", action: :triggered_button
-    tap("Cool2")
-    @controller.button_was_triggered.should.be.true
-  end
-
   it "should allow opening another screen in the same nav bar and have a back button that is operational" do
     @controller.open BasicScreen
 
     wait 0.5 do
-
       view("Basic").should.be.kind_of UINavigationItemView
       view("Functional").should.be.kind_of UINavigationItemButtonView
 
@@ -44,9 +31,7 @@ describe "ProMotion::Screen functionality" do
       wait 0.5 do
         view("Functional").should.be.kind_of UINavigationItemView
       end
-
     end
-
   end
 
   it "should push another screen with animation by default" do
@@ -95,7 +80,6 @@ describe "ProMotion::Screen functionality" do
       @controller.open_modal @basic
 
       wait 0.6 do
-
         view("Basic").should.be.kind_of UINavigationItemView
         @basic.close
 
@@ -103,7 +87,6 @@ describe "ProMotion::Screen functionality" do
           @basic = nil
           view("Functional").should.be.kind_of UINavigationItemView
         end
-
       end
     end
   end
@@ -111,6 +94,7 @@ describe "ProMotion::Screen functionality" do
   it "should fire the will_present, on_present, will_dismiss, and on_dismiss_methods" do
     @presented_screen = PresentScreen.new
     @controller.open @presented_screen
+
     wait 0.6 do
       @presented_screen.will_present_fired.should == true
       @presented_screen.on_present_fired.should == true
@@ -119,8 +103,8 @@ describe "ProMotion::Screen functionality" do
       @presented_screen.on_dismiss_fired.should.not == true
 
       @presented_screen.reset
-
       @presented_screen.close
+
       wait 0.6 do
         @presented_screen.will_dismiss_fired.should == true
         @presented_screen.on_dismiss_fired.should == true

@@ -175,6 +175,13 @@ describe "screen properties" do
       @screen.navigationItem.leftBarButtonItem.should.not == nil
     end
 
+    it "should allow setting the action on a left bar button item" do
+      @screen.navigationItem.leftBarButtonItem.action.should == :save_something
+    end
+
+    it "should allow setting the action on a right bar button item" do
+      @screen.navigationItem.rightBarButtonItem.action.should == :return_to_some_other_screen
+    end
   end
 
   describe "bar button behavior" do

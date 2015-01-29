@@ -7,7 +7,7 @@ describe "screen properties" do
   end
 
   it "should store title" do
-    HomeScreen.title.should == 'Home'
+    HomeScreen.title.should == "Home"
   end
 
   it "should set default title on new instances" do
@@ -153,6 +153,10 @@ describe "screen properties" do
 
   describe "navigation controller behavior" do
 
+    it "should have a navigation bar" do
+      @screen.navigationController.should.be.kind_of UINavigationController
+    end
+
     it "should let the instance set the nav_controller" do
       screen = HomeScreen.new nav_bar: true, nav_controller: CustomNavigationController
       screen.on_load
@@ -175,11 +179,11 @@ describe "screen properties" do
       @screen.navigationItem.leftBarButtonItem.should.not == nil
     end
 
-    it "should allow setting the action on a left bar button item" do
+    it "should set the given action on a left bar button item" do
       @screen.navigationItem.leftBarButtonItem.action.should == :save_something
     end
 
-    it "should allow setting the action on a right bar button item" do
+    it "should set the given action on a right bar button item" do
       @screen.navigationItem.rightBarButtonItem.action.should == :return_to_some_other_screen
     end
   end

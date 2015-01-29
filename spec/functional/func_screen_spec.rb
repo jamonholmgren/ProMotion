@@ -10,30 +10,6 @@ describe "ProMotion::Screen functionality" do
     @controller.navigationController
   end
 
-  it "should have a navigation bar" do
-    wait 0.5 do
-      view("Functional").should.be.kind_of UINavigationItemView
-    end
-  end
-
-  it "should allow a string title" do
-    views(UINavigationItemView).include?(UIImageView).should.not.be.true
-  end
-
-  it "should allow opening another screen in the same nav bar and have a back button that is operational" do
-    @controller.open BasicScreen
-
-    wait 0.5 do
-      view("Basic").should.be.kind_of UINavigationItemView
-      view("Functional").should.be.kind_of UINavigationItemButtonView
-
-      tap("Functional")
-      wait 0.5 do
-        view("Functional").should.be.kind_of UINavigationItemView
-      end
-    end
-  end
-
   it "should push another screen with animation by default" do
     basic = @controller.open BasicScreen
     wait 0.5 do
@@ -79,11 +55,11 @@ describe "ProMotion::Screen functionality" do
     wait 0.1 do
       @controller.open_modal @basic
 
-      wait 0.6 do
+      wait 0.5 do
         view("Basic").should.be.kind_of UINavigationItemView
         @basic.close
 
-        wait 0.6 do
+        wait 0.5 do
           @basic = nil
           view("Functional").should.be.kind_of UINavigationItemView
         end

@@ -22,7 +22,9 @@ describe "ProMotion::Screen functionality" do
 
   it "should allow setting a left nav bar button" do
     @controller.set_nav_bar_button :left, title: "Cool", action: :triggered_button
+    views(UIView)
     tap("Cool")
+    views(UIView)
     @controller.button_was_triggered.should.be.true
   end
 

@@ -1,46 +1,53 @@
 describe "split screen functionality" do
 
-  before do
-    @app = TestDelegate.new
+  def master_screen
+    @master_screen ||= MasterScreen.new nav_bar: true
+  end
 
-    @master_screen = MasterScreen.new nav_bar: true
-    @detail_screen = DetailScreen.new # no nav_bar on this one
+  def detail_screen
+    @detail_screen ||= DetailScreen.new # no nav_bar on this one
+  end
 
-    @split_screen = @app.open_split_screen @master_screen, @detail_screen
+  def app
+    @app ||= TestDelegate.new
+  end
+
+  def split_screen
+    @split_screen ||= app.open_split_screen master_screen, detail_screen
   end
 
   after do
-    @split_screen.delegate = nil # dereference to avoid memory issue
+    split_screen.delegate = nil # dereference to avoid memory issue
   end
 
   it "should have created a split screen" do
-    @split_screen.should != nil
-    @split_screen.is_a?(UISplitViewController).should == true
+    split_screen.should != nil
+    split_screen.is_a?(UISplitViewController).should == true
   end
 
   it "should have two viewControllers" do
-    @split_screen.viewControllers.length.should == 2
+    split_screen.viewControllers.length.should == 2
   end
 
   it "should set the root view to the UISplitScreenViewController" do
-    @app.window.rootViewController.should == @split_screen
+    app.window.rootViewController.should == split_screen
   end
 
   it "should set the first viewController to MasterScreen" do
-    @split_screen.master_screen.should == @master_screen
-    @split_screen.viewControllers.first.should == (@master_screen.navigationController || @master_screen)
+    split_screen.master_screen.should == master_screen
+    split_screen.viewControllers.first.should == (master_screen.navigationController || master_screen)
   end
 
   it "should set the second viewController to DetailScreen" do
-    @split_screen.detail_screen.should == @detail_screen
-    @split_screen.viewControllers.last.should == (@detail_screen.navigationController || @detail_screen)
+    split_screen.detail_screen.should == detail_screen
+    split_screen.viewControllers.last.should == (detail_screen.navigationController || detail_screen)
   end
 
   it "should set the title on both screens" do
-    @master_screen.class.title.should == "Master"
-    @master_screen.title.should == "Master"
-    @detail_screen.class.title.should == "Detail"
-    @detail_screen.title.should == "Detail"
+    master_screen.class.title.should == "Master"
+    master_screen.title.should == "Master"
+    detail_screen.class.title.should == "Detail"
+    detail_screen.title.should == "Detail"
   end
 end
 

@@ -69,7 +69,7 @@ describe "Split screen functionality" do
     it "should override the default swipe action, that reveals the menu" do
       rotate_device to: :portrait, button: :bottom
 
-      @alt_controller = @app.open_split_screen @master, @detail, swipe: false
+      @alt_controller = @app.open_split_screen @master, @detail, swipe: false, animated: false
       @app.home_screen.presentsWithGesture.should == false
     end
   end

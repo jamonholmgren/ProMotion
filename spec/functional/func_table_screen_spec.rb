@@ -24,22 +24,22 @@ describe "ProMotion::TableScreen functionality" do
     table_screen.navigationController.should.be.kind_of(UINavigationController)
   end
 
-  it "should increment the tap counter on tap" do
-    tap("Increment")
-    table_screen.tap_counter.should == 3
-  end
-
-  it "should add a new table cell on tap" do
-    tap("Add New Row")
-    view("Dynamically Added").class.to_s.should == table_label_class
-  end
-
-  it "should do nothing when no action specified" do
-    tap("Just another blank row")
-    table_screen.should == table_screen
-  end
-
   unless ENV['TRAVIS']
+    it "should increment the tap counter on tap" do
+      tap("Increment")
+      table_screen.tap_counter.should == 3
+    end
+
+    it "should add a new table cell on tap" do
+      tap("Add New Row")
+      view("Dynamically Added").class.to_s.should == table_label_class
+    end
+
+    it "should do nothing when no action specified" do
+      tap("Just another blank row")
+      table_screen.should == table_screen
+    end
+
     it "should increment the tap counter by one on tap" do
       tap("Increment One")
       table_screen.tap_counter.should == 1
@@ -48,53 +48,53 @@ describe "ProMotion::TableScreen functionality" do
     it "should delete the specified row from the table view on tap" do
       table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 7
       tap("Delete the row below")
-      wait 0.11 do
+      wait 0.01 do
         table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 6
       end
     end
-  end
 
-  it "should delete the specified row from the table view on tap with an animation" do
-    table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 7
-    tap("Delete the row below with an animation")
-    wait 0.11 do
-      table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 6
+    it "should delete the specified row from the table view on tap with an animation" do
+      table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 7
+      tap("Delete the row below with an animation")
+      wait 0.01 do
+        table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 6
+      end
     end
-  end
 
-  # TODO: Why is it so complicated to find the delete button??
-  it "should use editing_style to delete the table row" do
-    table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 7
-    table_screen.cell_was_deleted.should != true
-    flick("Just another deletable blank row", to: :left)
+    # TODO: Why is it so complicated to find the delete button??
+    it "should use editing_style to delete the table row" do
+      table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 7
+      table_screen.cell_was_deleted.should != true
+      flick("Just another deletable blank row", to: :left)
 
-    wait 0.11 do
-      # Tap the delete button
-      view('Just another deletable blank row').superview.superview.subviews.each do |subview|
-        if subview.class.to_s == confirmation_class
-          tap subview
-          wait 0.11 do
-            table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 6
-            table_screen.cell_was_deleted.should == true
+      wait 0.01 do
+        # Tap the delete button
+        view('Just another deletable blank row').superview.superview.subviews.each do |subview|
+          if subview.class.to_s == confirmation_class
+            tap subview
+            wait 0.01 do
+              table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 6
+              table_screen.cell_was_deleted.should == true
+            end
           end
         end
       end
     end
-  end
 
-  it "should not allow deleting if on_cell_delete returns `false`" do
-    table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 7
-    table_screen.cell_was_deleted.should != true
-    flick("A non-deletable blank row", to: :left)
+    it "should not allow deleting if on_cell_delete returns `false`" do
+      table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 7
+      table_screen.cell_was_deleted.should != true
+      flick("A non-deletable blank row", to: :left)
 
-    wait 0.11 do
-      # Tap the delete button
-      view('A non-deletable blank row').superview.superview.subviews.each do |subview|
-        if subview.class == confirmation_class
-          tap subview
-          wait 0.11 do
-            table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 7
-            table_screen.cell_was_deleted.should != false
+      wait 0.01 do
+        # Tap the delete button
+        view('A non-deletable blank row').superview.superview.subviews.each do |subview|
+          if subview.class == confirmation_class
+            tap subview
+            wait 0.01 do
+              table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 7
+              table_screen.cell_was_deleted.should != false
+            end
           end
         end
       end

@@ -16,7 +16,7 @@ module ProMotion
         @table_search_display_controller.searchResultsDataSource = params[:data_source]
         @table_search_display_controller.searchResultsDelegate = params[:search_results_delegate]
 
-        self.table_view.tableHeaderView = search_bar
+        self.tableView.tableHeaderView = search_bar
       end
       alias :makeSearchable :make_searchable
 

@@ -14,6 +14,7 @@ Over 30 developers have contributed to ProMotion. We love it when ProMotion user
 3. Code
 4. Update or create new specs **NOTE: your PR is far more likely to be merged if you include comprehensive tests!**
 5. Make sure tests are passing by running `bundle exec rake spec`
-6. Submit pull request to `master`
-7. Make a million little nitpicky changes that @jamonholmgren wants
-8. Merged, then fame, adoration, kudos everywhere
+6. Update relevant documentation in `./docs`
+7. Submit pull request to `master`
+8. Make a million little nitpicky changes that @jamonholmgren wants
+9. Merged, then fame, adoration, kudos everywhere

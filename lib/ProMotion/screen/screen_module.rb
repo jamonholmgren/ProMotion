@@ -1,5 +1,6 @@
 module ProMotion
   module ScreenModule
+    include ProMotion::Support
     include ProMotion::ScreenNavigation
     include ProMotion::Styling
     include ProMotion::NavBarModule

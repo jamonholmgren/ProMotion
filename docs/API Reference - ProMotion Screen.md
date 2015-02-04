@@ -430,6 +430,18 @@ class MyScreenWithADarkColoredNavBar < PM::Screen
   # ...
 end
 ```
+
+#### nav_bar_button(position, button_options)
+
+Creates a nav bar button in the specified position with the given options
+
+```ruby
+class HomeScreen < PM::Screen
+  nav_bar_button :left, title: "Back", style: :plain, action: :back
+  # ...
+end
+```
+
 ---
 
 ### Accessors

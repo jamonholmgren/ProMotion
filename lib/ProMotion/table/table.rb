@@ -293,6 +293,17 @@ module ProMotion
       end
     end
 
+    def tableView(tableView, willDisplayHeaderView:view, forSection:section)
+      action = :will_display_header
+      if respond_to?(action)
+        case self.method(action).arity
+        when 0 then self.send(action)
+        when 2 then self.send(action, view, section)
+        else self.send(action, view)
+        end
+      end
+    end
+
     protected
 
     def map_cell_editing_style(symbol)

@@ -267,6 +267,14 @@ end
 
 ![Searchable Image](http://clrsight.co/jh/Screen_Shot_2014-06-21_at_9.01.09_PM.png)
 
+To initially hide the search bar behind the nav bar until the user scrolls it into view, use `hide_initially`.
+
+```ruby
+class MyTableScreen < PM::TableScreen
+  searchable hide_initially: true
+end
+```
+
 You can prevent any table cell from being included in search results by setting the cell attribute `searchable` to `false` like this:
 
 ```ruby

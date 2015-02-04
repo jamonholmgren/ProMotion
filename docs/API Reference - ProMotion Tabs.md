@@ -53,6 +53,19 @@ open_tab "About"
 open_tab 3 # fourth tab is opened
 ```
 
+#### on_tab_selected(view_controller)
+
+Provides a hook that is triggered when a tab is selected and passes in the view controller that has been displayed.
+Keep in mind that this could be a UINavigationController or other wrapper, so to get the screen
+you may need to request `view_controller.topViewController`.
+
+```ruby
+def on_tab_selected(view_controller)
+  # Do some action
+  view_controller.topViewController # => current screen
+end
+```
+
 ### Class Methods
 
 #### tab_bar_item(args={})

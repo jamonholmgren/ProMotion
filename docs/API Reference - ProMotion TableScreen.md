@@ -241,7 +241,7 @@ end
 
 #### table_header_view
 
-You can give the table a custom header view (this is different from a section header view) by defining:
+You can give the table a custom header view (this is different from a section header view, which is below) by defining:
 
 ```ruby
 def table_header_view
@@ -250,6 +250,17 @@ end
 ```
 
 This is useful for information that needs to only be at the very top of a table.
+
+#### will_display_header(view)
+
+You can customize the section header views just before they are displayed on the table. This is different from table header view, which is above.
+
+```ruby
+def will_display_header(view)
+  view.tintColor = UIColor.redColor
+  view.textLabel.setTextColor(UIColor.blueColor)
+end
+```
 
 #### table_footer_view
 

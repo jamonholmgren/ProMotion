@@ -24,7 +24,7 @@ It's recommended to use this method in your `on_init` method OR set it using the
 ```ruby
 def on_init
   set_tab_bar_item item: "custom_item_5", title: "Custom"
-  set_tab_bar_item system_item: :more 
+  set_tab_bar_item system_item: :more
   # :more, :favorites, :featured, :top_rated, :recents, :contacts,
   # :history, :bookmarks, :search, :downloads, :most_recent, :most_viewed
 end
@@ -62,7 +62,7 @@ Class method that sets the screen's default tab bar item.
 ```ruby
 class TabScreen < PM::Screen
   title "Tab"
-  tab_bar_item title: "Tab Item", item: "list"
+  tab_bar_item title: "Tab Item", item: "list", image_insets: [5,5,5,5]
 end
 ```
 

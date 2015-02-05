@@ -264,7 +264,7 @@ end
 
 #### table_footer_view
 
-You can give the table a custom footer view by defining:
+You can give the table a custom header view (this is different from a section footer view) by defining:
 
 ```ruby
 def table_footer_view

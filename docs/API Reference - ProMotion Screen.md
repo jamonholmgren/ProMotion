@@ -176,6 +176,20 @@ end
 
 The code above will add a "cancel" back button to `MyScreenChild` when it is opened as a descendant of `MyScreen`.
 
+#### set_nav_bar_buttons(side, button_array)
+
+Allows you to set multiple buttons on one side of the nav bar with a single method call. The second parameter should be an array of any mixture of UIBarButtonItem instances and hash constructors used in set_nav_bar_button
+
+```ruby
+set_nav_bar_buttons :right, [{
+  custom_view: my_custom_view_button
+},{
+  title: "Tasks",
+  image: UIImage.imageNamed("whatever"),
+  action: nil
+}]
+```
+
 #### set_toolbar_items(buttons = [], animated = true)
 
 Uses an array to set the navigation controllers toolbar items and shows the toolbar. Uses the same hash formatted parameters as `set_nav_bar_button`. When calling this method, the toolbar will automatically be shown (even if the screen was created without a toolbar). Use the `animated` parameter to specify if the toolbar showing should be animated or not.

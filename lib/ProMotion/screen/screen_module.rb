@@ -164,6 +164,11 @@ module ProMotion
       supported_device_families.include?(family)
     end
 
+    def should_show_status_bar
+      PM.logger.debug "SM: #{app_delegate.status_bar?}"
+      app_delegate.status_bar?
+    end
+
     def bounds
       return self.view_or_self.bounds
     end

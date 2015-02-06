@@ -50,5 +50,11 @@ module ProMotion
     def didRotateFromInterfaceOrientation(orientation)
       self.on_rotate
     end
+
+    def prefersStatusBarHidden
+      return false unless self.respond_to?(:should_show_status_bar)
+      PM.logger.debug "VC: #{self.should_show_status_bar}"
+      self.should_show_status_bar
+    end
   end
 end

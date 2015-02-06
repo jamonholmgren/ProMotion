@@ -1,5 +1,6 @@
 class BasicScreen < PM::Screen
   title "Basic"
+  status_bar false
 
   attr_reader :animation_ts
 

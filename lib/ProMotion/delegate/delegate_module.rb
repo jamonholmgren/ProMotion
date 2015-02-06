@@ -63,7 +63,8 @@ module ProMotion
     alias :open_root_screen :open_screen
 
     def status_bar?
-      UIApplication.sharedApplication.statusBarHidden
+      PM.logger.debug self.class.status_bar?
+      self.class.status_bar?
     end
 
   private
@@ -81,10 +82,15 @@ module ProMotion
         @status_bar_opts = opts
       end
 
+      def status_bar?
+        @status_bar_visible = true if @status_bar_visible.nil?
+        @status_bar_visible
+      end
+
       def apply_status_bar
-        @status_bar_visible ||= true
         @status_bar_opts ||= { animation: :none }
-        UIApplication.sharedApplication.setStatusBarHidden(!@status_bar_visible, withAnimation:status_bar_animation(@status_bar_opts[:animation]))
+        PM.logger.debug "DM: #{!status_bar?}"
+        UIApplication.sharedApplication.setStatusBarHidden(!status_bar?, withAnimation:status_bar_animation(@status_bar_opts[:animation]))
       end
 
       def status_bar_animation(opt)

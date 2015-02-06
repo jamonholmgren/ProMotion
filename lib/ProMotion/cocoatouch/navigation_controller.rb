@@ -18,5 +18,12 @@ module ProMotion
       visibleViewController.preferredInterfaceOrientationForPresentation
     end
 
+    def prefersStatusBarHidden
+      vc = visibleViewController || rootViewController
+      return false unless vc.respond_to?(:prefersStatusBarHidden)
+      PM.logger.debug "NC: #{vc.prefersStatusBarHidden}"
+      vc.prefersStatusBarHidden
+    end
+
   end
 end

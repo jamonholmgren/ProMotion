@@ -10,6 +10,13 @@ describe "PM::Delegate" do
     @subject.application(UIApplication.sharedApplication, didFinishLaunchingWithOptions:{jamon: true})
   end
 
+  it "should set status_bar_hidden on launch" do
+    @subject.application(UIApplication.sharedApplication, didFinishLaunchingWithOptions:{})
+    screen = @subject.open BasicScreen.new(nav_bar: true)
+    UIApplication.sharedApplication.isStatusBarHidden.should.be.true
+    @subject.status_bar?.should.be.false
+  end
+
   it "should set home_screen when opening a new screen" do
     @subject.application(UIApplication.sharedApplication, willFinishLaunchingWithOptions: nil)
     @subject.application(UIApplication.sharedApplication, didFinishLaunchingWithOptions: nil)

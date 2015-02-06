@@ -60,6 +60,12 @@ module ProMotion
       current_view_controller_try(:preferredInterfaceOrientationForPresentation)
     end
 
+    def prefersStatusBarHidden
+      return false unless current_view_controller.respond_to?(:prefersStatusBarHidden)
+      PM.logger.debug "TBC: #{current_view_controller.prefersStatusBarHidden}"
+      current_view_controller.prefersStatusBarHidden
+    end
+
     private
 
     def on_tab_selected_try(vc)

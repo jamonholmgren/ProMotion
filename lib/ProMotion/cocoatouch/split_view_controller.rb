@@ -25,5 +25,11 @@ module ProMotion
     def screens=(s_array)
       self.viewControllers = s_array
     end
+
+    def prefersStatusBarHidden
+      return false unless master_screen.respond_to?(:prefersStatusBarHidden)
+      master_screen.prefersStatusBarHidden
+    end
+
   end
 end

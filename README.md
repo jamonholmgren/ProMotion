@@ -105,7 +105,7 @@ This release includes several new features and is backwards compatible with all 
 
 # Apps built on ProMotion
 
-[Apps built on ProMotion](https://github.com/clearsightstudio/ProMotion/wiki/Apps-built-on-ProMotion)
+[Apps built on ProMotion](http://promotion.readthedocs.org/en/master/ProMotion%20Apps/)
 
 ##Your app
 
@@ -115,7 +115,7 @@ Tweet [@jamonholmgren](https://twitter.com/jamonholmgren) if you built an app in
 
 We've created a comprehensive and always updated wiki with code examples, usage examples, and API reference.
 
-### [ProMotion API Reference](https://github.com/clearsightstudio/ProMotion/wiki)
+### [ProMotion API Reference](http://promotion.readthedocs.org/en/master/)
 
 # Help
 

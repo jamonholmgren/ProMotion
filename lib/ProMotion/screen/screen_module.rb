@@ -1,5 +1,6 @@
 module ProMotion
   module ScreenModule
+    include ProMotion::Support
     include ProMotion::ScreenNavigation
     include ProMotion::Styling
     include ProMotion::NavBarModule
@@ -13,6 +14,7 @@ module ProMotion
       resolve_title
       apply_properties(args)
       add_nav_bar(args) if args[:nav_bar]
+      add_nav_bar_buttons
       tab_bar_setup
       try :screen_setup
       try :on_init
@@ -44,6 +46,10 @@ module ProMotion
         status_bar_hidden false
         status_bar_style UIStatusBarStyleDefault
       end
+    end
+
+    def add_nav_bar_buttons
+      set_nav_bar_button(self.class.get_nav_bar_button[:side], self.class.get_nav_bar_button) if self.class.get_nav_bar_button
     end
 
     def status_bar_hidden(hidden)
@@ -166,6 +172,10 @@ module ProMotion
       return self.view_or_self.frame
     end
 
+    def try(method, *args)
+      send(method, *args) if respond_to?(method)
+    end
+
   private
 
     def apply_properties(args)
@@ -182,10 +192,6 @@ module ProMotion
       unless self.is_a?(UIViewController)
         raise StandardError.new("ERROR: Screens must extend UIViewController or a subclass of UIViewController.")
       end
-    end
-
-    def try(method, *args)
-      send(method, *args) if respond_to?(method)
     end
 
     # Class methods
@@ -228,6 +234,15 @@ module ProMotion
 
       def status_bar_animation
         @status_bar_animation || UIStatusBarAnimationSlide
+      end
+
+      def nav_bar_button(side, args={})
+        @nav_bar_button_args = args
+        @nav_bar_button_args[:side] = side
+      end
+
+      def get_nav_bar_button
+        @nav_bar_button_args
       end
     end
 

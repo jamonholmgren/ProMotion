@@ -1,10 +1,10 @@
 # ProMotion
 
-[![Gem Version](https://badge.fury.io/rb/ProMotion.png)](http://badge.fury.io/rb/ProMotion)
-[![Build Status](https://travis-ci.org/clearsightstudio/ProMotion.png)](https://travis-ci.org/clearsightstudio/ProMotion)
-[![Code Climate](https://codeclimate.com/github/clearsightstudio/ProMotion.png)](https://codeclimate.com/github/clearsightstudio/ProMotion)
-[![Dependency Status](https://gemnasium.com/clearsightstudio/ProMotion.png)](https://gemnasium.com/clearsightstudio/ProMotion)
-[![omniref](https://www.omniref.com/ruby/gems/ProMotion.png)](https://www.omniref.com/ruby/gems/ProMotion)
+[![Gem Version](https://img.shields.io/gem/v/ProMotion.svg?style=flat)](https://rubygems.org/gems/ProMotion)
+[![Build Status](https://img.shields.io/travis/clearsightstudio/ProMotion.svg?style=flat)](https://travis-ci.org/clearsightstudio/ProMotion)
+[![Code Climate](https://img.shields.io/codeclimate/github/clearsightstudio/ProMotion.svg?style=flat)](https://codeclimate.com/github/clearsightstudio/ProMotion)
+[![Dependency Status](https://img.shields.io/gemnasium/clearsightstudio/ProMotion.svg?style=flat)](https://gemnasium.com/clearsightstudio/ProMotion)
+[![omniref](https://img.shields.io/badge/omniref-docs-blue.svg?style=flat)](https://www.omniref.com/ruby/gems/ProMotion)
 
 ## iPhone Apps, Ruby-style
 
@@ -102,6 +102,14 @@ This release includes several new features and is backwards compatible with all 
 * PM::Screen: You can now choose a status bar style ([thanks Mark Rickert](https://github.com/clearsightstudio/ProMotion/pull/563))
 * Added `on_load` and `on_styled` hooks for UIViews that implement those methods ([Jamon Holmgren](https://github.com/clearsightstudio/ProMotion/pull/567))
 * Fixed an issue where cell properties would be applied twice unnecessarily ([Jamon Holmgren](https://github.com/clearsightstudio/ProMotion/pull/573))
+
+# Apps built on ProMotion
+
+[Apps built on ProMotion](https://github.com/clearsightstudio/ProMotion/wiki/Apps-built-on-ProMotion)
+
+##Your app
+
+Tweet [@jamonholmgren](https://twitter.com/jamonholmgren) if you built an app in ProMotion and want it included!
 
 # API Reference
 

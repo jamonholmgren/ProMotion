@@ -79,7 +79,6 @@ describe "PM::Delegate" do
 
     @subject.application(UIApplication.sharedApplication, openURL: url, sourceApplication:sourceApplication, annotation: annotation)
   end
-
 end
 
 # iOS 7 ONLY tests

@@ -1,15 +1,13 @@
 describe "screen properties" do
 
   before do
-
     # Simulate AppDelegate setup of main screen
     @screen = HomeScreen.new modal: true, nav_bar: true
     @screen.on_load
-
   end
 
   it "should store title" do
-    HomeScreen.title.should == 'Home'
+    HomeScreen.title.should == "Home"
   end
 
   it "should set default title on new instances" do
@@ -76,11 +74,54 @@ describe "screen properties" do
     @screen.should_autorotate.should == true
   end
 
+  it "should allow opening and closing a modal screen" do
+    parent_screen = BasicScreen.new(nav_bar: true)
+    parent_screen.mock!(:"presentViewController:animated:completion:") do |controller, animated, completion|
+      controller.should == @screen.navigationController
+    end
+    parent_screen.open_modal @screen
+    parent_screen.mock!(:"dismissViewControllerAnimated:completion:") do |animated, completion|
+      animated.should == true
+    end
+    @screen.close
+  end
+
+  it "should push another screen with animation by default" do
+    parent_screen = BasicScreen.new(nav_bar: true)
+    parent_screen.navigationController.mock!(:"pushViewController:animated:") do |controller, animated|
+      animated.should == true
+    end
+    parent_screen.open @screen
+  end
+
+  it "should push another screen with animation when animated: true" do
+    parent_screen = BasicScreen.new(nav_bar: true)
+    parent_screen.navigationController.mock!(:"pushViewController:animated:") do |controller, animated|
+      animated.should == true
+    end
+    parent_screen.open @screen, animated: true
+  end
+
+  it "should push another screen without animation when animated: false" do
+    parent_screen = BasicScreen.new(nav_bar: true)
+    parent_screen.navigationController.mock!(:"pushViewController:animated:") do |controller, animated|
+      animated.should == false
+    end
+    parent_screen.open @screen, animated: false
+  end
+
   # Issue https://github.com/clearsightstudio/ProMotion/issues/109
   it "#should_autorotate should fire when shouldAutorotate fires when in a navigation bar" do
     parent_screen = BasicScreen.new(nav_bar: true)
     parent_screen.open @screen, animated: false
     @screen.mock!(:should_autorotate) { true.should == true }
+    parent_screen.navigationController.shouldAutorotate
+  end
+
+  it "#should_autorotate shouldn't crash when NavigationController's visibleViewController is nil" do
+    parent_screen = BasicScreen.new(nav_bar: true)
+    parent_screen.open @screen, animated: false
+    @screen.navigationController.mock!(:visibleViewController) { nil }
     parent_screen.navigationController.shouldAutorotate
   end
 
@@ -144,6 +185,10 @@ describe "screen properties" do
 
   describe "navigation controller behavior" do
 
+    it "should have a navigation bar" do
+      @screen.navigationController.should.be.kind_of UINavigationController
+    end
+
     it "should let the instance set the nav_controller" do
       screen = HomeScreen.new nav_bar: true, nav_controller: CustomNavigationController
       screen.on_load
@@ -166,6 +211,13 @@ describe "screen properties" do
       @screen.navigationItem.leftBarButtonItem.should.not == nil
     end
 
+    it "should set the given action on a left bar button item" do
+      @screen.navigationItem.leftBarButtonItem.action.should == :save_something
+    end
+
+    it "should set the given action on a right bar button item" do
+      @screen.navigationItem.rightBarButtonItem.action.should == :return_to_some_other_screen
+    end
   end
 
   describe "bar button behavior" do

@@ -15,7 +15,7 @@ module ProMotion
 
     def screen_setup
       check_table_data
-      set_up_header_view
+      set_up_header_footer_views
       set_up_searchable
       set_up_refreshable
       set_up_longpressable
@@ -30,13 +30,15 @@ module ProMotion
       @promotion_table_data ||= TableData.new(table_data, table_view)
     end
 
-    def set_up_header_view
-      if self.respond_to?(:table_header_view)
-        header_view = self.table_header_view
-        if header_view.is_a? UIView
-          self.tableView.tableHeaderView = header_view
-        else
-          PM.logger.warn "Table header views must be a UIView."
+    def set_up_header_footer_views
+      [:header, :footer].each do |hf_view|
+        if self.respond_to?("table_#{hf_view}_view".to_sym)
+          view = self.send("table_#{hf_view}_view")
+          if view.is_a? UIView
+            self.tableView.send(camelize("set_table_#{hf_view}_view:"), view)
+          else
+            PM.logger.warn "Table #{hf_view} view must be a UIView."
+          end
         end
       end
     end
@@ -44,6 +46,9 @@ module ProMotion
     def set_up_searchable
       if self.class.respond_to?(:get_searchable) && self.class.get_searchable
         self.make_searchable(content_controller: self, search_bar: self.class.get_searchable_params)
+        if self.class.get_searchable_params[:hide_initially]
+          self.tableView.contentOffset = CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height)
+        end
       end
     end
 
@@ -118,8 +123,7 @@ module ProMotion
 
     def delete_row(index_paths, animation = nil)
       deletable_index_paths = []
-      index_paths = [index_paths] if index_paths.kind_of?(NSIndexPath)
-      index_paths.each do |index_path|
+      Array(index_paths).each do |index_path|
         delete_cell = false
         delete_cell = send(:on_cell_deleted, self.promotion_table_data.cell(index_path: index_path)) if self.respond_to?("on_cell_deleted:")
         unless delete_cell == false
@@ -137,16 +141,16 @@ module ProMotion
         new_cell.extend(PM::TableViewCellModule) unless new_cell.is_a?(PM::TableViewCellModule)
         new_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
         new_cell.clipsToBounds = true # fix for changed default in 7.1
-        new_cell.setup(data_cell, self)
         new_cell
       end
+
+      table_cell.setup(data_cell, self) if table_cell.respond_to?(:setup)
       table_cell.send(:on_reuse) if !new_cell && table_cell.respond_to?(:on_reuse)
       table_cell
     end
 
     def update_table_data(args = {})
-      # Try and detect if the args param is a NSIndexPath or an array of them
-      args = { index_paths: args } if args.is_a?(NSIndexPath) || (args.is_a?(Array) && array_all_members_of?(args, NSIndexPath))
+      args = { index_paths: args } unless args.is_a?(Hash)
 
       self.update_table_view_data(self.table_data, args)
       self.promotion_table_data.search(search_string) if searching?
@@ -198,7 +202,6 @@ module ProMotion
 
     def tableView(table_view, willDisplayCell: table_cell, forRowAtIndexPath: index_path)
       data_cell = self.promotion_table_data.cell(index_path: index_path)
-      table_cell.setup(data_cell, self) if table_cell.respond_to?(:setup)
       table_cell.send(:will_display) if table_cell.respond_to?(:will_display)
       table_cell.send(:restyle!) if table_cell.respond_to?(:restyle!) # Teacup compatibility
     end
@@ -280,7 +283,7 @@ module ProMotion
     # Section view methods
     def tableView(table_view, viewForHeaderInSection: index)
       section = promotion_table_data.section(index)
-      view = nil
+      view = section[:title_view]
       view = section[:title_view].new if section[:title_view].respond_to?(:new)
       view.title = section[:title] if view.respond_to?(:title=)
       view
@@ -292,6 +295,17 @@ module ProMotion
         section[:title_view_height] || tableView.sectionHeaderHeight
       else
         0.0
+      end
+    end
+
+    def tableView(tableView, willDisplayHeaderView:view, forSection:section)
+      action = :will_display_header
+      if respond_to?(action)
+        case self.method(action).arity
+        when 0 then self.send(action)
+        when 2 then self.send(action, view, section)
+        else self.send(action, view)
+        end
       end
     end
 
@@ -325,7 +339,14 @@ module ProMotion
       end
 
       def row_height(height, args={})
-        height = UITableViewAutomaticDimension if height == :auto
+        if height == :auto
+          if UIDevice.currentDevice.systemVersion.to_f < 8.0
+            height = args[:estimated] || 44.0
+            PM.logger.warn "Using `row_height :auto` is not supported in iOS 7 apps. Setting to #{height}."
+          else
+            height = UITableViewAutomaticDimension
+          end
+        end
         args[:estimated] ||= height unless height == UITableViewAutomaticDimension
         @row_height = { height: height, estimated: args[:estimated] || 44.0 }
       end

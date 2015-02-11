@@ -1,5 +1,6 @@
 module ProMotion
   module DelegateModule
+    include ProMotion::Support
     include ProMotion::Tabs
     include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
 
@@ -42,14 +43,6 @@ module ProMotion
       try :on_open_url, { url: url, source_app: source_app, annotation: annotation }
     end
 
-    def app_delegate
-      self
-    end
-
-    def app_window
-      window
-    end
-
     def ui_window
       (defined?(Motion) && defined?(Motion::Xray) && defined?(Motion::Xray::XrayWindow)) ? Motion::Xray::XrayWindow : UIWindow
     end
@@ -77,10 +70,6 @@ module ProMotion
 
     def apply_status_bar
       self.class.send(:apply_status_bar)
-    end
-
-    def try(method, *args)
-      send(method, *args) if respond_to?(method)
     end
 
   public

@@ -25,6 +25,10 @@ describe "tab bar functionality" do
     @tab_bar.tabBar.items.first.title.should == "Tab Item"
   end
 
+  it "should allow setting image insets" do
+    @tab_bar.tabBar.items.first.imageInsets.should == UIEdgeInsetsMake(5,5,5,5)
+  end
+
   it "should have set the others to their respective titles" do
     @tab_bar.tabBar.items[1].title.should == "Basic"
     @tab_bar.tabBar.items[2].title.should == "Home"

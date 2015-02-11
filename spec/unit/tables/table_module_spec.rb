@@ -43,7 +43,7 @@ describe "PM::Table module" do
 
   def default_cell_height
     return UITableViewAutomaticDimension if TestHelper.ios8
-    return 44.0 if TestHelper.ios7
+    return 97.0 if TestHelper.ios7 # Normally 44, but 97 because of `row_height` designation
   end
 
   def default_header_height
@@ -140,7 +140,6 @@ describe "PM::Table module" do
     @subject.tableView(@subject.table_view, didSelectRowAtIndexPath:ip)
 
     tapped_ip = @subject.got_index_path
-    tapped_ip.should.be.kind_of NSIndexPath
     tapped_ip.section.should == 6
     tapped_ip.row.should == 0
   end
@@ -176,6 +175,10 @@ describe "PM::Table module" do
     @subject.tableView.tableHeaderView.class.should == UIImageView
   end
 
+  it "should have a footer view" do
+    @subject.tableView.tableFooterView.class.should == UIView
+  end
+
   describe("section with custom title_view") do
 
     it "should use the correct class for section view" do
@@ -189,6 +192,25 @@ describe "PM::Table module" do
 
     it "should use the set title_view_height if one is specified" do
       @subject.tableView(@subject.table_view, heightForHeaderInSection:5).should == 50.0
+    end
+
+    it "should use the instantiated section view if one is specified" do
+      cell = @subject.tableView(@subject.table_view, viewForHeaderInSection: 5)
+      cell.should.be.kind_of(CustomTitleView)
+    end
+  end
+
+  describe "header view modifications" do
+
+    it "should call will_display_header" do
+      header = @subject.tableView(@subject.table_view, viewForHeaderInSection: 4)
+      @subject.tableView(@subject.table_view, willDisplayHeaderView:header, forSection:1)
+
+      @subject.got_will_display_header.tap do |h|
+        h.nil?.should == false
+        h[:section].should == 1
+        h[:view].should == header
+      end
     end
 
   end

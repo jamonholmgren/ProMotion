@@ -51,7 +51,8 @@ describe "table screens" do
     end
 
     it "sets the auto row height and estimated row height properly" do
-      @screen.view.rowHeight.should == UITableViewAutomaticDimension
+      @screen.view.rowHeight.should == UITableViewAutomaticDimension if TestHelper.gte_ios8
+      @screen.view.rowHeight.should == 97 unless TestHelper.gte_ios8
       @screen.view.estimatedRowHeight.should == 97
     end
 
@@ -77,6 +78,19 @@ describe "table screens" do
 
     it "should create a search header" do
       @screen.tableView.tableHeaderView.should.be.kind_of UISearchBar
+    end
+
+    it "should not hide the search bar initally by default" do
+      @screen.tableView.contentOffset.should == CGPointMake(0,0)
+    end
+
+    it "should allow hiding the search bar initally" do
+      class HiddenSearchScreen < TableScreenSearchable
+        searchable hide_initially: true
+      end
+      screen = HiddenSearchScreen.new
+      screen.on_load
+      screen.tableView.contentOffset.should == CGPointMake(0,screen.searchDisplayController.searchBar.frame.size.height)
     end
 
   end

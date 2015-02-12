@@ -1,6 +1,7 @@
 module ProMotion
   module Table
     module Longpressable
+
       def make_longpressable(params={})
         params = {
           min_duration: 1.0
@@ -14,11 +15,20 @@ module ProMotion
 
       def on_long_press(gesture)
         return unless gesture.state == UIGestureRecognizerStateBegan
-        gesture_point = gesture.locationInView(table_view)
-        index_path = table_view.indexPathForRowAtPoint(gesture_point)
+        gesture_point = gesture.locationInView(pressed_table_view)
+        index_path = pressed_table_view.indexPathForRowAtPoint(gesture_point)
+        return unless index_path
         data_cell = self.promotion_table_data.cell(index_path: index_path)
+        return unless data_cell
         trigger_action(data_cell[:long_press_action], data_cell[:arguments], index_path) if data_cell[:long_press_action]
       end
+
+      private
+
+      def pressed_table_view
+        searching? ? @table_search_display_controller.searchResultsTableView : table_view
+      end
+
     end
   end
 end

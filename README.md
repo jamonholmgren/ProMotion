@@ -1,4 +1,10 @@
-# ProMotion [![Gem Version](https://badge.fury.io/rb/ProMotion.png)](http://badge.fury.io/rb/ProMotion) [![Build Status](https://travis-ci.org/clearsightstudio/ProMotion.png)](https://travis-ci.org/clearsightstudio/ProMotion) [![Code Climate](https://codeclimate.com/github/clearsightstudio/ProMotion.png)](https://codeclimate.com/github/clearsightstudio/ProMotion) [![Dependency Status](https://gemnasium.com/clearsightstudio/ProMotion.png)](https://gemnasium.com/clearsightstudio/ProMotion)
+# ProMotion
+
+[![Gem Version](https://img.shields.io/gem/v/ProMotion.svg?style=flat)](https://rubygems.org/gems/ProMotion)
+[![Build Status](https://img.shields.io/travis/clearsightstudio/ProMotion.svg?style=flat)](https://travis-ci.org/clearsightstudio/ProMotion)
+[![Code Climate](https://img.shields.io/codeclimate/github/clearsightstudio/ProMotion.svg?style=flat)](https://codeclimate.com/github/clearsightstudio/ProMotion)
+[![Dependency Status](https://img.shields.io/gemnasium/clearsightstudio/ProMotion.svg?style=flat)](https://gemnasium.com/clearsightstudio/ProMotion)
+[![omniref](https://img.shields.io/badge/omniref-docs-blue.svg?style=flat)](https://www.omniref.com/ruby/gems/ProMotion)
 
 ## iPhone Apps, Ruby-style
 
@@ -84,39 +90,26 @@ end
 
 # Changelog
 
-## Version 2.0.0
+## Version 2.2.0
 
-Overview: In ProMotion 2.0, we removed deprecated APIs, refactored and cleaned up a ton of code, pulled `PushNotification` and `MapScreen` into their own gems, and simplified the API. It now builds 55% faster and is 20%+ lighter.
+This release includes several new features and is backwards compatible with all 2.x releases.
 
-Follow our [Migration Guide](https://github.com/clearsightstudio/ProMotion/wiki/Migration-Guide:-ProMotion-1.2-to-2.0) for a painless upgrade.
+* PM::TableScreen: You can now set a custom table view header view ([thanks Mark Rickert](https://github.com/clearsightstudio/ProMotion/pull/556))
+* PM::TableScreen refreshable: Refresh controls now show when programmatically initiating refresh ([thanks Mark Rickert](https://github.com/clearsightstudio/ProMotion/pull/569))
+* PM::TableScreen: Added reorderable ([thanks Mark Rickert](https://github.com/clearsightstudio/ProMotion/pull/569))
+* PM::TableScreen: Added auto height feature ([thanks Carlin Isaacson](https://github.com/clearsightstudio/ProMotion/pull/574))
+* PM::Screen: The navigation controller bottom toolbar will auto-hide when passed nil or false ([thanks Mark Rickert](https://github.com/clearsightstudio/ProMotion/pull/577))
+* PM::Screen: You can now choose a status bar style ([thanks Mark Rickert](https://github.com/clearsightstudio/ProMotion/pull/563))
+* Added `on_load` and `on_styled` hooks for UIViews that implement those methods ([Jamon Holmgren](https://github.com/clearsightstudio/ProMotion/pull/567))
+* Fixed an issue where cell properties would be applied twice unnecessarily ([Jamon Holmgren](https://github.com/clearsightstudio/ProMotion/pull/573))
 
-**API changes**
+# Apps built on ProMotion
 
-1. Extracted `PM::MapScreen` into [ProMotion-map](https://github.com/clearsightstudio/ProMotion-map)
-2. Extracted `PM::PushNotification` into [ProMotion-push](https://github.com/clearsightstudio/ProMotion-push)
-3. You can't pass a UIImage or UIView into a `title` anymore. Instead, pass a string into `title_image` (it'll fetch the image for you and create a UIImageView) or pass any arbitrary view into `title_view`. Now, `title` only takes a string title.
-4. `on_create` has been renamed `screen_init` to avoid confusion with Android's `onCreate` method. It may be reintroduced in a future version of ProMotion as an alias of `onCreate`. We recommend using `on_init` instead.
-5. `set_nav_bar_right_button` and `set_nav_bar_left_button` have been removed. Use `set_nav_bar_button :right` and `:left` instead.
-6. Added `NSString#to_url` and `NSURL#to_url` helper methods to help clean up a lot of code.
-7. `present_modal_view_controller` now takes two arguments: the ViewController and an argument hash. You shouldn't have been using it in the first place.
-8. `open_in_tab` now properly opens screens in tabs that didn't have a nav_bar. This is probably the closest thing to a new feature in PM 2.0 that we have, even though it should have worked before.
-9. Cell hash arbitrary values are no longer applied directly to the cell. Instead, use the style: hash to apply arbitrary attributes. [Example here](https://github.com/clearsightstudio/ProMotion/pull/457/files#discussion_r13211807).
-10. Removed cell hash `:subviews` attribute. Instead, subclass `PM::TableViewCell` and add your own subviews there.
-11. Actually, there is one new feature. It's called `longpressable`. By adding `longpressable` at the top of your `PM::TableScreen` and then supplying a `long_press_action:` in your cell hash, you can implement a different action for long presses on table cells.
-12. We no longer insert the cell hash into the arguments hash passed into your cell tap action. If you need that data, pass it in manually.
-13. Removed `add_element`, `add_view`, `remove_element`, `remove_view` aliases for `add` and `remove`.
-14. `on_load` now fires on `viewDidLoad` instead of `loadView`. Added a new `load_view` hook for that method & you can set your own view in there. If you don't implement `load_view`, one will be created for you (per Apple's recommendations). This change shouldn't change much in your app except that if you're setting `self.view = something`, you should do it in `load_view`.
+[Apps built on ProMotion](https://github.com/clearsightstudio/ProMotion/wiki/Apps-built-on-ProMotion)
 
-**Internal changes:**
+##Your app
 
-1. Removed `motion-require`. ProMotion now relies entirely on RubyMotion's built-in dependency detector.
-2. Removed `rake spec:unit`, `rake spec:func`, `rake spec:single filename`. We don't really use these for development anymore.
-3. Moved many files around into a more logical, simpler structure.
-4. Removed `PM::Conversions`. The only helper we were using was the `objective_c_method_name` method, and that was only used in `PM::Styling`. So we moved it there.
-5. New module, `PM::NavBarModule`. Moved any navigation controller methods into this module, cleaning up the `PM::ScreenModule` quite a bit.
-6. Lots of code refactoring -- CodeClimate went from [2.47 to 3.35 GPA](http://clrsight.co/jh/8fi5l31nzs.png).
-7. Much cleaner `open` code!
-8. Converted several *slow* functional tests into *fast* unit tests with the same coverage.
+Tweet [@jamonholmgren](https://twitter.com/jamonholmgren) if you built an app in ProMotion and want it included!
 
 # API Reference
 

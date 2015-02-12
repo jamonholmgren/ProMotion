@@ -1,6 +1,9 @@
 class TestTableScreen < ProMotion::TableScreen
 
-  attr_accessor :tap_counter, :cell_was_deleted, :got_index_path
+  attr_accessor :tap_counter, :cell_was_deleted, :got_index_path, :cell_was_moved
+  title 'Test title'
+  tab_bar_item title: 'Test tab title', item: 'test'
+  row_height :auto, estimated: 97
 
   def on_load
     self.tap_counter = 0
@@ -62,7 +65,24 @@ class TestTableScreen < ProMotion::TableScreen
         action: :increment_counter_by,
         arguments: { number: 10 }
       }]
-  }]
+    },{
+      title: "Moveable Tests",
+      cells: [{
+        title: 'Cell 1',
+        moveable: :section
+      },{
+        title: 'Cell 2',
+        moveable: true
+      },{
+        title: 'Cell 3'
+      },{
+        title: 'Cell 4',
+        moveable: true
+      },{
+        title: 'Cell 5',
+        moveable: false
+      }]
+    }]
   end
 
   def edit_profile(args={})
@@ -106,16 +126,22 @@ class TestTableScreen < ProMotion::TableScreen
   end
 
   def custom_accessory_view
-    set_attributes UIView.new, {
-      background_color: UIColor.orangeColor
-    }
+    set_attributes UIView.new, background_color: UIColor.orangeColor
   end
 
   def scroll_to_bottom
     if table_view.contentSize.height > table_view.frame.size.height
-        offset = CGPointMake(0, table_view.contentSize.height - table_view.frame.size.height)
-        table_view.setContentOffset(offset, animated:false)
+      offset = CGPointMake(0, table_view.contentSize.height - table_view.frame.size.height)
+      table_view.setContentOffset(offset, animated:false)
     end
+  end
+
+  def on_cell_moved(args={})
+    self.cell_was_moved = args
+  end
+
+  def table_header_view
+    UIImageView.alloc.initWithImage(UIImage.imageNamed('test'))
   end
 
 end

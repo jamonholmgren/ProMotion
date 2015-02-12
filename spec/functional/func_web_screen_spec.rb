@@ -1,7 +1,10 @@
 describe "ProMotion::TestWebScreen functionality" do
   extend WebStub::SpecHelpers
 
-  before  { disable_network_access! }
+  before do
+    disable_network_access!
+    UIView.setAnimationDuration 0.01
+  end
   after   { enable_network_access! }
 
   def controller

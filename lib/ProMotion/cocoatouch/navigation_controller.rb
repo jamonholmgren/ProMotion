@@ -2,14 +2,12 @@ module ProMotion
   class NavigationController < UINavigationController
 
     def popViewControllerAnimated(animated)
-      if self.viewControllers[-2].respond_to? :on_back
-        self.viewControllers[-2].send(:on_back)
-      end
-      super animated
+      super
+      self.viewControllers.last.send(:on_back) if self.viewControllers.last.respond_to?(:on_back)
     end
 
     def shouldAutorotate
-      visibleViewController.shouldAutorotate
+      visibleViewController.shouldAutorotate if visibleViewController
     end
 
     def supportedInterfaceOrientations

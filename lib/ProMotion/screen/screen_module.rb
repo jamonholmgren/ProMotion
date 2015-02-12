@@ -11,9 +11,9 @@ module ProMotion
     def screen_init(args = {})
       check_ancestry
       resolve_title
-      tab_bar_setup
-      set_attributes self, args
+      apply_properties(args)
       add_nav_bar(args) if args[:nav_bar]
+      tab_bar_setup
       try :screen_setup
       try :on_init
       PM.logger.deprecated "In #{self.class.to_s}, #on_create has been deprecated and removed. Use #screen_init instead." if respond_to?(:on_create)
@@ -33,6 +33,27 @@ module ProMotion
       end
     end
 
+    def resolve_status_bar
+      case self.class.status_bar_type
+      when :none
+        status_bar_hidden true
+      when :light
+        status_bar_hidden false
+        status_bar_style UIStatusBarStyleLightContent
+      else
+        status_bar_hidden false
+        status_bar_style UIStatusBarStyleDefault
+      end
+    end
+
+    def status_bar_hidden(hidden)
+      UIApplication.sharedApplication.setStatusBarHidden(hidden, withAnimation:self.class.status_bar_animation)
+    end
+
+    def status_bar_style(style)
+      UIApplication.sharedApplication.setStatusBarStyle(style)
+    end
+
     def parent_screen=(parent)
       @parent_screen = WeakRef.new(parent)
     end
@@ -46,6 +67,7 @@ module ProMotion
     end
 
     def view_will_appear(animated)
+      resolve_status_bar
       self.will_appear
 
       self.will_present if isMovingToParentViewController
@@ -144,7 +166,16 @@ module ProMotion
       return self.view_or_self.frame
     end
 
+    def try(method, *args)
+      send(method, *args) if respond_to?(method)
+    end
+
   private
+
+    def apply_properties(args)
+      reserved_args = [ :nav_bar, :hide_nav_bar, :hide_tab_bar, :animated, :close_all, :in_tab, :in_detail, :in_master, :to_screen ]
+      set_attributes self, args.dup.delete_if { |k,v| reserved_args.include?(k) }
+    end
 
     def tab_bar_setup
       self.tab_bar_item = self.class.send(:get_tab_bar_item)
@@ -155,10 +186,6 @@ module ProMotion
       unless self.is_a?(UIViewController)
         raise StandardError.new("ERROR: Screens must extend UIViewController or a subclass of UIViewController.")
       end
-    end
-
-    def try(method, *args)
-      send(method, *args) if respond_to?(method)
     end
 
     # Class methods
@@ -185,6 +212,22 @@ module ProMotion
       def title_view(t)
         @title = t
         @title_type = :view
+      end
+
+      def status_bar(style=nil, args={})
+        if NSBundle.mainBundle.objectForInfoDictionaryKey('UIViewControllerBasedStatusBarAppearance').nil?
+          PM.logger.warn("status_bar will have no effect unless you set 'UIViewControllerBasedStatusBarAppearance' to false in your info.plist")
+        end
+        @status_bar_style = style
+        @status_bar_animation = args[:animation] if args[:animation]
+      end
+
+      def status_bar_type
+        @status_bar_style || :default
+      end
+
+      def status_bar_animation
+        @status_bar_animation || UIStatusBarAnimationSlide
       end
     end
 

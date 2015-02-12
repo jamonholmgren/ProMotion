@@ -2,12 +2,16 @@ module ProMotion
   module Styling
     def set_attributes(element, args = {})
       args = get_attributes_from_symbol(args)
-      args.each { |k, v| set_attribute(element, k, v) }
+      ignore_keys = [:transition_style, :presentation_style]
+      args.each do |k, v|
+        set_attribute(element, k, v) unless ignore_keys.include?(k)
+      end
+      element.send(:on_styled) if element.respond_to?(:on_styled)
       element
     end
 
     def set_attribute(element, k, v)
-      return element unless element
+      return unless element
 
       if !element.is_a?(CALayer) && v.is_a?(Hash) && element.respond_to?("#{k}=")
         element.send("#{k}=", v)
@@ -18,9 +22,11 @@ module ProMotion
         element.send("#{k}=", v)
       elsif v.is_a?(Array) && element.respond_to?("#{k}") && element.method("#{k}").arity == v.length
         element.send("#{k}", *v)
-      else
-        # Doesn't respond. Check if snake case.
-        set_attribute(element, camelize(k), v) if k.to_s.include?("_")
+      elsif k.to_s.include?("_") # Snake case?
+        set_attribute(element, camelize(k), v)
+      else # Warn
+        PM.logger.debug "set_attribute: #{element.inspect} does not respond to #{k}=."
+        PM.logger.log("BACKTRACE", caller(0).join("\n"), :default) if PM.logger.level == :verbose
       end
       element
     end
@@ -69,6 +75,7 @@ module ProMotion
       Array(elements).each do |element|
         parent_element.addSubview element
         set_attributes(element, attrs) if attrs && attrs.length > 0
+        element.send(:on_load) if element.respond_to?(:on_load)
       end
       elements
     end

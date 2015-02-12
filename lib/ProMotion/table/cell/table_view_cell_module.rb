@@ -23,7 +23,7 @@ module ProMotion
 
     # TODO: Remove this in ProMotion 2.1. Just for migration purposes.
     def check_deprecated_styles
-      whitelist = [ :title, :subtitle, :image, :remote_image, :accessory, :selection_style, :action, :long_press_action, :arguments, :cell_style, :cell_class, :cell_identifier, :editing_style, :search_text, :keep_selection, :height, :accessory_type, :style, :properties ]
+      whitelist = [ :title, :subtitle, :image, :remote_image, :accessory, :selection_style, :action, :long_press_action, :arguments, :cell_style, :cell_class, :cell_identifier, :editing_style, :moveable, :search_text, :keep_selection, :height, :accessory_type, :style, :properties ]
       if (data_cell.keys - whitelist).length > 0
         PM.logger.deprecated("In #{self.table_screen.class.to_s}#table_data, you should set :#{(data_cell.keys - whitelist).join(", :")} in a `properties:` hash. See TableScreen documentation.")
       end
@@ -89,6 +89,7 @@ module ProMotion
   private
 
     def jm_image_cache?
+      return false if RUBYMOTION_ENV == 'test'
       return true if self.imageView.respond_to?("setImageWithURL:placeholder:")
       PM.logger.error "ProMotion Warning: to use remote_image with TableScreen you need to include the CocoaPod 'JMImageCache'."
       false

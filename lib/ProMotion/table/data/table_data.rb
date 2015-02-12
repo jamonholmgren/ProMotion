@@ -24,7 +24,7 @@ module ProMotion
 
     def cell(params={})
       params = index_path_to_section_index(params)
-      table_section = self.section(params[:section])
+      table_section = params[:unfiltered] ? self.data[params[:section]] : self.section(params[:section])
       c = table_section[:cells].at(params[:index].to_i)
       set_data_cell_defaults c
     end
@@ -33,6 +33,10 @@ module ProMotion
       params = index_path_to_section_index(params)
       table_section = self.section(params[:section])
       table_section[:cells].delete_at(params[:index].to_i)
+    end
+
+    def move_cell(from, to)
+      section(to.section)[:cells].insert(to.row, section(from.section)[:cells].delete_at(from.row))
     end
 
     def search(search_string)

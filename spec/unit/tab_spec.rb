@@ -28,7 +28,7 @@ describe "tab bar functionality" do
   it "should have set the others to their respective titles" do
     @tab_bar.tabBar.items[1].title.should == "Basic"
     @tab_bar.tabBar.items[2].title.should == "Home"
-    @tab_bar.tabBar.items[3].title.should == "TestTableScreen"
+    @tab_bar.tabBar.items[3].title.should == "Test tab title"
   end
 
   it "should allow changing the tab bar item with set_tab_bar_item" do

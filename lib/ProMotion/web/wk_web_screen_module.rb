@@ -1,9 +1,9 @@
 module ProMotion
   module WKWebScreenModule
-    def build_web_view
+    def web_view_setup
       self.webview = add WKWebView.new, {
         frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height),
-        data_detector_types: self.detector_types
+        data_detector_types: data_detector_types
       }
 
       self.webview.UIDelegate = self
@@ -12,23 +12,22 @@ module ProMotion
       self.webview.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal
     end
 
-    def webView(view, didCommitNavigation: navigation)
-      navigation_started(navigation) if self.respond_to?("navigation_started")
+    # `evaluate` will wait to return its payload
+    # `evaluate_async` requires a block
+    def evaluate(js)
+      res = nil
+      semaphore = Dispatch::Semaphore.new(0)
+      evaluate_async do |result, error|
+        res = result
+        semaphore.signal
+      end
+      semaphore.wait(Dispatch::TIME_FOREVER)
+      return res
     end
 
-    def webView(view, didFailNavigation: navigation, withError: error)
-      navigation_failed(navigation, error) if self.respond_to?("navigation_failed")
-    end
-
-    def webView(view, didFinishNavigation: navigation)
-      navigation_finished(navigation) if self.respond_to?("navigation_finished")
-    end
-
-    def evaluate(js, &block)
-      self.webview.evaluateJavaScript(js, completionHandler: -> (result, error) { 
-        unless block.nil?
-          block.call(result, error)
-        end
+    def evaluate_async(js, &block)
+      self.webview.evaluateJavaScript(js, completionHandler: -> (result, error) {
+        block.call(result, error)
       })
     end
 
@@ -43,5 +42,20 @@ module ProMotion
     def progress
       self.webview.estimatedProgress
     end
+
+    # CocoaTouch methods
+
+    def webView(view, didCommitNavigation: navigation)
+      navigation_started(navigation) if self.respond_to?("navigation_started")
+    end
+
+    def webView(view, didFailNavigation: navigation, withError: error)
+      navigation_failed(navigation, error) if self.respond_to?("navigation_failed")
+    end
+
+    def webView(view, didFinishNavigation: navigation)
+      navigation_finished(navigation) if self.respond_to?("navigation_finished")
+    end
+
   end
 end

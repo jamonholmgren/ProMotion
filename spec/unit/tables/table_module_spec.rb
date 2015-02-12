@@ -5,7 +5,8 @@ describe "PM::Table module" do
   end
 
   def custom_cell
-    @image = UIImage.imageNamed("list")
+    @image ||= UIImage.imageNamed("list")
+    @pattern_image_color ||= UIColor.colorWithPatternImage(@image)
     cell_factory({
       title: "Crazy Full Featured Cell",
       subtitle: "This is way too huge..see note",
@@ -30,10 +31,26 @@ describe "PM::Table module" do
         radius: 15
       },
       properties: {
-        masks_to_bounds: true,
-        background_color: UIColor.colorWithPatternImage(@image)
+        content_view: {
+          background_color: @pattern_image_color,
+        },
+        layer: {
+          masks_to_bounds: true,
+        },
       }
     })
+  end
+
+  def default_cell_height
+    return UITableViewAutomaticDimension if TestHelper.ios8
+    return 97.0 if TestHelper.ios7 # Normally 44, but 97 because of `row_height` designation
+  end
+
+  def default_header_height
+    # Thanks, Apple.
+    return -1.0 if TestHelper.ios8
+    return 23.0 if TestHelper.ios7
+    return 22.0 if TestHelper.ios6
   end
 
   before do
@@ -101,7 +118,7 @@ describe "PM::Table module" do
   end
 
   it "should return the table's cell height if none is given" do
-    @subject.tableView(@subject.table_view, heightForRowAtIndexPath:@ip).should == 44.0 # Built-in default
+    @subject.tableView(@subject.table_view, heightForRowAtIndexPath:@ip).should == default_cell_height
   end
 
   it "should allow setting a custom cell height" do
@@ -123,7 +140,6 @@ describe "PM::Table module" do
     @subject.tableView(@subject.table_view, didSelectRowAtIndexPath:ip)
 
     tapped_ip = @subject.got_index_path
-    tapped_ip.should.be.kind_of NSIndexPath
     tapped_ip.section.should == 6
     tapped_ip.row.should == 0
   end
@@ -140,11 +156,12 @@ describe "PM::Table module" do
 
   it "should set a custom cell background image" do
     @image.should.not.be.nil
-    ip = NSIndexPath.indexPathForRow(0, inSection: 3) # Cell 2-1
+    ip = NSIndexPath.indexPathForRow(0, inSection: 3) # Cell 4-1
     cell = @subject.tableView(@subject.table_view, cellForRowAtIndexPath: ip)
     cell.should.be.kind_of(UITableViewCell)
-    cell.backgroundColor.should.be.kind_of(UIColor)
-    cell.backgroundColor.should == UIColor.colorWithPatternImage(@image)
+    cell.layer.masksToBounds.should == true
+    cell.contentView.backgroundColor.should.be.kind_of(UIColor)
+    cell.contentView.backgroundColor.should == @pattern_image_color
   end
 
   it "should set a custom cell background color" do
@@ -152,6 +169,10 @@ describe "PM::Table module" do
     cell.should.be.kind_of(UITableViewCell)
     cell.backgroundColor.should.be.kind_of(UIColor)
     cell.backgroundColor.should == UIColor.blueColor
+  end
+
+  it "should have a header view" do
+    @subject.tableView.tableHeaderView.class.should == UIImageView
   end
 
   describe("section with custom title_view") do
@@ -162,14 +183,17 @@ describe "PM::Table module" do
     end
 
     it "should use the default section height if none is specified" do
-      header_height = (UIDevice.currentDevice.systemVersion.to_f >= 7.0) ? 23.0 : 22.0
-      @subject.tableView(@subject.table_view, heightForHeaderInSection:4).should == header_height # Built-in default
+      @subject.tableView(@subject.table_view, heightForHeaderInSection:4).should == default_header_height
     end
 
     it "should use the set title_view_height if one is specified" do
       @subject.tableView(@subject.table_view, heightForHeaderInSection:5).should == 50.0
     end
 
+    it "should use the instantiated section view if one is specified" do
+      cell = @subject.tableView(@subject.table_view, viewForHeaderInSection: 5)
+      cell.should.be.kind_of(CustomTitleView)
+    end
   end
 
 end

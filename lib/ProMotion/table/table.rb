@@ -15,9 +15,11 @@ module ProMotion
 
     def screen_setup
       check_table_data
+      set_up_header_view
       set_up_searchable
       set_up_refreshable
       set_up_longpressable
+      set_up_row_height
     end
 
     def check_table_data
@@ -26,6 +28,17 @@ module ProMotion
 
     def promotion_table_data
       @promotion_table_data ||= TableData.new(table_data, table_view)
+    end
+
+    def set_up_header_view
+      if self.respond_to?(:table_header_view)
+        header_view = self.table_header_view
+        if header_view.is_a? UIView
+          self.tableView.tableHeaderView = header_view
+        else
+          PM.logger.warn "Table header views must be a UIView."
+        end
+      end
     end
 
     def set_up_searchable
@@ -50,6 +63,13 @@ module ProMotion
       end
     end
 
+    def set_up_row_height
+      if self.class.respond_to?(:get_row_height) && params = self.class.get_row_height
+        self.view.rowHeight = params[:height]
+        self.view.estimatedRowHeight = params[:estimated]
+      end
+    end
+
     def searching?
       self.promotion_table_data.filtered
     end
@@ -68,7 +88,7 @@ module ProMotion
         args[:animation] ||= UITableViewRowAnimationNone
 
         table_view.beginUpdates
-        table_view.reloadRowsAtIndexPaths(Array(args[:index_paths]), withRowAnimation:args[:animation])
+        table_view.reloadRowsAtIndexPaths(Array(args[:index_paths]), withRowAnimation: args[:animation])
         table_view.endUpdates
       else
         table_view.reloadData
@@ -78,7 +98,6 @@ module ProMotion
 
     def trigger_action(action, arguments, index_path)
       return PM.logger.info "Action not implemented: #{action.to_s}" unless self.respond_to?(action)
-
       case self.method(action).arity
       when 0 then self.send(action) # Just call the method
       when 2 then self.send(action, arguments, index_path) # Send arguments and index path
@@ -99,8 +118,7 @@ module ProMotion
 
     def delete_row(index_paths, animation = nil)
       deletable_index_paths = []
-      index_paths = [index_paths] if index_paths.kind_of?(NSIndexPath)
-      index_paths.each do |index_path|
+      Array(index_paths).each do |index_path|
         delete_cell = false
         delete_cell = send(:on_cell_deleted, self.promotion_table_data.cell(index_path: index_path)) if self.respond_to?("on_cell_deleted:")
         unless delete_cell == false
@@ -108,34 +126,44 @@ module ProMotion
           deletable_index_paths << index_path
         end
       end
-      table_view.deleteRowsAtIndexPaths(deletable_index_paths, withRowAnimation:map_row_animation_symbol(animation)) if deletable_index_paths.length > 0
-    end
-
-    def table_view_cell(params={})
-      params = index_path_to_section_index(params)
-      data_cell = self.promotion_table_data.cell(section: params[:section], index: params[:index])
-      return UITableViewCell.alloc.init unless data_cell
-      create_table_cell(data_cell)
+      table_view.deleteRowsAtIndexPaths(deletable_index_paths, withRowAnimation: map_row_animation_symbol(animation)) if deletable_index_paths.length > 0
     end
 
     def create_table_cell(data_cell)
+      new_cell = nil
       table_cell = table_view.dequeueReusableCellWithIdentifier(data_cell[:cell_identifier]) || begin
-        table_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:data_cell[:cell_identifier])
-        table_cell.extend(PM::TableViewCellModule) unless table_cell.is_a?(PM::TableViewCellModule)
-        table_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
-        table_cell.clipsToBounds = true # fix for changed default in 7.1
-        table_cell
+        new_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:data_cell[:cell_identifier])
+        new_cell.extend(PM::TableViewCellModule) unless new_cell.is_a?(PM::TableViewCellModule)
+        new_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
+        new_cell.clipsToBounds = true # fix for changed default in 7.1
+        new_cell
       end
-      table_cell.setup(data_cell, self)
+
+      table_cell.setup(data_cell, self) if table_cell.respond_to?(:setup)
+      table_cell.send(:on_reuse) if !new_cell && table_cell.respond_to?(:on_reuse)
       table_cell
     end
 
     def update_table_data(args = {})
-      # Try and detect if the args param is a NSIndexPath or an array of them
-      args = { index_paths: args } if args.is_a?(NSIndexPath) || (args.is_a?(Array) && array_all_members_of?(args, NSIndexPath))
+      args = { index_paths: args } unless args.is_a?(Hash)
 
       self.update_table_view_data(self.table_data, args)
       self.promotion_table_data.search(search_string) if searching?
+    end
+
+    def toggle_edit_mode(animated = true)
+      edit_mode({enabled: !editing?, animated: animated})
+    end
+
+    def edit_mode(args = {})
+      args[:enabled] = false if args[:enabled].nil?
+      args[:animated] = true if args[:animated].nil?
+
+      setEditing(args[:enabled], animated:args[:animated])
+    end
+
+    def edit_mode?
+      !!isEditing
     end
 
     ########## Cocoa touch methods #################
@@ -144,11 +172,11 @@ module ProMotion
     end
 
     # Number of cells
-    def tableView(table_view, numberOfRowsInSection:section)
+    def tableView(table_view, numberOfRowsInSection: section)
       self.promotion_table_data.section_length(section)
     end
 
-    def tableView(table_view, titleForHeaderInSection:section)
+    def tableView(table_view, titleForHeaderInSection: section)
       section = promotion_table_data.section(section)
       section && section[:title]
     end
@@ -160,29 +188,31 @@ module ProMotion
       nil
     end
 
-    def tableView(table_view, cellForRowAtIndexPath:index_path)
-      table_view_cell(index_path: index_path)
+    def tableView(table_view, cellForRowAtIndexPath: index_path)
+      params = index_path_to_section_index(index_path: index_path)
+      data_cell = self.promotion_table_data.cell(section: params[:section], index: params[:index])
+      return UITableViewCell.alloc.init unless data_cell
+      create_table_cell(data_cell)
     end
 
     def tableView(table_view, willDisplayCell: table_cell, forRowAtIndexPath: index_path)
       data_cell = self.promotion_table_data.cell(index_path: index_path)
-      set_attributes table_cell, data_cell[:properties] if data_cell[:properties]
       table_cell.send(:will_display) if table_cell.respond_to?(:will_display)
       table_cell.send(:restyle!) if table_cell.respond_to?(:restyle!) # Teacup compatibility
     end
 
-    def tableView(table_view, heightForRowAtIndexPath:index_path)
+    def tableView(table_view, heightForRowAtIndexPath: index_path)
       (self.promotion_table_data.cell(index_path: index_path)[:height] || table_view.rowHeight).to_f
     end
 
-    def tableView(table_view, didSelectRowAtIndexPath:index_path)
+    def tableView(table_view, didSelectRowAtIndexPath: index_path)
       data_cell = self.promotion_table_data.cell(index_path: index_path)
       table_view.deselectRowAtIndexPath(index_path, animated: true) unless data_cell[:keep_selection] == true
       trigger_action(data_cell[:action], data_cell[:arguments], index_path) if data_cell[:action]
     end
 
     def tableView(table_view, editingStyleForRowAtIndexPath: index_path)
-      data_cell = self.promotion_table_data.cell(index_path: index_path)
+      data_cell = self.promotion_table_data.cell(index_path: index_path, unfiltered: true)
       map_cell_editing_style(data_cell[:editing_style])
     end
 
@@ -192,18 +222,55 @@ module ProMotion
       end
     end
 
-    def tableView(tableView, sectionForSectionIndexTitle:title, atIndex:index)
+    def tableView(tableView, canMoveRowAtIndexPath:index_path)
+      data_cell = self.promotion_table_data.cell(index_path: index_path, unfiltered: true)
+
+      if (!data_cell[:moveable].nil? || data_cell[:moveable].is_a?(Symbol)) && data_cell[:moveable] != false
+        true
+      else
+        false
+      end
+    end
+
+    def tableView(tableView, targetIndexPathForMoveFromRowAtIndexPath:source_index_path, toProposedIndexPath:proposed_destination_index_path)
+      data_cell = self.promotion_table_data.cell(index_path: source_index_path, unfiltered: true)
+
+      if data_cell[:moveable] == :section && source_index_path.section != proposed_destination_index_path.section
+        source_index_path
+      else
+        proposed_destination_index_path
+      end
+    end
+
+    def tableView(tableView, moveRowAtIndexPath:from_index_path, toIndexPath:to_index_path)
+      self.promotion_table_data.move_cell(from_index_path, to_index_path)
+
+      if self.respond_to?("on_cell_moved:")
+        args = {
+          paths: {
+            from: from_index_path,
+            to: to_index_path
+          },
+          cell: self.promotion_table_data.section(to_index_path.section)[:cells][to_index_path.row]
+        }
+        send(:on_cell_moved, args)
+      else
+        PM.logger.warn "Implement the on_cell_moved method in your PM::TableScreen to be notified when a user moves a cell."
+      end
+    end
+
+    def tableView(tableView, sectionForSectionIndexTitle: title, atIndex: index)
       return index unless ["{search}", UITableViewIndexSearch].include?(self.table_data_index[0])
 
       if index == 0
-        tableView.scrollRectToVisible(CGRectMake(0.0, 0.0, 1.0, 1.0), animated:false)
+        tableView.scrollRectToVisible(CGRectMake(0.0, 0.0, 1.0, 1.0), animated: false)
         NSNotFound
       else
         index - 1
       end
     end
 
-    def deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)
+    def deleteRowsAtIndexPaths(index_paths, withRowAnimation: animation)
       PM.logger.warn "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)'."
       delete_row(index_paths, animation)
     end
@@ -211,7 +278,7 @@ module ProMotion
     # Section view methods
     def tableView(table_view, viewForHeaderInSection: index)
       section = promotion_table_data.section(index)
-      view = nil
+      view = section[:title_view]
       view = section[:title_view].new if section[:title_view].respond_to?(:new)
       view.title = section[:title] if view.respond_to?(:title=)
       view
@@ -253,6 +320,23 @@ module ProMotion
     module TableClassMethods
       def table_style
         UITableViewStylePlain
+      end
+
+      def row_height(height, args={})
+        if height == :auto
+          if UIDevice.currentDevice.systemVersion.to_f < 8.0
+            height = args[:estimated] || 44.0
+            PM.logger.warn "Using `row_height :auto` is not supported in iOS 7 apps. Setting to #{height}."
+          else
+            height = UITableViewAutomaticDimension
+          end
+        end
+        args[:estimated] ||= height unless height == UITableViewAutomaticDimension
+        @row_height = { height: height, estimated: args[:estimated] || 44.0 }
+      end
+
+      def get_row_height
+        @row_height ||= nil
       end
 
       # Searchable

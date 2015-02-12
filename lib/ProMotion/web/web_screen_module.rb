@@ -10,19 +10,13 @@ module ProMotion
       self.external_links ||= false
       self.scale_to_fit ||= false
       self.detector_types ||= :none
+
+      web_view_setup
+      set_initial_content
     end
 
     def on_init
-      if self.detector_types.is_a? Array
-        detectors = UIDataDetectorTypeNone
-        self.detector_types.each { |dt| detectors |= map_detector_symbol(dt) }
-        self.detector_types = detectors
-      else
-        self.detector_types = map_detector_symbol(self.detector_types)
-      end
-
-      build_web_view
-      set_initial_content
+      # TODO: Remove in 3.0
     end
 
     def web
@@ -30,8 +24,8 @@ module ProMotion
     end
 
     def set_initial_content
-      return unless self.respond_to?(:content)
-      content.is_a?(NSURL) ? open_url(content) : set_content(content)
+      return unless self.respond_to?(:content) && self.content
+      self.content.is_a?(NSURL) ? open_url(self.content) : set_content(self.content)
     end
 
     def set_content(content)
@@ -49,10 +43,7 @@ module ProMotion
     end
 
     def open_url(url)
-      request = NSURLRequest.requestWithURL(
-        url.is_a?(NSURL) ? url : NSURL.URLWithString(url)
-      )
-      web.loadRequest request
+      web.loadRequest NSURLRequest.requestWithURL(url.to_url)
     end
 
     def convert_retina_images(content)
@@ -93,20 +84,26 @@ module ProMotion
     def stop; web.stopLoading; end
     alias :reload :refresh
 
-    def open_in_chrome(inRequest)
+    def open_in_chrome(in_request)
       # Add pod 'OpenInChrome' to your Rakefile if you want links to open in Google Chrome for users.
       # This will fall back to Safari if the user doesn't have Chrome installed.
       chrome_controller = OpenInChromeController.sharedInstance
-      return open_in_safari(inRequest) unless chrome_controller.isChromeInstalled
-      chrome_controller.openInChrome(inRequest.URL)
+      return open_in_safari(in_request) unless chrome_controller.isChromeInstalled
+      chrome_controller.openInChrome(in_request.URL)
     end
 
-    def open_in_safari(inRequest)
+    def open_in_safari(in_request)
       # Open UIWebView delegate links in Safari.
-      UIApplication.sharedApplication.openURL(inRequest.URL)
+      UIApplication.sharedApplication.openURL(in_request.URL)
     end
 
     protected
+
+    def data_detector_types
+      Array(self.detector_types).reduce(UIDataDetectorTypeNone) do |detectors, dt|
+        detectors | map_detector_symbol(dt)
+      end
+    end
 
     def map_detector_symbol(symbol)
       {

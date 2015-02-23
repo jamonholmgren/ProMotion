@@ -57,6 +57,10 @@ module ProMotion
         self.table_view.setScrollEnabled false
         @table_search_display_controller.delegate.will_begin_search if @table_search_display_controller.delegate.respond_to? "will_begin_search"
       end
+
+      def searchDisplayController(controller, didLoadSearchResultsTableView: tableView)
+        tableView.rowHeight = self.table_view.rowHeight
+      end
     end
   end
 end

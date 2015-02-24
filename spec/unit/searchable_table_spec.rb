@@ -58,4 +58,15 @@ describe "Searchable table spec" do
     controller.searchDisplayController(controller, didLoadSearchResultsTableView: tableView)
   end
 
+  it "should allow searching for all the 'New' states using a custom search proc" do
+    controller = TableScreenStabbySearchable.new
+    controller.searchDisplayController(controller, shouldReloadTableForSearchString:"New Stabby")
+    controller.tableView(controller.tableView, numberOfRowsInSection:0).should == 4
+  end
+
+  it "should allow searching for all the 'New' states using a symbol as a search proc" do
+    controller = TableScreenSymbolSearchable.new
+    controller.searchDisplayController(controller, shouldReloadTableForSearchString:"New Symbol")
+    controller.tableView(controller.tableView, numberOfRowsInSection:0).should == 4
+  end
 end

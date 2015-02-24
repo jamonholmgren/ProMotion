@@ -94,3 +94,47 @@ class TableScreenSearchable < TestTableScreen
   end
 
 end
+
+class TableScreenStabbySearchable < TableScreenSearchable
+  searchable with: -> (cell, search_string) {
+    result = true
+    search_string.split(/\s+/).each {|term|
+      result &&= cell[:properties][:searched_title].downcase.strip.include?(term.downcase.strip)
+    }
+    return result
+  }
+
+  def build_cell(title)
+    {
+      title: title,
+      subtitle: @subtitle.to_s,
+      action: :update_subtitle,
+      properties: {
+        searched_title: "#{title} - stabby"
+      }
+    }
+  end
+end
+
+class TableScreenSymbolSearchable < TableScreenSearchable
+  searchable with: :custom_search
+
+  def custom_search(cell, search_string)
+    result = true
+    search_string.split(/\s+/).each {|term|
+      result &&= cell[:properties][:searched_title].downcase.strip.include?(term.downcase.strip)
+    }
+    return result
+  end
+
+  def build_cell(title)
+    {
+      title: title,
+      subtitle: @subtitle.to_s,
+      action: :update_subtitle,
+      properties: {
+        searched_title: "#{title} - symbol"
+      }
+    }
+  end
+end

@@ -27,7 +27,7 @@ module ProMotion
     end
 
     def promotion_table_data
-      @promotion_table_data ||= TableData.new(table_data, table_view)
+      @promotion_table_data ||= TableData.new(table_data, table_view, self)
     end
 
     def set_up_header_view
@@ -148,7 +148,7 @@ module ProMotion
       args = { index_paths: args } unless args.is_a?(Hash)
 
       self.update_table_view_data(self.table_data, args)
-      self.promotion_table_data.search(search_string) if searching?
+      self.promotion_table_data.search(search_string, self.class.get_searchable_params) if searching?
     end
 
     def toggle_edit_mode(animated = true)

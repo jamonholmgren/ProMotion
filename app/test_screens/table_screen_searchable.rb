@@ -121,10 +121,9 @@ class TableScreenSymbolSearchable < TableScreenSearchable
 
   def custom_search(cell, search_string)
     result = true
-    search_string.split(/\s+/).each {|term|
-      result &&= cell[:properties][:searched_title].downcase.strip.include?(term.downcase.strip)
+    search_string.split(/\s+/).all? {|term|
+      cell[:properties][:searched_title].downcase.strip.include?(term.downcase.strip)
     }
-    return result
   end
 
   def build_cell(title)

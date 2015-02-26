@@ -27,7 +27,7 @@ module ProMotion
     end
 
     def promotion_table_data
-      @promotion_table_data ||= TableData.new(table_data, table_view, self)
+      @promotion_table_data ||= TableData.new(table_data, table_view, setup_search_method)
     end
 
     def set_up_header_view
@@ -44,6 +44,20 @@ module ProMotion
     def set_up_searchable
       if self.class.respond_to?(:get_searchable) && self.class.get_searchable
         self.make_searchable(content_controller: self, search_bar: self.class.get_searchable_params)
+      end
+    end
+
+    def setup_search_method
+      params = self.class.get_searchable_params
+      if params.nil?
+        return nil
+      else
+        @search_method || begin
+          params = self.class.get_searchable_params
+          @search_action = params[:with] || params[:find_by] || params[:search_by] || params[:filter_by]
+          @search_action = method(@search_action) if @search_action.is_a?(Symbol) || @search_action.is_a?(String)
+          @search_action
+        end
       end
     end
 
@@ -148,7 +162,7 @@ module ProMotion
       args = { index_paths: args } unless args.is_a?(Hash)
 
       self.update_table_view_data(self.table_data, args)
-      self.promotion_table_data.search(search_string, self.class.get_searchable_params) if searching?
+      self.promotion_table_data.search(search_string) if searching?
     end
 
     def toggle_edit_mode(animated = true)

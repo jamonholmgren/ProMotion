@@ -4,8 +4,8 @@ module ProMotion
 
     attr_accessor :data, :filtered_data, :search_string, :original_search_string, :filtered, :table_view, :search_params
 
-    def initialize(data, table_view, controller = nil)
-      @controller = controller
+    def initialize(data, table_view, search_action = nil)
+      @search_action ||= search_action
       self.data = data
       self.table_view = WeakRef.new(table_view)
     end
@@ -44,25 +44,15 @@ module ProMotion
       cell[:searchable] != false && "#{cell[:title]}\n#{cell[:search_text]}".downcase.strip.include?(search_string.downcase.strip)
     end
 
-    def custom_search?(params)
-      return params[:with] ||
-      params[:find_by] ||
-      params[:search_by] ||
-      params[:filter_by]
-    end
-
-    def search(search_string, params = {})
+    def search(search_string)
       start_searching(search_string)
 
       self.data.compact.each do |section|
         new_section = {}
 
         new_section[:cells] = section[:cells].map do |cell|
-          if search_method = custom_search?(params)
-            case search_method
-              when Proc   then search_method.call(cell, search_string)
-              when Symbol then @controller.send(search_method, cell, search_string)
-            end
+          if @search_action
+            @search_action.call(cell, search_string)
           else
             self.default_search(cell, search_string)
           end ? cell : nil

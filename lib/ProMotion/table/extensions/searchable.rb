@@ -42,7 +42,7 @@ module ProMotion
       ######### iOS methods, headless camel case #######
 
       def searchDisplayController(controller, shouldReloadTableForSearchString:search_string)
-        self.promotion_table_data.search(search_string, self.class.get_searchable_params)
+        self.promotion_table_data.search(search_string)
         true
       end
 

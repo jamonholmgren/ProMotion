@@ -58,4 +58,26 @@ describe "Searchable table spec" do
     controller.searchDisplayController(controller, didLoadSearchResultsTableView: tableView)
   end
 
+  context "Has a nav bar" do
+
+    it "should hide the nav_bar when searching" do
+      screen = TableScreenSearchable.new(nav_bar: true)
+      screen.navigationController.mock!("setNavigationBarHidden:animated:") do |hid, anim|
+        hid.should.be.true
+        anim.should.be.true
+      end
+      screen.searchDisplayControllerWillBeginSearch(_)
+    end
+
+    it "should show the nav_bar when done searching" do
+      screen = TableScreenSearchable.new(nav_bar: true)
+      screen.navigationController.mock!("setNavigationBarHidden:animated:") do |hid, anim|
+        hid.should.be.false
+        anim.should.be.true
+      end
+      screen.searchDisplayControllerWillEndSearch(nil)
+    end
+
+  end
+
 end

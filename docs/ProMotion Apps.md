@@ -119,6 +119,23 @@ It's open source!
 
 More information: [http://wejn.com/ios/odorik/](http://wejn.com/ios/odorik/)
 
+### Dropzones
+
+[![Dropzones](https://github.com/OTGApps/Dropzones/blob/master/resources/Icon-120.png)](https://itunes.apple.com/us/app/dropzones-uspa-dropzone-finder/id960515397?mt=8&uo=4&at=10l4yY&ct=github)
+
+[App Store Link](https://itunes.apple.com/us/app/dropzones-uspa-dropzone-finder/id960515397?mt=8&uo=4&at=10l4yY&ct=github)
+
+Dropzones lists all current U.S. Parachute Association (USPA) member dropzones in an easy to navigate interface. Because these dropzones are USPA certified, you can be assured that the staff, training, equipment, and airplanes are top-quality!
+
+
+* Quickly find the dropzones closest to where you are now!
+* Search by state, region, aircraft, services offered, and training capabilities.
+* See a map of every USPA dropzone in the US!
+* Detailed information about each dropzone
+
+
+This application is open source! [Check out the source code](https://github.com/OTGApps/Dropzones)
+
 
 ### Your app here
 

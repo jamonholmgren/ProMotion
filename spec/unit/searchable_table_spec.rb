@@ -52,4 +52,10 @@ describe "Searchable table spec" do
     controller.will_end_search_called.should == true
   end
 
+  it "should set the row height of the search display to match the source table row height" do
+    tableView = UITableView.alloc.init
+    tableView.mock!(:rowHeight=)
+    controller.searchDisplayController(controller, didLoadSearchResultsTableView: tableView)
+  end
+
 end

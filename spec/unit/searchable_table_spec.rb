@@ -66,7 +66,7 @@ describe "Searchable table spec" do
         hid.should.be.true
         anim.should.be.true
       end
-      screen.searchDisplayControllerWillBeginSearch(_)
+      screen.searchDisplayControllerWillBeginSearch(nil)
     end
 
     it "should show the nav_bar when done searching" do

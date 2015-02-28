@@ -58,15 +58,49 @@ describe "Searchable table spec" do
     controller.searchDisplayController(controller, didLoadSearchResultsTableView: tableView)
   end
 
-  it "should allow searching for all the 'New' states using a custom search proc" do
-    controller = TableScreenStabbySearchable.new
-    controller.searchDisplayController(controller, shouldReloadTableForSearchString:"New Stabby")
-    controller.tableView(controller.tableView, numberOfRowsInSection:0).should == 4
-  end
+  describe "custom search" do
+    before do
+      @stabby_controller = TableScreenStabbySearchable.new
+      @proc_controller   = TableScreenSymbolSearchable.new
+    end
 
-  it "should allow searching for all the 'New' states using a symbol as a search proc" do
-    controller = TableScreenSymbolSearchable.new
-    controller.searchDisplayController(controller, shouldReloadTableForSearchString:"New Symbol")
-    controller.tableView(controller.tableView, numberOfRowsInSection:0).should == 4
+    after do
+      @stabby_controller = nil
+      @proc_controller = nil
+    end
+
+    it "should allow searching for all the 'New' states using a custom search proc" do
+      @stabby_controller.searchDisplayController(@stabby_controller, shouldReloadTableForSearchString:"New Stabby")
+      @stabby_controller.tableView(@stabby_controller.tableView, numberOfRowsInSection:0).should == 4
+      rows = @stabby_controller.promotion_table_data.search("New stabby")
+      rows.first[:cells].length.should == 4
+      rows.first[:cells].each do |row|
+        # Starts with "New" and ends with "stabby"
+        row[:properties][:searched_title].should.match(/^New(.+)?stabby$/)
+      end
+    end
+
+    it "should allow searching for all the 'New' states using a symbol as a search proc" do
+      @proc_controller.searchDisplayController(@proc_controller, shouldReloadTableForSearchString:"New Symbol")
+      cell_count = @proc_controller.tableView(@proc_controller.tableView, numberOfRowsInSection:0)
+      cell_count.should == 4
+      rows = @proc_controller.promotion_table_data.search("New Symbol")
+      rows.first[:cells].length.should == 4
+      rows.first[:cells].each do |row|
+        # Starts with "New" and ends with "symbol"
+        row[:properties][:searched_title].should.match(/^New(.+)?symbol$/)
+      end
+    end
+
+    it "custom searches empty with stabby proc if there is no match" do
+      @stabby_controller.searchDisplayController(@stabby_controller, shouldReloadTableForSearchString:"Totally Bogus")
+      @stabby_controller.tableView(@stabby_controller.tableView, numberOfRowsInSection:0).should == 0
+    end
+
+    it "custom searches empty with symbol for proc if there is no match" do
+      @proc_controller.searchDisplayController(@proc_controller, shouldReloadTableForSearchString:"Totally Bogus")
+      @proc_controller.tableView(@proc_controller.tableView, numberOfRowsInSection:0).should == 0
+    end
+
   end
 end

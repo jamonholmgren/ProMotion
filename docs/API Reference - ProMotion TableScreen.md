@@ -296,7 +296,7 @@ are aliases). E.g.:
 ```ruby
 class MyTableScreen < PM::TableScreen
   searchable placeholder: "Search This Table", with: -> (cell, search_string){
-    cell[:properties][:some_obscure_attribute].include? search_string
+    cell[:properties][:some_obscure_attribute].strip.downcase.include? search_string.strip.downcase
   }
 end
 ```
@@ -308,7 +308,7 @@ class MyTableScreen < PM::TableScreen
   searchable placeholder: "Search This Table", with: :custom_search_method
 
   def custom_search_method(cell, search_string)
-    cell[:properties][:some_obscure_attribute].include? search_string
+    cell[:properties][:some_obscure_attribute].strip.downcase.include? search_string.strip.downcase
   end
 end
 ```

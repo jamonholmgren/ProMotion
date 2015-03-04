@@ -24,7 +24,7 @@ It's recommended to use this method in your `on_init` method OR set it using the
 ```ruby
 def on_init
   set_tab_bar_item item: "custom_item_5", title: "Custom"
-  set_tab_bar_item system_item: :more 
+  set_tab_bar_item system_item: :more
   # :more, :favorites, :featured, :top_rated, :recents, :contacts,
   # :history, :bookmarks, :search, :downloads, :most_recent, :most_viewed
 end
@@ -53,6 +53,19 @@ open_tab "About"
 open_tab 3 # fourth tab is opened
 ```
 
+#### on_tab_selected(view_controller)
+
+Provides a hook that is triggered when a tab is selected and passes in the view controller that has been displayed.
+Keep in mind that this could be a UINavigationController or other wrapper, so to get the screen
+you may need to request `view_controller.topViewController`.
+
+```ruby
+def on_tab_selected(view_controller)
+  # Do some action
+  view_controller.topViewController # => current screen
+end
+```
+
 ### Class Methods
 
 #### tab_bar_item(args={})
@@ -62,7 +75,7 @@ Class method that sets the screen's default tab bar item.
 ```ruby
 class TabScreen < PM::Screen
   title "Tab"
-  tab_bar_item title: "Tab Item", item: "list"
+  tab_bar_item title: "Tab Item", item: "list", image_insets: [5,5,5,5]
 end
 ```
 

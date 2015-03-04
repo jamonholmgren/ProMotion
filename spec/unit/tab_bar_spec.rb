@@ -19,6 +19,17 @@ describe "PM::Tabs" do
     app.window.rootViewController.should.be.kind_of UITabBarController
   end
 
+  it "should set the the pm_tab_delegate to the opener" do
+    tab_bar.pm_tab_delegate.should.equal(app)
+    tab_bar.delegate.should.equal(tab_bar)
+  end
+
+  it "should call on_tab_selected when a tab is selected" do
+    tab_bar.pm_tab_delegate.called_on_tab_selected = false
+    @screen1.open_tab "Screen 2"
+    tab_bar.pm_tab_delegate.called_on_tab_selected.should.be.true
+  end
+
   it "should have four tabs" do
     tab_bar.viewControllers.length.should == 4
   end

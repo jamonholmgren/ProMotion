@@ -35,7 +35,7 @@ module ProMotion
     end
 
     def set_title
-      set_attributed_text(self.textLabel, data_cell[:title])
+      set_attributed_text(self.textLabel, data_cell[:title]) if data_cell[:title]
     end
 
     def set_subtitle

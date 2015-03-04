@@ -1,5 +1,6 @@
 module ProMotion
   module ScreenNavigation
+    include ProMotion::Support
 
     def open_screen(screen, args = {})
       args = { animated: true }.merge(args)
@@ -32,14 +33,6 @@ module ProMotion
       open screen, args.merge({ modal: true })
     end
 
-    def app
-      UIApplication.sharedApplication
-    end
-
-    def app_delegate
-      UIApplication.sharedApplication.delegate
-    end
-
     def close_screen(args = {})
       args ||= {}
       args = { sender: args } unless args.is_a?(Hash)
@@ -61,12 +54,15 @@ module ProMotion
     alias :close :close_screen
 
     def send_on_return(args = {})
-      if self.parent_screen && self.parent_screen.respond_to?(:on_return)
+      return unless self.parent_screen
+      if self.parent_screen.respond_to?(:on_return)
         if args && self.parent_screen.method(:on_return).arity != 0
           self.parent_screen.send(:on_return, args)
         else
           self.parent_screen.send(:on_return)
         end
+      elsif self.parent_screen.private_methods.include?(:on_return)
+        PM.logger.warn "#{self.parent_screen.inspect} has an `on_return` method, but it is private and not callable from the closing screen."
       end
     end
 

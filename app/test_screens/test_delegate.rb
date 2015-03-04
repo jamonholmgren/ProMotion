@@ -1,8 +1,7 @@
 class TestDelegate < ProMotion::Delegate
   status_bar false
 
-  attr_accessor :called_on_load, :called_will_load, :called_on_activate, :called_will_deactivate, :called_on_enter_background, :called_will_enter_foreground, :called_on_unload
-
+  attr_accessor :called_on_load, :called_will_load, :called_on_activate, :called_will_deactivate, :called_on_enter_background, :called_will_enter_foreground, :called_on_unload, :called_on_tab_selected
   def on_load(app, options)
     self.called_on_load = true
   end
@@ -31,4 +30,7 @@ class TestDelegate < ProMotion::Delegate
     self.called_on_unload = true
   end
 
+  def on_tab_selected(vc)
+    self.called_on_tab_selected = true
+  end
 end

@@ -73,6 +73,9 @@ module ProMotion
       if data_cell[:accessory][:view] == :switch
         self.accessoryView = switch_view
       else
+        if data_cell[:accessory][:view].superview && data_cell[:accessory][:view].superview.is_a?(UITableViewCell)
+          data_cell[:accessory][:view].superview.accessoryView = nil # Fix for issue #586
+        end
         self.accessoryView = data_cell[:accessory][:view]
         self.accessoryView.autoresizingMask = UIViewAutoresizingFlexibleWidth
       end

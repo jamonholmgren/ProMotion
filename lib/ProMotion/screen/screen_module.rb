@@ -14,8 +14,8 @@ module ProMotion
       apply_properties(args)
       add_nav_bar(args) if args[:nav_bar]
       tab_bar_setup
-      try :screen_setup
       try :on_init
+      try :screen_setup
       PM.logger.deprecated "In #{self.class.to_s}, #on_create has been deprecated and removed. Use #screen_init instead." if respond_to?(:on_create)
     end
 

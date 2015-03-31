@@ -172,42 +172,43 @@ module ProMotion
     end
 
     ########## Cocoa touch methods #################
-    def numberOfSectionsInTableView(table_view)
+    def numberOfSectionsInTableView(_)
       self.promotion_table_data.sections.length
     end
 
     # Number of cells
-    def tableView(table_view, numberOfRowsInSection: section)
+    def tableView(_, numberOfRowsInSection: section)
       self.promotion_table_data.section_length(section)
     end
 
-    def tableView(table_view, titleForHeaderInSection: section)
+    def tableView(_, titleForHeaderInSection: section)
       section = promotion_table_data.section(section)
       section && section[:title]
     end
 
     # Set table_data_index if you want the right hand index column (jumplist)
-    def sectionIndexTitlesForTableView(table_view)
+    def sectionIndexTitlesForTableView(_)
       return if self.promotion_table_data.filtered
       return self.table_data_index if self.respond_to?(:table_data_index)
       nil
     end
 
-    def tableView(table_view, cellForRowAtIndexPath: index_path)
+    def tableView(_, cellForRowAtIndexPath: index_path)
       params = index_path_to_section_index(index_path: index_path)
       data_cell = self.promotion_table_data.cell(section: params[:section], index: params[:index])
       return UITableViewCell.alloc.init unless data_cell
       create_table_cell(data_cell)
     end
 
-    def tableView(table_view, willDisplayCell: table_cell, forRowAtIndexPath: index_path)
+    def tableView(_, willDisplayCell: table_cell, forRowAtIndexPath: index_path)
       data_cell = self.promotion_table_data.cell(index_path: index_path)
       table_cell.send(:will_display) if table_cell.respond_to?(:will_display)
       table_cell.send(:restyle!) if table_cell.respond_to?(:restyle!) # Teacup compatibility
     end
 
-    def tableView(table_view, heightForRowAtIndexPath: index_path)
-      (self.promotion_table_data.cell(index_path: index_path)[:height] || table_view.rowHeight).to_f
+    def tableView(_, heightForRowAtIndexPath: index_path)
+      # mp "table: #{table_view.rowHeight} cell: #{self.promotion_table_data.cell(index_path: index_path)[:height].inspect}"
+      (self.promotion_table_data.cell(index_path: index_path)[:height] || tableView.rowHeight).to_f
     end
 
     def tableView(table_view, didSelectRowAtIndexPath: index_path)
@@ -216,18 +217,18 @@ module ProMotion
       trigger_action(data_cell[:action], data_cell[:arguments], index_path) if data_cell[:action]
     end
 
-    def tableView(table_view, editingStyleForRowAtIndexPath: index_path)
+    def tableView(_, editingStyleForRowAtIndexPath: index_path)
       data_cell = self.promotion_table_data.cell(index_path: index_path, unfiltered: true)
       map_cell_editing_style(data_cell[:editing_style])
     end
 
-    def tableView(table_view, commitEditingStyle: editing_style, forRowAtIndexPath: index_path)
+    def tableView(_, commitEditingStyle: editing_style, forRowAtIndexPath: index_path)
       if editing_style == UITableViewCellEditingStyleDelete
         delete_row(index_path)
       end
     end
 
-    def tableView(tableView, canMoveRowAtIndexPath:index_path)
+    def tableView(_, canMoveRowAtIndexPath:index_path)
       data_cell = self.promotion_table_data.cell(index_path: index_path, unfiltered: true)
 
       if (!data_cell[:moveable].nil? || data_cell[:moveable].is_a?(Symbol)) && data_cell[:moveable] != false
@@ -237,7 +238,7 @@ module ProMotion
       end
     end
 
-    def tableView(tableView, targetIndexPathForMoveFromRowAtIndexPath:source_index_path, toProposedIndexPath:proposed_destination_index_path)
+    def tableView(_, targetIndexPathForMoveFromRowAtIndexPath:source_index_path, toProposedIndexPath:proposed_destination_index_path)
       data_cell = self.promotion_table_data.cell(index_path: source_index_path, unfiltered: true)
 
       if data_cell[:moveable] == :section && source_index_path.section != proposed_destination_index_path.section
@@ -247,7 +248,7 @@ module ProMotion
       end
     end
 
-    def tableView(tableView, moveRowAtIndexPath:from_index_path, toIndexPath:to_index_path)
+    def tableView(_, moveRowAtIndexPath:from_index_path, toIndexPath:to_index_path)
       self.promotion_table_data.move_cell(from_index_path, to_index_path)
 
       if self.respond_to?("on_cell_moved:")
@@ -264,11 +265,11 @@ module ProMotion
       end
     end
 
-    def tableView(tableView, sectionForSectionIndexTitle: title, atIndex: index)
+    def tableView(table_view, sectionForSectionIndexTitle: title, atIndex: index)
       return index unless ["{search}", UITableViewIndexSearch].include?(self.table_data_index[0])
 
       if index == 0
-        tableView.scrollRectToVisible(CGRectMake(0.0, 0.0, 1.0, 1.0), animated: false)
+        table_view.scrollRectToVisible(CGRectMake(0.0, 0.0, 1.0, 1.0), animated: false)
         NSNotFound
       else
         index - 1
@@ -281,7 +282,7 @@ module ProMotion
     end
 
     # Section view methods
-    def tableView(table_view, viewForHeaderInSection: index)
+    def tableView(_, viewForHeaderInSection: index)
       section = promotion_table_data.section(index)
       view = section[:title_view]
       view = section[:title_view].new if section[:title_view].respond_to?(:new)
@@ -289,7 +290,7 @@ module ProMotion
       view
     end
 
-    def tableView(table_view, heightForHeaderInSection: index)
+    def tableView(_, heightForHeaderInSection: index)
       section = promotion_table_data.section(index)
       if section[:title_view] || section[:title].to_s.length > 0
         section[:title_view_height] || tableView.sectionHeaderHeight
@@ -298,7 +299,7 @@ module ProMotion
       end
     end
 
-    def tableView(tableView, willDisplayHeaderView:view, forSection:section)
+    def tableView(_, willDisplayHeaderView:view, forSection:section)
       action = :will_display_header
       if respond_to?(action)
         case self.method(action).arity

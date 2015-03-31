@@ -10,8 +10,7 @@ module ProMotion
     end
 
     def section(index)
-      s = sections.at(index)
-      s || { title: nil, cells: [] }
+      sections.at(index) || { cells: [] }
     end
 
     def sections

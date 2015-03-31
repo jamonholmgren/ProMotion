@@ -4,6 +4,7 @@ module ProMotion
 
     def open_tab_bar(*screens)
       self.tab_bar = PM::TabBarController.new(screens)
+      self.tab_bar.pm_tab_delegate = WeakRef.new(self)
 
       delegate = self.respond_to?(:open_root_screen) ? self : UIApplication.sharedApplication.delegate
 
@@ -67,6 +68,7 @@ module ProMotion
       tab_bar_item = create_tab_bar_item_custom(title, tab[:item], current_tag) if tab[:item]
 
       tab_bar_item.badgeValue = tab[:badge_number].to_s unless tab[:badge_number].nil? || tab[:badge_number] <= 0
+      tab_bar_item.imageInsets = tab[:image_insets] if tab[:image_insets]
 
       tab_bar_item
     end

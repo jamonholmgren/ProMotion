@@ -17,7 +17,11 @@ Motion::Project::App.setup do |app|
     "#{core_lib}/table/cell/table_view_cell_module.rb" => [ "#{core_lib}/styling/styling.rb" ],
     "#{core_lib}/delegate/delegate.rb" => [ "#{core_lib}/delegate/delegate_parent.rb" ],
     "#{core_lib}/delegate/delegate_parent.rb" => [ "#{core_lib}/delegate/delegate_module.rb" ],
-    "#{core_lib}/delegate/delegate_module.rb" => [ "#{core_lib}/tabs/tabs.rb", "#{core_lib}/ipad/split_screen.rb" ],
+    "#{core_lib}/delegate/delegate_module.rb" => [
+      "#{core_lib}/support/support.rb",
+      "#{core_lib}/tabs/tabs.rb",
+      "#{core_lib}/ipad/split_screen.rb"
+    ],
     "#{core_lib}/screen/screen.rb" => [ "#{core_lib}/screen/screen_module.rb" ],
     "#{core_lib}/screen/screen_module.rb" => [ "#{core_lib}/screen/screen_navigation.rb" ],
     "#{core_lib}/table/data/table_data.rb" => [ "#{core_lib}/table/table.rb" ],

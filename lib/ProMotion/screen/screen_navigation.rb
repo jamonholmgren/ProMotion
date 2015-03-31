@@ -1,5 +1,6 @@
 module ProMotion
   module ScreenNavigation
+    include ProMotion::Support
 
     def open_screen(screen, args = {})
       args = { animated: true }.merge(args)
@@ -30,14 +31,6 @@ module ProMotion
 
     def open_modal(screen, args = {})
       open screen, args.merge({ modal: true })
-    end
-
-    def app
-      UIApplication.sharedApplication
-    end
-
-    def app_delegate
-      UIApplication.sharedApplication.delegate
     end
 
     def close_screen(args = {})

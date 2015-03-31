@@ -175,6 +175,10 @@ describe "PM::Table module" do
     @subject.tableView.tableHeaderView.class.should == UIImageView
   end
 
+  it "should have a footer view" do
+    @subject.tableView.tableFooterView.class.should == UIView
+  end
+
   describe("section with custom title_view") do
 
     it "should use the correct class for section view" do
@@ -194,6 +198,21 @@ describe "PM::Table module" do
       cell = @subject.tableView(@subject.table_view, viewForHeaderInSection: 5)
       cell.should.be.kind_of(CustomTitleView)
     end
+  end
+
+  describe "header view modifications" do
+
+    it "should call will_display_header" do
+      header = @subject.tableView(@subject.table_view, viewForHeaderInSection: 4)
+      @subject.tableView(@subject.table_view, willDisplayHeaderView:header, forSection:1)
+
+      @subject.got_will_display_header.tap do |h|
+        h.nil?.should == false
+        h[:section].should == 1
+        h[:view].should == header
+      end
+    end
+
   end
 
 end

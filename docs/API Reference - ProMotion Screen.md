@@ -212,13 +212,13 @@ class MyScreen < PM::Screen
 
 #### title=(title)
 
-Sets the text title of current screen instance.
+Sets the text title of current screen instance. Note that you must declare `self` as the receiver.
 
 ```ruby
 class SomeScreen
   def on_load
     # This sets this instance's title
-    title = "Something else"
+    self.title = "Something else"
   end
 end
 ```

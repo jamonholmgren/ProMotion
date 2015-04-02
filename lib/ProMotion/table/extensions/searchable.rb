@@ -41,24 +41,26 @@ module ProMotion
 
       ######### iOS methods, headless camel case #######
 
-      def searchDisplayController(controller, shouldReloadTableForSearchString:search_string)
+      def searchDisplayController(_, shouldReloadTableForSearchString:search_string)
         self.promotion_table_data.search(search_string)
         true
       end
 
-      def searchDisplayControllerWillEndSearch(controller)
+      def searchDisplayControllerWillEndSearch(_)
         self.promotion_table_data.stop_searching
         self.table_view.setScrollEnabled true
         self.table_view.reloadData
+        self.navigationController.setNavigationBarHidden(false, animated:true) if self.navigationController
         @table_search_display_controller.delegate.will_end_search if @table_search_display_controller.delegate.respond_to? "will_end_search"
       end
 
-      def searchDisplayControllerWillBeginSearch(controller)
+      def searchDisplayControllerWillBeginSearch(_)
         self.table_view.setScrollEnabled false
+        self.navigationController.setNavigationBarHidden(true, animated:true) if self.navigationController
         @table_search_display_controller.delegate.will_begin_search if @table_search_display_controller.delegate.respond_to? "will_begin_search"
       end
 
-      def searchDisplayController(controller, didLoadSearchResultsTableView: tableView)
+      def searchDisplayController(_, didLoadSearchResultsTableView: tableView)
         tableView.rowHeight = self.table_view.rowHeight
       end
     end

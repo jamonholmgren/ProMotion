@@ -278,13 +278,38 @@ This is useful for information that needs to only be at the very bottom of a tab
 
 ### Class Methods
 
-#### searchable(placeholder: "placeholder text")
+#### searchable(placeholder: "placeholder text", with: -> (cell, search_string){})
 
 Class method to make the current table searchable.
 
 ```ruby
 class MyTableScreen < PM::TableScreen
   searchable placeholder: "Search This Table"
+end
+```
+
+Without a `with:` specifier, search is performed on the `title` attribute, and
+the `search_text` attribute, if present. If you want to create a custom search
+method, specify it as the value of the `with` key (`find_by`, `search_by` and `filter_by`
+are aliases). E.g.:
+
+```ruby
+class MyTableScreen < PM::TableScreen
+  searchable placeholder: "Search This Table", with: -> (cell, search_string){
+    cell[:properties][:some_obscure_attribute].strip.downcase.include? search_string.strip.downcase
+  }
+end
+```
+
+or if you want to create a version that is less resistant to refactoring:
+
+```ruby
+class MyTableScreen < PM::TableScreen
+  searchable placeholder: "Search This Table", with: :custom_search_method
+
+  def custom_search_method(cell, search_string)
+    cell[:properties][:some_obscure_attribute].strip.downcase.include? search_string.strip.downcase
+  end
 end
 ```
 

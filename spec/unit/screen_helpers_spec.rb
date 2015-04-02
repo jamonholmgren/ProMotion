@@ -293,6 +293,21 @@ describe "screen helpers" do
         @screen.send_on_return key: :value
       end
 
+      # Regression test: https://github.com/clearsightstudio/ProMotion/issues/635
+      context "when both screens have nav_bar: true" do
+        it "#close_modal_screen should still call #send_on_return" do
+          parent_screen = HomeScreen.new(nav_bar: true)
+          child_screen = BasicScreen.new(nav_bar: true)
+
+          parent_screen.mock!(:on_return) do |args|
+            args[:name].should == "Kevin VanGelder"
+          end
+
+          parent_screen.open(child_screen, animated: false)
+          child_screen.close(animated: false, name: "Kevin VanGelder")
+        end
+      end
+
       context "there are two parent screens and we're closing to the first" do
         it "#send_on_return should pass args to the first screen" do
           first_screen = HomeScreen.new(nav_bar: true)

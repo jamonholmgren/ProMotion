@@ -82,7 +82,7 @@ module ProMotion
       end
 
       def apply_status_bar
-        @status_bar_visible ||= true
+        @status_bar_visible = true if @status_bar_visible.nil?
         @status_bar_opts ||= { animation: :none }
         UIApplication.sharedApplication.setStatusBarHidden(!@status_bar_visible, withAnimation:status_bar_animation(@status_bar_opts[:animation]))
       end

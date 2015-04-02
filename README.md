@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/clearsightstudio/ProMotion.png?label=ready&title=Ready)](https://waffle.io/clearsightstudio/ProMotion)
 # ProMotion
 
 [![Gem Version](https://img.shields.io/gem/v/ProMotion.svg?style=flat)](https://rubygems.org/gems/ProMotion)

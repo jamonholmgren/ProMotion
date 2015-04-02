@@ -63,7 +63,7 @@ module ProMotion
     private
 
     def on_tab_selected_try(vc)
-      if pm_tab_delegate && pm_tab_delegate.respond_to?("on_tab_selected:")
+      if pm_tab_delegate && pm_tab_delegate.respond_to?(:weakref_alive?) && pm_tab_delegate.weakref_alive? && pm_tab_delegate.respond_to?("on_tab_selected:")
         pm_tab_delegate.send(:on_tab_selected, vc)
       end
     end

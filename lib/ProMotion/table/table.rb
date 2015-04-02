@@ -207,7 +207,6 @@ module ProMotion
     end
 
     def tableView(_, heightForRowAtIndexPath: index_path)
-      # mp "table: #{table_view.rowHeight} cell: #{self.promotion_table_data.cell(index_path: index_path)[:height].inspect}"
       (self.promotion_table_data.cell(index_path: index_path)[:height] || tableView.rowHeight).to_f
     end
 

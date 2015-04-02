@@ -27,7 +27,7 @@ module ProMotion
     end
 
     def promotion_table_data
-      @promotion_table_data ||= TableData.new(table_data, table_view)
+      @promotion_table_data ||= TableData.new(table_data, table_view, setup_search_method)
     end
 
     def set_up_header_footer_views
@@ -48,6 +48,20 @@ module ProMotion
         self.make_searchable(content_controller: self, search_bar: self.class.get_searchable_params)
         if self.class.get_searchable_params[:hide_initially]
           self.tableView.contentOffset = CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height)
+        end
+      end
+    end
+
+    def setup_search_method
+      params = self.class.get_searchable_params
+      if params.nil?
+        return nil
+      else
+        @search_method || begin
+          params = self.class.get_searchable_params
+          @search_action = params[:with] || params[:find_by] || params[:search_by] || params[:filter_by]
+          @search_action = method(@search_action) if @search_action.is_a?(Symbol) || @search_action.is_a?(String)
+          @search_action
         end
       end
     end
@@ -141,9 +155,9 @@ module ProMotion
         new_cell.extend(PM::TableViewCellModule) unless new_cell.is_a?(PM::TableViewCellModule)
         new_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
         new_cell.clipsToBounds = true # fix for changed default in 7.1
+        new_cell.send(:on_load) if new_cell.respond_to?(:on_load)
         new_cell
       end
-
       table_cell.setup(data_cell, self) if table_cell.respond_to?(:setup)
       table_cell.send(:on_reuse) if !new_cell && table_cell.respond_to?(:on_reuse)
       table_cell

@@ -1,4 +1,3 @@
-[![Stories in Ready](https://badge.waffle.io/clearsightstudio/ProMotion.png?label=ready&title=Ready)](https://waffle.io/clearsightstudio/ProMotion)
 # ProMotion
 
 [![Gem Version](https://img.shields.io/gem/v/ProMotion.svg?style=flat)](https://rubygems.org/gems/ProMotion)
@@ -6,6 +5,7 @@
 [![Code Climate](https://img.shields.io/codeclimate/github/clearsightstudio/ProMotion.svg?style=flat)](https://codeclimate.com/github/clearsightstudio/ProMotion)
 [![Dependency Status](https://img.shields.io/gemnasium/clearsightstudio/ProMotion.svg?style=flat)](https://gemnasium.com/clearsightstudio/ProMotion)
 [![omniref](https://img.shields.io/badge/omniref-docs-blue.svg?style=flat)](https://www.omniref.com/ruby/gems/ProMotion)
+[![Stories in Ready](https://badge.waffle.io/clearsightstudio/ProMotion.png?label=ready&title=Ready)](https://waffle.io/clearsightstudio/ProMotion)
 
 ## iPhone Apps, Ruby-style
 

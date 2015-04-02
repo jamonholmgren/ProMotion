@@ -23,7 +23,13 @@ Motion::Project::App.setup do |app|
       "#{core_lib}/ipad/split_screen.rb"
     ],
     "#{core_lib}/screen/screen.rb" => [ "#{core_lib}/screen/screen_module.rb" ],
-    "#{core_lib}/screen/screen_module.rb" => [ "#{core_lib}/screen/screen_navigation.rb" ],
+    "#{core_lib}/screen/screen_module.rb" => [
+      "#{core_lib}/screen/screen_navigation.rb",
+      "#{core_lib}/screen/nav_bar_module.rb",
+      "#{core_lib}/tabs/tabs.rb",
+      "#{core_lib}/ipad/split_screen.rb",
+    ],
+    "#{core_lib}/screen/screen_navigation.rb" => [ "#{core_lib}/support/support.rb" ],
     "#{core_lib}/table/data/table_data.rb" => [ "#{core_lib}/table/table.rb" ],
     "#{core_lib}/table/table.rb" => [
       "#{core_lib}/table/table_utils.rb",
@@ -33,5 +39,6 @@ Motion::Project::App.setup do |app|
       "#{core_lib}/table/extensions/longpressable.rb"
     ],
     "#{core_lib}/web/web_screen.rb" => [ "#{core_lib}/web/web_screen_module.rb" ],
+    "#{core_lib}/collection/collection_screen.rb" => [ "#{core_lib}/screen/screen_module.rb" ],
   })
 end

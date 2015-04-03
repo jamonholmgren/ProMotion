@@ -1,7 +1,7 @@
 site_name: ProMotion Documentation
 theme: readthedocs
 pages:
-- ["index.md", "Welcome"]
+- ["README.md", "Welcome"]
 - ["Guide - Getting Started.md", "Guide - Getting Started"]
 - ["Guide - Making Your Own Screens.md", "Guide - Making Your Own Screens"]
 - ["Tutorials, Screencasts, Articles, Presentations.md", "Tutorials, Screencasts, Articles, Presentations"]

@@ -84,39 +84,42 @@ end
 
 # Getting Started
 
-1. Check out the [Getting Started Guide](https://github.com/clearsightstudio/ProMotion/wiki/Guide:-Getting-Started) in the wiki
+1. Check out the [Getting Started Guide](https://github.com/clearsightstudio/ProMotion/blob/master/docs/Guides/Guide%20-%20Getting%20Started.md)
 2. Watch the excellent [MotionInMotion screencast about ProMotion](https://motioninmotion.tv/screencasts/8) (very reasonably priced subscription required)
 3. Follow a tutorial: [Building an ESPN app using RubyMotion, ProMotion, and TDD](http://jamonholmgren.com/building-an-espn-app-using-rubymotion-promotion-and-tdd)
-4. Read the updated and exhaustive [Wiki](https://github.com/clearsightstudio/ProMotion/wiki)
+4. Read the [Documentation](https://github.com/clearsightstudio/ProMotion/blob/master/docs)
 
 # Changelog
 
-## Version 2.2.0
+## Version 2.3.0
 
 This release includes several new features and is backwards compatible with all 2.x releases.
 
-* PM::TableScreen: You can now set a custom table view header view ([thanks Mark Rickert](https://github.com/clearsightstudio/ProMotion/pull/556))
-* PM::TableScreen refreshable: Refresh controls now show when programmatically initiating refresh ([thanks Mark Rickert](https://github.com/clearsightstudio/ProMotion/pull/569))
-* PM::TableScreen: Added reorderable ([thanks Mark Rickert](https://github.com/clearsightstudio/ProMotion/pull/569))
-* PM::TableScreen: Added auto height feature ([thanks Carlin Isaacson](https://github.com/clearsightstudio/ProMotion/pull/574))
-* PM::Screen: The navigation controller bottom toolbar will auto-hide when passed nil or false ([thanks Mark Rickert](https://github.com/clearsightstudio/ProMotion/pull/577))
-* PM::Screen: You can now choose a status bar style ([thanks Mark Rickert](https://github.com/clearsightstudio/ProMotion/pull/563))
-* Added `on_load` and `on_styled` hooks for UIViews that implement those methods ([Jamon Holmgren](https://github.com/clearsightstudio/ProMotion/pull/567))
-* Fixed an issue where cell properties would be applied twice unnecessarily ([Jamon Holmgren](https://github.com/clearsightstudio/ProMotion/pull/573))
+* PR #618 Allow search bar to be hidden initially
+* PR #606 Adds capability for table_footer_view
+* PR #602 Add image inset support for tab bar item
+* PR #595 Feature/support module
+* PR #582 Allow setting of multiple nav bar buttons instead of just one left an one right
+* PR #581 Adds on_tab_selected
+* PR #579 implemented nav_bar_button class method RE #272
+* PR #565 Adds header_will_display method to PM::TableScreen
+* PR #663 Adds `on_load` back to cell dequeue code
+* PR #641 Custom search for PM::TableScreen
+* PR #658 Fix cell height issue
 
 # Apps built on ProMotion
 
 [Apps built on ProMotion](http://promotion.readthedocs.org/en/master/ProMotion%20Apps/)
 
-##Your app
+## Your app
 
-Tweet [@jamonholmgren](https://twitter.com/jamonholmgren) if you built an app in ProMotion and want it included!
+Open a pull request!
 
 # API Reference
 
 We've created a comprehensive and always updated wiki with code examples, usage examples, and API reference.
 
-### [ProMotion API Reference](http://promotion.readthedocs.org/en/master/)
+### [ProMotion Documentation](https://github.com/clearsightstudio/ProMotion/blob/master/docs)
 
 # Help
 

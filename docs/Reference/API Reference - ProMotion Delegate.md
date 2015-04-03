@@ -60,21 +60,21 @@ end
 
 Fired just before the app loads. Not usually necessary.
 
-#### on_activate
-
-Fires when the app becomes active.
-
 #### will_deactivate
 
 Fires when the app is about to become inactive.
 
-#### on_enter_background
+#### on_activate
 
-Fires when the app enters the background.
+Fires when the app becomes active.
 
 #### will_enter_foreground
 
 Fires just before the app enters the foreground.
+
+#### on_enter_background
+
+Fires when the app enters the background.
 
 #### open_tab_bar(*screens)
 
@@ -95,7 +95,7 @@ Opens a UISplitScreenViewController with the specified screens as the root view 
 
 ```ruby
 def on_load(app, options)
-  open_split_screen MasterScreen, DetailScreen, 
+  open_split_screen MasterScreen, DetailScreen,
     icon: "split-icon", title: "Split Screen Title" # optional
 end
 ```

@@ -131,10 +131,6 @@ describe "screen properties" do
     @screen.shouldAutorotateToInterfaceOrientation(UIInterfaceOrientationMaskPortrait)
   end
 
-  it "should have an awesome convenience method for UIApplication.sharedApplication" do
-    @screen.app.should == UIApplication.sharedApplication
-  end
-
   describe "iOS lifecycle methods" do
 
     it "-viewDidLoad" do

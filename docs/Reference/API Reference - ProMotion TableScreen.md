@@ -58,7 +58,7 @@ Example of a `PM::GroupedTableScreen`: https://gist.github.com/jamonholmgren/382
 ### Methods
 
 #### table_data
-      
+
 Method that is called to get the table's cell data and build the table.
 
 It consists of an array of cell sections, each of which contain an array of cells.
@@ -178,15 +178,15 @@ class MyTableScreen < PM::TableScreen
           }
         end
       }]
-      
+
       update_table_data
     end
   end
-  
+
   def table_data
     @table_data ||= []
   end
-  
+
   def tapped_item(item)
     open ItemDetailScreen.new(item: item)
   end
@@ -241,7 +241,7 @@ end
 
 #### table_header_view
 
-You can give the table a custom header view (this is different from a section header view) by defining:
+You can give the table a custom header view (this is different from a section header view, which is below) by defining:
 
 ```ruby
 def table_header_view
@@ -251,12 +251,35 @@ end
 
 This is useful for information that needs to only be at the very top of a table.
 
+#### will_display_header(view)
+
+You can customize the section header views just before they are displayed on the table. This is different from table header view, which is above.
+
+```ruby
+def will_display_header(view)
+  view.tintColor = UIColor.redColor
+  view.textLabel.setTextColor(UIColor.blueColor)
+end
+```
+
+#### table_footer_view
+
+You can give the table a custom header view (this is different from a section footer view) by defining:
+
+```ruby
+def table_footer_view
+  # Return a UIView subclass here and it will be set at the bottom of the table.
+end
+```
+
+This is useful for information that needs to only be at the very bottom of a table.
+
 ---
 
 ### Class Methods
 
-#### searchable(placeholder: "placeholder text")
-    
+#### searchable(placeholder: "placeholder text", with: -> (cell, search_string){})
+
 Class method to make the current table searchable.
 
 ```ruby
@@ -265,7 +288,40 @@ class MyTableScreen < PM::TableScreen
 end
 ```
 
+Without a `with:` specifier, search is performed on the `title` attribute, and
+the `search_text` attribute, if present. If you want to create a custom search
+method, specify it as the value of the `with` key (`find_by`, `search_by` and `filter_by`
+are aliases). E.g.:
+
+```ruby
+class MyTableScreen < PM::TableScreen
+  searchable placeholder: "Search This Table", with: -> (cell, search_string){
+    cell[:properties][:some_obscure_attribute].strip.downcase.include? search_string.strip.downcase
+  }
+end
+```
+
+or if you want to create a version that is less resistant to refactoring:
+
+```ruby
+class MyTableScreen < PM::TableScreen
+  searchable placeholder: "Search This Table", with: :custom_search_method
+
+  def custom_search_method(cell, search_string)
+    cell[:properties][:some_obscure_attribute].strip.downcase.include? search_string.strip.downcase
+  end
+end
+```
+
 ![Searchable Image](http://clrsight.co/jh/Screen_Shot_2014-06-21_at_9.01.09_PM.png)
+
+To initially hide the search bar behind the nav bar until the user scrolls it into view, use `hide_initially`.
+
+```ruby
+class MyTableScreen < PM::TableScreen
+  searchable hide_initially: true
+end
+```
 
 You can prevent any table cell from being included in search results by setting the cell attribute `searchable` to `false` like this:
 
@@ -319,19 +375,19 @@ end
 
 Class method to make the current table have pull-to-refresh. All parameters are optional.
 If you do not specify a callback, it will assume you've implemented an <code>on_refresh</code>
-method in your tableview. 
+method in your tableview.
 
 ![](https://camo.githubusercontent.com/fa0ac0a77e6170cca72f03f9ad2273c5b165e83d/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313437393231352f313533343331372f35613134656632382d346339332d313165332d386539652d6638633038643834363466382e706e67)
 
 ```ruby
 class MyTableScreen < PM::TableScreen
-  
+
   refreshable callback: :on_refresh,
     pull_message: "Pull to refresh",
     refreshing: "Refreshing data…",
     updated_format: "Last updated at %s",
     updated_time_format: "%l:%M %p"
-    
+
   def on_refresh
     MyItems.pull_from_server do |items|
       @my_items = items
@@ -339,7 +395,7 @@ class MyTableScreen < PM::TableScreen
       update_table_data
     end
   end
-  
+
 end
 ```
 

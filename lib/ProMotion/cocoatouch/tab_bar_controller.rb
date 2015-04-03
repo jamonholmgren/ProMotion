@@ -1,6 +1,8 @@
 module ProMotion
   class TabBarController < UITabBarController
 
+    attr_accessor :pm_tab_delegate
+
     def self.new(*screens)
       tab_bar_controller = alloc.init
 
@@ -15,6 +17,7 @@ module ProMotion
       end
 
       tab_bar_controller.viewControllers = view_controllers
+      tab_bar_controller.delegate = tab_bar_controller
       tab_bar_controller
     end
 
@@ -27,6 +30,9 @@ module ProMotion
 
       if selected_tab_vc
         self.selectedViewController = selected_tab_vc
+        on_tab_selected_try(selected_tab_vc)
+
+        selected_tab_vc
       else
         PM.logger.error "Unable to open tab #{tab.to_s} -- not found."
         nil
@@ -38,6 +44,9 @@ module ProMotion
     end
 
     # Cocoa touch methods below
+    def tabBarController(tbc, didSelectViewController: vc)
+      on_tab_selected_try(vc)
+    end
 
     def shouldAutorotate
       current_view_controller_try(:shouldAutorotate)
@@ -52,6 +61,12 @@ module ProMotion
     end
 
     private
+
+    def on_tab_selected_try(vc)
+      if pm_tab_delegate && pm_tab_delegate.respond_to?(:weakref_alive?) && pm_tab_delegate.weakref_alive? && pm_tab_delegate.respond_to?("on_tab_selected:")
+        pm_tab_delegate.send(:on_tab_selected, vc)
+      end
+    end
 
     def current_view_controller
       selectedViewController || viewControllers.first

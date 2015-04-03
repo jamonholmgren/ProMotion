@@ -2,16 +2,16 @@ module ProMotion
   class TableData
     include ProMotion::Table::Utils
 
-    attr_accessor :data, :filtered_data, :search_string, :original_search_string, :filtered, :table_view
+    attr_accessor :data, :filtered_data, :search_string, :original_search_string, :filtered, :table_view, :search_params
 
-    def initialize(data, table_view)
+    def initialize(data, table_view, search_action = nil)
+      @search_action ||= search_action
       self.data = data
       self.table_view = WeakRef.new(table_view)
     end
 
     def section(index)
-      s = sections.at(index)
-      s || { title: nil, cells: [] }
+      sections.at(index) || { cells: [] }
     end
 
     def sections
@@ -39,6 +39,10 @@ module ProMotion
       section(to.section)[:cells].insert(to.row, section(from.section)[:cells].delete_at(from.row))
     end
 
+    def default_search(cell, search_string)
+      cell[:searchable] != false && "#{cell[:title]}\n#{cell[:search_text]}".downcase.strip.include?(search_string.downcase.strip)
+    end
+
     def search(search_string)
       start_searching(search_string)
 
@@ -46,7 +50,11 @@ module ProMotion
         new_section = {}
 
         new_section[:cells] = section[:cells].map do |cell|
-          cell[:searchable] != false && "#{cell[:title]}\n#{cell[:search_text]}".downcase.strip.include?(self.search_string) ? cell : nil
+          if @search_action
+            @search_action.call(cell, search_string)
+          else
+            self.default_search(cell, search_string)
+          end ? cell : nil
         end.compact
 
         if new_section[:cells] && new_section[:cells].length > 0

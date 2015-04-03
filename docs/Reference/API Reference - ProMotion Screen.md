@@ -49,6 +49,41 @@ end
 
 ### Methods
 
+#### app
+
+Returns the `UIApplication.sharedApplication`
+
+```ruby
+# Instead of
+UIApplication.sharedApplication.someMethod
+# Use
+app.someMethod
+```
+
+#### app_delegate
+
+Returns the `UIApplication.sharedApplication.delegate`
+
+```ruby
+# Instead of
+UIApplication.sharedApplication.delegate.someMethod
+# Use
+app_delegate.someMethod
+```
+
+#### app_window
+
+Returns the current `app_delegate`s `UIWindow.
+
+```ruby
+app_window.addSubview someView
+```
+
+### try(method, *args)
+
+Sends `method(*args)` to the current screen if the current screen will `respond_to?(method)`
+
+
 #### modal?
 
 Returns if the screen was opened in a modal window.
@@ -100,7 +135,7 @@ end
 
 #### on_present
 
-Runs just after the screen is pushed onto the navigation controller. 
+Runs just after the screen is pushed onto the navigation controller.
 
 ```ruby
 def on_present
@@ -175,6 +210,20 @@ end
 ```
 
 The code above will add a "cancel" back button to `MyScreenChild` when it is opened as a descendant of `MyScreen`.
+
+#### set_nav_bar_buttons(side, button_array)
+
+Allows you to set multiple buttons on one side of the nav bar with a single method call. The second parameter should be an array of any mixture of UIBarButtonItem instances and hash constructors used in set_nav_bar_button
+
+```ruby
+set_nav_bar_buttons :right, [{
+  custom_view: my_custom_view_button
+},{
+  title: "Tasks",
+  image: UIImage.imageNamed("whatever"),
+  action: nil
+}]
+```
 
 #### set_toolbar_items(buttons = [], animated = true)
 
@@ -292,7 +341,7 @@ open_modal ModalScreen.new(nav_bar: true,
     presentation_style: UIModalPresentationFormSheet)
 
 # From any screen (same as `open_root_screen`)
-open HomeScreen.new(nav_bar: true), close_all: true 
+open HomeScreen.new(nav_bar: true), close_all: true
 
 # Opening a screen in a different tab or split view screen
 open DetailScreen.new, in_tab: "Tab name" # if you're in a tab bar
@@ -417,7 +466,7 @@ end
 
 #### status_bar(style=nil, args={animation: UIStatusBarAnimationSlide})
 
-Set the properties of the applications' status bar. Options for style are: `:none`, `:light` and `:default`. The animation argument should be a `UIStatusBarAnimation` (or `:none` / `:fade` / `:slide`) and is used to hide or show the status bar when appropriate and defaults to `:slide`. 
+Set the properties of the applications' status bar. Options for style are: `:none`, `:light` and `:default`. The animation argument should be a `UIStatusBarAnimation` (or `:none` / `:fade` / `:slide`) and is used to hide or show the status bar when appropriate and defaults to `:slide`.
 
 ```ruby
 class MyScreen < PM::Screen
@@ -430,6 +479,18 @@ class MyScreenWithADarkColoredNavBar < PM::Screen
   # ...
 end
 ```
+
+#### nav_bar_button(position, button_options)
+
+Creates a nav bar button in the specified position with the given options
+
+```ruby
+class HomeScreen < PM::Screen
+  nav_bar_button :left, title: "Back", style: :plain, action: :back
+  # ...
+end
+```
+
 ---
 
 ### Accessors

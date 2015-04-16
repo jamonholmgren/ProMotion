@@ -466,7 +466,7 @@ end
 
 #### status_bar(style=nil, args={animation: UIStatusBarAnimationSlide})
 
-Set the properties of the applications' status bar. Options for style are: `:none`, `:light` and `:default`. The animation argument should be a `UIStatusBarAnimation` (or `:none` / `:fade` / `:slide`) and is used to hide or show the status bar when appropriate and defaults to `:slide`.
+Set the properties of the application's status bar. Options for style are: `:none`, `:light`, `:dark`, and `:default`. If a screen doesn't call `status_bar` and a `UIStatusBarStyle` is set on the application bundle, then that style will be used. Otherwise, `UIStatusBarStyleDefault` will be used. The animation argument should be a `UIStatusBarAnimation` (or `:none` / `:fade` / `:slide`) and is used to hide or show the status bar when appropriate and defaults to `:slide`.
 
 ```ruby
 class MyScreen < PM::Screen

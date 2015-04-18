@@ -1,7 +1,8 @@
 ### Contents
 
 * [Usage](?#usage)
-* [Methods](?#methods)
+* [Lifecycle Methods](?#lifecycle-methods)
+* [Helper Methods](?#methods)
 * [Class Methods](?#class-methods)
 * [Accessors](?#accessors)
 
@@ -47,6 +48,183 @@ end
 
 ---
 
+### Lifecycle Methods
+
+All lifecycle methods are optional, but provide hooks for you to do certain tasks. These usually coincide with Cocoa Touch lifecycle methods but have slightly different semantics.
+
+In ProMotion, `will_*` methods usually fire before an action, and `on_*` methods fire just after.
+
+#### on_init
+
+Fires only once, after the screen has been instantiated and all provided properties set. A good place to do further initialization of instance variables or set your tab bar icon.
+
+```ruby
+def on_init
+  @my_car = "Dude, where's my car?"
+  set_tab_bar_item item: :favorites
+end
+```
+
+#### screen_setup
+
+Primarily used for setting up reusable PM::Screen subclasses, such as PM::WebScreen. Not recommended for normal app screens. But if you are building a subclass for a gem, this is where you would do your additional setup.
+
+```ruby
+class PM::LaserScreen < UILaserViewController
+  include PM::ScreenModule
+
+  def screen_setup
+    self.laserView = set_up_view
+  end
+end
+```
+
+#### load_view
+
+Used for creating your screen's root view. If you don't implement this method or if you do and you fail to create a view, ProMotion will create a blank one for you.
+
+Only fires when the `view` property is accessed for the first time.
+
+```ruby
+def load_view
+  self.view = UIView.alloc.initWithFrame(UIScreen.mainScreen.bounds)
+end
+```
+
+#### on_load
+
+Fires once, when the root view of the screen is accessed for the first time. This is where you normally add and style your subviews.
+
+Keep in mind this method doesn't necessarily fire right away. For example, if you're creating a tab bar with four screens, the three screens that are not active will not fire `on_load` until you tap their tab. That's because the view isn't accessed until that moment.
+
+```ruby
+def on_load
+  self.view.addSubview UILabel.new
+  add UILabel.new, { background_color: UIColor.redColor }
+  # or kick off MotionKit or RMQ view building here.
+end
+```
+
+#### will_appear
+
+Runs just before the screen appears. Often used to ensure the right information is displayed.
+
+```ruby
+def will_appear
+  @name.text = @user.name
+end
+```
+
+#### will_present
+
+Runs just before the screen is pushed onto the navigation controller. Usually fires immediately after `will_appear`, but only if it is the first time that the screen is added to the navigation controller.
+
+Not used all that often, but can be useful in some cases.
+
+```ruby
+def will_present
+  # About to present
+end
+```
+
+#### on_appear
+
+Runs just after the screen has appeared and stopped animating. Sometimes used to kick off other animations or start playing a video.
+
+```ruby
+def on_appear
+  @video.startPlaying
+end
+```
+
+
+#### on_present
+
+Runs just after the screen is pushed onto the navigation controller. Usually fires just after `on_appear`, but only when the screen is first added to the navigation controller.
+
+```ruby
+def on_present
+  # Presented
+end
+```
+
+#### will_disappear
+
+Runs just before the screen disappears from the screen. An example usage would be to stop a video from playing.
+
+```ruby
+def will_disappear
+  @video.stopPlaying
+end
+```
+
+#### will_dismiss
+
+Runs just before the screen is removed from its parent. Usually happens when getting popped off a navigation controller stack. Fires right after `will_disappear`.
+
+```ruby
+def will_dismiss
+  # dismissing
+end
+```
+
+#### on_dismiss
+
+Runs just after the screen is removed from its parent.
+
+```ruby
+def on_dismiss
+  # dismissed, screen is about to be deallocated probably
+end
+```
+
+#### should_autorotate
+
+(iOS 6+) return true/false if screen should autorotate.
+Defaults to true.
+
+```ruby
+def should_autorotate
+  false
+end
+```
+
+#### should_rotate(orientation)
+
+(iOS 5) Return true/false for rotation to orientation. Tries to resolve this automatically from your `UISupportedInterfaceOrientations` setting. You normally do not override this method.
+
+```ruby
+def should_rotate(orientation)
+  if orientation == UIInterfaceOrientationPortrait
+    true
+  else
+    false
+  end
+end
+```
+
+#### will_rotate(orientation, duration)
+
+Runs just before the device is rotated.
+
+```ruby
+def will_rotate(orientation, duration)
+  # about to rotate
+end
+```
+
+#### on_rotate
+
+Runs just after the device is rotated.
+
+```ruby
+def on_rotate
+  # we've rotated
+end
+```
+
+---
+
 ### Methods
 
 #### app
@@ -73,7 +251,7 @@ app_delegate.someMethod
 
 #### app_window
 
-Returns the current `app_delegate`s `UIWindow.
+Returns the current `app_delegate`s `UIWindow`.
 
 ```ruby
 app_window.addSubview someView
@@ -102,58 +280,6 @@ Returns if the screen is currently contained in a navigation controller.
 open s = HomeScreen.new(nav_bar: true)
 s.nav_bar? # => true
 ```
-
-#### will_appear
-
-Runs before the screen appears.
-
-```ruby
-def will_appear
-  # just before the screen appears
-end
-```
-
-#### on_appear
-
-Runs when the screen has appeared.
-
-```ruby
-def on_appear
-  # screen has just appeared
-end
-```
-
-#### will_present
-
-Runs just before the screen is pushed onto the navigation controller.
-
-```ruby
-def will_present
-  # About to present
-end
-```
-
-#### on_present
-
-Runs just after the screen is pushed onto the navigation controller.
-
-```ruby
-def on_present
-  # Presented
-end
-```
-
-#### will_disappear
-
-Runs just before the screen disappears.
-
-#### will_dismiss
-
-Runs just before the screen is removed from its parent. Usually happens when getting popped off a navigation controller stack.
-
-#### on_dismiss
-
-Runs just after the screen is removed from its parent.
 
 #### will_rotate(orientation, duration)
 
@@ -380,16 +506,6 @@ end
 
 Opens a modal screen. Same as `open HomeScreen, modal: true`
 
-#### should_autorotate
-
-(iOS 6+) return true/false if screen should rotate.
-Defaults to true.
-
-#### should_rotate(orientation)
-
-(iOS 5) Return true/false for rotation to orientation. Tries to resolve this automatically
-from your `UISupportedInterfaceOrientations` setting. You normally don't override this method.
-
 #### supported_orientation?(orientation)
 
 Returns whether `UISupportedInterfaceOrientations` includes the given orientation.
@@ -404,14 +520,6 @@ supported_orientation?(UIInterfaceOrientationMaskPortraitUpsideDown)
 #### supported_orientations
 
 Returns the value for `UISupportedInterfaceOrientations`.
-
-#### will_rotate(orientation, duration)
-
-Runs just before the device is rotated.
-
-#### on_rotate
-
-Runs just after the device is rotated.
 
 #### supported_device_families
 
@@ -433,7 +541,7 @@ end
 
 #### title(new_title)
 
-Sets the default text title for all of this screen's instances
+Sets the default text title for all of the instances of this screen.
 
 ```ruby
 class MyScreen < PM::Screen
@@ -491,6 +599,14 @@ class HomeScreen < PM::Screen
 end
 ```
 
+#### bounds
+
+Alias for `self.view.bounds`
+
+#### frame
+
+Alias for `self.view.frame`
+
 ---
 
 ### Accessors
@@ -509,11 +625,3 @@ end
 #### view
 
 The main view for this screen.
-
-#### bounds
-
-Alias for self.view.bounds
-
-#### frame
-
-Alias for self.view.frame

@@ -3,6 +3,7 @@ $:.unshift("/Library/RubyMotion/lib")
 require 'motion/project/template/ios'
 require 'bundler'
 Bundler.require(:development)
+# require 'ProMotion-compact'
 require 'ProMotion'
 
 Motion::Project::App.setup do |app|

@@ -6,7 +6,7 @@ If you have a problem with *any* of the documentation, *please* [open an issue](
 
 ### Getting Started
 
-#### [Getting Started with ProMotion](./Guides/Guide%20-%20Getting%20Started.md)
+#### [Getting Started with ProMotion](./Guides/Guide - Getting Started.md)
 
 Everything you need to know to install ProMotion and create your first iPhone app.
 

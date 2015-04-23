@@ -132,10 +132,14 @@ If you need help, feel free to open an issue on GitHub. If we don't respond with
 
 See [CONTRIBUTING.md](https://github.com/clearsightstudio/ProMotion/blob/master/CONTRIBUTING.md).
 
-## Primary Contributors
+## Core Team
 
 * Jamon Holmgren: [@jamonholmgren](https://twitter.com/jamonholmgren)
 * Silas Matson: [@silasjmatson](https://twitter.com/silasjmatson)
 * Mark Rickert: [@markrickert](https://twitter.com/markrickert)
 * Ryan Linton: [@ryanlntn](https://twitter.com/ryanlntn)
+* David Larrabee: [@squidpunch](https://twitter.com/squidpunch)
+
+## Other Contributors
+
 * [Many others](https://github.com/clearsightstudio/ProMotion/graphs/contributors)

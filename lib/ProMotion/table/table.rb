@@ -35,7 +35,7 @@ module ProMotion
         if self.respond_to?("table_#{hf_view}_view".to_sym)
           view = self.send("table_#{hf_view}_view")
           if view.is_a? UIView
-            self.tableView.send(camelize("set_table_#{hf_view}_view:"), view)
+            self.table_view.send(camelize("set_table_#{hf_view}_view:"), view)
           else
             PM.logger.warn "Table #{hf_view} view must be a UIView."
           end
@@ -47,7 +47,7 @@ module ProMotion
       if self.class.respond_to?(:get_searchable) && self.class.get_searchable
         self.make_searchable(content_controller: self, search_bar: self.class.get_searchable_params)
         if self.class.get_searchable_params[:hide_initially]
-          self.tableView.contentOffset = CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height)
+          self.table_view.contentOffset = CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height)
         end
       end
     end
@@ -221,7 +221,7 @@ module ProMotion
     end
 
     def tableView(_, heightForRowAtIndexPath: index_path)
-      (self.promotion_table_data.cell(index_path: index_path)[:height] || tableView.rowHeight).to_f
+      (self.promotion_table_data.cell(index_path: index_path)[:height] || table_view.rowHeight).to_f
     end
 
     def tableView(table_view, didSelectRowAtIndexPath: index_path)
@@ -306,7 +306,7 @@ module ProMotion
     def tableView(_, heightForHeaderInSection: index)
       section = promotion_table_data.section(index)
       if section[:title_view] || section[:title].to_s.length > 0
-        section[:title_view_height] || tableView.sectionHeaderHeight
+        section[:title_view_height] || table_view.sectionHeaderHeight
       else
         0.0
       end

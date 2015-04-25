@@ -5,6 +5,7 @@ pages:
 - ["Guides/Guide - Getting Started.md", "Guide - Getting Started"]
 - ["Guides/Guide - Making Your Own Screens.md", "Guide - Making Your Own Screens"]
 - ["Guides/Migration Guide - ProMotion-1.2-to-2.0.md", "Migration Guide - ProMotion-1.2-to-2.0"]
+- ["Guides/Live Screen Reloading.md", "Live Screen Reloading"]
 - ["Reference/API Reference - Command Line Tool.md", "API Reference - Command Line Tool"]
 - ["Reference/API Reference - ProMotion Delegate.md", "API Reference - ProMotion Delegate"]
 - ["Reference/API Reference - ProMotion Logger.md", "API Reference - ProMotion Logger"]

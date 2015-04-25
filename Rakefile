@@ -15,8 +15,8 @@ Motion::Project::App.setup do |app|
   # Adding file dependencies for tests
   # Not too many dependencies necessary
   app.files_dependencies({
-    "app/test_screens/table_screen_refreshable.rb"   => [ "app/test_screens/test_table_screen.rb" ],
-    "app/test_screens/table_screen_longpressable.rb" => [ "app/test_screens/test_table_screen.rb" ],
+    "app/screens/table_screen_refreshable.rb"   => [ "app/screens/test_table_screen.rb" ],
+    "app/screens/table_screen_longpressable.rb" => [ "app/screens/test_table_screen.rb" ],
   })
 end
 

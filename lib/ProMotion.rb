@@ -10,6 +10,10 @@ Motion::Project::App.setup do |app|
     app.files.insert(insert_point, file)
   end
 
+  app.development do
+    app.info_plist["ProjectRootPath"] ||= File.absolute_path(app.project_dir)
+  end
+
   # For compatibility with libraries that don't use detect_dependencies. :-(
   app.files_dependencies({
     "#{core_lib}/version.rb" => [ "#{core_lib}/pro_motion.rb" ],

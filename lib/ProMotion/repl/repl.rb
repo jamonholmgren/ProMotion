@@ -1,12 +1,12 @@
 if RUBYMOTION_ENV == "development"
   module Kernel
     def pm_live_screens(opts={})
-      @live_reload_debug = opts[:debug]
       if opts == false || opts.to_s.downcase == "off"
         @live_reload_timer.invalidate if @live_reload_timer
         @live_reload_timer = nil
         "Live reloading of PM screens is now off."
       else
+        @live_reload_debug = opts[:debug]
         enable_pm_live_screens(opts[:interval] || 0.5)
       end
     end

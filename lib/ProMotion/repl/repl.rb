@@ -41,7 +41,7 @@ if RUBYMOTION_ENV == "development"
         end
       end
 
-      "Live reloading of RMQ screens is now on."
+      "Live reloading of ProMotion screens is now on."
     end
 
     def pm_reload_screen(screen)

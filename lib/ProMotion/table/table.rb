@@ -6,6 +6,7 @@ module ProMotion
     include ProMotion::Table::Indexable
     include ProMotion::Table::Longpressable
     include ProMotion::Table::Utils
+    include ProMotion::TableBuilder
 
     attr_reader :promotion_table_data
 
@@ -115,15 +116,6 @@ module ProMotion
       @table_search_display_controller.searchResultsTableView.reloadData if searching?
     end
 
-    def trigger_action(action, arguments, index_path)
-      return PM.logger.info "Action not implemented: #{action.to_s}" unless self.respond_to?(action)
-      case self.method(action).arity
-      when 0 then self.send(action) # Just call the method
-      when 2 then self.send(action, arguments, index_path) # Send arguments and index path
-      else self.send(action, arguments) # Send arguments
-      end
-    end
-
     def accessory_toggled_switch(switch)
       table_cell = closest_parent(UITableViewCell, switch)
       index_path = closest_parent(UITableView, table_cell).indexPathForCell(table_cell)
@@ -146,21 +138,6 @@ module ProMotion
         end
       end
       table_view.deleteRowsAtIndexPaths(deletable_index_paths, withRowAnimation: map_row_animation_symbol(animation)) if deletable_index_paths.length > 0
-    end
-
-    def create_table_cell(data_cell)
-      new_cell = nil
-      table_cell = table_view.dequeueReusableCellWithIdentifier(data_cell[:cell_identifier]) || begin
-        new_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:data_cell[:cell_identifier])
-        new_cell.extend(PM::TableViewCellModule) unless new_cell.is_a?(PM::TableViewCellModule)
-        new_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
-        new_cell.clipsToBounds = true # fix for changed default in 7.1
-        new_cell.send(:on_load) if new_cell.respond_to?(:on_load)
-        new_cell
-      end
-      table_cell.setup(data_cell, self) if table_cell.respond_to?(:setup)
-      table_cell.send(:on_reuse) if !new_cell && table_cell.respond_to?(:on_reuse)
-      table_cell
     end
 
     def update_table_data(args = {})

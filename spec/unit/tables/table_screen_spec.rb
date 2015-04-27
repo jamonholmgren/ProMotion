@@ -74,8 +74,10 @@ class NoneditableTableScreen < PM::TableScreen
 end
 noneditable=NoneditableTableScreen.new
 noneditable.on_load
+noneditable.editable?.should==false
 index_path=NSIndexPath.indexPathForRow(0, inSection: 0)
 lambda {noneditable.tableView(noneditable, commitEditingStyle: UITableViewCellEditingStyleDelete, forRowAtIndexPath: index_path)}.should.raise NoMethodError
+@screen.editable?.must==true
 @screen.should.respond_to(:"tableView:commitEditingStyle:forRowAtIndexPath")
     end
 

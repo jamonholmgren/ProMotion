@@ -68,7 +68,7 @@ class NoneditableTableScreen < PM::TableScreen
 	def on_load
 	end
 	def table_data
-		[{title: test,
+		[{title: "test",
 			cells: [{title: "Non-editable test"}]}]
 	end
 end
@@ -77,7 +77,7 @@ noneditable.on_load
 noneditable.editable?.should==false
 index_path=NSIndexPath.indexPathForRow(0, inSection: 0)
 lambda {noneditable.tableView(noneditable, commitEditingStyle: UITableViewCellEditingStyleDelete, forRowAtIndexPath: index_path)}.should.raise NoMethodError
-@screen.editable?.must==true
+@screen.editable?.should==true
 @screen.should.respond_to(:"tableView:commitEditingStyle:forRowAtIndexPath")
     end
 

@@ -6,7 +6,7 @@ if RUBYMOTION_ENV == "development"
       if opts == false || opts.to_s.downcase == "off"
         "Live reloading of PM screens is now off."
       else
-        @screen_timer = pm_live_watch("#{pm_app_root_path}/app/screens/**/*.rb", opts) do |reloaded_file, new_code|
+        @screen_timer = pm_live_watch("app/screens/**/*.rb", opts) do |reloaded_file, new_code|
           screen_names = pm_parse_screen_names(new_code)
           puts "Reloaded #{screen_names.join(", ")} #{screen}." if opts[:debug]
           vcs = pm_all_view_controllers(UIApplication.sharedApplication.delegate.window.rootViewController)
@@ -25,7 +25,7 @@ if RUBYMOTION_ENV == "development"
     def pm_live_watch(path_query, opts={}, &callback)
       # Get list of screen files
       puts path_query if opts[:debug]
-      live_file_paths = Dir.glob(path_query)
+      live_file_paths = Dir.glob("#{pm_app_root_path}/#{path_query}")
       puts live_file_paths if opts[:debug]
 
       live_files = live_file_paths.inject({}) do |out, live_file_path_file|

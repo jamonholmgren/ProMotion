@@ -541,12 +541,12 @@ Adds a screen as a childViewController. Usually used if you plan to add the chil
 
 ```ruby
 def on_load
-  add_child_screen MyLittleScreen.new
-  add child.view, { frame: [[ 100, 100 ], [ 100, 50 ]] }
+  @child = add_child_screen MyLittleScreen
+  add @child.view, { frame: [[ 100, 100 ], [ 100, 50 ]] }
 end
 ```
 
-
+The parent screen will be accessible from the child as `parent_screen`.
 
 #### remove_child_screen(screen)
 

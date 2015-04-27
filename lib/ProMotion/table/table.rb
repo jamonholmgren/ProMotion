@@ -91,17 +91,17 @@ module ProMotion
     end
 
     def editable?
-	    self.promotion_table_data.sections.each do |section|
-		    section[:cells].each do |cell|
-			    return true if [:insert,:delete].include?(cell[:editing_style])
-		    end
-	    end
-	    false
+      self.promotion_table_data.sections.each do |section|
+        section[:cells].each do |cell|
+          return true if [:insert,:delete].include?(cell[:editing_style])
+        end
+      end
+      false
     end
 
     def set_up_accessibility
-				    self.extend(Editable) if editable?
-end
+      self.extend(Editable) if editable?
+    end
 
     def searching?
       self.promotion_table_data.filtered
@@ -250,11 +250,11 @@ end
     end
 
     module Editable
-    def tableView(_, commitEditingStyle: editing_style, forRowAtIndexPath: index_path)
-      if editing_style == UITableViewCellEditingStyleDelete
-        delete_row(index_path)
+      def tableView(_, commitEditingStyle: editing_style, forRowAtIndexPath: index_path)
+        if editing_style == UITableViewCellEditingStyleDelete
+          delete_row(index_path)
+        end
       end
-    end
     end
 
     def tableView(_, canMoveRowAtIndexPath:index_path)

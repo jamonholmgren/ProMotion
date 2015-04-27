@@ -298,19 +298,19 @@ describe "screen with toolbar" do
 
   it "showing" do
     # Simulate AppDelegate setup of main screen
-    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen = HomeScreen.new(nav_bar: true, modal: true, toolbar: true)
     screen.on_load
     screen.navigationController.toolbarHidden?.should == false
   end
 
   it "hidden" do
-    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: false
+    screen = HomeScreen.new(nav_bar: true, modal: true, toolbar: false)
     screen.on_load
     screen.navigationController.toolbarHidden?.should == true
   end
 
   it "adds a single item" do
-    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen = HomeScreen.new(nav_bar: true, modal: true, toolbar: true)
     screen.on_load
     screen.set_toolbar_button([{title: "Testing Toolbar"}])
 
@@ -321,7 +321,7 @@ describe "screen with toolbar" do
   end
 
   it "adds multiple items" do
-    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen = HomeScreen.new(nav_bar: true, modal: true, toolbar: true)
     screen.set_toolbar_buttons [{title: "Testing Toolbar"}, {title: "Another Test"}]
 
     screen.navigationController.toolbar.items.should.be.instance_of Array
@@ -331,7 +331,7 @@ describe "screen with toolbar" do
   end
 
   it "shows the toolbar when setting items" do
-    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: false
+    screen = HomeScreen.new(nav_bar: true, modal: true, toolbar: false)
     screen.on_load
     screen.navigationController.toolbarHidden?.should == true
     screen.set_toolbar_button([{title: "Testing Toolbar"}], false)
@@ -339,21 +339,21 @@ describe "screen with toolbar" do
   end
 
   it "doesn't show the toolbar when passed nil" do
-    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen = HomeScreen.new(nav_bar: true, modal: true, toolbar: true)
     screen.on_load
     screen.set_toolbar_button(nil, false)
     screen.navigationController.toolbarHidden?.should == true
   end
 
   it "doesn't show the toolbar when passed false" do
-    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen = HomeScreen.new(nav_bar: true, modal: true, toolbar: true)
     screen.on_load
     screen.set_toolbar_button(false, false)
     screen.navigationController.toolbarHidden?.should == true
   end
 
   it "hides the toolbar when passed nil" do
-    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen = HomeScreen.new(nav_bar: true, modal: true, toolbar: true)
     screen.on_load
     screen.set_toolbar_button([{title: "Testing Toolbar"}], false)
     screen.navigationController.toolbarHidden?.should == false
@@ -363,9 +363,9 @@ describe "screen with toolbar" do
 
 end
 
-describe 'toolbar tinted buttons' do
+describe "toolbar tinted buttons" do
   before do
-    @screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    @screen = HomeScreen.new(nav_bar: true, modal: true, toolbar: true)
     @screen.on_load
   end
 
@@ -385,3 +385,28 @@ describe 'toolbar tinted buttons' do
   end
 
 end
+
+describe "child screen management" do
+  before do
+    @screen = HomeScreen.new
+    @child = BasicScreen.new
+  end
+
+  it "#add_child_screen" do
+    @screen.add_child_screen @child
+    @screen.childViewControllers.should.include(@child)
+    @screen.childViewControllers.length.should == 1
+    @child.parent_screen.should == @screen
+  end
+
+  it "#remove_child_screen" do
+    @screen.add_child_screen @child
+    @screen.childViewControllers.should.include(@child)
+    @screen.remove_child_screen @child
+    @screen.childViewControllers.length.should == 0
+    @child.parent_screen.should == nil
+  end
+
+end
+
+

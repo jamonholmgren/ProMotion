@@ -93,7 +93,7 @@ def table_data
 end
 
 def visit_state(args={})
-  PM.logger.info args[:state] # => instance of State
+  mp args[:state] # => instance of State
 end
 ```
 

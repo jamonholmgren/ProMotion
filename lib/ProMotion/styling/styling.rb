@@ -25,8 +25,10 @@ module ProMotion
       elsif k.to_s.include?("_") # Snake case?
         set_attribute(element, camelize(k), v)
       else # Warn
-        PM.logger.debug "set_attribute: #{element.inspect} does not respond to #{k}=."
-        PM.logger.log("BACKTRACE", caller(0).join("\n"), :default) if PM.logger.level == :verbose
+        mp "set_attribute: #{element.inspect} does not respond to #{k}=.", force_color: :purple
+        # TODO - remove now, or when fully deprecated - there will be no verbose
+        # check when logger is removed
+        mp "BACKTRACE", caller(0).join("\n") if PM.logger.level == :verbose
       end
       element
     end
@@ -118,9 +120,9 @@ module ProMotion
 
     def get_attributes_from_symbol(attrs)
       return attrs if attrs.is_a?(Hash)
-      PM.logger.error "#{attrs} styling method is not defined" unless self.respond_to?(attrs)
+      mp("#{attrs} styling method is not defined", force_color: :red) unless self.respond_to?(attrs)
       new_attrs = send(attrs)
-      PM.logger.error "#{attrs} should return a hash" unless new_attrs.is_a?(Hash)
+      mp("#{attrs} should return a hash", force_color: :red) unless new_attrs.is_a?(Hash)
       new_attrs
     end
 

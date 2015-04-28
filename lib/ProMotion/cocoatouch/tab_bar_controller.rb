@@ -48,7 +48,7 @@ module ProMotion
 
         selected_tab_vc
       else
-        PM.logger.error "Unable to open tab #{tab.to_s} -- not found."
+        mp "Unable to open tab #{tab.to_s} -- not found.", force_color: :red
         nil
       end
     end

@@ -8,7 +8,7 @@ if RUBYMOTION_ENV == "development"
       else
         @screen_timer = pm_live_watch("app/screens/**/*.rb", opts) do |reloaded_file, new_code|
           screen_names = pm_parse_screen_names(new_code)
-          puts "Reloaded #{screen_names.join(", ")} #{screen}." if opts[:debug]
+          puts "Reloaded #{screen_names.join(", ")} #{reloaded_file}." if opts[:debug]
           vcs = pm_all_view_controllers(UIApplication.sharedApplication.delegate.window.rootViewController)
           puts "Found #{vcs.map(&:to_s).join(", ")}." if opts[:debug]
           vcs.each do |vc|

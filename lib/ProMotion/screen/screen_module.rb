@@ -42,9 +42,13 @@ module ProMotion
       when :light
         status_bar_hidden false
         status_bar_style UIStatusBarStyleLightContent
-      else
+      when :dark
         status_bar_hidden false
         status_bar_style UIStatusBarStyleDefault
+      else
+        status_bar_hidden false
+        global_style = NSBundle.mainBundle.objectForInfoDictionaryKey("UIStatusBarStyle")
+        status_bar_style global_style ? Object.const_get(global_style) : UIStatusBarStyleDefault
       end
     end
 

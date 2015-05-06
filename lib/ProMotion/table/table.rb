@@ -178,7 +178,7 @@ module ProMotion
     end
 
     def on_cell_created(new_cell, data_cell)
-      new_cell.on_load if new_cell.respond_to?(:on_load)
+      new_cell.send(:on_load) if new_cell.respond_to?(:on_load)
     end
 
     def on_cell_reused(cell, data)

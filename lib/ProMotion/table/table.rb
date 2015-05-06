@@ -20,6 +20,7 @@ module ProMotion
       set_up_refreshable
       set_up_longpressable
       set_up_row_height
+      set_up_accessibility
     end
 
     def check_table_data
@@ -89,6 +90,19 @@ module ProMotion
       end
     end
 
+    def editable?
+      self.promotion_table_data.sections.each do |section|
+        section[:cells].each do |cell|
+          return true if [:insert,:delete].include?(cell[:editing_style])
+        end
+      end
+      false
+    end
+
+    def set_up_accessibility
+      self.extend(Editable) if editable?
+    end
+
     def searching?
       self.promotion_table_data.filtered
     end
@@ -155,12 +169,20 @@ module ProMotion
         new_cell.extend(PM::TableViewCellModule) unless new_cell.is_a?(PM::TableViewCellModule)
         new_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
         new_cell.clipsToBounds = true # fix for changed default in 7.1
-        new_cell.send(:on_load) if new_cell.respond_to?(:on_load)
+        on_cell_created new_cell, data_cell
         new_cell
       end
       table_cell.setup(data_cell, self) if table_cell.respond_to?(:setup)
-      table_cell.send(:on_reuse) if !new_cell && table_cell.respond_to?(:on_reuse)
+      on_cell_reused(table_cell, data_cell) if !new_cell
       table_cell
+    end
+
+    def on_cell_created(new_cell, data_cell)
+      new_cell.on_load if new_cell.respond_to?(:on_load)
+    end
+
+    def on_cell_reused(cell, data)
+      cell.send(:on_reuse) if cell.respond_to?(:on_reuse)
     end
 
     def update_table_data(args = {})
@@ -235,9 +257,11 @@ module ProMotion
       map_cell_editing_style(data_cell[:editing_style])
     end
 
-    def tableView(_, commitEditingStyle: editing_style, forRowAtIndexPath: index_path)
-      if editing_style == UITableViewCellEditingStyleDelete
-        delete_row(index_path)
+    module Editable
+      def tableView(_, commitEditingStyle: editing_style, forRowAtIndexPath: index_path)
+        if editing_style == UITableViewCellEditingStyleDelete
+          delete_row(index_path)
+        end
       end
     end
 

@@ -21,6 +21,7 @@ module ProMotion
       set_up_refreshable
       set_up_longpressable
       set_up_row_height
+      set_up_accessibility
     end
 
     def check_table_data
@@ -88,6 +89,19 @@ module ProMotion
         self.view.rowHeight = params[:height]
         self.view.estimatedRowHeight = params[:estimated]
       end
+    end
+
+    def editable?
+      self.promotion_table_data.sections.each do |section|
+        section[:cells].each do |cell|
+          return true if [:insert,:delete].include?(cell[:editing_style])
+        end
+      end
+      false
+    end
+
+    def set_up_accessibility
+      self.extend(Editable) if editable?
     end
 
     def searching?
@@ -212,9 +226,11 @@ module ProMotion
       map_cell_editing_style(data_cell[:editing_style])
     end
 
-    def tableView(_, commitEditingStyle: editing_style, forRowAtIndexPath: index_path)
-      if editing_style == UITableViewCellEditingStyleDelete
-        delete_row(index_path)
+    module Editable
+      def tableView(_, commitEditingStyle: editing_style, forRowAtIndexPath: index_path)
+        if editing_style == UITableViewCellEditingStyleDelete
+          delete_row(index_path)
+        end
       end
     end
 

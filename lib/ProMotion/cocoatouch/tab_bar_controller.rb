@@ -1,7 +1,6 @@
 module ProMotion
   class TabBarController < UITabBarController
-
-    attr_accessor :pm_tab_delegate
+    attr_accessor :pm_tab_delegate, :name
 
     def self.new(*screens)
       tab_bar_controller = alloc.init
@@ -17,8 +16,22 @@ module ProMotion
       end
 
       tab_bar_controller.viewControllers = view_controllers
+      name = ""
       tab_bar_controller.delegate = tab_bar_controller
       tab_bar_controller
+    end
+
+    def name=(n)
+      @name = n
+      tab_bar_order = NSUserDefaults.standardUserDefaults.arrayForKey("tab_bar_order_#{@name}")
+      if tab_bar_order
+        sorted_controllers = []
+        unsorted_controllers = self.viewControllers.copy
+        tab_bar_order.each do |order|
+          sorted_controllers << unsorted_controllers[order]
+        end
+        self.viewControllers = sorted_controllers
+      end
     end
 
     def open_tab(tab)
@@ -46,6 +59,14 @@ module ProMotion
     # Cocoa touch methods below
     def tabBarController(tbc, didSelectViewController: vc)
       on_tab_selected_try(vc)
+    end
+
+    def tabBarController(tbc, didEndCustomizingViewControllers:vcs, changed:changed)
+      if changed
+        tab_order = vcs.map{ |vc| vc.tabBarItem.tag }
+        NSUserDefaults.standardUserDefaults.setObject(tab_order, forKey:"tab_bar_order_#{@name}")
+        NSUserDefaults.standardUserDefaults.synchronize
+      end
     end
 
     def shouldAutorotate

@@ -108,6 +108,13 @@ describe "tab bar functionality" do
       new_tab_bar.viewControllers.should == new_order
     end
 
+    it "should always select the leftmost tab when rearranging tabs" do
+      new_order = [@tab_5, @tab_4, @tab_3, @tab_2, @tab_1, @tab_0]
+      @tab_bar.tabBarController(@tab_bar, didEndCustomizingViewControllers:new_order, changed:true)
+      new_tab_bar = @app.open_tab_bar @tab_0, @tab_1, @tab_2, @tab_3, @tab_4, @tab_5
+      new_tab_bar.selectedIndex.should == 0
+    end
+
   end
 
 end

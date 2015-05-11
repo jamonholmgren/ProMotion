@@ -31,6 +31,7 @@ module ProMotion
           sorted_controllers << unsorted_controllers[order]
         end
         self.viewControllers = sorted_controllers
+        open_tab(0) # Open the tab on the far left
       end
     end
 

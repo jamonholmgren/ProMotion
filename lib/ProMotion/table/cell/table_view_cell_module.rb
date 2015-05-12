@@ -63,6 +63,8 @@ module ProMotion
           self.imageView.image = downloaded_image
           self.setNeedsLayout
         })
+      else
+        PM.logger.error "To use remote_image with TableScreen you need to include the CocoaPod 'SDWebImage'."
       end
 
       self.imageView.layer.masksToBounds = true
@@ -113,14 +115,12 @@ module ProMotion
 
     def sd_web_image?
       return false if RUBYMOTION_ENV == 'test'
-      return true if defined?(SDWebImageManager) == 'constant' && SDWebImageManager.class == Class
-      false
+      !!defined?(SDWebImageManager)
     end
 
     def jm_image_cache?
       return false if RUBYMOTION_ENV == 'test'
-      return true if defined?(JMImageCache) == 'constant' && JMImageCache.class == Class
-      PM.logger.error "To use remote_image with TableScreen you need to include the CocoaPod 'SDWebImage'."
+      !!defined?(JMImageCache)
       false
     end
 

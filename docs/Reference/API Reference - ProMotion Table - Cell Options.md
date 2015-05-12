@@ -64,11 +64,11 @@ def table_data
       image: {
         image: "something", # PM will do `UIImage.imageNamed("something")` for you
         radius: 15 # radius is optional
-      }, 
+      },
       # You can also specify an image with just a UIImage or a String
       # image: UIImage.imageNamed("something"),
       # image: "something",
-      remote_image: {  # remote image, requires JMImageCache CocoaPod
+      remote_image: {  # remote image, requires SDWebImage CocoaPod
         url: "http://placekitten.com/200/300",
         placeholder: "some-local-image", # NOTE: this is required!
         size: 50,

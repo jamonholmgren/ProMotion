@@ -1,8 +1,14 @@
 class TestCell < PM::TableViewCell
-  attr_accessor :on_reuse_fired
+  attr_accessor :on_reuse_fired, :prepare_for_reuse_fired, :on_reuse_time, :prepare_for_reuse_time
 
   def on_reuse
     self.on_reuse_fired = true
+    self.on_reuse_time = Time.now
+  end
+
+  def prepare_for_reuse
+    self.prepare_for_reuse_fired = true
+    self.prepare_for_reuse_time = Time.now
   end
 end
 

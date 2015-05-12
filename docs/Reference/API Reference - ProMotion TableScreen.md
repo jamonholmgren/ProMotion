@@ -207,6 +207,34 @@ def table_data_index
 end
 ```
 
+#### on_cell_created(cell, data)
+
+Called when a cell is created (not dequeued).  `data` is the cell hash you provided in the `table_data` method.
+
+It's recommended that you call `super` if you override this method.
+
+```ruby
+def on_cell_created(cell, data)
+  super
+  cell.my_cool_method(data[:properties][:my_property])
+  cell.contentView.backgroundColor = UIColor.purpleColor
+end
+```
+
+#### on_cell_reused(cell, data)
+
+Called when a cell is dequeued and re-used. `data` is the cell hash you provided in the `table_data` method.
+
+It's recommended that you call `super` if you override this method.
+
+```ruby
+def on_cell_reused(cell, data)
+  super
+  cell.my_cool_method(data[:properties][:my_property])
+  cell.contentView.backgroundColor = UIColor.purpleColor
+end
+```
+
 #### on_cell_deleted(cell)
 
 If you specify `editing_style: :delete` in your cell, you can swipe to reveal a delete button on that cell. When you tap the button, the cell will be removed in an animated fashion and the cell will be removed from its respective `table_data` section.

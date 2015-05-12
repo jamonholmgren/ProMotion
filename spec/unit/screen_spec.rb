@@ -43,6 +43,24 @@ describe "screen properties" do
     UIApplication.sharedApplication.statusBarStyle.should == UIStatusBarStyleLightContent
   end
 
+  it "should set the UIStatusBar style to :dark" do
+    UIApplication.sharedApplication.statusBarStyle = UIStatusBarStyleLightContent
+    @screen.class.status_bar :dark
+    @screen.view_will_appear(false)
+    UIApplication.sharedApplication.isStatusBarHidden.should == false
+    UIApplication.sharedApplication.statusBarStyle.should == UIStatusBarStyleDefault
+  end
+
+  it "should default to a global UIStatusBar style" do
+    NSBundle.mainBundle.mock!(:objectForInfoDictionaryKey) do |key|
+      "UIStatusBarStyleLightContent"
+    end
+    @screen.class.status_bar :default
+    @screen.view_will_appear(false)
+    UIApplication.sharedApplication.isStatusBarHidden.should == false
+    UIApplication.sharedApplication.statusBarStyle.should == UIStatusBarStyleLightContent
+  end
+
   it "should set the tab bar item with a system item" do
     @screen.set_tab_bar_item system_item: :contacts
     comparison = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemContacts, tag: 0)

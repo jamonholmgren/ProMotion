@@ -101,6 +101,7 @@ module ProMotion
     end
 
     def prepareForReuse
+      super
       if @remote_image_operation && @remote_image_operation.respond_to?(:cancel)
         @remote_image_operation.cancel
         @remote_image_operation = nil
@@ -119,7 +120,7 @@ module ProMotion
     def jm_image_cache?
       return false if RUBYMOTION_ENV == 'test'
       return true if defined?(JMImageCache) == 'constant' && JMImageCache.class == Class
-      PM.logger.error "ProMotion Warning: to use remote_image with TableScreen you need to include the CocoaPod 'SDWebImage'."
+      PM.logger.error "To use remote_image with TableScreen you need to include the CocoaPod 'SDWebImage'."
       false
     end
 

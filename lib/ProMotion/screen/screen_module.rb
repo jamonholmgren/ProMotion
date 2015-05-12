@@ -25,45 +25,6 @@ module ProMotion
       self.modal == true
     end
 
-    def resolve_title
-      case self.class.title_type
-      when :text then self.title = self.class.title
-      when :view then self.navigationItem.titleView = self.class.title
-      when :image then self.navigationItem.titleView = UIImageView.alloc.initWithImage(self.class.title)
-      else
-        PM.logger.warn("title expects string, UIView, or UIImage, but #{self.class.title.class.to_s} given.")
-      end
-    end
-
-    def resolve_status_bar
-      case self.class.status_bar_type
-      when :none
-        status_bar_hidden true
-      when :light
-        status_bar_hidden false
-        status_bar_style UIStatusBarStyleLightContent
-      when :dark
-        status_bar_hidden false
-        status_bar_style UIStatusBarStyleDefault
-      else
-        status_bar_hidden false
-        global_style = NSBundle.mainBundle.objectForInfoDictionaryKey("UIStatusBarStyle")
-        status_bar_style global_style ? Object.const_get(global_style) : UIStatusBarStyleDefault
-      end
-    end
-
-    def add_nav_bar_buttons
-      set_nav_bar_button(self.class.get_nav_bar_button[:side], self.class.get_nav_bar_button) if self.class.get_nav_bar_button
-    end
-
-    def status_bar_hidden(hidden)
-      UIApplication.sharedApplication.setStatusBarHidden(hidden, withAnimation:self.class.status_bar_animation)
-    end
-
-    def status_bar_style(style)
-      UIApplication.sharedApplication.setStatusBarStyle(style)
-    end
-
     def parent_screen=(parent)
       @parent_screen = WeakRef.new(parent)
     end
@@ -176,10 +137,64 @@ module ProMotion
       return self.view_or_self.frame
     end
 
+    def add_child_screen(screen)
+      screen = screen.new if screen.respond_to?(:new)
+      addChildViewController(screen)
+      screen.parent_screen = WeakRef.new(self)
+      screen.didMoveToParentViewController(self) # Required
+      screen
+    end
+
+    def remove_child_screen(screen)
+      screen.parent_screen = nil
+      screen.willMoveToParentViewController(nil) # Required
+      screen.removeFromParentViewController
+      screen
+    end
+
   private
 
+    def resolve_title
+      case self.class.title_type
+      when :text then self.title = self.class.title
+      when :view then self.navigationItem.titleView = self.class.title
+      when :image then self.navigationItem.titleView = UIImageView.alloc.initWithImage(self.class.title)
+      else
+        PM.logger.warn("title expects string, UIView, or UIImage, but #{self.class.title.class.to_s} given.")
+      end
+    end
+
+    def resolve_status_bar
+      case self.class.status_bar_type
+      when :none
+        status_bar_hidden true
+      when :light
+        status_bar_hidden false
+        status_bar_style UIStatusBarStyleLightContent
+      when :dark
+        status_bar_hidden false
+        status_bar_style UIStatusBarStyleDefault
+      else
+        status_bar_hidden false
+        global_style = NSBundle.mainBundle.objectForInfoDictionaryKey("UIStatusBarStyle")
+        status_bar_style global_style ? Object.const_get(global_style) : UIStatusBarStyleDefault
+      end
+    end
+
+    def add_nav_bar_buttons
+      set_nav_bar_button(self.class.get_nav_bar_button[:side], self.class.get_nav_bar_button) if self.class.get_nav_bar_button
+    end
+
+    def status_bar_hidden(hidden)
+      UIApplication.sharedApplication.setStatusBarHidden(hidden, withAnimation:self.class.status_bar_animation)
+    end
+
+    def status_bar_style(style)
+      UIApplication.sharedApplication.setStatusBarStyle(style)
+    end
+
     def apply_properties(args)
-      reserved_args = [ :nav_bar, :hide_nav_bar, :hide_tab_bar, :animated, :close_all, :in_tab, :in_detail, :in_master, :to_screen ]
+      reserved_args = [ :nav_bar, :hide_nav_bar, :hide_tab_bar, :animated, :close_all, :in_tab, :in_detail, :in_master, :to_screen, :toolbar ]
       set_attributes self, args.dup.delete_if { |k,v| reserved_args.include?(k) }
     end
 

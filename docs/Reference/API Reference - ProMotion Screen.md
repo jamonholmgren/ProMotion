@@ -535,6 +535,29 @@ def on_appear
 end
 ```
 
+#### add_child_screen(screen)
+
+Adds a screen as a childViewController. Usually used if you plan to add the child screen's primary view as a subview. Returns the child screen instance. Will also instantiate the instance if given a class.
+
+```ruby
+def on_load
+  @child = add_child_screen MyLittleScreen
+  add @child.view, { frame: [[ 100, 100 ], [ 100, 50 ]] }
+end
+```
+
+The parent screen will be accessible from the child as `parent_screen`.
+
+#### remove_child_screen(screen)
+
+Removes a child screen from the current screen.
+
+```ruby
+def foo
+  remove_child_screen @child
+end
+```
+
 ---
 
 ### Class Methods

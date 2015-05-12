@@ -87,6 +87,25 @@ def on_load(app, options)
 end
 ```
 
+ProMotion will automatically save the tab bar order for your users if you have more than 5 screens in the UITabBarController. If your project has multiple UITabBarControllers, you need to name them when you create them so that ProMotion knows which one to restore when reopening that UITabBarController:
+
+```ruby
+def on_load(app, options)
+  my_tab_bar_controller = PM::TabBarController.new(
+    HomeScreen,
+    AboutScreen,
+    ThirdScreen,
+    HelpScreen,
+    AnotherScreen,
+    FinalScreen
+  )
+  my_tab_bar_controller.name = "my_tab_controllers_name"
+  open_tab_bar my_tab_bar_controller
+end
+```
+
+*note that the order saving goes off of the index of the view controllers added, so if you change the order in which you pass screens to the `PM::TabBarController`, this will mess up any custom order that a user has saved.*
+
 #### open_split_screen(master, detail)
 
 **iPad apps only**

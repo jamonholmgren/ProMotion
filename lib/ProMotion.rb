@@ -24,8 +24,13 @@ Motion::Project::App.setup do |app|
     ],
     "#{core_lib}/screen/screen.rb" => [ "#{core_lib}/screen/screen_module.rb" ],
     "#{core_lib}/screen/screen_module.rb" => [ "#{core_lib}/screen/screen_navigation.rb" ],
-    "#{core_lib}/table/data/table_data.rb" => [ "#{core_lib}/table/table.rb" ],
+    "#{core_lib}/table/data/table_data.rb" => [
+      "#{core_lib}/table/data/table_data_builder.rb",
+      "#{core_lib}/table/table.rb"
+    ],
     "#{core_lib}/table/table.rb" => [
+      "#{core_lib}/table/table_class_methods.rb",
+      "#{core_lib}/table/table_builder.rb",
       "#{core_lib}/table/table_utils.rb",
       "#{core_lib}/table/extensions/searchable.rb",
       "#{core_lib}/table/extensions/refreshable.rb",

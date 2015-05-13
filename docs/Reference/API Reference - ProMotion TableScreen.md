@@ -235,6 +235,19 @@ def on_cell_reused(cell, data)
 end
 ```
 
+#### will_display_cell(cell, index_path)
+
+Fires right before a cell is displayed in a table. Use this method to do additional setup on the cell, or other operations such as infinite scroll.
+
+```ruby
+def will_display_cell(cell, index_path)
+  cell.backgroundColor = UIColor.clearColor
+  if index_path.row >= @data.length
+    load_more_data   # infinite scroll
+  end
+end
+```
+
 #### on_cell_deleted(cell)
 
 If you specify `editing_style: :delete` in your cell, you can swipe to reveal a delete button on that cell. When you tap the button, the cell will be removed in an animated fashion and the cell will be removed from its respective `table_data` section.

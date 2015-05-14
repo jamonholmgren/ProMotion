@@ -135,7 +135,7 @@ module ProMotion
       index_path = closest_parent(UITableView, table_cell).indexPathForCell(table_cell)
 
       if index_path
-        data_cell = promotion_table_data.cell(section: index_path.section, index: index_path.row)
+        data_cell = cell_at(index_path: index_path)
         data_cell[:accessory][:arguments][:value] = switch.isOn if data_cell[:accessory][:arguments].is_a?(Hash)
         trigger_action(data_cell[:accessory][:action], data_cell[:accessory][:arguments], index_path) if data_cell[:accessory][:action]
       end
@@ -145,7 +145,7 @@ module ProMotion
       deletable_index_paths = []
       Array(index_paths).each do |index_path|
         delete_cell = false
-        delete_cell = send(:on_cell_deleted, self.promotion_table_data.cell(index_path: index_path)) if self.respond_to?("on_cell_deleted:")
+        delete_cell = send(:on_cell_deleted, cell_at(index_path: index_path)) if self.respond_to?("on_cell_deleted:")
         unless delete_cell == false
           self.promotion_table_data.delete_cell(index_path: index_path)
           deletable_index_paths << index_path
@@ -176,6 +176,11 @@ module ProMotion
       !!isEditing
     end
 
+    # Returns the data cell
+    def cell_at(args = {})
+      self.promotion_table_data.cell(args)
+    end
+
     ########## Cocoa touch methods #################
     def numberOfSectionsInTableView(_)
       self.promotion_table_data.sections.length
@@ -200,29 +205,29 @@ module ProMotion
 
     def tableView(_, cellForRowAtIndexPath: index_path)
       params = index_path_to_section_index(index_path: index_path)
-      data_cell = self.promotion_table_data.cell(section: params[:section], index: params[:index])
+      data_cell = cell_at(index: params[:index], section: params[:section])
       return UITableViewCell.alloc.init unless data_cell
       create_table_cell(data_cell)
     end
 
     def tableView(_, willDisplayCell: table_cell, forRowAtIndexPath: index_path)
-      data_cell = self.promotion_table_data.cell(index_path: index_path)
+      data_cell = cell_at(index_path: index_path)
       table_cell.send(:will_display) if table_cell.respond_to?(:will_display)
       table_cell.send(:restyle!) if table_cell.respond_to?(:restyle!) # Teacup compatibility
     end
 
     def tableView(_, heightForRowAtIndexPath: index_path)
-      (self.promotion_table_data.cell(index_path: index_path)[:height] || tableView.rowHeight).to_f
+      (cell_at(index_path: index_path)[:height] || tableView.rowHeight).to_f
     end
 
     def tableView(table_view, didSelectRowAtIndexPath: index_path)
-      data_cell = self.promotion_table_data.cell(index_path: index_path)
+      data_cell = cell_at(index_path: index_path)
       table_view.deselectRowAtIndexPath(index_path, animated: true) unless data_cell[:keep_selection] == true
       trigger_action(data_cell[:action], data_cell[:arguments], index_path) if data_cell[:action]
     end
 
     def tableView(_, editingStyleForRowAtIndexPath: index_path)
-      data_cell = self.promotion_table_data.cell(index_path: index_path, unfiltered: true)
+      data_cell = cell_at(index_path: index_path, unfiltered: true)
       map_cell_editing_style(data_cell[:editing_style])
     end
 
@@ -235,7 +240,7 @@ module ProMotion
     end
 
     def tableView(_, canMoveRowAtIndexPath:index_path)
-      data_cell = self.promotion_table_data.cell(index_path: index_path, unfiltered: true)
+      data_cell = cell_at(index_path: index_path, unfiltered: true)
 
       if (!data_cell[:moveable].nil? || data_cell[:moveable].is_a?(Symbol)) && data_cell[:moveable] != false
         true
@@ -245,7 +250,7 @@ module ProMotion
     end
 
     def tableView(_, targetIndexPathForMoveFromRowAtIndexPath:source_index_path, toProposedIndexPath:proposed_destination_index_path)
-      data_cell = self.promotion_table_data.cell(index_path: source_index_path, unfiltered: true)
+      data_cell = cell_at(index_path: source_index_path, unfiltered: true)
 
       if data_cell[:moveable] == :section && source_index_path.section != proposed_destination_index_path.section
         source_index_path

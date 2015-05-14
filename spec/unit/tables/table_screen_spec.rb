@@ -85,6 +85,14 @@ describe "table screens" do
       @screen.should.respond_to(:"tableView:commitEditingStyle:forRowAtIndexPath")
     end
 
+    it "calls will_display_cell" do
+      index_path = NSIndexPath.indexPathForRow(0, inSection: 0)
+      @screen.mock!("will_display_cell:") do |cell, i|
+        cell.should.be.kind_of PM::TableViewCell
+        i.should == index_path
+      end
+      @screen.tableView(nil, willDisplayCell: PM::TableViewCell.new, forRowAtIndexPath: index_path)
+    end
   end
 
   describe "search functionality" do

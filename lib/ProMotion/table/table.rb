@@ -212,6 +212,7 @@ module ProMotion
 
     def tableView(_, willDisplayCell: table_cell, forRowAtIndexPath: index_path)
       data_cell = cell_at(index_path: index_path)
+      try :will_display_cell, table_cell, index_path
       table_cell.send(:will_display) if table_cell.respond_to?(:will_display)
       table_cell.send(:restyle!) if table_cell.respond_to?(:restyle!) # Teacup compatibility
     end

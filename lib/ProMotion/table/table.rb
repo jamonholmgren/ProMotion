@@ -25,7 +25,7 @@ module ProMotion
     end
 
     def check_table_data
-      PM.logger.error "Missing #table_data method in TableScreen #{self.class.to_s}." unless self.respond_to?(:table_data)
+      mp("Missing #table_data method in TableScreen #{self.class.to_s}.", force_color: :red) unless self.respond_to?(:table_data)
     end
 
     def promotion_table_data
@@ -39,7 +39,7 @@ module ProMotion
           if view.is_a? UIView
             self.tableView.send(camelize("set_table_#{hf_view}_view:"), view)
           else
-            PM.logger.warn "Table #{hf_view} view must be a UIView."
+            mp "Table #{hf_view} view must be a UIView.", force_color: :yellow
           end
         end
       end
@@ -73,7 +73,7 @@ module ProMotion
         if defined?(UIRefreshControl)
           self.make_refreshable(self.class.get_refreshable_params)
         else
-          PM.logger.warn "To use the refresh control on < iOS 6, you need to include the CocoaPod 'CKRefreshControl'."
+          mp "To use the refresh control on < iOS 6, you need to include the CocoaPod 'CKRefreshControl'.", force_color: :yellow
         end
       end
     end
@@ -273,7 +273,7 @@ module ProMotion
         }
         send(:on_cell_moved, args)
       else
-        PM.logger.warn "Implement the on_cell_moved method in your PM::TableScreen to be notified when a user moves a cell."
+        mp "Implement the on_cell_moved method in your PM::TableScreen to be notified when a user moves a cell.", force_color: :yellow
       end
     end
 
@@ -289,7 +289,7 @@ module ProMotion
     end
 
     def deleteRowsAtIndexPaths(index_paths, withRowAnimation: animation)
-      PM.logger.warn "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)'."
+      mp "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)'.", force_color: :yellow
       delete_row(index_paths, animation)
     end
 
@@ -349,6 +349,5 @@ module ProMotion
     def self.included(base)
       base.extend(TableClassMethods)
     end
-
   end
 end

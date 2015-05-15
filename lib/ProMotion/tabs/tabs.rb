@@ -51,14 +51,14 @@ module ProMotion
 
     def create_tab_bar_item(tab={})
       if tab[:system_icon] || tab[:icon]
-        PM.logger.deprecated("`system_icon:` no longer supported. Use `system_item:` instead.") if tab[:system_icon]
-        PM.logger.deprecated("`icon:` no longer supported. Use `item:` instead.") if tab[:icon]
+        mp("`system_icon:` no longer supported. Use `system_item:` instead.", force_color: :yellow) if tab[:system_icon]
+        mp("`icon:` no longer supported. Use `item:` instead.", force_color: :yellow) if tab[:icon]
         tab[:system_item] ||= tab[:system_icon]
         tab[:item] ||= tab[:icon]
       end
 
       unless tab[:system_item] || tab[:item]
-        PM.logger.warn("You must provide either a `system_item:` or custom `item:` in `tab_bar_item`")
+        mp "You must provide either a `system_item:` or custom `item:` in `tab_bar_item`", force_color: :yellow
         abort
       end
 

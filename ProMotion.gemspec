@@ -25,6 +25,7 @@ Gem::Specification.new do |gem|
   gem.version       = ProMotion::VERSION
 
   gem.add_runtime_dependency("methadone", "~> 1.7")
+  gem.add_runtime_dependency("motion_print", "~> 1.0")
   gem.add_development_dependency("webstub", "~> 1.1")
   gem.add_development_dependency("motion-stump", "~> 0.3")
   gem.add_development_dependency("motion-redgreen", "~> 0.1")

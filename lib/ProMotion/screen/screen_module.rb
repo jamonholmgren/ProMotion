@@ -18,7 +18,7 @@ module ProMotion
       tab_bar_setup
       try :on_init
       try :screen_setup
-      PM.logger.deprecated "In #{self.class.to_s}, #on_create has been deprecated and removed. Use #screen_init instead." if respond_to?(:on_create)
+      mp "In #{self.class.to_s}, #on_create has been deprecated and removed. Use #screen_init instead.", force_color: :yellow if respond_to?(:on_create)
     end
 
     def modal?
@@ -160,7 +160,7 @@ module ProMotion
       when :view then self.navigationItem.titleView = self.class.title
       when :image then self.navigationItem.titleView = UIImageView.alloc.initWithImage(self.class.title)
       else
-        PM.logger.warn("title expects string, UIView, or UIImage, but #{self.class.title.class.to_s} given.")
+        mp("title expects string, UIView, or UIImage, but #{self.class.title.class.to_s} given.", force_color: :yellow)
       end
     end
 
@@ -213,7 +213,7 @@ module ProMotion
     module ClassMethods
       def title(t=nil)
         if t && t.is_a?(String) == false
-          PM.logger.deprecated "You're trying to set the title of #{self.to_s} to an instance of #{t.class.to_s}. In ProMotion 2+, you must use `title_image` or `title_view` instead."
+          mp "You're trying to set the title of #{self.to_s} to an instance of #{t.class.to_s}. In ProMotion 2+, you must use `title_image` or `title_view` instead.", force_color: :yellow
           return raise StandardError
         end
         @title = t if t
@@ -237,7 +237,7 @@ module ProMotion
 
       def status_bar(style=nil, args={})
         if NSBundle.mainBundle.objectForInfoDictionaryKey('UIViewControllerBasedStatusBarAppearance').nil?
-          PM.logger.warn("status_bar will have no effect unless you set 'UIViewControllerBasedStatusBarAppearance' to false in your info.plist")
+          mp "status_bar will have no effect unless you set 'UIViewControllerBasedStatusBarAppearance' to false in your info.plist", force_color: :yellow
         end
         @status_bar_style = style
         @status_bar_animation = args[:animation] if args[:animation]

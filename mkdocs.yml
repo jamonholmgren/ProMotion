@@ -7,7 +7,6 @@ pages:
 - ["Guides/Migration Guide - ProMotion-1.2-to-2.0.md", "Migration Guide - ProMotion-1.2-to-2.0"]
 - ["Reference/API Reference - Command Line Tool.md", "API Reference - Command Line Tool"]
 - ["Reference/API Reference - ProMotion Delegate.md", "API Reference - ProMotion Delegate"]
-- ["Reference/API Reference - ProMotion Logger.md", "API Reference - ProMotion Logger"]
 - ["Reference/API Reference - ProMotion MapScreen.md", "API Reference - ProMotion MapScreen"]
 - ["Reference/API Reference - ProMotion PushNotification.md", "API Reference - ProMotion PushNotification"]
 - ["Reference/API Reference - ProMotion Screen.md", "API Reference - ProMotion Screen"]

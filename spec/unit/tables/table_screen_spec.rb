@@ -62,7 +62,6 @@ describe "table screens" do
       screen.view.rowHeight.should == 77
       screen.view.estimatedRowHeight.should == 77
     end
-
   end
 
   describe "search functionality" do

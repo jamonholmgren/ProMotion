@@ -41,7 +41,7 @@ module ProMotion
         if @refreshable_callback && self.respond_to?(@refreshable_callback)
           self.send(@refreshable_callback)
         else
-          PM.logger.warn "You must implement the '#{@refreshable_callback}' method in your TableScreen."
+          mp "You must implement the '#{@refreshable_callback}' method in your TableScreen.", force_color: :yellow
         end
       end
     end

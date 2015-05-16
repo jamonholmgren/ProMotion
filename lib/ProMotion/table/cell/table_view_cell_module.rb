@@ -25,7 +25,7 @@ module ProMotion
     def check_deprecated_styles
       whitelist = [ :title, :subtitle, :image, :remote_image, :accessory, :selection_style, :action, :long_press_action, :arguments, :cell_style, :cell_class, :cell_identifier, :editing_style, :moveable, :search_text, :keep_selection, :height, :accessory_type, :style, :properties, :searchable ]
       if (data_cell.keys - whitelist).length > 0
-        PM.logger.deprecated("In #{self.table_screen.class.to_s}#table_data, you should set :#{(data_cell.keys - whitelist).join(", :")} in a `properties:` hash. See TableScreen documentation.")
+        mp "In #{self.table_screen.class.to_s}#table_data, you should set :#{(data_cell.keys - whitelist).join(", :")} in a `properties:` hash. See TableScreen documentation.", force_color: :yellow
       end
     end
 
@@ -58,13 +58,13 @@ module ProMotion
             self.imageView.image = image unless image.nil?
         })
       elsif jm_image_cache?
-        PM.logger.warning "'JMImageCache' is known to have issues with ProMotion. Please consider switching to 'SDWebImage'. 'JMImageCache' support will be deprecated in the next major version."
+        mp "'JMImageCache' is known to have issues with ProMotion. Please consider switching to 'SDWebImage'. 'JMImageCache' support will be deprecated in the next major version.", force_color: :yellow
         JMImageCache.sharedCache.imageForURL(data_cell[:remote_image][:url].to_url, completionBlock:proc { |downloaded_image|
           self.imageView.image = downloaded_image
           self.setNeedsLayout
         })
       else
-        PM.logger.error "To use remote_image with TableScreen you need to include the CocoaPod 'SDWebImage'."
+        mp "To use remote_image with TableScreen you need to include the CocoaPod 'SDWebImage'.", force_color: :red
       end
 
       self.imageView.layer.masksToBounds = true

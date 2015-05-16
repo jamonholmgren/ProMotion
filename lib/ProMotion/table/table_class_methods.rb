@@ -7,7 +7,7 @@ module TableClassMethods
     if height == :auto
       if UIDevice.currentDevice.systemVersion.to_f < 8.0
         height = args[:estimated] || 44.0
-        PM.logger.warn "Using `row_height :auto` is not supported in iOS 7 apps. Setting to #{height}."
+        mp "Using `row_height :auto` is not supported in iOS 7 apps. Setting to #{height}.", force_color: :yellow
       else
         height = UITableViewAutomaticDimension
       end

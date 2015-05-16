@@ -24,7 +24,7 @@ module ProMotion
     end
 
     def check_table_data
-      PM.logger.error "Missing #table_data method in TableScreen #{self.class.to_s}." unless self.respond_to?(:table_data)
+      mp("Missing #table_data method in TableScreen #{self.class.to_s}.", force_color: :red) unless self.respond_to?(:table_data)
     end
 
     def promotion_table_data
@@ -38,7 +38,7 @@ module ProMotion
           if view.is_a? UIView
             self.tableView.send(camelize("set_table_#{hf_view}_view:"), view)
           else
-            PM.logger.warn "Table #{hf_view} view must be a UIView."
+            mp "Table #{hf_view} view must be a UIView.", force_color: :yellow
           end
         end
       end
@@ -72,7 +72,7 @@ module ProMotion
         if defined?(UIRefreshControl)
           self.make_refreshable(self.class.get_refreshable_params)
         else
-          PM.logger.warn "To use the refresh control on < iOS 6, you need to include the CocoaPod 'CKRefreshControl'."
+          mp "To use the refresh control on < iOS 6, you need to include the CocoaPod 'CKRefreshControl'.", force_color: :yellow
         end
       end
     end
@@ -121,7 +121,7 @@ module ProMotion
       index_path = closest_parent(UITableView, table_cell).indexPathForCell(table_cell)
 
       if index_path
-        data_cell = promotion_table_data.cell(section: index_path.section, index: index_path.row)
+        data_cell = cell_at(index_path: index_path)
         data_cell[:accessory][:arguments][:value] = switch.isOn if data_cell[:accessory][:arguments].is_a?(Hash)
         trigger_action(data_cell[:accessory][:action], data_cell[:accessory][:arguments], index_path) if data_cell[:accessory][:action]
       end
@@ -131,7 +131,7 @@ module ProMotion
       deletable_index_paths = []
       Array(index_paths).each do |index_path|
         delete_cell = false
-        delete_cell = send(:on_cell_deleted, self.promotion_table_data.cell(index_path: index_path)) if self.respond_to?("on_cell_deleted:")
+        delete_cell = send(:on_cell_deleted, cell_at(index_path: index_path)) if self.respond_to?("on_cell_deleted:")
         unless delete_cell == false
           self.promotion_table_data.delete_cell(index_path: index_path)
           deletable_index_paths << index_path
@@ -162,6 +162,11 @@ module ProMotion
       !!isEditing
     end
 
+    # Returns the data cell
+    def cell_at(args = {})
+      self.promotion_table_data.cell(args)
+    end
+
     ########## Cocoa touch methods #################
     def numberOfSectionsInTableView(_)
       self.promotion_table_data.sections.length
@@ -186,23 +191,24 @@ module ProMotion
 
     def tableView(_, cellForRowAtIndexPath: index_path)
       params = index_path_to_section_index(index_path: index_path)
-      data_cell = self.promotion_table_data.cell(section: params[:section], index: params[:index])
+      data_cell = cell_at(index: params[:index], section: params[:section])
       return UITableViewCell.alloc.init unless data_cell
       create_table_cell(data_cell)
     end
 
     def tableView(_, willDisplayCell: table_cell, forRowAtIndexPath: index_path)
-      data_cell = self.promotion_table_data.cell(index_path: index_path)
+      data_cell = cell_at(index_path: index_path)
+      try :will_display_cell, table_cell, index_path
       table_cell.send(:will_display) if table_cell.respond_to?(:will_display)
       table_cell.send(:restyle!) if table_cell.respond_to?(:restyle!) # Teacup compatibility
     end
 
     def tableView(_, heightForRowAtIndexPath: index_path)
-      (self.promotion_table_data.cell(index_path: index_path)[:height] || tableView.rowHeight).to_f
+      (cell_at(index_path: index_path)[:height] || tableView.rowHeight).to_f
     end
 
     def tableView(table_view, didSelectRowAtIndexPath: index_path)
-      data_cell = self.promotion_table_data.cell(index_path: index_path)
+      data_cell = cell_at(index_path: index_path)
       table_view.deselectRowAtIndexPath(index_path, animated: true) unless data_cell[:keep_selection] == true
       trigger_action(data_cell[:action], data_cell[:arguments], index_path) if data_cell[:action]
     end
@@ -213,7 +219,7 @@ module ProMotion
     end
 
     def tableView(_, editingStyleForRowAtIndexPath: index_path)
-      data_cell = self.promotion_table_data.cell(index_path: index_path, unfiltered: true)
+      data_cell = cell_at(index_path: index_path, unfiltered: true)
       map_cell_editing_style(data_cell[:editing_style])
     end
 
@@ -224,7 +230,7 @@ module ProMotion
     end
 
     def tableView(_, canMoveRowAtIndexPath:index_path)
-      data_cell = self.promotion_table_data.cell(index_path: index_path, unfiltered: true)
+      data_cell = cell_at(index_path: index_path, unfiltered: true)
 
       if (!data_cell[:moveable].nil? || data_cell[:moveable].is_a?(Symbol)) && data_cell[:moveable] != false
         true
@@ -234,7 +240,7 @@ module ProMotion
     end
 
     def tableView(_, targetIndexPathForMoveFromRowAtIndexPath:source_index_path, toProposedIndexPath:proposed_destination_index_path)
-      data_cell = self.promotion_table_data.cell(index_path: source_index_path, unfiltered: true)
+      data_cell = cell_at(index_path: source_index_path, unfiltered: true)
 
       if data_cell[:moveable] == :section && source_index_path.section != proposed_destination_index_path.section
         source_index_path
@@ -256,7 +262,7 @@ module ProMotion
         }
         send(:on_cell_moved, args)
       else
-        PM.logger.warn "Implement the on_cell_moved method in your PM::TableScreen to be notified when a user moves a cell."
+        mp "Implement the on_cell_moved method in your PM::TableScreen to be notified when a user moves a cell.", force_color: :yellow
       end
     end
 
@@ -272,7 +278,7 @@ module ProMotion
     end
 
     def deleteRowsAtIndexPaths(index_paths, withRowAnimation: animation)
-      PM.logger.warn "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)'."
+      mp "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)'.", force_color: :yellow
       delete_row(index_paths, animation)
     end
 
@@ -332,6 +338,5 @@ module ProMotion
     def self.included(base)
       base.extend(TableClassMethods)
     end
-
   end
 end

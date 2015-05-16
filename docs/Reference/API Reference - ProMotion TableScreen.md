@@ -93,7 +93,7 @@ def table_data
 end
 
 def visit_state(args={})
-  PM.logger.info args[:state] # => instance of State
+  mp args[:state] # => instance of State
 end
 ```
 
@@ -232,6 +232,19 @@ def on_cell_reused(cell, data)
   super
   cell.my_cool_method(data[:properties][:my_property])
   cell.contentView.backgroundColor = UIColor.purpleColor
+end
+```
+
+#### will_display_cell(cell, index_path)
+
+Fires right before a cell is displayed in a table. Use this method to do additional setup on the cell, or other operations such as infinite scroll.
+
+```ruby
+def will_display_cell(cell, index_path)
+  cell.backgroundColor = UIColor.clearColor
+  if index_path.row >= @data.length
+    load_more_data   # infinite scroll
+  end
 end
 ```
 

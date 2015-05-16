@@ -6,6 +6,7 @@ module ProMotion
     include ProMotion::Table::Indexable
     include ProMotion::Table::Longpressable
     include ProMotion::Table::Utils
+    include ProMotion::TableBuilder
 
     attr_reader :promotion_table_data
 
@@ -24,7 +25,7 @@ module ProMotion
     end
 
     def check_table_data
-      PM.logger.error "Missing #table_data method in TableScreen #{self.class.to_s}." unless self.respond_to?(:table_data)
+      mp("Missing #table_data method in TableScreen #{self.class.to_s}.", force_color: :red) unless self.respond_to?(:table_data)
     end
 
     def promotion_table_data
@@ -38,7 +39,7 @@ module ProMotion
           if view.is_a? UIView
             self.tableView.send(camelize("set_table_#{hf_view}_view:"), view)
           else
-            PM.logger.warn "Table #{hf_view} view must be a UIView."
+            mp "Table #{hf_view} view must be a UIView.", force_color: :yellow
           end
         end
       end
@@ -72,7 +73,7 @@ module ProMotion
         if defined?(UIRefreshControl)
           self.make_refreshable(self.class.get_refreshable_params)
         else
-          PM.logger.warn "To use the refresh control on < iOS 6, you need to include the CocoaPod 'CKRefreshControl'."
+          mp "To use the refresh control on < iOS 6, you need to include the CocoaPod 'CKRefreshControl'.", force_color: :yellow
         end
       end
     end
@@ -129,21 +130,12 @@ module ProMotion
       @table_search_display_controller.searchResultsTableView.reloadData if searching?
     end
 
-    def trigger_action(action, arguments, index_path)
-      return PM.logger.info "Action not implemented: #{action.to_s}" unless self.respond_to?(action)
-      case self.method(action).arity
-      when 0 then self.send(action) # Just call the method
-      when 2 then self.send(action, arguments, index_path) # Send arguments and index path
-      else self.send(action, arguments) # Send arguments
-      end
-    end
-
     def accessory_toggled_switch(switch)
       table_cell = closest_parent(UITableViewCell, switch)
       index_path = closest_parent(UITableView, table_cell).indexPathForCell(table_cell)
 
       if index_path
-        data_cell = promotion_table_data.cell(section: index_path.section, index: index_path.row)
+        data_cell = cell_at(index_path: index_path)
         data_cell[:accessory][:arguments][:value] = switch.isOn if data_cell[:accessory][:arguments].is_a?(Hash)
         trigger_action(data_cell[:accessory][:action], data_cell[:accessory][:arguments], index_path) if data_cell[:accessory][:action]
       end
@@ -153,36 +145,13 @@ module ProMotion
       deletable_index_paths = []
       Array(index_paths).each do |index_path|
         delete_cell = false
-        delete_cell = send(:on_cell_deleted, self.promotion_table_data.cell(index_path: index_path)) if self.respond_to?("on_cell_deleted:")
+        delete_cell = send(:on_cell_deleted, cell_at(index_path: index_path)) if self.respond_to?("on_cell_deleted:")
         unless delete_cell == false
           self.promotion_table_data.delete_cell(index_path: index_path)
           deletable_index_paths << index_path
         end
       end
       table_view.deleteRowsAtIndexPaths(deletable_index_paths, withRowAnimation: map_row_animation_symbol(animation)) if deletable_index_paths.length > 0
-    end
-
-    def create_table_cell(data_cell)
-      new_cell = nil
-      table_cell = table_view.dequeueReusableCellWithIdentifier(data_cell[:cell_identifier]) || begin
-        new_cell = data_cell[:cell_class].alloc.initWithStyle(data_cell[:cell_style], reuseIdentifier:data_cell[:cell_identifier])
-        new_cell.extend(PM::TableViewCellModule) unless new_cell.is_a?(PM::TableViewCellModule)
-        new_cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
-        new_cell.clipsToBounds = true # fix for changed default in 7.1
-        on_cell_created new_cell, data_cell
-        new_cell
-      end
-      table_cell.setup(data_cell, self) if table_cell.respond_to?(:setup)
-      on_cell_reused(table_cell, data_cell) if !new_cell
-      table_cell
-    end
-
-    def on_cell_created(new_cell, data_cell)
-      new_cell.send(:on_load) if new_cell.respond_to?(:on_load)
-    end
-
-    def on_cell_reused(cell, data)
-      cell.send(:on_reuse) if cell.respond_to?(:on_reuse)
     end
 
     def update_table_data(args = {})
@@ -205,6 +174,11 @@ module ProMotion
 
     def edit_mode?
       !!isEditing
+    end
+
+    # Returns the data cell
+    def cell_at(args = {})
+      self.promotion_table_data.cell(args)
     end
 
     ########## Cocoa touch methods #################
@@ -231,29 +205,30 @@ module ProMotion
 
     def tableView(_, cellForRowAtIndexPath: index_path)
       params = index_path_to_section_index(index_path: index_path)
-      data_cell = self.promotion_table_data.cell(section: params[:section], index: params[:index])
+      data_cell = cell_at(index: params[:index], section: params[:section])
       return UITableViewCell.alloc.init unless data_cell
       create_table_cell(data_cell)
     end
 
     def tableView(_, willDisplayCell: table_cell, forRowAtIndexPath: index_path)
-      data_cell = self.promotion_table_data.cell(index_path: index_path)
+      data_cell = cell_at(index_path: index_path)
+      try :will_display_cell, table_cell, index_path
       table_cell.send(:will_display) if table_cell.respond_to?(:will_display)
       table_cell.send(:restyle!) if table_cell.respond_to?(:restyle!) # Teacup compatibility
     end
 
     def tableView(_, heightForRowAtIndexPath: index_path)
-      (self.promotion_table_data.cell(index_path: index_path)[:height] || tableView.rowHeight).to_f
+      (cell_at(index_path: index_path)[:height] || tableView.rowHeight).to_f
     end
 
     def tableView(table_view, didSelectRowAtIndexPath: index_path)
-      data_cell = self.promotion_table_data.cell(index_path: index_path)
+      data_cell = cell_at(index_path: index_path)
       table_view.deselectRowAtIndexPath(index_path, animated: true) unless data_cell[:keep_selection] == true
       trigger_action(data_cell[:action], data_cell[:arguments], index_path) if data_cell[:action]
     end
 
     def tableView(_, editingStyleForRowAtIndexPath: index_path)
-      data_cell = self.promotion_table_data.cell(index_path: index_path, unfiltered: true)
+      data_cell = cell_at(index_path: index_path, unfiltered: true)
       map_cell_editing_style(data_cell[:editing_style])
     end
 
@@ -266,7 +241,7 @@ module ProMotion
     end
 
     def tableView(_, canMoveRowAtIndexPath:index_path)
-      data_cell = self.promotion_table_data.cell(index_path: index_path, unfiltered: true)
+      data_cell = cell_at(index_path: index_path, unfiltered: true)
 
       if (!data_cell[:moveable].nil? || data_cell[:moveable].is_a?(Symbol)) && data_cell[:moveable] != false
         true
@@ -276,7 +251,7 @@ module ProMotion
     end
 
     def tableView(_, targetIndexPathForMoveFromRowAtIndexPath:source_index_path, toProposedIndexPath:proposed_destination_index_path)
-      data_cell = self.promotion_table_data.cell(index_path: source_index_path, unfiltered: true)
+      data_cell = cell_at(index_path: source_index_path, unfiltered: true)
 
       if data_cell[:moveable] == :section && source_index_path.section != proposed_destination_index_path.section
         source_index_path
@@ -298,7 +273,7 @@ module ProMotion
         }
         send(:on_cell_moved, args)
       else
-        PM.logger.warn "Implement the on_cell_moved method in your PM::TableScreen to be notified when a user moves a cell."
+        mp "Implement the on_cell_moved method in your PM::TableScreen to be notified when a user moves a cell.", force_color: :yellow
       end
     end
 
@@ -314,7 +289,7 @@ module ProMotion
     end
 
     def deleteRowsAtIndexPaths(index_paths, withRowAnimation: animation)
-      PM.logger.warn "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)'."
+      mp "ProMotion expects you to use 'delete_cell(index_paths, animation)'' instead of 'deleteRowsAtIndexPaths(index_paths, withRowAnimation:animation)'.", force_color: :yellow
       delete_row(index_paths, animation)
     end
 
@@ -371,88 +346,8 @@ module ProMotion
       }[symbol] || symbol || UITableViewRowAnimationAutomatic
     end
 
-    module TableClassMethods
-      def table_style
-        UITableViewStylePlain
-      end
-
-      def row_height(height, args={})
-        if height == :auto
-          if UIDevice.currentDevice.systemVersion.to_f < 8.0
-            height = args[:estimated] || 44.0
-            PM.logger.warn "Using `row_height :auto` is not supported in iOS 7 apps. Setting to #{height}."
-          else
-            height = UITableViewAutomaticDimension
-          end
-        end
-        args[:estimated] ||= height unless height == UITableViewAutomaticDimension
-        @row_height = { height: height, estimated: args[:estimated] || 44.0 }
-      end
-
-      def get_row_height
-        @row_height ||= nil
-      end
-
-      # Searchable
-      def searchable(params={})
-        @searchable_params = params
-        @searchable = true
-      end
-
-      def get_searchable_params
-        @searchable_params ||= nil
-      end
-
-      def get_searchable
-        @searchable ||= false
-      end
-
-      # Refreshable
-      def refreshable(params = {})
-        @refreshable_params = params
-        @refreshable = true
-      end
-
-      def get_refreshable
-        @refreshable ||= false
-      end
-
-      def get_refreshable_params
-        @refreshable_params ||= nil
-      end
-
-      # Indexable
-      def indexable(params = {})
-        @indexable_params = params
-        @indexable = true
-      end
-
-      def get_indexable
-        @indexable ||= false
-      end
-
-      def get_indexable_params
-        @indexable_params ||= nil
-      end
-
-      # Longpressable
-      def longpressable(params = {})
-        @longpressable_params = params
-        @longpressable = true
-      end
-
-      def get_longpressable
-        @longpressable ||= false
-      end
-
-      def get_longpressable_params
-        @longpressable_params ||= nil
-      end
-    end
-
     def self.included(base)
       base.extend(TableClassMethods)
     end
-
   end
 end

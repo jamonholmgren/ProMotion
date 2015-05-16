@@ -4,6 +4,7 @@ require 'motion/project/template/ios'
 require 'bundler'
 Bundler.require(:development)
 require 'ProMotion'
+require 'motion_print'
 
 Motion::Project::App.setup do |app|
   app.name = 'ProMotion'

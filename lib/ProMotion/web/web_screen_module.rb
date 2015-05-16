@@ -76,7 +76,7 @@ module ProMotion
     end
 
     def check_content_data
-      PM.logger.error "Missing #content method in WebScreen #{self.class.to_s}." unless self.respond_to?(:content)
+      mp("Missing #content method in WebScreen #{self.class.to_s}.", force_color: :red) unless self.respond_to?(:content)
     end
 
     def html

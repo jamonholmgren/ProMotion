@@ -93,6 +93,16 @@ end
 
 # Changelog
 
+## Version 2.4.0
+
+This release includes several new features and is backwards compatible with all 2.x releases.
+
+* PR #686 Adds :searchable to the whitelisted properties a cell can have so that a warning is not generated.
+* PR #688 Adds support for SDWebImage and takes preference over JMImageCache. _JMImageCache will still be supported till ProMotion 3.0 but we highly recommend you switch to SDWebImage._
+* PR #679 Extract methods from tablescreen for reuse in modules for [redpotion](https://github.com/infinitered/redpotion).
+* PR #677 Added `add_child_screen` and `remove_child_screen` methods to `PM::Screen`.
+* PR #687 Adds persisting tab order when changed by the user for tab bars over 5 screens.
+
 ## Version 2.3.0
 
 This release includes several new features and is backwards compatible with all 2.x releases.

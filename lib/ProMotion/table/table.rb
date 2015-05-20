@@ -214,7 +214,7 @@ module ProMotion
     end
 
     def tableView(_, canEditRowAtIndexPath:index_path)
-      data_cell = self.promotion_table_data.cell(index_path: index_path, unfiltered: true)
+      data_cell = cell_at(index_path: index_path, unfiltered: true)
       [:insert,:delete].include?(data_cell[:editing_style])
     end
 

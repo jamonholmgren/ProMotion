@@ -31,7 +31,7 @@ class App
   def self.create(name)
     return puts "Usage: promotion new <appname>" unless name.to_s.length > 0
     info "Creating new ProMotion iOS app #{name}"
-    sh "motion create --template=git://github.com/jamonholmgren/promotion-template.git #{name}"
+    sh "motion create --template=https://github.com/jamonholmgren/promotion-template.git #{name}"
   end
 
   description "Command line for ProMotion."

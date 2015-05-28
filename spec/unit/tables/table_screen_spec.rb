@@ -62,37 +62,6 @@ describe "table screens" do
       screen.view.rowHeight.should == 77
       screen.view.estimatedRowHeight.should == 77
     end
-
-    it "sets up proper accessibility methods" do
-      class NoneditableTableScreen < PM::TableScreen
-        def on_load
-        end
-
-        def table_data
-          [{
-            title: "test",
-            cells: [{ title: "Non-editable test" }]
-          }]
-        end
-      end
-
-      noneditable = NoneditableTableScreen.new
-      noneditable.on_load
-      noneditable.editable?.should==false
-      index_path = NSIndexPath.indexPathForRow(0, inSection: 0)
-      lambda { noneditable.tableView(noneditable, commitEditingStyle: UITableViewCellEditingStyleDelete, forRowAtIndexPath: index_path) }.should.raise NoMethodError
-      @screen.editable?.should == true
-      @screen.should.respond_to(:"tableView:commitEditingStyle:forRowAtIndexPath")
-    end
-
-    it "calls will_display_cell" do
-      index_path = NSIndexPath.indexPathForRow(0, inSection: 0)
-      @screen.mock!("will_display_cell:") do |cell, i|
-        cell.should.be.kind_of PM::TableViewCell
-        i.should == index_path
-      end
-      @screen.tableView(nil, willDisplayCell: PM::TableViewCell.new, forRowAtIndexPath: index_path)
-    end
   end
 
   describe "search functionality" do
@@ -281,4 +250,3 @@ describe "table screens" do
   end
 
 end
-

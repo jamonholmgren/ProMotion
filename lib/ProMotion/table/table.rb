@@ -21,7 +21,6 @@ module ProMotion
       set_up_refreshable
       set_up_longpressable
       set_up_row_height
-      set_up_accessibility
     end
 
     def check_table_data
@@ -89,19 +88,6 @@ module ProMotion
         self.view.rowHeight = params[:height]
         self.view.estimatedRowHeight = params[:estimated]
       end
-    end
-
-    def editable?
-      self.promotion_table_data.sections.each do |section|
-        section[:cells].each do |cell|
-          return true if [:insert,:delete].include?(cell[:editing_style])
-        end
-      end
-      false
-    end
-
-    def set_up_accessibility
-      self.extend(Editable) if editable?
     end
 
     def searching?
@@ -227,16 +213,19 @@ module ProMotion
       trigger_action(data_cell[:action], data_cell[:arguments], index_path) if data_cell[:action]
     end
 
+    def tableView(_, canEditRowAtIndexPath:index_path)
+      data_cell = cell_at(index_path: index_path, unfiltered: true)
+      [:insert,:delete].include?(data_cell[:editing_style])
+    end
+
     def tableView(_, editingStyleForRowAtIndexPath: index_path)
       data_cell = cell_at(index_path: index_path, unfiltered: true)
       map_cell_editing_style(data_cell[:editing_style])
     end
 
-    module Editable
-      def tableView(_, commitEditingStyle: editing_style, forRowAtIndexPath: index_path)
-        if editing_style == UITableViewCellEditingStyleDelete
-          delete_row(index_path)
-        end
+    def tableView(_, commitEditingStyle: editing_style, forRowAtIndexPath: index_path)
+      if editing_style == UITableViewCellEditingStyleDelete
+        delete_row(index_path)
       end
     end
 

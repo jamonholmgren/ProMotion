@@ -27,7 +27,7 @@ module ProMotion
       params = index_path_to_section_index(params)
       table_section = params[:unfiltered] ? self.data[params[:section]] : self.section(params[:section])
       c = table_section[:cells].at(params[:index].to_i)
-      set_data_cell_defaults c
+      set_data_cell_defaults(c)
     end
 
     def delete_cell(params={})

@@ -10,6 +10,7 @@ module ProMotion
     attr_accessor :parent_screen, :first_screen, :modal, :split_screen
 
     def screen_init(args = {})
+      @screen_options = args
       check_ancestry
       resolve_title
       apply_properties(args)

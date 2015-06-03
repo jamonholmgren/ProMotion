@@ -7,12 +7,13 @@ module ProMotion
     include ProMotion::Tabs
     include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
 
-    attr_accessor :parent_screen, :first_screen, :modal, :split_screen
+    attr_accessor :parent_screen, :first_screen, :modal, :split_screen, :hide_nav_bar
 
     def screen_init(args = {})
       check_ancestry
       resolve_title
       apply_properties(args)
+      @hide_nav_bar = args[:hide_nav_bar] unless args[:hide_nav_bar].nil?
       add_nav_bar(args) if args[:nav_bar]
       add_nav_bar_buttons
       tab_bar_setup
@@ -39,6 +40,7 @@ module ProMotion
 
     def view_will_appear(animated)
       resolve_status_bar
+      self.navigationController.setNavigationBarHidden(@hide_nav_bar, animated: false) unless @hide_nav_bar.nil?
       self.will_appear
 
       self.will_present if isMovingToParentViewController

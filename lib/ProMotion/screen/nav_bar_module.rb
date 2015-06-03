@@ -61,7 +61,7 @@ module ProMotion
         nav
       end
       self.navigationController.toolbarHidden = !args[:toolbar] unless args[:toolbar].nil?
-      self.navigationController.setNavigationBarHidden(args[:hide_nav_bar], animated: false) unless args[:hide_nav_bar].nil?
+      # self.navigationController.setNavigationBarHidden(args[:hide_nav_bar], animated: false) unless args[:hide_nav_bar].nil?
     end
 
   private

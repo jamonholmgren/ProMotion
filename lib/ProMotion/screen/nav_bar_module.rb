@@ -61,10 +61,18 @@ module ProMotion
         nav
       end
       self.navigationController.toolbarHidden = !args[:toolbar] unless args[:toolbar].nil?
-      # self.navigationController.setNavigationBarHidden(args[:hide_nav_bar], animated: false) unless args[:hide_nav_bar].nil?
+      hide_nav_bar(args[:hide_nav_bar])
+    end
+
+    def view_will_appear(animated)
+      self.navigationController.setNavigationBarHidden(@hide_nav_bar, animated: false) unless @hide_nav_bar.nil?
     end
 
   private
+
+    def hide_nav_bar(is_hidden)
+      @hide_nav_bar = is_hidden
+    end
 
     def create_toolbar_button(args = {})
       button_type = args[:image] || args[:button] || args[:custom_view] || args[:title] || "Button"

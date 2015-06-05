@@ -82,6 +82,9 @@ module ProMotion
       # Instantiate screen if given a class
       screen = screen.new if screen.respond_to?(:new)
 
+      # Store screen options
+      screen.instance_variable_set(:@screen_options, args)
+
       # Set parent
       screen.parent_screen = self if screen.respond_to?(:parent_screen=)
 

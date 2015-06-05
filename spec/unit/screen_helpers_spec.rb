@@ -135,7 +135,7 @@ describe "screen helpers" do
         new_screen.modal?.should == true
         new_screen.hidesBottomBarWhenPushed.should == true
         new_screen.nav_bar?.should == true
-        new_screen.instance_variable_get(:@screen_options).should == true
+        new_screen.instance_variable_get(:@screen_options)[:hide_nav_bar].should == true
       end
 
       it "should present the navigationController when showing a modal screen" do

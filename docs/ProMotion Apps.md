@@ -142,7 +142,9 @@ This application is open source! [Check out the source code](https://github.com/
 
 [App Store Link](https://itunes.apple.com/us/app/bright-phonics/id986665887)
 
-Bright Phonics (by [Zero41 Software](http://zero41.com/bright-phonics/)) is an educational app to help children learn to read. It is designed to be the most efficient way for children to learn and memorize English phonemes. Bright Phonics uses the scientifically supported Spaced Repetition learning technique to enable fast, efficient learning.
+Bright Phonics is an educational app to help children learn to read. It is designed to be the most efficient way for children to learn and memorize English phonemes. Bright Phonics uses the scientifically supported Spaced Repetition learning technique to enable fast, efficient learning.
+
+More information: [http://zero41.com/bright-phonics/](http://zero41.com/bright-phonics/)
 
 ### Your app here
 

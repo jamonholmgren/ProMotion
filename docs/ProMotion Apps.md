@@ -5,7 +5,7 @@
 [![rm yelp](http://media.clearsightstudio.com/jamon/iOS_Simulator__iPhone_Retina_4inch__iOS_7.0.3_11B508_20140114_091423.jpg)](https://github.com/faizaanshamsi/rubymotion_yelp)
 
 > Simple Yelp search using Rubymotion. My First Rubymotion app!
-> 
+>
 > Uses Yelp API v1.0 so search by location. Allows you to filter results in a table view. Clicking on a results will redirect you to the mobile yelp page.
 
 By [@faizaanshamsi](https://twitter.com/faizaanshamsi).
@@ -136,6 +136,13 @@ Dropzones lists all current U.S. Parachute Association (USPA) member dropzones i
 
 This application is open source! [Check out the source code](https://github.com/OTGApps/Dropzones)
 
+### Bright Phonics
+
+[![https://pbs.twimg.com/profile_images/593445791345192960/YZlXl_CE.png](https://pbs.twimg.com/profile_images/593445791345192960/YZlXl_CE.png)](https://itunes.apple.com/us/app/bright-phonics/id986665887)
+
+[App Store Link](https://itunes.apple.com/us/app/bright-phonics/id986665887)
+
+Bright Phonics (by [Zero41 Software](http://zero41.com/bright-phonics/)) is an educational app to help children learn to read. It is designed to be the most efficient way for children to learn and memorize English phonemes. Bright Phonics uses the scientifically supported Spaced Repetition learning technique to enable fast, efficient learning.
 
 ### Your app here
 

@@ -218,7 +218,7 @@ module ProMotion
         end
         @title = t if t
         @title_type = :text if t
-        @title ||= self.to_s
+        @title
       end
 
       def title_type

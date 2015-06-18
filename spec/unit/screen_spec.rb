@@ -6,6 +6,16 @@ describe "screen properties" do
     @screen.on_load
   end
 
+  it "does not have a default title" do
+    screen = UntitledScreen.new
+    screen.title.should == nil
+  end
+
+  it "does not display a default title in the nav bar" do
+    screen = UntitledScreen.new
+    screen.navigationItem.title.should == nil
+  end
+
   it "should store title" do
     HomeScreen.title.should == "Home"
   end

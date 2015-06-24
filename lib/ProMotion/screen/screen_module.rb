@@ -70,6 +70,11 @@ module ProMotion
     def on_disappear; end
     def on_dismiss; end
 
+    def on_live_reload
+      self.view.subviews.each(&:removeFromSuperview)
+      on_load
+    end
+
     def should_rotate(orientation)
       case orientation
       when UIInterfaceOrientationPortrait

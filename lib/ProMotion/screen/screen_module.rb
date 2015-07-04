@@ -70,6 +70,13 @@ module ProMotion
     def on_disappear; end
     def on_dismiss; end
 
+    def did_receive_memory_warning
+      self.on_memory_warning
+    end
+    def on_memory_warning
+      mp "Received memory warning in #{self.inspect}. You should implement on_memory_warning in your secreen.", force_color: :red
+    end
+
     def should_rotate(orientation)
       case orientation
       when UIInterfaceOrientationPortrait

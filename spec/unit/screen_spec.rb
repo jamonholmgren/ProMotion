@@ -211,6 +211,33 @@ describe "screen properties" do
 
   end
 
+  describe "memory warnings" do
+
+    it "should call didReceiveMemoryWarning when exists" do
+      memory_screen = MemoryWarningScreenSelfImplemented.new
+      memory_screen.memory_warning_from_uikit.should.be.nil
+      memory_screen.didReceiveMemoryWarning
+      memory_screen.memory_warning_from_uikit.should == true
+    end
+
+    it "should call super up the chain" do
+      memory_screen = MemoryWarningNotSoSuperScreen.new
+
+      memory_screen.memory_warning_from_super.should.be.nil
+      memory_screen.didReceiveMemoryWarning
+      memory_screen.memory_warning_from_super.should == true
+    end
+
+    it "should call on_memory_warning when implemented" do
+      memory_screen = MemoryWarningScreen.new
+
+      memory_screen.memory_warning_from_pm.should.be.nil
+      memory_screen.didReceiveMemoryWarning
+      memory_screen.memory_warning_from_pm.should == true
+    end
+
+  end
+
   describe "navigation controller behavior" do
 
     it "should have a navigation bar" do

@@ -6,4 +6,3 @@
       KIdentifier = '__ProMotion_CollectionViewCell'
     end
   end
-

@@ -4,7 +4,7 @@ class TestCollectionScreen < ProMotion::CollectionScreen
                     :direction                 => :horizontal,
                     :minimum_line_spacing      => 10,
                     :minimum_interitem_spacing => 10,
-                    :item_size                 => [80, 80],
+                    :item_size                 => [100, 80],
                     :section_inset             => [10, 10, 10, 10]
 
   cell_view 'custom_cell', CustomCollectionViewCell

@@ -2,7 +2,7 @@ module CollectionClassMethods
 
   def collection_layout(klass, options={})
     @layout                         = klass.new
-    @layout.scrollDirection         = map_layout_direction(options.fetch(:direction, :horizontal))
+    @layout.scrollDirection         = map_layout_direction(options.fetch(:direction, :vertical))
 
     @layout.minimumLineSpacing      = options[:minimum_line_spacing] if options.has_key?(:minimum_line_spacing)
     @layout.minimumInteritemSpacing = options[:minimum_interitem_spacing] if options.has_key?(:minimum_interitem_spacing)

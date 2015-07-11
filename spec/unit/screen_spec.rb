@@ -61,6 +61,13 @@ describe "screen properties" do
     UIApplication.sharedApplication.statusBarStyle.should == UIStatusBarStyleLightContent
   end
 
+  it "should default to a hidden UIStatusBar if already hidden" do
+    UIApplication.sharedApplication.setStatusBarHidden(true, withAnimation: UIStatusBarAnimationNone)
+    @screen.class.status_bar :default
+    @screen.view_will_appear(false)
+    UIApplication.sharedApplication.isStatusBarHidden.should == true
+  end
+
   it "should set the tab bar item with a system item" do
     @screen.set_tab_bar_item system_item: :contacts
     comparison = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemContacts, tag: 0)

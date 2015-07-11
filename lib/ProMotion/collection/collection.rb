@@ -81,6 +81,8 @@ module ProMotion
         view_layout.itemSize
       elsif view_layout.estimatedItemSize
         view_layout.estimatedItemSize
+      else
+        mp "Implement the size_at_index_path method in your PM::CollectionScreen or add item_size or estimated_item_size in the layout options to configure the size of your cells.", force_color: :yellow
       end
     end
 

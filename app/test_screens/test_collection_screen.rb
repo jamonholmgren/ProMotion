@@ -7,14 +7,18 @@ class TestCollectionScreen < ProMotion::CollectionScreen
                     item_size:                 [100, 80],
                     section_inset:             [10, 10, 10, 10]
 
-  cell_view 'custom_cell', CustomCollectionViewCell
+  cell_classes custom_cell: CustomCollectionViewCell
 
   def collection_data
     (1..10).to_a.map do |i|
       (1..10).to_a.map do |o|
         {
-            cell_identifier: 'custom_cell',
-            title:           "#{i}x#{o}"
+            cell_identifier:  :custom_cell,
+            title:            "#{i}x#{o}",
+            background_color: UIColor.colorWithRed(rand(255) / 255.0,
+                                                   green: rand(255) / 255.0,
+                                                   blue:  rand(255) / 255.0,
+                                                   alpha: 1.0)
         }
       end
     end

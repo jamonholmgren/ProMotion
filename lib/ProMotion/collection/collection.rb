@@ -37,6 +37,17 @@ module ProMotion
       self.promotion_collection_data.cell(args)
     end
 
+    def update_collection_view_data(data, args = {})
+      self.promotion_collection_data.data = data
+      if args[:index_paths]
+        collection_view.reloadItemsAtIndexPaths(Array(args[:index_paths]))
+      elsif args[:sections]
+        collection_view.reloadSections(args[:sections])
+      else
+        collection_view.reloadData
+      end
+    end
+
     ########## Cocoa touch methods #################
 
     ## UICollectionViewDataSource ##

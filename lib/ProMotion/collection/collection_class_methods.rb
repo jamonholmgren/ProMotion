@@ -8,6 +8,7 @@ module CollectionClassMethods
     @layout.minimumInteritemSpacing = options[:minimum_interitem_spacing] if options.has_key?(:minimum_interitem_spacing)
     @layout.itemSize                = options[:item_size] if options.has_key?(:item_size)
     @layout.estimatedItemSize       = options[:estimated_item_size] if options.has_key?(:estimated_item_size)
+    @layout.sectionInset            = options[:section_inset] if options.has_key?(:section_inset)
   end
 
   def get_collection_layout
@@ -21,13 +22,13 @@ module CollectionClassMethods
 
   def map_layout_direction(symbol)
     {
-      horizontal: UICollectionViewScrollDirectionHorizontal,
-      vertical:   UICollectionViewScrollDirectionVertical
+        horizontal: UICollectionViewScrollDirectionHorizontal,
+        vertical:   UICollectionViewScrollDirectionVertical
     }[symbol] || symbol || UICollectionViewScrollDirectionHorizontal
   end
 
   def cell_view(identifier, klass)
-    @cell_classes ||= {}
+    @cell_classes             ||= {}
     @cell_classes[identifier] = klass
   end
 

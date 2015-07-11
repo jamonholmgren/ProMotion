@@ -20,7 +20,6 @@ Motion::Project::App.setup do |app|
   app.files_dependencies({
     "#{core_lib}/version.rb" => [ "#{core_lib}/pro_motion.rb" ],
     "#{core_lib}/cocoatouch/table_view_cell.rb" => [ "#{core_lib}/table/cell/table_view_cell_module.rb" ],
-    "#{core_lib}/cocoatouch/collection_view_cell.rb" => [ "#{core_lib}/collection/cell/collection_view_cell_module.rb" ],
     "#{core_lib}/table/cell/table_view_cell_module.rb" => [ "#{core_lib}/styling/styling.rb" ],
     "#{core_lib}/cocoatouch/collection_view_cell.rb" => [ "#{core_lib}/collection/cell/collection_view_cell_module.rb" ],
     "#{core_lib}/collection/collection_screen.rb" => [
@@ -53,9 +52,9 @@ Motion::Project::App.setup do |app|
        "#{core_lib}/table/table_utils.rb"
     ],
     "#{core_lib}/collection/data/collection_data.rb" => [
-        "#{core_lib}/collection/data/collection_data_builder.rb",
-        "#{core_lib}/collection/collection.rb",
-        "#{core_lib}/table/table_utils.rb"
+       "#{core_lib}/collection/data/collection_data_builder.rb",
+       "#{core_lib}/collection/collection.rb",
+       "#{core_lib}/table/table_utils.rb"
     ],
     "#{core_lib}/table/table.rb" => [
        "#{core_lib}/table/table_class_methods.rb",
@@ -72,9 +71,9 @@ Motion::Project::App.setup do |app|
        "#{core_lib}/table/table_utils.rb"
     ],
     "#{core_lib}/collection/collection.rb" => [
-        "#{core_lib}/collection/collection_class_methods.rb",
-        "#{core_lib}/collection/collection_builder.rb",
-        "#{core_lib}/table/table_utils.rb"
+       "#{core_lib}/collection/collection_class_methods.rb",
+       "#{core_lib}/collection/collection_builder.rb",
+       "#{core_lib}/table/table_utils.rb"
     ],
     "#{core_lib}/web/web_screen.rb" => [ "#{core_lib}/web/web_screen_module.rb" ],
     })

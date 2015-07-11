@@ -27,12 +27,11 @@ module CollectionClassMethods
     }[symbol] || symbol || UICollectionViewScrollDirectionHorizontal
   end
 
-  def cell_view(identifier, klass)
-    @cell_classes             ||= {}
-    @cell_classes[identifier] = klass
+  def cell_classes(options={})
+    @cell_classes = options
   end
 
-  def get_cell_views
+  def get_cell_classes
     @cell_classes || nil
   end
 end

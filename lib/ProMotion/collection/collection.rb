@@ -17,9 +17,9 @@ module ProMotion
 
     def set_up_register_class
       collection_view.registerClass(PM::CollectionViewCell, forCellWithReuseIdentifier: PM::CollectionViewCell::KIdentifier)
-      if self.class.get_cell_views
-        self.class.get_cell_views.each do |identifier, klass|
-          collection_view.registerClass(klass, forCellWithReuseIdentifier: identifier)
+      if self.class.get_cell_classes
+        self.class.get_cell_classes.each do |identifier, klass|
+          collection_view.registerClass(klass, forCellWithReuseIdentifier: identifier.to_s)
         end
       end
     end

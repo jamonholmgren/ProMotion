@@ -13,7 +13,7 @@ module ProMotion
     end
 
     def create_collection_cell(data_cell, index_path)
-      cell = collection_view.dequeueReusableCellWithReuseIdentifier(data_cell[:cell_identifier], forIndexPath: index_path)
+      cell = collection_view.dequeueReusableCellWithReuseIdentifier(data_cell[:cell_identifier].to_s, forIndexPath: index_path)
       cell.extend(PM::CollectionViewCellModule) unless cell.is_a?(PM::CollectionViewCellModule)
       cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin
       cell.clipsToBounds    = true

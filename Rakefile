@@ -18,6 +18,7 @@ Motion::Project::App.setup do |app|
   app.files_dependencies({
     "app/test_screens/table_screen_refreshable.rb"   => [ "app/test_screens/test_table_screen.rb" ],
     "app/test_screens/table_screen_longpressable.rb" => [ "app/test_screens/test_table_screen.rb" ],
+    "app/test_screens/test_collection_screen.rb" => [ "app/test_views/custom_collection_view_cell.rb" ],
   })
 end
 

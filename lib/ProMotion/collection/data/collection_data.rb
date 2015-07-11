@@ -25,8 +25,7 @@ module ProMotion
     def cell(params={})
       params  = index_path_to_section_index(params)
       section = self.data[params[:section]]
-      c = section.at(params[:index].to_i)
-      mp c
+      c       = section.at(params[:index].to_i)
       set_data_cell_defaults(c)
     end
   end

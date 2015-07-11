@@ -15,6 +15,7 @@ class TestCollectionScreen < ProMotion::CollectionScreen
         {
             cell_identifier:  :custom_cell,
             title:            "#{i}x#{o}",
+            action:           'touched:',
             background_color: UIColor.colorWithRed(rand(255) / 255.0,
                                                    green: rand(255) / 255.0,
                                                    blue:  rand(255) / 255.0,
@@ -22,5 +23,15 @@ class TestCollectionScreen < ProMotion::CollectionScreen
         }
       end
     end
+  end
+
+  def touched(_)
+    alert = UIAlertController.alertControllerWithTitle("CollectionScreen",
+                                                       message:        "You clicked a row",
+                                                       preferredStyle: UIAlertControllerStyleAlert)
+
+    action = UIAlertAction.actionWithTitle("OK", style: UIAlertActionStyleDefault, handler: nil)
+    alert.addAction(action)
+    self.presentViewController(alert, animated: true, completion: nil)
   end
 end

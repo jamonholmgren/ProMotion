@@ -19,6 +19,7 @@ module ProMotion
     def viewDidLoad
       super
       set_up_register_class
+      self.view_did_load if self.respond_to?(:view_did_load)
     end
 
     def set_up_register_class

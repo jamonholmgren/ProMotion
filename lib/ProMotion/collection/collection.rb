@@ -12,7 +12,14 @@ module ProMotion
 
     def screen_setup
       check_collection_data
+    end
+
+    # Override viewDidLoad here to register cell classes here.
+    # Calling it from `screen_setup` cause `on_load` to be called twice
+    def viewDidLoad
+      super
       set_up_register_class
+      self.view_did_load if self.respond_to?(:view_did_load)
     end
 
     def set_up_register_class

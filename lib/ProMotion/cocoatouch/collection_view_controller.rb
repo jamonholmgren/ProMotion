@@ -10,11 +10,6 @@ module ProMotion
       self.respond_to?(:load_view) ? self.load_view : super
     end
 
-    def viewDidLoad
-      super
-      self.view_did_load if self.respond_to?(:view_did_load)
-    end
-
     def viewWillAppear(animated)
       super
       self.view_will_appear(animated) if self.respond_to?("view_will_appear:")

@@ -76,7 +76,7 @@ module ProMotion
       params    = index_path_to_section_index(index_path: index_path)
       data_cell = cell_at(index: params[:index], section: params[:section])
 
-      trigger_action(data_cell[:action], data_cell[:arguments], index_path) if data_cell[:action]
+      trigger_action(data_cell[:action], data_cell[:arguments], params) if data_cell[:action]
     end
 
     ## UICollectionViewDelegateFlowLayout ##

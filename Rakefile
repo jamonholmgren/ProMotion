@@ -19,6 +19,7 @@ Motion::Project::App.setup do |app|
     "app/screens/table_screen_refreshable.rb"   => [ "app/screens/test_table_screen.rb" ],
     "app/screens/table_screen_longpressable.rb" => [ "app/screens/test_table_screen.rb" ],
     "app/screens/test_collection_screen.rb" => [ "app/test_views/custom_collection_view_cell.rb" ],
+    "app/screens/test_collection2_screen.rb" => [ "app/test_views/custom_collection_view_cell.rb" ],
   })
 end
 

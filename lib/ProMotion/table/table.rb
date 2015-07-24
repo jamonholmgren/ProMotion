@@ -148,7 +148,7 @@ module ProMotion
     end
 
     def toggle_edit_mode(animated = true)
-      edit_mode({enabled: !editing?, animated: animated})
+      edit_mode({enabled: !edit_mode?, animated: animated})
     end
 
     def edit_mode(args = {})
@@ -221,6 +221,11 @@ module ProMotion
     def tableView(_, editingStyleForRowAtIndexPath: index_path)
       data_cell = cell_at(index_path: index_path, unfiltered: true)
       map_cell_editing_style(data_cell[:editing_style])
+    end
+
+    def tableView(_, shouldIndentWhileEditingRowAtIndexPath: index_path)
+      data_cell = cell_at(index_path: index_path, unfiltered: true)
+      data_cell[:indent_while_editing].nil? ? true : data_cell[:indent_while_editing]
     end
 
     def tableView(_, commitEditingStyle: editing_style, forRowAtIndexPath: index_path)

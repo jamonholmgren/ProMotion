@@ -7,7 +7,7 @@ module CollectionClassMethods
     @layout.minimumLineSpacing      = options[:minimum_line_spacing] if options.has_key?(:minimum_line_spacing)
     @layout.minimumInteritemSpacing = options[:minimum_interitem_spacing] if options.has_key?(:minimum_interitem_spacing)
     @layout.itemSize                = options[:item_size] if options.has_key?(:item_size)
-    @layout.estimatedItemSize       = options[:estimated_item_size] if options.has_key?(:estimated_item_size)
+    @layout.estimatedItemSize       = options[:estimated_item_size] if options.has_key?(:estimated_item_size) and @layout.respond_to?(:estimatedItemSize)
     @layout.sectionInset            = options[:section_inset] if options.has_key?(:section_inset)
   end
 

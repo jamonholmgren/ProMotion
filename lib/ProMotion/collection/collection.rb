@@ -54,6 +54,10 @@ module ProMotion
       end
     end
 
+    def reload_data
+      update_collection_view_data(collection_data)
+    end
+
     ########## Cocoa touch methods #################
 
     ## UICollectionViewDataSource ##

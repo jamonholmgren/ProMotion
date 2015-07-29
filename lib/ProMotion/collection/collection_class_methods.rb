@@ -9,6 +9,7 @@ module CollectionClassMethods
     @layout.itemSize                = options[:item_size] if options.has_key?(:item_size)
     @layout.estimatedItemSize       = options[:estimated_item_size] if options.has_key?(:estimated_item_size) and @layout.respond_to?(:estimatedItemSize)
     @layout.sectionInset            = options[:section_inset] if options.has_key?(:section_inset)
+    @layout
   end
 
   def get_collection_layout
@@ -24,7 +25,7 @@ module CollectionClassMethods
     {
         horizontal: UICollectionViewScrollDirectionHorizontal,
         vertical:   UICollectionViewScrollDirectionVertical
-    }[symbol] || symbol || UICollectionViewScrollDirectionHorizontal
+    }[symbol] || symbol || UICollectionViewScrollDirectionVertical
   end
 
   def cell_classes(options={})

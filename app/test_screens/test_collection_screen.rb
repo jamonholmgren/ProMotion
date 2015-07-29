@@ -5,6 +5,7 @@ class TestCollectionScreen < ProMotion::CollectionScreen
                     minimum_line_spacing:      10,
                     minimum_interitem_spacing: 10,
                     item_size:                 [100, 80],
+                    estimated_item_size:       [80, 80],
                     section_inset:             [10, 10, 10, 10]
 
   cell_classes custom_cell: CustomCollectionViewCell

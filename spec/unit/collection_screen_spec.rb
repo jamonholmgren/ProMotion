@@ -16,13 +16,31 @@ describe "collection screens" do
     end
 
     it "should have the proper number of sections" do
-      @view.numberOfSections.should == 10
-      @screen.numberOfSectionsInCollectionView(@view).should == 10
+      @view.numberOfSections.should == 11
+      @screen.numberOfSectionsInCollectionView(@view).should == 11
     end
 
     it "should have the proper number of cells" do
       @view.numberOfItemsInSection(1).should == 10
       @screen.collectionView(@view, numberOfItemsInSection: 1).should == 10
+    end
+
+    it "should call the action" do
+      @screen.mock! :touched do |args|
+        args[:data].should == ['action']
+      end
+
+      index_path = NSIndexPath.indexPathForRow(1, inSection: 1)
+      @screen.collectionView(@view, didSelectItemAtIndexPath: index_path)
+    end
+
+    it "should proc the action" do
+      @screen.mock! :touched do |args|
+        args[:data].should == ['proc']
+      end
+
+      index_path = NSIndexPath.indexPathForRow(1, inSection: 10)
+      @screen.collectionView(@view, didSelectItemAtIndexPath: index_path)
     end
 
     it "should reload data" do

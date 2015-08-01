@@ -11,12 +11,13 @@ class TestCollectionScreen < ProMotion::CollectionScreen
   cell_classes custom_cell: CustomCollectionViewCell
 
   def collection_data
-    (1..10).to_a.map do |i|
+    cells = (1..10).to_a.map do |i|
       (1..10).to_a.map do |o|
         {
             cell_identifier:  :custom_cell,
             title:            "#{i}x#{o}",
             action:           'touched:',
+            arguments:        { data: ['action'] },
             background_color: UIColor.colorWithRed(rand(255) / 255.0,
                                                    green: rand(255) / 255.0,
                                                    blue:  rand(255) / 255.0,
@@ -24,11 +25,26 @@ class TestCollectionScreen < ProMotion::CollectionScreen
         }
       end
     end
+
+    cells << (1..10).to_a.map do |o|
+      {
+          cell_identifier:  :custom_cell,
+          title:            "11x#{o}",
+          action:           -> (args) {
+            touched(args)
+          },
+          arguments:        { data: ['proc'] },
+          background_color: UIColor.colorWithRed(rand(255) / 255.0,
+                                                 green: rand(255) / 255.0,
+                                                 blue:  rand(255) / 255.0,
+                                                 alpha: 1.0)
+      }
+    end
   end
 
-  def touched(_)
+  def touched(args)
     alert = UIAlertController.alertControllerWithTitle("CollectionScreen",
-                                                       message:        "You clicked a row",
+                                                       message:        "You clicked a row #{args[:data].inspect}",
                                                        preferredStyle: UIAlertControllerStyleAlert)
 
     action = UIAlertAction.actionWithTitle("OK", style: UIAlertActionStyleDefault, handler: nil)

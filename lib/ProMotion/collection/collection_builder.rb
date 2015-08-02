@@ -1,24 +1,13 @@
 module ProMotion
   module CollectionBuilder
     def trigger_action(action, arguments, index_path)
-      if action.is_a?(Proc)
-        case arity = action.arity
-        when 0 then action.call # Just call the proc
-        when 1 then action.call(arguments) # Send arguments
-        when 2 then action.call(arguments, index_path) # Send arguments and index path
-        else
-          mp("#{arity} parameters are not supported", force_color: :yellow)
-        end
+      action = (action.is_a?(Proc) ? action : method(action))
+      case arity = action.arity
+      when 0 then action.call # Just call the proc or the method
+      when 2 then action.call(arguments, index_path) # Send arguments and index path
       else
-        return mp("Action not implemented: #{action.to_s}", force_color: :green) unless self.respond_to?(action)
-
-        case arity = self.method(action).arity
-        when 0 then self.send(action) # Just call the method
-        when 2 then self.send(action, arguments, index_path) # Send arguments and index path
-        else
-          mp("Action should not have optional parameters: #{action.to_s}", force_color: :yellow) if arity < 0
-          self.send(action, arguments) # Send arguments
-        end
+        mp("Action should not have optional parameters: #{action.to_s}", force_color: :yellow) if arity < 0
+        action.call(arguments) # Send arguments
       end
     end
 

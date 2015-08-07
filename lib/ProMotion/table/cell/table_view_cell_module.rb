@@ -72,6 +72,18 @@ module ProMotion
       self.imageView.contentMode = map_content_mode_symbol(data_cell[:remote_image][:content_mode]) if data_cell[:remote_image][:content_mode]
     end
 
+    def layoutSubviews
+      super
+      set_remote_image_size
+    end
+
+    def set_remote_image_size
+      return unless data_cell[:remote_image] && data_cell[:remote_image][:size]
+      size = data_cell[:remote_image][:size]
+      size = [size, size] unless size.is_a? Array
+      self.imageView.bounds = [[0, 0], size]
+    end
+
     def set_image
       return unless data_cell[:image]
       cell_image = data_cell[:image].is_a?(Hash) ? data_cell[:image][:image] : data_cell[:image]

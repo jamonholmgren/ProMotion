@@ -70,6 +70,10 @@ describe "PM::Table module" do
         title: "Custom section title 2", title_view: CustomTitleView.new, title_view_height: 50, cells: [ ]
       },{
         title: "Action WIth Index Path Group", cells: [ cell_factory(title: "IndexPath Group 1", action: :tests_index_path) ]
+      }, {
+        title: 40.0, title_view: DynamicHeightTitleView, cells: []
+      }, {
+        title: 121.0, title_view: DynamicHeightTitleView, cells: []
       }]
     end
 
@@ -82,7 +86,7 @@ describe "PM::Table module" do
   end
 
   it "should have the right number of sections" do
-    @subject.numberOfSectionsInTableView(@subject.table_view).should == 7
+    @subject.numberOfSectionsInTableView(@subject.table_view).should == 9
   end
 
   it "should set the section titles" do
@@ -197,6 +201,11 @@ describe "PM::Table module" do
     it "should use the instantiated section view if one is specified" do
       cell = @subject.tableView(@subject.table_view, viewForHeaderInSection: 5)
       cell.should.be.kind_of(CustomTitleView)
+    end
+
+    it "should set the height of a title view when the method `height` is implemented" do
+      @subject.tableView(@subject.table_view, heightForHeaderInSection:7).should == 40.0
+      @subject.tableView(@subject.table_view, heightForHeaderInSection:8).should == 121.0
     end
   end
 

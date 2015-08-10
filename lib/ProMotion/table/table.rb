@@ -294,7 +294,13 @@ module ProMotion
     def tableView(_, heightForHeaderInSection: index)
       section = promotion_table_data.section(index)
       if section[:title_view] || section[:title].to_s.length > 0
-        section[:title_view_height] || tableView.sectionHeaderHeight
+        if section[:title_view_height]
+          section[:title_view_height]
+        elsif tableView(_, viewForHeaderInSection: index).respond_to?(:height)
+          tableView(_, viewForHeaderInSection: index).height
+        else
+          tableView.sectionHeaderHeight
+        end
       else
         0.0
       end

@@ -189,6 +189,7 @@ module ProMotion
         status_bar_hidden false
         status_bar_style UIStatusBarStyleDefault
       else
+        return status_bar_hidden true if UIApplication.sharedApplication.isStatusBarHidden
         status_bar_hidden false
         global_style = NSBundle.mainBundle.objectForInfoDictionaryKey("UIStatusBarStyle")
         status_bar_style global_style ? Object.const_get(global_style) : UIStatusBarStyleDefault

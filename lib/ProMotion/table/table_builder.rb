@@ -6,7 +6,7 @@ module ProMotion
       when 0 then action.call # Just call the proc or the method
       when 2 then action.call(arguments, index_path) # Send arguments and index path
       else
-        mp("Action should not have optional parameters: #{action.to_s}", force_color: :yellow) if arity < 0
+        mp("Action should not have optional parameters: #{action.to_s} in #{self.inspect}", force_color: :yellow) if arity < 0
         action.call(arguments) # Send arguments
       end
     end

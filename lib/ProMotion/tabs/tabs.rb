@@ -50,10 +50,13 @@ module ProMotion
     end
 
     def create_tab_bar_item(tab={})
-      if tab[:system_icon] || tab[:icon]
-        mp("`system_icon:` no longer supported. Use `system_item:` instead.", force_color: :yellow) if tab[:system_icon]
-        mp("`icon:` no longer supported. Use `item:` instead.", force_color: :yellow) if tab[:icon]
+      if tab[:system_icon]
+        mp("`system_icon:` no longer supported. Use `system_item:` instead.", force_color: :yellow)
         tab[:system_item] ||= tab[:system_icon]
+      end
+
+      if tab[:icon]
+        mp("`icon:` no longer supported. Use `item:` instead.", force_color: :yellow)
         tab[:item] ||= tab[:icon]
       end
 

@@ -79,7 +79,7 @@ describe "PM::Table module" do
       },{
         title: "Custom section title 2", title_view: CustomTitleView.new, title_view_height: 50, cells: [ ]
       },{
-        title: "Action WIth Index Path Group", cells: [ cell_factory(title: "IndexPath Group 1", action: :tests_index_path) ]
+        title: "Action With Index Path Group", cells: [ cell_factory(title: "IndexPath Group 1", action: :tests_index_path) ]
       }, {
         title: "Action With A Proc", cells: [ proc_cell ]
       },{

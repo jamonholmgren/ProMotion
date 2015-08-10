@@ -97,7 +97,7 @@ def visit_state(args={})
 end
 ```
 
-View the [Reference: All available table_data options](https://github.com/clearsightstudio/ProMotion/wiki/Reference:-All-available-table_data-options) for an example with all available options.
+View the [Reference: All available table_data options](ProMotion TableScreen table_data Options.md) for an example with all available options.
 
 #### Accessory Views
 

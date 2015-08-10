@@ -5,7 +5,7 @@ module ProMotion
     include ProMotion::Styling
     include ProMotion::NavBarModule
     include ProMotion::Tabs
-    include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
+    include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad || (UIDevice.currentDevice.systemVersion.to_i >= 8 )
 
     attr_accessor :parent_screen, :first_screen, :modal, :split_screen
 
@@ -69,6 +69,13 @@ module ProMotion
     end
     def on_disappear; end
     def on_dismiss; end
+
+    def did_receive_memory_warning
+      self.on_memory_warning
+    end
+    def on_memory_warning
+      mp "Received memory warning in #{self.inspect}. You should implement on_memory_warning in your secreen.", force_color: :red
+    end
 
     def should_rotate(orientation)
       case orientation
@@ -218,7 +225,7 @@ module ProMotion
         end
         @title = t if t
         @title_type = :text if t
-        @title ||= self.to_s
+        @title
       end
 
       def title_type

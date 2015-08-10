@@ -301,8 +301,8 @@ module ProMotion
       if section[:title_view] || section[:title].to_s.length > 0
         if section[:title_view_height]
           section[:title_view_height]
-        elsif tableView(_, viewForHeaderInSection: index).respond_to?(:height)
-          tableView(_, viewForHeaderInSection: index).height
+        elsif (section_header = tableView(_, viewForHeaderInSection: index)) && section_header.respond_to?(:height)
+          section_header.height
         else
           tableView.sectionHeaderHeight
         end

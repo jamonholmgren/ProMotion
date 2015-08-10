@@ -6,7 +6,7 @@ If you have a problem with *any* of the documentation, *please* [open an issue](
 
 ### Getting Started
 
-#### [Getting Started with ProMotion](./Guides/Guide - Getting Started.md)
+#### [Getting Started with ProMotion](./Guides/Getting Started.md)
 
 Everything you need to know to install ProMotion and create your first iPhone app.
 
@@ -42,7 +42,3 @@ I don't want ProMotion to become bloated with little-used features. The features
 Matt Brewer [@macfanatic](https://twitter.com/macfanatic)
 
 Many others contribute every day!
-
-
-
-

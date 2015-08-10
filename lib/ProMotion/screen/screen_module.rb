@@ -5,11 +5,12 @@ module ProMotion
     include ProMotion::Styling
     include ProMotion::NavBarModule
     include ProMotion::Tabs
-    include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
+    include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad || (UIDevice.currentDevice.systemVersion.to_i >= 8 )
 
     attr_accessor :parent_screen, :first_screen, :modal, :split_screen
 
     def screen_init(args = {})
+      @screen_options = args
       check_ancestry
       resolve_title
       apply_properties(args)
@@ -38,6 +39,7 @@ module ProMotion
     end
 
     def view_will_appear(animated)
+      super
       resolve_status_bar
       self.will_appear
 
@@ -75,6 +77,11 @@ module ProMotion
     end
     def on_memory_warning
       mp "Received memory warning in #{self.inspect}. You should implement on_memory_warning in your secreen.", force_color: :red
+    end
+
+    def on_live_reload
+      self.view.subviews.each(&:removeFromSuperview)
+      on_load
     end
 
     def should_rotate(orientation)
@@ -182,6 +189,7 @@ module ProMotion
         status_bar_hidden false
         status_bar_style UIStatusBarStyleDefault
       else
+        return status_bar_hidden true if UIApplication.sharedApplication.isStatusBarHidden
         status_bar_hidden false
         global_style = NSBundle.mainBundle.objectForInfoDictionaryKey("UIStatusBarStyle")
         status_bar_style global_style ? Object.const_get(global_style) : UIStatusBarStyleDefault

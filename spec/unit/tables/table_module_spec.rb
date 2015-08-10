@@ -41,6 +41,16 @@ describe "PM::Table module" do
     })
   end
 
+  def proc_cell
+    custom_cell.merge({
+      action: -> (args, index_path) {
+        args[:data].should == [ "lots", "of", "data" ]
+        index_path.section.should == 7
+        index_path.row.should == 0
+      }
+      })
+  end
+
   def default_cell_height
     return UITableViewAutomaticDimension if TestHelper.ios8
     return 97.0 if TestHelper.ios7 # Normally 44, but 97 because of `row_height` designation
@@ -71,6 +81,8 @@ describe "PM::Table module" do
       },{
         title: "Action WIth Index Path Group", cells: [ cell_factory(title: "IndexPath Group 1", action: :tests_index_path) ]
       }, {
+        title: "Action With A Proc", cells: [ proc_cell ]
+      },{
         title: 40.0, title_view: DynamicHeightTitleView, cells: []
       }, {
         title: 121.0, title_view: DynamicHeightTitleView, cells: []
@@ -81,12 +93,13 @@ describe "PM::Table module" do
 
     @ip = NSIndexPath.indexPathForRow(1, inSection: 2) # Cell 3-2
     @custom_ip = NSIndexPath.indexPathForRow(0, inSection: 3) # Cell "Crazy Full Featured Cell"
+    @proc_cell = NSIndexPath.indexPathForRow(0, inSection: 7)
 
     @subject.update_table_data
   end
 
   it "should have the right number of sections" do
-    @subject.numberOfSectionsInTableView(@subject.table_view).should == 9
+    @subject.numberOfSectionsInTableView(@subject.table_view).should == 10
   end
 
   it "should set the section titles" do
@@ -136,6 +149,10 @@ describe "PM::Table module" do
     end
 
     @subject.tableView(@subject.table_view, didSelectRowAtIndexPath:@custom_ip)
+  end
+
+  it "should trigger the proc" do
+    @subject.tableView(@subject.table_view, didSelectRowAtIndexPath: @proc_cell)
   end
 
   it "should return an NSIndexPath when the action has two parameters" do
@@ -204,8 +221,8 @@ describe "PM::Table module" do
     end
 
     it "should set the height of a title view when the method `height` is implemented" do
-      @subject.tableView(@subject.table_view, heightForHeaderInSection:7).should == 40.0
-      @subject.tableView(@subject.table_view, heightForHeaderInSection:8).should == 121.0
+      @subject.tableView(@subject.table_view, heightForHeaderInSection:8).should == 40.0
+      @subject.tableView(@subject.table_view, heightForHeaderInSection:9).should == 121.0
     end
   end
 

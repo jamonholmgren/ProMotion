@@ -23,6 +23,10 @@ module ProMotion
       set_up_row_height
     end
 
+    def on_live_reload
+      update_table_data
+    end
+
     def check_table_data
       mp("Missing #table_data method in TableScreen #{self.class.to_s}.", force_color: :red) unless self.respond_to?(:table_data)
     end
@@ -287,6 +291,7 @@ module ProMotion
       section = promotion_table_data.section(index)
       view = section[:title_view]
       view = section[:title_view].new if section[:title_view].respond_to?(:new)
+      view.on_load if view.respond_to?(:on_load)
       view.title = section[:title] if view.respond_to?(:title=)
       view
     end

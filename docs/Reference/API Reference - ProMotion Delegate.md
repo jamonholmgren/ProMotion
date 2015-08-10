@@ -108,7 +108,7 @@ end
 
 #### open_split_screen(master, detail)
 
-**iPad apps only**
+**Before iOS 8, iPad apps only**
 
 Opens a UISplitScreenViewController with the specified screens as the root view controller of the current app
 

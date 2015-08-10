@@ -35,6 +35,11 @@ module ProMotion
       super
     end
 
+    def didReceiveMemoryWarning
+      self.did_receive_memory_warning if self.respond_to?(:did_receive_memory_warning)
+      super
+    end
+
     def shouldAutorotateToInterfaceOrientation(orientation)
       self.should_rotate(orientation)
     end

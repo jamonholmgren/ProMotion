@@ -15,6 +15,7 @@ pages:
 - ["Reference/ProMotion Styling.md", "API Reference - ProMotion Styling"]
 - ["Reference/ProMotion Table - Cell Options.md", "API Reference - ProMotion Table - Cell Options"]
 - ["Reference/ProMotion TableScreen.md", "API Reference - ProMotion TableScreen"]
+- ["Reference/ProMotion TableScreen table_data Options.md", "API Reference - ProMotion TableScreen table_data Options"]
 - ["Reference/ProMotion Tabs.md", "API Reference - ProMotion Tabs"]
 - ["Reference/ProMotion WebScreen.md", "API Reference - ProMotion WebScreen"]
 - ["Tutorials, Screencasts, Articles, Presentations.md", "Tutorials, Screencasts, Articles, Presentations"]

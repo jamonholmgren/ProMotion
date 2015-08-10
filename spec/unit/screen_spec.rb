@@ -6,6 +6,16 @@ describe "screen properties" do
     @screen.on_load
   end
 
+  it "does not have a default title" do
+    screen = UntitledScreen.new
+    screen.title.should == nil
+  end
+
+  it "does not display a default title in the nav bar" do
+    screen = UntitledScreen.new
+    screen.navigationItem.title.should == nil
+  end
+
   it "should store title" do
     HomeScreen.title.should == "Home"
   end
@@ -204,6 +214,33 @@ describe "screen properties" do
     it "-didRotateFromInterfaceOrientation" do
       @screen.mock!(:on_rotate) { true }
       @screen.didRotateFromInterfaceOrientation(UIInterfaceOrientationPortrait).should == true
+    end
+
+  end
+
+  describe "memory warnings" do
+
+    it "should call didReceiveMemoryWarning when exists" do
+      memory_screen = MemoryWarningScreenSelfImplemented.new
+      memory_screen.memory_warning_from_uikit.should.be.nil
+      memory_screen.didReceiveMemoryWarning
+      memory_screen.memory_warning_from_uikit.should == true
+    end
+
+    it "should call super up the chain" do
+      memory_screen = MemoryWarningNotSoSuperScreen.new
+
+      memory_screen.memory_warning_from_super.should.be.nil
+      memory_screen.didReceiveMemoryWarning
+      memory_screen.memory_warning_from_super.should == true
+    end
+
+    it "should call on_memory_warning when implemented" do
+      memory_screen = MemoryWarningScreen.new
+
+      memory_screen.memory_warning_from_pm.should.be.nil
+      memory_screen.didReceiveMemoryWarning
+      memory_screen.memory_warning_from_pm.should == true
     end
 
   end

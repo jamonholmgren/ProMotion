@@ -76,9 +76,11 @@ end
 |[![ProMotion TableScreen](https://f.cloud.github.com/assets/1479215/1534137/ed71e864-4c90-11e3-98aa-ed96049f5407.png)](http://promotion.readthedocs.org/en/master/Reference/API%20Reference%20-%20ProMotion%20TableScreen/)|[![Grouped Table Screen](https://f.cloud.github.com/assets/1479215/1589973/61a48610-5281-11e3-85ac-abee99bf73ad.png)](https://gist.github.com/jamonholmgren/382a6cf9963c5f0b2248)|[![Searchable](https://f.cloud.github.com/assets/1479215/1534299/20cc05c6-4c93-11e3-92ca-9ee39c044457.png)](http://promotion.readthedocs.org/en/master/Reference/API%20Reference%20-%20ProMotion%20TableScreen/#searchableplaceholder-placeholder-text)|[![Refreshable](https://f.cloud.github.com/assets/1479215/1534317/5a14ef28-4c93-11e3-8e9e-f8c08d8464f8.png)](http://promotion.readthedocs.org/en/master/Reference/API%20Reference%20-%20ProMotion%20TableScreen/#refreshableoptions)|
 
 
-|iPad SplitScreens|Map Screens|Web Screens|
+|SplitScreens|Map Screens|Web Screens|
 |---|---|---|
 |[![ProMotion SplitScreens](https://f.cloud.github.com/assets/1479215/1534507/0edb8dd4-4c96-11e3-9896-d4583d0ed161.png)](http://promotion.readthedocs.org/en/master/Reference/API%20Reference%20-%20ProMotion%20SplitScreen/)|[![MapScreen](https://f.cloud.github.com/assets/1479215/1534628/f7dbf7e8-4c97-11e3-8817-4c2a58824771.png)](http://promotion.readthedocs.org/en/master/Reference/API%20Reference%20-%20ProMotion%20MapScreen/)|[![ProMotion WebScreen](https://f.cloud.github.com/assets/1479215/1534631/ffe1b36a-4c97-11e3-8c8f-c7b14e26182d.png)](http://promotion.readthedocs.org/en/master/Reference/API%20Reference%20-%20ProMotion%20WebScreen/)|
+
+**NEW** [Live reloading!](http://promotion.readthedocs.org/en/master/Guides/Live Screen Reloading/) Use `pm_live_screens` to enable it, and `on_live_reload` in your screen to refresh things.
 
 #### ...and much more.
 

@@ -223,6 +223,18 @@ def on_rotate
 end
 ```
 
+#### on_memory_warning
+
+Runs when your screen receives a memory warning. This is an alias of UIKit's [didReceiveMemoryWarning method on UIViewController](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIViewController_Class/#//apple_ref/occ/instm/UIViewController/didReceiveMemoryWarning) that you don't need to call `super` on. So read Apple's documentation to see what you need to do here.
+
+```ruby
+def on_memory_warning
+  # Free up some memory here
+  @my_var = nil
+  # do NOT call super. It will be done for you.
+end
+```
+
 ---
 
 ### Methods

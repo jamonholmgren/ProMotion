@@ -10,6 +10,7 @@ module ProMotion
     attr_accessor :parent_screen, :first_screen, :modal, :split_screen
 
     def screen_init(args = {})
+      @screen_options = args
       check_ancestry
       resolve_title
       apply_properties(args)
@@ -38,6 +39,7 @@ module ProMotion
     end
 
     def view_will_appear(animated)
+      super
       resolve_status_bar
       self.will_appear
 
@@ -75,6 +77,11 @@ module ProMotion
     end
     def on_memory_warning
       mp "Received memory warning in #{self.inspect}. You should implement on_memory_warning in your secreen.", force_color: :red
+    end
+
+    def on_live_reload
+      self.view.subviews.each(&:removeFromSuperview)
+      on_load
     end
 
     def should_rotate(orientation)

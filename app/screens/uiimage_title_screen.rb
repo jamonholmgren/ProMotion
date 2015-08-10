@@ -5,8 +5,4 @@ class UIImageTitleScreen < FunctionalScreen
 
   end
 
-  def on_live_reload
-    puts "Yo"
-  end
-
 end

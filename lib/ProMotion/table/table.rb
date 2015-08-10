@@ -23,6 +23,10 @@ module ProMotion
       set_up_row_height
     end
 
+    def on_live_reload
+      update_table_data
+    end
+
     def check_table_data
       mp("Missing #table_data method in TableScreen #{self.class.to_s}.", force_color: :red) unless self.respond_to?(:table_data)
     end

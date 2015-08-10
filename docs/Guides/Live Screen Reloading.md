@@ -33,7 +33,9 @@ class MyScreen < PM::Screen
 end
 ```
 
-Alternatively, if your screen is created by another screen on a navigation controller stack (nav_bar), just go "back" to the previous screen and then re-open the current screen.
+However, if your screen does not have any extra setup besides adding views or loading the data source, then you can leave out `on_live_reload` and allow the base to tear down your views, and re-add for you!
+
+Additionally, if your screen is created by another screen on a navigation controller stack (nav_bar), just go "back" to the previous screen and then re-open the current screen.
 
 ## REPL
 

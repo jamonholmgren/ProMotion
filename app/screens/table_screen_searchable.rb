@@ -137,3 +137,7 @@ class TableScreenSymbolSearchable < TableScreenSearchable
     }
   end
 end
+
+class TableScreenSymbolSearchableNoResults < TableScreenSearchable
+  searchable no_results: "Nada!"
+end

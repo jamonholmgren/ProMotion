@@ -1,9 +1,9 @@
 ### Contents
 
-* [Usage](?#usage)
-* [Methods](?#methods)
-* [Class Methods](?#class-methods)
-* [Accessors](?#accessors)
+* [Usage](#usage)
+* [Methods](#methods)
+* [Class Methods](#class-methods)
+* [Accessors](#accessors)
 
 ### Usage
 
@@ -17,7 +17,7 @@ ProMotion::TableScreen allows you to easily create lists or "tables" as iOS call
 class TasksScreen < PM::TableScreen
   title "Tasks"
   refreshable
-  searchable placeholder: "Search tasks"
+  searchable placeholder: "Search tasks", no_results: "Sorry, Try Again!"
   row_height :auto, estimated: 44
 
   def on_load
@@ -305,7 +305,7 @@ end
 
 #### table_footer_view
 
-You can give the table a custom header view (this is different from a section footer view) by defining:
+You can give the table a custom footer view (this is different from a section footer view) by defining:
 
 ```ruby
 def table_footer_view
@@ -319,13 +319,22 @@ This is useful for information that needs to only be at the very bottom of a tab
 
 ### Class Methods
 
-#### searchable(placeholder: "placeholder text", with: -> (cell, search_string){})
+#### searchable(placeholder: "placeholder text", no_results: "some short qiup here", with: -> (cell, search_string){})
 
 Class method to make the current table searchable.
 
 ```ruby
 class MyTableScreen < PM::TableScreen
   searchable placeholder: "Search This Table"
+end
+```
+
+Specifying `no_results:` will change the text that is displayed when there are
+no results found.
+
+```ruby
+class MyTableScreen < PM::TableScreen
+  searchable placeholder: "Search This Table", no_results: "BZZZZZ! Try Again!"
 end
 ```
 

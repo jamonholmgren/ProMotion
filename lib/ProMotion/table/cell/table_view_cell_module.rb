@@ -19,6 +19,17 @@ module ProMotion
       set_accessory_type
     end
 
+    def layoutSubviews
+      super
+
+      # Support changing sizes of the image view
+      if (data_cell[:image] && data_cell[:image].is_a?(Hash) && data_cell[:image][:size])
+        self.imageView.bounds = CGRectMake(0, 0, data_cell[:image][:size], data_cell[:image][:size]);
+      elsif (data_cell[:remote_image] && data_cell[:remote_image][:size])
+        self.imageView.bounds = CGRectMake(0, 0, data_cell[:remote_image][:size], data_cell[:remote_image][:size]);
+      end
+    end
+
   protected
 
     # TODO: Remove this in ProMotion 2.1. Just for migration purposes.

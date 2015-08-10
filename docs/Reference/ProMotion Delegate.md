@@ -137,12 +137,18 @@ end
 
 #### status_bar
 
-Class method that allows hiding or showing the status bar.
+Class method that allows hiding or showing the status bar. Setting this to `false` will hide it throughout the app.
 
 ```ruby
 class AppDelegate < PM::Delegate
   status_bar true, animation: :none # :slide, :fade
 end
+```
+
+If you want the status bar to be hidden on the splash screen you must set this in your rakefile.
+
+```ruby
+app.info_plist['UIStatusBarHidden'] = true
 ```
 
 #### tint_color

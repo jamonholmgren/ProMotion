@@ -291,6 +291,7 @@ module ProMotion
       section = promotion_table_data.section(index)
       view = section[:title_view]
       view = section[:title_view].new if section[:title_view].respond_to?(:new)
+      view.on_load if view.respond_to?(:on_load)
       view.title = section[:title] if view.respond_to?(:title=)
       view
     end

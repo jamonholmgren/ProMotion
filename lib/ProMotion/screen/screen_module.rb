@@ -267,11 +267,11 @@ module ProMotion
       end
 
       def nav_bar(enabled, args={})
-        @nav_bar_args = ({ enabled: enabled }).merge(args)
+        @nav_bar_args = ({ nav_bar: enabled }).merge(args)
       end
 
       def get_nav_bar
-        @nav_bar_args ||= { enabled: false }
+        @nav_bar_args ||= { nav_bar: false }
       end
 
       def nav_bar_button(side, args={})

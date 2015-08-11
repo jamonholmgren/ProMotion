@@ -6,7 +6,7 @@ describe "ProMotion::Screen functionality" do
   # Override controller to properly instantiate
   def controller
     rotate_device to: :portrait, button: :bottom
-    @controller = FunctionalScreen.new(nav_bar: true)
+    @controller = FunctionalScreen.new
     @controller.navigationController
   end
 

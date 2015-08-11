@@ -1,9 +1,17 @@
+class FuncNavController < PM::NavigationController; end
+
 class FunctionalScreen < PM::Screen
   attr_accessor :button_was_triggered
   attr_accessor :button2_was_triggered
   attr_accessor :on_back_fired
 
   title "Functional"
+  nav_bar true, {
+    nav_controller: FuncNavController,
+    toolbar: true,
+    transition_style: UIModalTransitionStyleCrossDissolve,
+    presentation_style: UIModalPresentationFormSheet,
+  }
 
   def will_appear
     self.button_was_triggered = false

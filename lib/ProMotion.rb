@@ -51,11 +51,6 @@ Motion::Project::App.setup do |app|
        "#{core_lib}/collection/collection.rb",
        "#{core_lib}/table/table_utils.rb"
     ],
-    "#{core_lib}/collection/data/collection_data.rb" => [
-       "#{core_lib}/collection/data/collection_data_builder.rb",
-       "#{core_lib}/collection/collection.rb",
-       "#{core_lib}/table/table_utils.rb"
-    ],
     "#{core_lib}/table/table.rb" => [
        "#{core_lib}/table/table_class_methods.rb",
        "#{core_lib}/table/table_builder.rb",
@@ -64,11 +59,6 @@ Motion::Project::App.setup do |app|
        "#{core_lib}/table/extensions/refreshable.rb",
        "#{core_lib}/table/extensions/indexable.rb",
        "#{core_lib}/table/extensions/longpressable.rb"
-    ],
-    "#{core_lib}/collection/collection.rb" => [
-       "#{core_lib}/collection/collection_class_methods.rb",
-       "#{core_lib}/collection/collection_builder.rb",
-       "#{core_lib}/table/table_utils.rb"
     ],
     "#{core_lib}/collection/collection.rb" => [
        "#{core_lib}/collection/collection_class_methods.rb",

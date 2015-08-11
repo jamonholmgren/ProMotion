@@ -289,8 +289,9 @@ m.modal? # => true
 Returns if the screen is currently contained in a navigation controller.
 
 ```ruby
-open s = HomeScreen.new(nav_bar: true)
-s.nav_bar? # => true
+screen = HomeScreen.new
+open screen
+screen.nav_bar? # => true
 ```
 
 #### will_rotate(orientation, duration)

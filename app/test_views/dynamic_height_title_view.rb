@@ -1,14 +1,26 @@
 class DynamicHeightTitleView < UIView
-  attr_accessor :title
+  def on_load
+    @height = 12.0
+  end
 
   def title=(t)
-    # We're going to hijack this property setter in order to dynamically set
-    # the size of the view's height.
-
-    self.frame = CGRectMake(0,0, 320, t)
+    # Do something here
   end
 
   def height
-    self.frame.size.height
+    @height
+  end
+end
+
+
+class DynamicHeightTitleView40 < DynamicHeightTitleView
+  def on_load
+    @height = 40.0
+  end
+end
+
+class DynamicHeightTitleView121 < DynamicHeightTitleView
+  def on_load
+    @height = 121.0
   end
 end

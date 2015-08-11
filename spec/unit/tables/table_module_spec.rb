@@ -83,9 +83,9 @@ describe "PM::Table module" do
       }, {
         title: "Action With A Proc", cells: [ proc_cell ]
       },{
-        title: 40.0, title_view: DynamicHeightTitleView, cells: []
+        title: "test 40", title_view: DynamicHeightTitleView40, cells: []
       }, {
-        title: 121.0, title_view: DynamicHeightTitleView, cells: []
+        title: "test 121", title_view: DynamicHeightTitleView121, cells: []
       }]
     end
 

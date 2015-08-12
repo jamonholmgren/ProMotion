@@ -141,12 +141,12 @@ end
 
 Called when a cell is dequeued and re-used.
 
-#### on_setup(data_cell, screen)
+#### setup(data_cell, screen)
 
 Called when a cell is either created or re-used.
 
 ```ruby
-def on_setup(data_cell, screen)
+def setup(data_cell, screen)
   @label.text = data_cell[:title]
 end
 ```

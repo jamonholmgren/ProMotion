@@ -137,9 +137,9 @@ def on_created
 end
 ```
 
-#### on_reused
+#### on_reuse
 
-Called when a cell is dequeued and re-used. 
+Called when a cell is dequeued and re-used.
 
 #### on_setup(data_cell, screen)
 
@@ -189,4 +189,3 @@ end
 You get all the normal accessors of `PM::Screen`, but no documented TableScreen accessors are available.
 
 ---
-

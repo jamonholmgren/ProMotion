@@ -34,7 +34,7 @@ Create a Gemfile and add the following lines:
 source "https://rubygems.org"
 
 gem "rake"
-gem "ProMotion", "~> 2.0.0"
+gem "ProMotion", "~> 2.4.2"
 ```
 
 Run `bundle` in Terminal to install ProMotion.
@@ -42,10 +42,11 @@ Run `bundle` in Terminal to install ProMotion.
 ```
 Fetching gem metadata from https://rubygems.org/....
 Resolving dependencies...
-Using bundler 1.6.2
-Using rake 10.3.2
-Using methadone 1.4.0
-Using ProMotion 2.0.0
+Using rake 10.4.2
+Using bundler 1.6.1
+Using methadone 1.9.1
+Using motion_print 1.2.0
+Using ProMotion 2.4.2
 Your bundle is complete!
 Use `bundle show [gemname]` to see where a bundled gem is installed.
 ```

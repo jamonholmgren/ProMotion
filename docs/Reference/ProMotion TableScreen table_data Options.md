@@ -21,3 +21,54 @@ def table_data
   }]
 end
 ```
+
+## Using :title_view
+
+You can specify your own section header title view and it will automatically be
+sized appropriately if your custom UIView subclass implements the `height` method.
+
+For example (using RMQ):
+
+```ruby
+class TableSectionHeaderView < UIView
+  # This will create table section header view with a UILabel
+  # with the correct font (defined in application_stylesheet.rb)
+  # for section headers.
+  #
+  # Instructions on how to use:
+  #
+  # def table_data
+  #   [{
+  #     title_view: TableSectionHeaderView,
+  #     title: "Whatever string you want"
+  #   }]
+  # end
+
+  def on_load
+    # Apply a style to the view instance
+    @v = find(self).apply_style(:table_section_header_view)
+
+    # Create the UILabel and set the data to the text provided
+    @title = append(UILabel, :table_section_header_label)
+  end
+
+  def title=(t)
+    @title.data = t
+
+    # Resize the title frame to fit the text
+    @title.style{|st| st.resize_height_to_fit }
+
+    # Resize the view instance height
+    @v.style do |st|
+      st.frame = {
+        h: @title.frame.size.height + 15
+      }
+    end
+  end
+
+  # Return the height of the view
+  def height
+    self.frame.size.height
+  end
+end
+```

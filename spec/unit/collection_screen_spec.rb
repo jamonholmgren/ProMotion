@@ -1,9 +1,18 @@
 describe "collection screens" do
+  tests TestCollectionScreen
+
+  def screen
+    @screen ||= TestCollectionScreen.new(nav_bar: true)
+  end
+
+  def controller
+    screen.navigationController
+  end
 
   describe "basic functionality" do
 
     before do
-      @screen = TestCollectionScreen.new
+      @screen = TestCollectionScreen.new(nav_bar: true)
       @view = @screen.collection_view
     end
 

@@ -34,7 +34,7 @@ Create a Gemfile and add the following lines:
 source "https://rubygems.org"
 
 gem "rake"
-gem "ProMotion", "~> 2.4.2"
+gem "ProMotion", "~> 2.5"
 ```
 
 Run `bundle` in Terminal to install ProMotion.
@@ -56,7 +56,7 @@ Go into your app/app_delegate.rb file and replace *everything* with the followin
 ```ruby
 class AppDelegate < PM::Delegate
   def on_load(app, options)
-    open HomeScreen.new(nav_bar: true)
+    open HomeScreen
   end
 end
 ```

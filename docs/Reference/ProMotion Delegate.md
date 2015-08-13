@@ -15,7 +15,7 @@ class AppDelegate < PM::Delegate
   status_bar false, animation: :none
 
   def on_load(app, options)
-    open HomeScreen.new(nav_bar: true)
+    open HomeScreen
   end
 end
 ```
@@ -28,7 +28,7 @@ class AppDelegate < JHMyParentDelegate
   status_bar false, animation: :none
 
   def on_load(app, options)
-    open HomeScreen.new(nav_bar: true)
+    open HomeScreen
   end
 end
 ```

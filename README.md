@@ -3,9 +3,6 @@
 [![Gem Version](https://img.shields.io/gem/v/ProMotion.svg?style=flat)](https://rubygems.org/gems/ProMotion)
 [![Build Status](https://img.shields.io/travis/clearsightstudio/ProMotion.svg?style=flat)](https://travis-ci.org/clearsightstudio/ProMotion)
 [![Code Climate](https://img.shields.io/codeclimate/github/clearsightstudio/ProMotion.svg?style=flat)](https://codeclimate.com/github/clearsightstudio/ProMotion)
-[![Dependency Status](https://img.shields.io/gemnasium/clearsightstudio/ProMotion.svg?style=flat)](https://gemnasium.com/clearsightstudio/ProMotion)
-[![omniref](https://img.shields.io/badge/omniref-docs-blue.svg?style=flat)](https://www.omniref.com/ruby/gems/ProMotion)
-[![Stories in Ready](https://badge.waffle.io/clearsightstudio/ProMotion.png?label=ready&title=Ready)](https://waffle.io/clearsightstudio/ProMotion)
 
 ## iPhone Apps, Ruby-style
 
@@ -14,23 +11,20 @@ It introduces a clean, Ruby-style syntax for building screens that is easy to le
 abstracts a ton of boilerplate UIViewController, UINavigationController, and other iOS code into a
 simple, Ruby-like DSL.
 
-* Watch Jamon Holmgren give a talk about ProMotion at [RubyMotion #inspect2014](http://confreaks.com/videos/3813-inspect-going-pro-with-promotion-from-prototype-to-production) (video)
-* Watch the [September 2013 Motion Meetup](http://www.youtube.com/watch?v=rf7h-3AiMRQ) where Gant Laborde
-interviews Jamon Holmgren about ProMotion
-
 ```ruby
 # app/app_delegate.rb
 class AppDelegate < PM::Delegate
   status_bar true, animation: :fade
 
   def on_load(app, options)
-    open RootScreen.new(nav_bar: true)
+    open RootScreen
   end
 end
 
 # app/screens/root_screen.rb
 class RootScreen < PM::Screen
   title "Root Screen"
+  nav_bar true
 
   def on_load
     set_nav_bar_button :right, title: "Help", action: :open_help_screen
@@ -125,13 +119,19 @@ This release includes several new features and is backwards compatible with all 
 
 ## Your app
 
-Open a pull request!
+Open a pull request! We love adding new ProMotion-built apps.
 
 # API Reference
 
 We've created a comprehensive and always updated wiki with code examples, usage examples, and API reference.
 
 ### [ProMotion Documentation](https://github.com/clearsightstudio/ProMotion/blob/master/docs)
+
+# Screencasts
+
+* Watch Jamon Holmgren give a talk about ProMotion at [RubyMotion #inspect2014](http://confreaks.com/videos/3813-inspect-going-pro-with-promotion-from-prototype-to-production) (video)
+* Watch the [September 2013 Motion Meetup](http://www.youtube.com/watch?v=rf7h-3AiMRQ) where Gant Laborde
+interviews Jamon Holmgren about ProMotion
 
 # Help
 

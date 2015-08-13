@@ -289,8 +289,9 @@ m.modal? # => true
 Returns if the screen is currently contained in a navigation controller.
 
 ```ruby
-open s = HomeScreen.new(nav_bar: true)
-s.nav_bar? # => true
+screen = HomeScreen.new
+open screen
+screen.nav_bar? # => true
 ```
 
 #### will_rotate(orientation, duration)
@@ -465,13 +466,14 @@ Opens a screen, intelligently determining the context.
 
 ```ruby
 # In app delegate
-open HomeScreen.new(nav_bar: true)
+open HomeScreen     # class or
+open HomeScreen.new # instance
 
 # In tab bar
-open HomeScreen.new(nav_bar: true), hide_tab_bar: true
+open HomeScreen, hide_tab_bar: true
 
 # `modal: true` is the same as `open_modal`.
-open ModalScreen.new(nav_bar: true), modal: true, animated: true
+open ModalScreen, modal: true, animated: true
 
 # Opening a modal screen with transition or presentation styles
 open_modal ModalScreen.new(nav_bar: true,
@@ -479,7 +481,7 @@ open_modal ModalScreen.new(nav_bar: true,
     presentation_style: UIModalPresentationFormSheet)
 
 # From any screen (same as `open_root_screen`)
-open HomeScreen.new(nav_bar: true), close_all: true
+open HomeScreen, close_all: true
 
 # Opening a screen in a different tab or split view screen
 open DetailScreen.new, in_tab: "Tab name" # if you're in a tab bar
@@ -623,7 +625,30 @@ class MyScreenWithADarkColoredNavBar < PM::Screen
 end
 ```
 
-#### nav_bar_button(position, button_options)
+#### nav_bar(enabled, nav_bar_options={})
+
+Add a navigation bar (and UINavigationController wrapper) to the current screen whenever it's opened.
+You can specify a custom transition for when opened in a modal, toggle the bottom toolbar, and even
+specify a custom UINavigationController subclass if you want (default is `PM::NavigationController`).
+
+```ruby
+# Typical
+class MyScreen < PM::Screen
+  nav_bar true
+end
+
+# Expanded options
+class MyScreen < PM::Screen
+  nav_bar true, {
+    nav_controller: PM::NavigationController,
+    toolbar: true,
+    transition_style: UIModalTransitionStyleCrossDissolve,
+    presentation_style: UIModalPresentationFormSheet,
+  }
+end
+```
+
+#### nav_bar_button(position, button_options={})
 
 Creates a nav bar button in the specified position with the given options
 

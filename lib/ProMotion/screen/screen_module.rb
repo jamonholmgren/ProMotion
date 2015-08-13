@@ -14,7 +14,7 @@ module ProMotion
       check_ancestry
       resolve_title
       apply_properties(args)
-      add_nav_bar(args) if args[:nav_bar]
+      add_nav_bar(args)
       add_nav_bar_buttons
       tab_bar_setup
       try :on_init
@@ -264,6 +264,14 @@ module ProMotion
 
       def status_bar_animation
         @status_bar_animation || UIStatusBarAnimationSlide
+      end
+
+      def nav_bar(enabled, args={})
+        @nav_bar_args = ({ nav_bar: enabled }).merge(args)
+      end
+
+      def get_nav_bar
+        @nav_bar_args ||= { nav_bar: false }
       end
 
       def nav_bar_button(side, args={})

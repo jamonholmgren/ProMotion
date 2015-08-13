@@ -628,7 +628,8 @@ end
 #### nav_bar(enabled, nav_bar_options={})
 
 Add a navigation bar (and UINavigationController wrapper) to the current screen whenever it's opened.
-You can specify a custom
+You can specify a custom transition for when opened in a modal, toggle the bottom toolbar, and even
+specify a custom UINavigationController subclass if you want (default is `PM::NavigationController`).
 
 ```ruby
 # Typical

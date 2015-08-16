@@ -218,12 +218,12 @@ module ProMotion
     end
 
     def tableView(_, canEditRowAtIndexPath:index_path)
-      data_cell = cell_at(index_path: index_path, unfiltered: true)
+      data_cell = cell_at(index_path: index_path, unfiltered: !searching?)
       [:insert,:delete].include?(data_cell[:editing_style])
     end
 
     def tableView(_, editingStyleForRowAtIndexPath: index_path)
-      data_cell = cell_at(index_path: index_path, unfiltered: true)
+      data_cell = cell_at(index_path: index_path, unfiltered: !searching?)
       map_cell_editing_style(data_cell[:editing_style])
     end
 
@@ -234,7 +234,7 @@ module ProMotion
     end
 
     def tableView(_, canMoveRowAtIndexPath:index_path)
-      data_cell = cell_at(index_path: index_path, unfiltered: true)
+      data_cell = cell_at(index_path: index_path, unfiltered: !searching?)
 
       if (!data_cell[:moveable].nil? || data_cell[:moveable].is_a?(Symbol)) && data_cell[:moveable] != false
         true
@@ -244,7 +244,7 @@ module ProMotion
     end
 
     def tableView(_, targetIndexPathForMoveFromRowAtIndexPath:source_index_path, toProposedIndexPath:proposed_destination_index_path)
-      data_cell = cell_at(index_path: source_index_path, unfiltered: true)
+      data_cell = cell_at(index_path: source_index_path, unfiltered: !searching?)
 
       if data_cell[:moveable] == :section && source_index_path.section != proposed_destination_index_path.section
         source_index_path

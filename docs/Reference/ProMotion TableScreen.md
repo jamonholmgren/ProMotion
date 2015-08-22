@@ -248,7 +248,7 @@ def will_display_cell(cell, index_path)
 end
 ```
 
-#### on_cell_deleted(cell)
+#### on_cell_deleted(cell, index_path)
 
 If you specify `editing_style: :delete` in your cell, you can swipe to reveal a delete button on that cell. When you tap the button, the cell will be removed in an animated fashion and the cell will be removed from its respective `table_data` section.
 
@@ -257,7 +257,7 @@ If you need a callback for every cell that's deleted, you can implement the `on_
 Example:
 
 ```ruby
-def on_cell_deleted(cell)
+def on_cell_deleted(cell, index_path)
   if cell[:arguments][:some_value] == "something"
     App.alert "Sorry, can't delete that row." # BubbleWrap alert
     false

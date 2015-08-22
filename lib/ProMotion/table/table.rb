@@ -135,7 +135,8 @@ module ProMotion
       deletable_index_paths = []
       Array(index_paths).each do |index_path|
         delete_cell = false
-        delete_cell = send(:on_cell_deleted, cell_at(index_path: index_path)) if self.respond_to?("on_cell_deleted:")
+
+        delete_cell = trigger_action(:on_cell_deleted, cell_at(index_path: index_path), index_path) if respond_to?(:on_cell_deleted)
         unless delete_cell == false
           self.promotion_table_data.delete_cell(index_path: index_path)
           deletable_index_paths << index_path

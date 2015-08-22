@@ -75,6 +75,7 @@ describe "ProMotion::TableScreen functionality" do
             wait 0.01 do
               table_screen.tableView(table_screen.tableView, numberOfRowsInSection:0).should == 6
               table_screen.cell_was_deleted.should == true
+              table_screen.cell_deleted_index_path.should == NSIndexPath.indexPathForRow(3, inSection:0)
             end
           end
         end

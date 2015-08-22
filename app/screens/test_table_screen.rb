@@ -1,5 +1,5 @@
 class TestTableScreen < ProMotion::TableScreen
-  attr_accessor :tap_counter, :cell_was_deleted, :got_index_path, :cell_was_moved, :got_will_display_header
+  attr_accessor :tap_counter, :cell_was_deleted, :cell_deleted_index_path, :got_index_path, :cell_was_moved, :got_will_display_header
 
   title 'Test title'
   tab_bar_item title: 'Test tab title', item: 'test'
@@ -105,11 +105,12 @@ class TestTableScreen < ProMotion::TableScreen
     end
   end
 
-  def on_cell_deleted(cell)
+  def on_cell_deleted(cell, index_path)
     if cell[:title] == "A non-deletable blank row"
       false
     else
       self.cell_was_deleted = true
+      self.cell_deleted_index_path = index_path
     end
   end
 

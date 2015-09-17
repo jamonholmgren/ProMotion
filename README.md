@@ -138,7 +138,7 @@ interviews Jamon Holmgren about ProMotion
 ProMotion is not only an easy DSL to get started. The community is very helpful and
 welcoming to new RubyMotion developers. We don't mind newbie questions.
 
-If you need help, feel free to open an issue on GitHub. If we don't respond within a day, tweet us a link to the issue -- sometimes we get busy.
+The quickest way to get help is to join the [Motioneers Slack Group](http://motioneers.herokuapp.com). If you still need help, feel free to open an issue on GitHub. If we don't respond within a day, tweet us a link to the issue -- sometimes we get busy.
 
 # Contributing
 

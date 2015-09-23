@@ -1,8 +1,8 @@
 # ProMotion
 
 [![Gem Version](https://img.shields.io/gem/v/ProMotion.svg?style=flat)](https://rubygems.org/gems/ProMotion)
-[![Build Status](https://img.shields.io/travis/clearsightstudio/ProMotion.svg?style=flat)](https://travis-ci.org/clearsightstudio/ProMotion)
-[![Code Climate](https://img.shields.io/codeclimate/github/clearsightstudio/ProMotion.svg?style=flat)](https://codeclimate.com/github/clearsightstudio/ProMotion)
+[![Build Status](https://img.shields.io/travis/infinitered/ProMotion.svg?style=flat)](https://travis-ci.org/infinitered/ProMotion)
+[![Code Climate](https://img.shields.io/codeclimate/github/infinitered/ProMotion.svg?style=flat)](https://codeclimate.com/github/infinitered/ProMotion)
 
 ## iPhone Apps, Ruby-style
 
@@ -80,10 +80,10 @@ end
 
 # Getting Started
 
-1. Check out the [Getting Started Guide](https://github.com/clearsightstudio/ProMotion/blob/master/docs/Guides/Guide%20-%20Getting%20Started.md)
+1. Check out the [Getting Started Guide](https://github.com/infinitered/ProMotion/blob/master/docs/Guides/Getting%20Started.md)
 2. Watch the excellent [MotionInMotion screencast about ProMotion](https://motioninmotion.tv/screencasts/8) (very reasonably priced subscription required)
 3. Follow a tutorial: [Building an ESPN app using RubyMotion, ProMotion, and TDD](http://jamonholmgren.com/building-an-espn-app-using-rubymotion-promotion-and-tdd)
-4. Read the [Documentation](https://github.com/clearsightstudio/ProMotion/blob/master/docs)
+4. Read the [Documentation](https://github.com/infinitered/ProMotion/blob/master/docs)
 
 # Changelog
 
@@ -125,7 +125,7 @@ Open a pull request! We love adding new ProMotion-built apps.
 
 We've created a comprehensive and always updated wiki with code examples, usage examples, and API reference.
 
-### [ProMotion Documentation](https://github.com/clearsightstudio/ProMotion/blob/master/docs)
+### [ProMotion Documentation](https://github.com/infinitered/ProMotion/blob/master/docs)
 
 # Screencasts
 
@@ -142,7 +142,7 @@ The quickest way to get help is to join the [Motioneers Slack Group](http://moti
 
 # Contributing
 
-See [CONTRIBUTING.md](https://github.com/clearsightstudio/ProMotion/blob/master/CONTRIBUTING.md).
+See [CONTRIBUTING.md](https://github.com/infinitered/ProMotion/blob/master/CONTRIBUTING.md).
 
 ## Core Team
 
@@ -154,4 +154,4 @@ See [CONTRIBUTING.md](https://github.com/clearsightstudio/ProMotion/blob/master/
 
 ## Other Contributors
 
-* [Many others](https://github.com/clearsightstudio/ProMotion/graphs/contributors)
+* [Many others](https://github.com/infinitered/ProMotion/graphs/contributors)

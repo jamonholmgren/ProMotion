@@ -49,7 +49,7 @@ module ProMotion
     end
 
     def set_up_searchable
-      if self.superclass.name == "ProMotion::DataTableScreen" && self.respond_to?(:make_data_table_searchable)
+      if self.is_a?(ProMotion::DataTableScreen) && self.respond_to?(:make_data_table_searchable)
         self.make_data_table_searchable(content_controller: self, search_bar: self.class.get_searchable_params)
       else
         self.make_searchable(content_controller: self, search_bar: self.class.get_searchable_params)

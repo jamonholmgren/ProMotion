@@ -49,14 +49,16 @@ module ProMotion
     end
 
     def set_up_searchable
-      if self.is_a?(ProMotion::DataTableScreen) && self.respond_to?(:make_data_table_searchable)
-        self.make_data_table_searchable(content_controller: self, search_bar: self.class.get_searchable_params)
-      else
-        self.make_searchable(content_controller: self, search_bar: self.class.get_searchable_params)
-      end
+      if self.class.respond_to?(:get_searchable) && self.class.get_searchable
+        if self.is_a?(ProMotion::DataTableScreen) && self.respond_to?(:make_data_table_searchable)
+          self.make_data_table_searchable(content_controller: self, search_bar: self.class.get_searchable_params)
+        else
+          self.make_searchable(content_controller: self, search_bar: self.class.get_searchable_params)
+        end
 
-      if self.class.get_searchable_params[:hide_initially]
-        self.tableView.contentOffset = CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height)
+        if self.class.get_searchable_params[:hide_initially]
+          self.tableView.contentOffset = CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height)
+        end
       end
     end
 

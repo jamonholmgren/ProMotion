@@ -18,6 +18,7 @@ class TestTableScreen < ProMotion::TableScreen
         { title: "Increment", action: :increment_counter_by, arguments: {number: 3} },
         { title: "Add New Row", action: :add_tableview_row },
         { title: "Delete the row below", action: :delete_cell, arguments: {section: 0, row:3} },
+        nil,
         { title: "Just another deletable blank row", editing_style: :delete },
         { title: "A non-deletable blank row", editing_style: :delete },
         { title: "Delete the row below with an animation", action: :delete_cell, arguments: {animated: true, section: 0, row:5 } },
@@ -37,7 +38,8 @@ class TestTableScreen < ProMotion::TableScreen
         { title: "Image Test 3", cell_identifier: "ImagedCell", cell_identifier: "ImagedCell", image: UIImage.imageNamed("list.png") },
         { title: "Image Test 4", image: "list.png" },
       ]
-    }, {
+    },
+    nil_section, {
       title: "Cell Accessory Tests",
       cells: [{
         title: "Switch With Action",
@@ -83,6 +85,14 @@ class TestTableScreen < ProMotion::TableScreen
         moveable: false
       }]
     }]
+  end
+
+  def nil_section
+    # Another line of brilliant code!
+    # 
+    # only here becuase I want to be descriptive about what I'm doing above
+    # in the table data method.
+    nil
   end
 
   def edit_profile(args={})

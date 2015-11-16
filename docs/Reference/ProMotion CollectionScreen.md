@@ -87,9 +87,9 @@ end
 
 View the [Reference: All available collection_data options](https://github.com/clearsightstudio/ProMotion/wiki/Reference:-All-available-collection_data-options) for an example with all available options.
 
-#### reload_data
+#### update_collection_data
 
-Causes the table data to be refreshed, such as when a remote data source has
+Causes the collection data to be refreshed, such as when a remote data source has
 been downloaded and processed.
 
 ```ruby
@@ -107,7 +107,7 @@ class MyCollectionScreen < PM::CollectionScreen
         end
       ]
 
-      reload_data
+      update_collection_data
     end
   end
 
@@ -186,6 +186,6 @@ end
 
 ### Accessors
 
-You get all the normal accessors of `PM::Screen`, but no documented TableScreen accessors are available.
+You get all the normal accessors of `PM::Screen`, but no documented CollectionScreen accessors are available.
 
 ---

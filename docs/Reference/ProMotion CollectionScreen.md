@@ -87,7 +87,7 @@ end
 
 View the [Reference: All available collection_data options](https://github.com/clearsightstudio/ProMotion/wiki/Reference:-All-available-collection_data-options) for an example with all available options.
 
-#### update_table_data
+#### reload_data
 
 Causes the table data to be refreshed, such as when a remote data source has
 been downloaded and processed.
@@ -107,7 +107,7 @@ class MyCollectionScreen < PM::CollectionScreen
         end
       ]
 
-      update_collection_data
+      reload_data
     end
   end
 

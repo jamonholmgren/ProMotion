@@ -57,6 +57,8 @@ module ProMotion
     def reload_data
       update_collection_view_data(collection_data)
     end
+    alias_method :update_collection_data, :reload_data
+
 
     ########## Cocoa touch methods #################
 

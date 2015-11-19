@@ -2,6 +2,7 @@
 $:.unshift("/Library/RubyMotion/lib")
 require 'motion/project/template/ios'
 require 'bundler'
+Bundler.setup
 Bundler.require(:development)
 require 'ProMotion'
 require 'motion_print'

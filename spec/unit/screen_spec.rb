@@ -449,7 +449,9 @@ describe "child screen management" do
   end
 
   it "#add_child_screen" do
-    @screen.add_child_screen @child
+    autorelease_pool do
+      @screen.add_child_screen @child
+    end
     @screen.childViewControllers.should.include(@child)
     @screen.childViewControllers.length.should == 1
     @child.parent_screen.should == @screen

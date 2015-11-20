@@ -74,7 +74,7 @@ end
 |---|---|---|
 |[![ProMotion SplitScreens](https://f.cloud.github.com/assets/1479215/1534507/0edb8dd4-4c96-11e3-9896-d4583d0ed161.png)](http://promotion.readthedocs.org/en/master/Reference/ProMotion%20SplitScreen/)|[![MapScreen](https://f.cloud.github.com/assets/1479215/1534628/f7dbf7e8-4c97-11e3-8817-4c2a58824771.png)](http://promotion.readthedocs.org/en/master/Reference/ProMotion%20MapScreen/)|[![ProMotion WebScreen](https://f.cloud.github.com/assets/1479215/1534631/ffe1b36a-4c97-11e3-8c8f-c7b14e26182d.png)](http://promotion.readthedocs.org/en/master/Reference/ProMotion%20WebScreen/)|
 
-**NEW** [Live reloading!](http://promotion.readthedocs.org/en/master/Guides/Live Screen Reloading/) Use `pm_live_screens` to enable it, and `on_live_reload` in your screen to refresh things.
+**NEW** [Live reloading!](http://promotion.readthedocs.org/en/master/Guides/Live Screen Reloading/) Use `pm_live` to enable it, and `on_live_reload` in your screen to refresh things.
 
 #### ...and much more.
 
@@ -87,6 +87,15 @@ end
 
 # Changelog
 
+## Version 2.5.0
+
+This release includes some new features and bugfixes and is backwards compatible with all 2.x releases.
+
+* PR #763 Adds footer_view to TableScreens
+* PR #705 Adds split-screen support for large iPhones
+* PR #736 Adds the index path when deleting a cell
+* Several other bugfix PRs
+
 ## Version 2.4.0
 
 This release includes several new features and is backwards compatible with all 2.x releases.
@@ -96,22 +105,6 @@ This release includes several new features and is backwards compatible with all 
 * PR #679 Extract methods from tablescreen for reuse in modules for [redpotion](https://github.com/infinitered/redpotion).
 * PR #677 Added `add_child_screen` and `remove_child_screen` methods to `PM::Screen`.
 * PR #687 Adds persisting tab order when changed by the user for tab bars over 5 screens.
-
-## Version 2.3.0
-
-This release includes several new features and is backwards compatible with all 2.x releases.
-
-* PR #618 Allow search bar to be hidden initially
-* PR #606 Adds capability for table_footer_view
-* PR #602 Add image inset support for tab bar item
-* PR #595 Feature/support module
-* PR #582 Allow setting of multiple nav bar buttons instead of just one left an one right
-* PR #581 Adds on_tab_selected
-* PR #579 implemented nav_bar_button class method RE #272
-* PR #565 Adds header_will_display method to PM::TableScreen
-* PR #663 Adds `on_load` back to cell dequeue code
-* PR #641 Custom search for PM::TableScreen
-* PR #658 Fix cell height issue
 
 # Apps built on ProMotion
 

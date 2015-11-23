@@ -89,8 +89,13 @@ describe "screen helpers" do
 
     end
 
-    it "allows setting a nav_bar_button with a class method" do
+    it "allows setting nav bar buttons via nav_bar_button class method" do
       screen = DetailScreen.new(nav_bar: true)
+
+      screen.navigationItem.leftBarButtonItem.title.should == 'Back'
+      screen.navigationItem.rightBarButtonItem.title.should == 'More'
+
+      screen.navigationItem.leftBarButtonItem.class.should == UIBarButtonItem
       screen.navigationItem.rightBarButtonItem.class.should == UIBarButtonItem
     end
   end

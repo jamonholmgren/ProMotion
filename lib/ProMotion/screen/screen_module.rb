@@ -7,7 +7,8 @@ module ProMotion
     include ProMotion::Tabs
     include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad || (UIDevice.currentDevice.systemVersion.to_i >= 8 )
 
-    attr_accessor :parent_screen, :first_screen, :modal, :split_screen
+    attr_reader :parent_screen
+    attr_accessor :first_screen, :modal, :split_screen
 
     def screen_init(args = {})
       @screen_options = args
@@ -154,7 +155,7 @@ module ProMotion
     def add_child_screen(screen)
       screen = screen.new if screen.respond_to?(:new)
       addChildViewController(screen)
-      screen.parent_screen = WeakRef.new(self)
+      screen.parent_screen = self
       screen.didMoveToParentViewController(self) # Required
       screen
     end

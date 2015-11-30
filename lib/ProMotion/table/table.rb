@@ -192,6 +192,11 @@ module ProMotion
       section && section[:title]
     end
 
+    def tableView(_, titleForFooterInSection: section)
+      section = promotion_table_data.section(section)
+      section && section[:footer]
+    end
+
     # Set table_data_index if you want the right hand index column (jumplist)
     def sectionIndexTitlesForTableView(_)
       return if self.promotion_table_data.filtered
@@ -292,7 +297,7 @@ module ProMotion
       delete_row(index_paths, animation)
     end
 
-    # Section view methods
+    # Section header view methods
     def tableView(_, viewForHeaderInSection: index)
       section = promotion_table_data.section(index)
       view = section[:title_view]
@@ -319,6 +324,42 @@ module ProMotion
 
     def tableView(_, willDisplayHeaderView:view, forSection:section)
       action = :will_display_header
+      if respond_to?(action)
+        case self.method(action).arity
+        when 0 then self.send(action)
+        when 2 then self.send(action, view, section)
+        else self.send(action, view)
+        end
+      end
+    end
+
+    # Section footer view methods
+    def tableView(_, viewForFooterInSection: index)
+      section = promotion_table_data.section(index)
+      view = section[:footer_view]
+      view = section[:footer_view].new if section[:footer_view].respond_to?(:new)
+      view.on_load if view.respond_to?(:on_load)
+      view.title = section[:footer] if view.respond_to?(:title=)
+      view
+    end
+
+    def tableView(_, heightForFooterInSection: index)
+      section = promotion_table_data.section(index)
+      if section[:footer_view] || section[:footer].to_s.length > 0
+        if section[:footer_view_height]
+          section[:footer_view_height]
+        elsif (section_footer = tableView(_, viewForFooterInSection: index)) && section_footer.respond_to?(:height)
+          section_footer.height
+        else
+          tableView.sectionFooterHeight
+        end
+      else
+        0.0
+      end
+    end
+
+    def tableView(_, willDisplayFooterView:view, forSection:section)
+      action = :will_display_footer
       if respond_to?(action)
         case self.method(action).arity
         when 0 then self.send(action)

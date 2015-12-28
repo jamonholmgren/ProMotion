@@ -1,9 +1,9 @@
 ### Contents
 
-* [Usage](?#usage)
-* [Methods](?#methods)
-* [Class Methods](?#class-methods)
-* [Accessors](?#accessors)
+* [Usage](#usage)
+* [Methods](#methods)
+* [Class Methods](#class-methods)
+* [Accessors](#accessors)
 
 ### Usage
 

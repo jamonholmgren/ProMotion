@@ -1,10 +1,10 @@
 ### Contents
 
-* [Usage](?#usage)
-* [Lifecycle Methods](?#lifecycle-methods)
-* [Helper Methods](?#methods)
-* [Class Methods](?#class-methods)
-* [Accessors](?#accessors)
+* [Usage](#usage)
+* [Lifecycle Methods](#lifecycle-methods)
+* [Helper Methods](#methods)
+* [Class Methods](#class-methods)
+* [Accessors](#accessors)
 
 ### Usage
 

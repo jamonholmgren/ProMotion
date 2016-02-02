@@ -4,6 +4,8 @@
 [![Build Status](https://img.shields.io/travis/infinitered/ProMotion.svg?style=flat)](https://travis-ci.org/infinitered/ProMotion)
 [![Code Climate](https://img.shields.io/codeclimate/github/infinitered/ProMotion.svg?style=flat)](https://codeclimate.com/github/infinitered/ProMotion)
 
+ProMotion is maintained by ![Infinite Red](http://infinite.red), a web and mobile development company based in Portland, OR and San Francisco, CA.
+
 ## iPhone Apps, Ruby-style
 
 ProMotion is a RubyMotion gem that makes iOS development more like Ruby and less like Objective-C.

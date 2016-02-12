@@ -131,6 +131,17 @@ def on_open_url(args = {})
 end
 ```
 
+#### on_continue_user_activity(args = {})
+
+Fires when the application is opened with a `NSUserActivity` (utilizing [application:continueUserActivity:restorationHandler:](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplicationDelegate_Protocol/index.html#//apple_ref/occ/intfm/UIApplicationDelegate/application:continueUserActivity:restorationHandler:)).
+
+```ruby
+def on_continue_user_activity(asrgs = {})
+  args[:user_activity]        #=> the object that describes the activity (NSUserActivity)
+  args[:restoration_handler]  #=> a block, that yields an array of restorable objects, ie. objects that respond to a `restoreActivityState` method.
+end
+```
+
 ---
 
 ### Class Methods

@@ -43,6 +43,10 @@ module ProMotion
       try :on_open_url, { url: url, source_app: source_app, annotation: annotation }
     end
 
+    def application(application, continueUserActivity:user_activity, restorationHandler:restoration_handler)
+      try :on_continue_user_activity, { user_activity: user_activity, restoration_handler: restoration_handler }
+    end
+
     def ui_window
       (defined?(Motion) && defined?(Motion::Xray) && defined?(Motion::Xray::XrayWindow)) ? Motion::Xray::XrayWindow : UIWindow
     end

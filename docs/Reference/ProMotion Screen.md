@@ -310,7 +310,7 @@ set_nav_bar_button :left, {
   image: UIImage.imageNamed("left-nav"),
   system_item: :reply,
   tint_color: UIColor.blueColor,
-  button: UIBarButtonItem.initWithTitle("My button", style: UIBarButtonItemStyleBordered, target: self, action: :tapped_button) # for custom button
+  button: UIBarButtonItem.alloc.initWithTitle("My button", style: UIBarButtonItemStyleBordered, target: self, action: :tapped_button) # for custom button
 }
 ```
 

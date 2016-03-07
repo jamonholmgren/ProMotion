@@ -89,7 +89,7 @@ class TestTableScreen < ProMotion::TableScreen
 
   def nil_section
     # Another line of brilliant code!
-    # 
+    #
     # only here becuase I want to be descriptive about what I'm doing above
     # in the table data method.
     nil
@@ -99,14 +99,14 @@ class TestTableScreen < ProMotion::TableScreen
     args[:id]
   end
 
-  def add_tableview_row(args={})
+  def add_tableview_row(args)
     @data[0][:cells] << {
       title: "Dynamically Added"
     }
     update_table_data
   end
 
-  def delete_cell(args={})
+  def delete_cell(args)
     if args[:animated]
       delete_row(NSIndexPath.indexPathForRow(args[:row], inSection:args[:section]))
     else
@@ -132,7 +132,7 @@ class TestTableScreen < ProMotion::TableScreen
     self.tap_counter = self.tap_counter + 1
   end
 
-  def increment_counter_by(args={})
+  def increment_counter_by(args)
     self.tap_counter = self.tap_counter + args[:number]
   end
 

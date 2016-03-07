@@ -42,15 +42,17 @@ module ProMotion
         selected_tab_vc = viewControllers[tab]
       end
 
-      if selected_tab_vc
-        self.selectedViewController = selected_tab_vc
-        on_tab_selected_try(selected_tab_vc)
-
-        selected_tab_vc
-      else
-        mp "Unable to open tab #{tab.to_s} -- not found.", force_color: :red
-        nil
+      unless selected_tab_vc
+        mp "Unable to open tab #{tab} -- not found.", force_color: :red
+        return
       end
+
+      return unless should_select_tab_try(selected_tab_vc)
+
+      self.selectedViewController = selected_tab_vc
+      on_tab_selected_try(selected_tab_vc)
+
+      selected_tab_vc
     end
 
     def find_tab(tab_title)
@@ -58,13 +60,17 @@ module ProMotion
     end
 
     # Cocoa touch methods below
+    def tabBarController(tbc, shouldSelectViewController: vc)
+      should_select_tab_try(vc)
+    end
+
     def tabBarController(tbc, didSelectViewController: vc)
       on_tab_selected_try(vc)
     end
 
     def tabBarController(tbc, didEndCustomizingViewControllers:vcs, changed:changed)
       if changed
-        tab_order = vcs.map{ |vc| vc.tabBarItem.tag }
+        tab_order = vcs.map { |vc| vc.tabBarItem.tag }
         NSUserDefaults.standardUserDefaults.setObject(tab_order, forKey:"tab_bar_order_#{@name}")
         NSUserDefaults.standardUserDefaults.synchronize
       end
@@ -84,10 +90,19 @@ module ProMotion
 
     private
 
+    # Defaults to true if :should_select_tab tab is not implemented by the tab delegate.
+    def should_select_tab_try(vc)
+      method_name = :should_select_tab
+      return true unless can_send_method_to_delegate?(method_name)
+
+      pm_tab_delegate.send(method_name, vc)
+    end
+
     def on_tab_selected_try(vc)
-      if pm_tab_delegate && pm_tab_delegate.respond_to?(:weakref_alive?) && pm_tab_delegate.weakref_alive? && pm_tab_delegate.respond_to?("on_tab_selected:")
-        pm_tab_delegate.send(:on_tab_selected, vc)
-      end
+      method_name = :on_tab_selected
+      return unless can_send_method_to_delegate?(method_name)
+
+      pm_tab_delegate.send(method_name, vc)
     end
 
     def current_view_controller
@@ -95,8 +110,16 @@ module ProMotion
     end
 
     def current_view_controller_try(method, *args)
-      current_view_controller.send(method, *args) if current_view_controller.respond_to?(method)
+      return unless current_view_controller.respond_to?(method)
+
+      current_view_controller.send(method, *args)
     end
 
+    def can_send_method_to_delegate?(method)
+      pm_tab_delegate &&
+        pm_tab_delegate.respond_to?(:weakref_alive?) &&
+        pm_tab_delegate.weakref_alive? &&
+        pm_tab_delegate.respond_to?("#{method}:")
+    end
   end
 end

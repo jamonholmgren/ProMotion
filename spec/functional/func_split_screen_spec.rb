@@ -31,7 +31,7 @@ describe "Split screen functionality" do
 
   it "should allow opening another view from the master view" do
 
-    @master.open BasicScreen, animated: false
+    @master.open BasicScreen.new(nav_bar: true), animated: false
 
     view("Basic").should.be.kind_of UINavigationItemView
     view("Detail").should.be.kind_of UINavigationItemView
@@ -50,7 +50,7 @@ describe "Split screen functionality" do
 
   it "should allow opening another view from the detail view" do
 
-    @detail.open BasicScreen, animated: false
+    @detail.open BasicScreen.new(nav_bar: true), animated: false
 
     view("Basic").should.be.kind_of UINavigationItemView
     view("Master").should.be.kind_of UINavigationItemView

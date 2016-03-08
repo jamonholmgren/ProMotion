@@ -34,12 +34,6 @@ describe "screen properties" do
     HomeScreen.title.should != 'instance method'
   end
 
-  it "should have a default UIStatusBar style" do
-    @screen.view_will_appear(false)
-    UIApplication.sharedApplication.isStatusBarHidden.should == false
-    UIApplication.sharedApplication.statusBarStyle.should == UIStatusBarStyleDefault
-  end
-
   it "should set the UIStatusBar style to :none" do
     @screen.class.status_bar :none
     @screen.view_will_appear(false)
@@ -69,6 +63,13 @@ describe "screen properties" do
     @screen.view_will_appear(false)
     UIApplication.sharedApplication.isStatusBarHidden.should == false
     UIApplication.sharedApplication.statusBarStyle.should == UIStatusBarStyleLightContent
+  end
+
+  it "should default to a hidden UIStatusBar if already hidden" do
+    UIApplication.sharedApplication.setStatusBarHidden(true, withAnimation: UIStatusBarAnimationNone)
+    @screen.class.status_bar :default
+    @screen.view_will_appear(false)
+    UIApplication.sharedApplication.isStatusBarHidden.should == true
   end
 
   it "should set the tab bar item with a system item" do
@@ -448,7 +449,9 @@ describe "child screen management" do
   end
 
   it "#add_child_screen" do
-    @screen.add_child_screen @child
+    autorelease_pool do
+      @screen.add_child_screen @child
+    end
     @screen.childViewControllers.should.include(@child)
     @screen.childViewControllers.length.should == 1
     @child.parent_screen.should == @screen

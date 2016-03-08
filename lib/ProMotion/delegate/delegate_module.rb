@@ -2,7 +2,7 @@ module ProMotion
   module DelegateModule
     include ProMotion::Support
     include ProMotion::Tabs
-    include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
+    include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad || (UIDevice.currentDevice.systemVersion.to_i >= 8 )
 
     attr_accessor :window, :home_screen
 
@@ -41,6 +41,10 @@ module ProMotion
 
     def application(application, openURL: url, sourceApplication:source_app, annotation: annotation)
       try :on_open_url, { url: url, source_app: source_app, annotation: annotation }
+    end
+
+    def application(application, continueUserActivity:user_activity, restorationHandler:restoration_handler)
+      try :on_continue_user_activity, { user_activity: user_activity, restoration_handler: restoration_handler }
     end
 
     def ui_window

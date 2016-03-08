@@ -1,8 +1,8 @@
 `ProMotion::Tabs` is a module that is automatically included in `PM::Delegate` and `PM::Screen`. It includes methods and functionality dealing with `UITabBarController` and `UITabBarItem`.
 
-* [Methods](?#methods)
-* [Class Methods](?#class-methods)
-* [Accessors](?#accessors)
+* [Methods](#methods)
+* [Class Methods](#class-methods)
+* [Accessors](#accessors)
 
 ### Methods
 

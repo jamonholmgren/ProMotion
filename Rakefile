@@ -2,6 +2,7 @@
 $:.unshift("/Library/RubyMotion/lib")
 require 'motion/project/template/ios'
 require 'bundler'
+Bundler.setup
 Bundler.require(:development)
 require 'ProMotion'
 require 'motion_print'
@@ -16,8 +17,10 @@ Motion::Project::App.setup do |app|
   # Adding file dependencies for tests
   # Not too many dependencies necessary
   app.files_dependencies({
-    "app/test_screens/table_screen_refreshable.rb"   => [ "app/test_screens/test_table_screen.rb" ],
-    "app/test_screens/table_screen_longpressable.rb" => [ "app/test_screens/test_table_screen.rb" ],
+    "app/screens/table_screen_refreshable.rb"   => [ "app/screens/test_table_screen.rb" ],
+    "app/screens/table_screen_longpressable.rb" => [ "app/screens/test_table_screen.rb" ],
+    "app/screens/test_collection_screen.rb" => [ "app/test_views/custom_collection_view_cell.rb" ],
+    "app/screens/test_collection2_screen.rb" => [ "app/test_views/custom_collection_view_cell.rb" ],
   })
 end
 

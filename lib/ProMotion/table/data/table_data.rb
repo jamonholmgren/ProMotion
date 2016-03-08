@@ -7,7 +7,18 @@ module ProMotion
 
     def initialize(data, table_view, search_action = nil)
       @search_action ||= search_action
-      self.data = data
+
+      if data.include?(nil)
+        mp("Warning: You have a `nil` section in your table_data method.", force_color: :yellow)
+      end
+
+      self.data = data.compact.each_with_index.map do |section,index|
+        if section[:cells].include?(nil)
+          mp("Warning: You have a `nil` cell in table section #{index}.", force_color: :yellow)
+          section[:cells].compact!
+        end
+        section
+      end
       self.table_view = WeakRef.new(table_view)
     end
 

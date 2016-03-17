@@ -4,6 +4,8 @@ if RUBYMOTION_ENV == "development"
     def pm_live(opts={})
       @screen_watcher.stop if @screen_watcher
       @view_watcher.stop if @view_watcher
+      @layout_watcher.stop if @layout_watcher
+
       if opts == false || opts.to_s.downcase == "off"
         "Live reloading of PM screens is now off."
       else
@@ -27,13 +29,29 @@ if RUBYMOTION_ENV == "development"
           end
         end
 
-        "Live reloading of screens and views is now on."
+        @layout_watcher = LiveReloader.new("app/layouts/**/*.rb", opts).watch do |reloaded_file, new_code, class_names|
+          vcs = pm_all_view_controllers(UIApplication.sharedApplication.delegate.window.rootViewController)
+          vcs.each do |vc|
+            if pm_is_layout?(vc, class_names) 
+              puts "Sending :on_live_reload to #{vc.inspect}." #if opts[:debug]
+              vc.send(:on_live_reload) if vc.respond_to?(:on_live_reload)
+            end
+          end
+        end
+
+        "Live reloading of screens, views, and layouts is now on."
       end
     end
     alias_method :pm_live_screens, :pm_live
 
 
     private
+
+    def pm_is_layout?(vc, layout_code)
+      definition = layout_code.detect {|e| e =~ /class\s*(\S*)Layout/}
+      screen_name = "#{$1}Screen"
+      vc.class.to_s == screen_name
+    end
 
     # Very permissive. Might get unnecessary reloads. That's okay.
     def pm_is_in_ancestry?(vc, screen_names)

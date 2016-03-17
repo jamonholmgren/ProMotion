@@ -33,7 +33,7 @@ if RUBYMOTION_ENV == "development"
           vcs = pm_all_view_controllers(UIApplication.sharedApplication.delegate.window.rootViewController)
           vcs.each do |vc|
             if pm_is_layout?(vc, class_names) 
-              puts "Sending :on_live_reload to #{vc.inspect}." #if opts[:debug]
+              puts "Sending :on_live_reload to #{vc.inspect}." if opts[:debug]
               vc.send(:on_live_reload) if vc.respond_to?(:on_live_reload)
             end
           end

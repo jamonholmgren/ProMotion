@@ -89,6 +89,14 @@ end
 
 # Changelog
 
+## Version 2.6.0
+
+This release includes a few new features and bugfixes and is backwards compatible with all 2.x releases.
+
+* PR #773 Add a `on_continue_user_activity` delegate method
+* PR #766 Fix nav_bar_button class method
+* Other minor bugfixes and documentation updates
+
 ## Version 2.5.0
 
 This release includes some new features and bugfixes and is backwards compatible with all 2.x releases.
@@ -97,16 +105,6 @@ This release includes some new features and bugfixes and is backwards compatible
 * PR #705 Adds split-screen support for large iPhones
 * PR #736 Adds the index path when deleting a cell
 * Several other bugfix PRs
-
-## Version 2.4.0
-
-This release includes several new features and is backwards compatible with all 2.x releases.
-
-* PR #686 Adds :searchable to the whitelisted properties a cell can have so that a warning is not generated.
-* PR #688 Adds support for SDWebImage and takes preference over JMImageCache. _JMImageCache will still be supported till ProMotion 3.0 but we highly recommend you switch to SDWebImage._
-* PR #679 Extract methods from tablescreen for reuse in modules for [redpotion](https://github.com/infinitered/redpotion).
-* PR #677 Added `add_child_screen` and `remove_child_screen` methods to `PM::Screen`.
-* PR #687 Adds persisting tab order when changed by the user for tab bars over 5 screens.
 
 # Apps built on ProMotion
 

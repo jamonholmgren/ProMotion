@@ -1,15 +1,41 @@
 if RUBYMOTION_ENV == "development"
   puts "Type `pm_live` to enable ProMotion's live reload system."
   module Kernel
+
+    @live_reloaders ||= []
+
+    def register_live_reloader watcher
+      @live_reloaders << watcher
+    end
+
     def pm_live(opts={})
-      @screen_watcher.stop if @screen_watcher
-      @view_watcher.stop if @view_watcher
-      @layout_watcher.stop if @layout_watcher
+
+      @watchers.each {|watcher| watcher.stop} if @watchers
 
       if opts == false || opts.to_s.downcase == "off"
+        @watchers = nil
         "Live reloading of PM screens is now off."
       else
-        @screen_watcher = LiveReloader.new("app/screens/**/*.rb", opts).watch do |reloaded_file, new_code, class_names|
+        @watchers = live_reloaders.collect {|reloader| reloader.(opts)}
+
+        mp @watchers
+
+        #TODO -- report the paths here
+        "Live reloading of screens, views, and layouts is now on."
+      end
+    end
+    alias_method :pm_live_screens, :pm_live
+
+
+    private
+
+    def live_reloaders
+      Kernel.instance_variable_get(:@live_reloaders)
+    end
+
+    def screen_watcher
+      lambda do | opts |
+        LiveReloader.new("app/screens/**/*.rb", opts).watch do |reloaded_file, new_code, class_names|
           vcs = pm_all_view_controllers(UIApplication.sharedApplication.delegate.window.rootViewController)
           vcs.each do |vc|
             if pm_is_in_ancestry?(vc, class_names)
@@ -18,8 +44,14 @@ if RUBYMOTION_ENV == "development"
             end
           end
         end
+      end
+    end
 
-        @view_watcher = LiveReloader.new("app/views/**/*.rb", opts).watch do |reloaded_file, new_code, class_names|
+    register_live_reloader screen_watcher
+
+    def view_watcher
+      lambda do | opts |
+        LiveReloader.new("app/views/**/*.rb", opts).watch do |reloaded_file, new_code, class_names|
           views = pm_all_views(UIApplication.sharedApplication.delegate.window)
           views.each do |view|
             if pm_is_in_ancestry?(view, class_names)
@@ -28,24 +60,10 @@ if RUBYMOTION_ENV == "development"
             end
           end
         end
-
-        @layout_watcher = LiveReloader.new("app/layouts/**/*.rb", opts).watch do |reloaded_file, new_code, class_names|
-          vcs = pm_all_view_controllers(UIApplication.sharedApplication.delegate.window.rootViewController)
-          vcs.each do |vc|
-            if pm_is_layout?(vc, class_names) 
-              puts "Sending :on_live_reload to #{vc.inspect}." if opts[:debug]
-              vc.send(:on_live_reload) if vc.respond_to?(:on_live_reload)
-            end
-          end
-        end
-
-        "Live reloading of screens, views, and layouts is now on."
       end
     end
-    alias_method :pm_live_screens, :pm_live
 
-
-    private
+    register_live_reloader view_watcher
 
     def pm_is_layout?(vc, layout_code)
       definition = layout_code.detect {|e| e =~ /class\s*(\S*)Layout/}

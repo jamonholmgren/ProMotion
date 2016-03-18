@@ -17,13 +17,13 @@ if RUBYMOTION_ENV == "development"
         "Live reloading of PM screens is now off."
       else
         @watchers = live_reloaders.collect {|reloader| reloader.(opts)}
+        mp @watchers if opts[:debug]
 
-        mp @watchers
-
-        #TODO -- report the paths here
-        "Live reloading of screens, views, and layouts is now on."
+        watching = @watchers.collect {|watcher| watcher.path_query}
+        "Live reloading of #{watching.join(", ")} is now on."
       end
     end
+
     alias_method :pm_live_screens, :pm_live
 
 
@@ -64,12 +64,6 @@ if RUBYMOTION_ENV == "development"
     end
 
     register_live_reloader view_watcher
-
-    def pm_is_layout?(vc, layout_code)
-      definition = layout_code.detect {|e| e =~ /class\s*(\S*)Layout/}
-      screen_name = "#{$1}Screen"
-      vc.class.to_s == screen_name
-    end
 
     # Very permissive. Might get unnecessary reloads. That's okay.
     def pm_is_in_ancestry?(vc, screen_names)

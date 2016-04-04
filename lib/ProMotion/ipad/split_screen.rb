@@ -58,7 +58,6 @@ module ProMotion
     end
 
     def split_screen_setup(split, args)
-      args[:icon] ||= args[:item] # TODO: Remove in PM 2.2+.
       if (args[:item] || args[:title]) && respond_to?(:create_tab_bar_item)
         split.tabBarItem = create_tab_bar_item(args)
       end

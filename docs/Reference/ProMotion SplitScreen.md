@@ -1,9 +1,9 @@
 ### Contents
 
-* [Usage](?#usage)
-* [Methods](?#methods)
-* [Class Methods](?#class-methods)
-* [Accessors](?#accessors)
+* [Usage](#usage)
+* [Methods](#methods)
+* [Class Methods](#class-methods)
+* [Accessors](#accessors)
 
 ### Usage
 
@@ -19,7 +19,7 @@ end
 
 #### open_split_screen(master, detail, args = {})
 
-*iPad apps only*
+*Before iOS 8, iPad apps only*
 Opens a UISplitScreenViewController with the specified screens. Usually opened in the AppDelegate as the root view controller.
 
 ```ruby

@@ -53,6 +53,8 @@ module ProMotion
     alias_method :set_toolbar_button,  :set_toolbar_items
 
     def add_nav_bar(args = {})
+      args = self.class.get_nav_bar.merge(args)
+      return unless args[:nav_bar]
       self.navigationController ||= begin
         self.first_screen = true if self.respond_to?(:first_screen=)
         nav = (args[:nav_controller] || NavigationController).alloc.initWithRootViewController(self)
@@ -61,7 +63,12 @@ module ProMotion
         nav
       end
       self.navigationController.toolbarHidden = !args[:toolbar] unless args[:toolbar].nil?
-      self.navigationController.setNavigationBarHidden(args[:hide_nav_bar], animated: false) unless args[:hide_nav_bar].nil?
+    end
+
+    def view_will_appear(animated)
+      if @screen_options && !@screen_options[:hide_nav_bar].nil?
+        self.navigationController.setNavigationBarHidden(@screen_options[:hide_nav_bar], animated: false)
+      end
     end
 
   private

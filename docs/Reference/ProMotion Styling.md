@@ -4,10 +4,10 @@ PM::Styling is *not* meant to be a full featured styling system. For that, you s
 
 ### Contents
 
-* [Usage](?#usage)
-* [Methods](?#methods)
-* [Class Methods](?#class-methods)
-* [Accessors](?#accessors)
+* [Usage](#usage)
+* [Methods](#methods)
+* [Class Methods](#class-methods)
+* [Accessors](#accessors)
 
 ### Usage
 

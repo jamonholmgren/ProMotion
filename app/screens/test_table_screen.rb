@@ -1,5 +1,5 @@
 class TestTableScreen < ProMotion::TableScreen
-  attr_accessor :tap_counter, :cell_was_deleted, :got_index_path, :cell_was_moved, :got_will_display_header
+  attr_accessor :tap_counter, :cell_was_deleted, :cell_deleted_index_path, :got_index_path, :cell_was_moved, :got_will_display_header
 
   title 'Test title'
   tab_bar_item title: 'Test tab title', item: 'test'
@@ -18,6 +18,7 @@ class TestTableScreen < ProMotion::TableScreen
         { title: "Increment", action: :increment_counter_by, arguments: {number: 3} },
         { title: "Add New Row", action: :add_tableview_row },
         { title: "Delete the row below", action: :delete_cell, arguments: {section: 0, row:3} },
+        nil,
         { title: "Just another deletable blank row", editing_style: :delete },
         { title: "A non-deletable blank row", editing_style: :delete },
         { title: "Delete the row below with an animation", action: :delete_cell, arguments: {animated: true, section: 0, row:5 } },
@@ -37,7 +38,8 @@ class TestTableScreen < ProMotion::TableScreen
         { title: "Image Test 3", cell_identifier: "ImagedCell", cell_identifier: "ImagedCell", image: UIImage.imageNamed("list.png") },
         { title: "Image Test 4", image: "list.png" },
       ]
-    }, {
+    },
+    nil_section, {
       title: "Cell Accessory Tests",
       cells: [{
         title: "Switch With Action",
@@ -85,18 +87,26 @@ class TestTableScreen < ProMotion::TableScreen
     }]
   end
 
+  def nil_section
+    # Another line of brilliant code!
+    #
+    # only here becuase I want to be descriptive about what I'm doing above
+    # in the table data method.
+    nil
+  end
+
   def edit_profile(args={})
     args[:id]
   end
 
-  def add_tableview_row(args={})
+  def add_tableview_row(args)
     @data[0][:cells] << {
       title: "Dynamically Added"
     }
     update_table_data
   end
 
-  def delete_cell(args={})
+  def delete_cell(args)
     if args[:animated]
       delete_row(NSIndexPath.indexPathForRow(args[:row], inSection:args[:section]))
     else
@@ -105,11 +115,12 @@ class TestTableScreen < ProMotion::TableScreen
     end
   end
 
-  def on_cell_deleted(cell)
+  def on_cell_deleted(cell, index_path)
     if cell[:title] == "A non-deletable blank row"
       false
     else
       self.cell_was_deleted = true
+      self.cell_deleted_index_path = index_path
     end
   end
 
@@ -121,7 +132,7 @@ class TestTableScreen < ProMotion::TableScreen
     self.tap_counter = self.tap_counter + 1
   end
 
-  def increment_counter_by(args={})
+  def increment_counter_by(args)
     self.tap_counter = self.tap_counter + args[:number]
   end
 

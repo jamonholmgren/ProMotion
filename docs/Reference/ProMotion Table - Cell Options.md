@@ -4,9 +4,12 @@ you really should be subclassing them and specifying that new class in <code>:ce
 ```ruby
 def table_data
   [{
-    title: "Group Title",
-    title_view: MyCustomSection,
+    title: "Group Header",
+    title_view: MyCustomSectionHeader,
     title_view_height: 50,
+    footer: "Group Footer",
+    footer_view: MyCustomSectionFooter,
+    footer_view_height: 50,
     cells: [{
       # Title
       title: "Full featured cell",

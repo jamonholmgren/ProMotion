@@ -23,6 +23,10 @@ module ProMotion
       set_up_row_height
     end
 
+    def on_live_reload
+      update_table_data
+    end
+
     def check_table_data
       mp("Missing #table_data method in TableScreen #{self.class.to_s}.", force_color: :red) unless self.respond_to?(:table_data)
     end
@@ -131,7 +135,8 @@ module ProMotion
       deletable_index_paths = []
       Array(index_paths).each do |index_path|
         delete_cell = false
-        delete_cell = send(:on_cell_deleted, cell_at(index_path: index_path)) if self.respond_to?("on_cell_deleted:")
+
+        delete_cell = trigger_action(:on_cell_deleted, cell_at(index_path: index_path), index_path) if respond_to?(:on_cell_deleted)
         unless delete_cell == false
           self.promotion_table_data.delete_cell(index_path: index_path)
           deletable_index_paths << index_path
@@ -182,6 +187,11 @@ module ProMotion
       section && section[:title]
     end
 
+    def tableView(_, titleForFooterInSection: section)
+      section = promotion_table_data.section(section)
+      section && section[:footer]
+    end
+
     # Set table_data_index if you want the right hand index column (jumplist)
     def sectionIndexTitlesForTableView(_)
       return if self.promotion_table_data.filtered
@@ -214,12 +224,12 @@ module ProMotion
     end
 
     def tableView(_, canEditRowAtIndexPath:index_path)
-      data_cell = cell_at(index_path: index_path, unfiltered: true)
+      data_cell = cell_at(index_path: index_path, unfiltered: !searching?)
       [:insert,:delete].include?(data_cell[:editing_style])
     end
 
     def tableView(_, editingStyleForRowAtIndexPath: index_path)
-      data_cell = cell_at(index_path: index_path, unfiltered: true)
+      data_cell = cell_at(index_path: index_path, unfiltered: !searching?)
       map_cell_editing_style(data_cell[:editing_style])
     end
 
@@ -230,7 +240,7 @@ module ProMotion
     end
 
     def tableView(_, canMoveRowAtIndexPath:index_path)
-      data_cell = cell_at(index_path: index_path, unfiltered: true)
+      data_cell = cell_at(index_path: index_path, unfiltered: !searching?)
 
       if (!data_cell[:moveable].nil? || data_cell[:moveable].is_a?(Symbol)) && data_cell[:moveable] != false
         true
@@ -240,7 +250,7 @@ module ProMotion
     end
 
     def tableView(_, targetIndexPathForMoveFromRowAtIndexPath:source_index_path, toProposedIndexPath:proposed_destination_index_path)
-      data_cell = cell_at(index_path: source_index_path, unfiltered: true)
+      data_cell = cell_at(index_path: source_index_path, unfiltered: !searching?)
 
       if data_cell[:moveable] == :section && source_index_path.section != proposed_destination_index_path.section
         source_index_path
@@ -282,11 +292,12 @@ module ProMotion
       delete_row(index_paths, animation)
     end
 
-    # Section view methods
+    # Section header view methods
     def tableView(_, viewForHeaderInSection: index)
       section = promotion_table_data.section(index)
       view = section[:title_view]
       view = section[:title_view].new if section[:title_view].respond_to?(:new)
+      view.on_load if view.respond_to?(:on_load)
       view.title = section[:title] if view.respond_to?(:title=)
       view
     end
@@ -294,7 +305,13 @@ module ProMotion
     def tableView(_, heightForHeaderInSection: index)
       section = promotion_table_data.section(index)
       if section[:title_view] || section[:title].to_s.length > 0
-        section[:title_view_height] || tableView.sectionHeaderHeight
+        if section[:title_view_height]
+          section[:title_view_height]
+        elsif (section_header = tableView(_, viewForHeaderInSection: index)) && section_header.respond_to?(:height)
+          section_header.height
+        else
+          tableView.sectionHeaderHeight
+        end
       else
         0.0
       end
@@ -302,6 +319,42 @@ module ProMotion
 
     def tableView(_, willDisplayHeaderView:view, forSection:section)
       action = :will_display_header
+      if respond_to?(action)
+        case self.method(action).arity
+        when 0 then self.send(action)
+        when 2 then self.send(action, view, section)
+        else self.send(action, view)
+        end
+      end
+    end
+
+    # Section footer view methods
+    def tableView(_, viewForFooterInSection: index)
+      section = promotion_table_data.section(index)
+      view = section[:footer_view]
+      view = section[:footer_view].new if section[:footer_view].respond_to?(:new)
+      view.on_load if view.respond_to?(:on_load)
+      view.title = section[:footer] if view.respond_to?(:title=)
+      view
+    end
+
+    def tableView(_, heightForFooterInSection: index)
+      section = promotion_table_data.section(index)
+      if section[:footer_view] || section[:footer].to_s.length > 0
+        if section[:footer_view_height]
+          section[:footer_view_height]
+        elsif (section_footer = tableView(_, viewForFooterInSection: index)) && section_footer.respond_to?(:height)
+          section_footer.height
+        else
+          tableView.sectionFooterHeight
+        end
+      else
+        0.0
+      end
+    end
+
+    def tableView(_, willDisplayFooterView:view, forSection:section)
+      action = :will_display_footer
       if respond_to?(action)
         case self.method(action).arity
         when 0 then self.send(action)

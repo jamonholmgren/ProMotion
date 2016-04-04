@@ -19,7 +19,7 @@ module ProMotion
         return unless @refresh_control
 
         @refresh_control.beginRefreshing
-
+        @refresh_control.attributedTitle = NSAttributedString.alloc.initWithString(@refreshing)
         # Scrolls the table down to show the refresh control when invoked programatically
         tableView.setContentOffset(CGPointMake(0, tableView.contentOffset.y-@refresh_control.frame.size.height), animated:true) if tableView.contentOffset.y > -65.0
       end

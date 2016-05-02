@@ -67,6 +67,7 @@ module ProMotion
           progress:nil,
           completed: -> image, error, cacheType, finished {
             self.imageView.image = image unless image.nil?
+            self.setNeedsLayout
         })
       elsif jm_image_cache?
         mp "'JMImageCache' is known to have issues with ProMotion. Please consider switching to 'SDWebImage'. 'JMImageCache' support will be deprecated in the next major version.", force_color: :yellow

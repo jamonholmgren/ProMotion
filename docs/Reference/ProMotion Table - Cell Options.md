@@ -71,7 +71,11 @@ def table_data
       # You can also specify an image with just a UIImage or a String
       # image: UIImage.imageNamed("something"),
       # image: "something",
-      remote_image: {  # remote image, requires SDWebImage CocoaPod
+      
+      # Remote images require the SDWebImage CocoaPod. Make sure the pods section of your Rakefile includes this CocoaPod.
+      # For best results, your placeholder image and your remote image should be the same size.
+      # The standard UITableViewCell is not designed to work well with images of different sizes.
+      remote_image: {
         url: "http://placekitten.com/200/300",
         placeholder: "some-local-image", # NOTE: this is required!
         size: 50,

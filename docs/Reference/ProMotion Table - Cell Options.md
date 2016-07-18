@@ -27,7 +27,7 @@ def table_data
       cell_style: UITableViewCellStyleSubtitle,
       cell_identifier: "my-custom-cell-id", # ProMotion sets this for you intelligently
       cell_class: PM::TableViewCell,
-      selection_style: UITableViewCellSelectionStyleGray, # or: :none, :blue, :gray, :default
+      selection_style: UITableViewCellSelectionStyleNone, # or: :none, :blue, :gray, :default. Note that in iOS7, :blue is no longer blue.
 
       # View attributes.
       height: 50, # manually changes the cell's height
@@ -71,7 +71,7 @@ def table_data
       # You can also specify an image with just a UIImage or a String
       # image: UIImage.imageNamed("something"),
       # image: "something",
-      
+
       # Remote images require the SDWebImage CocoaPod. Make sure the pods section of your Rakefile includes this CocoaPod.
       # For best results, your placeholder image and your remote image should be the same size.
       # The standard UITableViewCell is not designed to work well with images of different sizes.

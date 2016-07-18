@@ -4,7 +4,7 @@ before_install:
     - (ruby --version)
     - sudo chown -R travis ~/Library/RubyMotion
     - mkdir -p ~/Library/RubyMotion/build
-    - sudo motion update
+    - sudo motion update || echo 'RubyMotion up to date'
 gemfile:
   - Gemfile
 script:

@@ -77,7 +77,7 @@ module ProMotion
       self.on_memory_warning
     end
     def on_memory_warning
-      mp "Received memory warning in #{self.inspect}. You should implement on_memory_warning in your secreen.", force_color: :red
+      mp "Received memory warning in #{self.inspect}. You should implement on_memory_warning in your screen.", force_color: :red
     end
 
     def on_live_reload

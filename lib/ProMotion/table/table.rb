@@ -122,7 +122,10 @@ module ProMotion
       else
         table_view.reloadData
       end
-      @table_search_display_controller.searchResultsTableView.reloadData if searching?
+
+      if searching? && @table_search_display_controller.respond_to?(:searchResultsTableView)
+        @table_search_display_controller.searchResultsTableView.reloadData
+      end
     end
 
     def accessory_toggled_switch(switch)

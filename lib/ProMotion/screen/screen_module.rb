@@ -77,7 +77,7 @@ module ProMotion
       self.on_memory_warning
     end
     def on_memory_warning
-      mp "Received memory warning in #{self.inspect}. You should implement on_memory_warning in your secreen.", force_color: :red
+      mp "Received memory warning in #{self.inspect}. You should implement on_memory_warning in your screen.", force_color: :red
     end
 
     def on_live_reload
@@ -198,7 +198,9 @@ module ProMotion
     end
 
     def add_nav_bar_buttons
-      set_nav_bar_button(self.class.get_nav_bar_button[:side], self.class.get_nav_bar_button) if self.class.get_nav_bar_button
+      self.class.get_nav_bar_button.each do |button_args|
+        set_nav_bar_button(button_args[:side], button_args)
+      end
     end
 
     def status_bar_hidden(hidden)
@@ -276,12 +278,14 @@ module ProMotion
       end
 
       def nav_bar_button(side, args={})
-        @nav_bar_button_args = args
-        @nav_bar_button_args[:side] = side
+        button_args = args.merge(:side => side)
+
+        @nav_bar_button_args ||= []
+        @nav_bar_button_args << button_args
       end
 
       def get_nav_bar_button
-        @nav_bar_button_args
+        @nav_bar_button_args ||= []
       end
     end
 

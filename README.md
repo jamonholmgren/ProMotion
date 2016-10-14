@@ -89,6 +89,17 @@ end
 
 # Changelog
 
+## Version 2.6.1
+
+This release includes a few new features and bugfixes and is backwards compatible with all 2.x releases.
+
+* PR #777 New Feature: Add ability to register live reload plugins
+* PR #778 Bugfix: Only update search results table data if possible
+* PR #779 Fix bug where remote images are not shown on first load of table screen
+* PR #787 Fix Travis CI build from failing when RubyMotion is up-to-date
+* PR #796 Fix iOS 10 from crashing when determining supportedInterfaceOrientations for UIImagePickerController
+* Other minor bugfixes and documentation updates
+
 ## Version 2.6.0
 
 This release includes a few new features and bugfixes and is backwards compatible with all 2.x releases.

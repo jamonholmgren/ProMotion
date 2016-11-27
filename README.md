@@ -151,9 +151,10 @@ See [CONTRIBUTING.md](https://github.com/infinitered/ProMotion/blob/master/CONTR
 ## Core Team
 
 * Jamon Holmgren: [@jamonholmgren](https://twitter.com/jamonholmgren)
-* Silas Matson: [@silasjmatson](https://twitter.com/silasjmatson)
+* Andrew Havens: [@misbehavens](https://twitter.com/misbehavens)
 * Mark Rickert: [@markrickert](https://twitter.com/markrickert)
 * Ryan Linton: [@ryanlntn](https://twitter.com/ryanlntn)
+* Silas Matson: [@silasjmatson](https://twitter.com/silasjmatson)
 * David Larrabee: [@squidpunch](https://twitter.com/squidpunch)
 
 ## Other Contributors

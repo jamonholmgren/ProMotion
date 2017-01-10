@@ -4,7 +4,7 @@
 [![Build Status](https://img.shields.io/travis/infinitered/ProMotion.svg?style=flat)](https://travis-ci.org/infinitered/ProMotion)
 [![Code Climate](https://img.shields.io/codeclimate/github/infinitered/ProMotion.svg?style=flat)](https://codeclimate.com/github/infinitered/ProMotion)
 
-ProMotion is maintained by [Infinite Red](http://infinite.red), a web and mobile development company based in Portland, OR and San Francisco, CA.
+ProMotion was created by [Infinite Red](http://infinite.red), a web and mobile development company based in Portland, OR and San Francisco, CA. While you're welcome to use ProMotion, please note that we rely on the community to maintain it. We are happy to merge pull requests and release new versions but are no longer driving primary development.
 
 ## iPhone Apps, Ruby-style
 

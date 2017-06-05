@@ -6,7 +6,7 @@
 
 ProMotion was created by [Infinite Red](http://infinite.red), a web and mobile development company based in Portland, OR and San Francisco, CA. While you're welcome to use ProMotion, please note that we rely on the community to maintain it. We are happy to merge pull requests and release new versions but are no longer driving primary development.
 
-![7c7ce1e0-49e4-11e7-99e8-9ebd9f456a8f](https://cloud.githubusercontent.com/assets/1479215/26798290/c156fdb4-49e4-11e7-92b7-be24647a3474.png)
+<img alt="apple presentation" src="https://cloud.githubusercontent.com/assets/1479215/26798290/c156fdb4-49e4-11e7-92b7-be24647a3474.png" width="350px" />
 
 _Apple presenting on ProMotion, WWDC 2017_
 

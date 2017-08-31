@@ -21,6 +21,7 @@ module ProMotion
 
     def layoutSubviews
       super
+      return unless data_cell
 
       # Support changing sizes of the image view
       if (data_cell[:image] && data_cell[:image].is_a?(Hash) && data_cell[:image][:size])

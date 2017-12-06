@@ -51,7 +51,7 @@ def table_data
       # Accessory Type
       # Sets the UITableViewCell's accessoryType property
       # Accepts UITableViewCellAccessory or any of the following symbols:
-      # :none, :disclosure_indicator, :disclosure_button, :checkmark, :default
+      # :none, :disclosure_indicator, :disclosure_button, :checkmark, :detail_button
       accessory_type: :none,
 
       # Swipe-to-delete

@@ -63,10 +63,10 @@ module ProMotion
       self.imageView.image = remote_placeholder
 
       if sd_web_image?
-        @remote_image_operation = SDWebImageManager.sharedManager.downloadWithURL(data_cell[:remote_image][:url].to_url,
-          options:SDWebImageRefreshCached,
+        @remote_image_operation = SDWebImageManager.sharedManager.loadImageWithURL(data_cell[:remote_image][:url].to_url,
+          options:SDWebImageRefreshCached | SDWebImageScaleDownLargeImages,
           progress:nil,
-          completed: -> image, error, cacheType, finished {
+          completed: -> image, imageData, error, cacheType, finished, imageURL {
             self.imageView.image = image unless image.nil?
             self.setNeedsLayout
         })

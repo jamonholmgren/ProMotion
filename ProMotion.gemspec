@@ -28,6 +28,6 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency("motion_print", "~> 1.0")
   gem.add_development_dependency("webstub", "~> 1.1")
   gem.add_development_dependency("motion-stump", "~> 0.3")
-  gem.add_development_dependency("motion-redgreen", "~> 0.1")
+  gem.add_development_dependency("motion-redgreen", "~> 1.0")
   gem.add_development_dependency("rake")
 end

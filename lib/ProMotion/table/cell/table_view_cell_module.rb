@@ -63,13 +63,25 @@ module ProMotion
       self.imageView.image = remote_placeholder
 
       if sd_web_image?
-        @remote_image_operation = SDWebImageManager.sharedManager.downloadWithURL(data_cell[:remote_image][:url].to_url,
-          options:SDWebImageRefreshCached,
-          progress:nil,
-          completed: -> image, error, cacheType, finished {
-            self.imageView.image = image unless image.nil?
-            self.setNeedsLayout
-        })
+        if SDWebImageManager.sharedManager.respond_to?('downloadWithURL:options:progress:completed:')
+          # SDWebImage 3.x
+          @remote_image_operation = SDWebImageManager.sharedManager.downloadWithURL(data_cell[:remote_image][:url].to_url,
+            options:SDWebImageRefreshCached,
+            progress:nil,
+            completed: -> image, error, cacheType, finished {
+              self.imageView.image = image unless image.nil?
+              self.setNeedsLayout
+          })
+        else
+          # SDWebImage 4.x
+          @remote_image_operation = SDWebImageManager.sharedManager.loadImageWithURL(data_cell[:remote_image][:url].to_url,
+            options:SDWebImageRefreshCached | SDWebImageScaleDownLargeImages,
+            progress:nil,
+            completed: -> image, imageData, error, cacheType, finished, imageURL {
+              self.imageView.image = image unless image.nil?
+              self.setNeedsLayout
+          })
+        end
       elsif jm_image_cache?
         mp "'JMImageCache' is known to have issues with ProMotion. Please consider switching to 'SDWebImage'. 'JMImageCache' support will be deprecated in the next major version.", force_color: :yellow
         JMImageCache.sharedCache.imageForURL(data_cell[:remote_image][:url].to_url, completionBlock:proc { |downloaded_image|

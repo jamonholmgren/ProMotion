@@ -35,12 +35,6 @@ module ProMotion
       self.navigationItem.setRightBarButtonItems(buttons) if side == :right
     end
 
-    # TODO: In PM 2.1+, entirely remove this deprecated method.
-    def set_nav_bar_left_button(title, args={})
-      mp "set_nav_bar_right_button and set_nav_bar_left_button have been removed. Use set_nav_bar_button :right/:left instead.", force_color: :yellow
-    end
-    alias_method :set_nav_bar_right_button, :set_nav_bar_left_button
-
     def set_toolbar_items(buttons = [], animated = true)
       if buttons
         self.toolbarItems = Array(buttons).map{|b| b.is_a?(UIBarButtonItem) ? b : create_toolbar_button(b) }

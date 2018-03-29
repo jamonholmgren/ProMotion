@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 $:.unshift("/Library/RubyMotion/lib")
+$:.unshift("~/.rubymotion/rubymotion-templates")
 require 'motion/project/template/ios'
 require 'bundler'
 Bundler.setup
@@ -10,8 +11,6 @@ require 'motion_print'
 Motion::Project::App.setup do |app|
   app.name = 'ProMotion'
   app.device_family = [ :ipad ] # so we can test split screen capability
-  app.detect_dependencies = false
-  app.info_plist["UIViewControllerBasedStatusBarAppearance"] = false
   app.deployment_target = "8.0"
 
   # Adding file dependencies for tests

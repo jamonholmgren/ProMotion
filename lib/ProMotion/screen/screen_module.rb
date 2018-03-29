@@ -249,7 +249,7 @@ module ProMotion
     def self.included(base)
       base.extend(ClassMethods)
       base.extend(StatusBarModule::ClassMethods)
-      base.extend(TabClassMethods) # TODO: Is there a better way?
+      base.extend(Tabs::ClassMethods)
     end
   end
 end

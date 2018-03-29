@@ -4,6 +4,7 @@ module ProMotion
     include ProMotion::ScreenNavigation
     include ProMotion::Styling
     include ProMotion::NavBarModule
+    include ProMotion::StatusBarModule
     include ProMotion::Tabs
     include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad || (UIDevice.currentDevice.systemVersion.to_i >= 8 )
 
@@ -41,7 +42,6 @@ module ProMotion
 
     def view_will_appear(animated)
       super
-      resolve_status_bar
       self.will_appear
 
       self.will_present if isMovingToParentViewController
@@ -179,36 +179,10 @@ module ProMotion
       end
     end
 
-    def resolve_status_bar
-      case self.class.status_bar_type
-      when :none
-        status_bar_hidden true
-      when :light
-        status_bar_hidden false
-        status_bar_style UIStatusBarStyleLightContent
-      when :dark
-        status_bar_hidden false
-        status_bar_style UIStatusBarStyleDefault
-      else
-        return status_bar_hidden true if UIApplication.sharedApplication.isStatusBarHidden
-        status_bar_hidden false
-        global_style = NSBundle.mainBundle.objectForInfoDictionaryKey("UIStatusBarStyle")
-        status_bar_style global_style ? Object.const_get(global_style) : UIStatusBarStyleDefault
-      end
-    end
-
     def add_nav_bar_buttons
       self.class.get_nav_bar_button.each do |button_args|
         set_nav_bar_button(button_args[:side], button_args)
       end
-    end
-
-    def status_bar_hidden(hidden)
-      UIApplication.sharedApplication.setStatusBarHidden(hidden, withAnimation:self.class.status_bar_animation)
-    end
-
-    def status_bar_style(style)
-      UIApplication.sharedApplication.setStatusBarStyle(style)
     end
 
     def apply_properties(args)
@@ -227,7 +201,6 @@ module ProMotion
       end
     end
 
-    # Class methods
     module ClassMethods
       def title(t=nil)
         if t && t.is_a?(String) == false
@@ -253,22 +226,6 @@ module ProMotion
         @title_type = :view
       end
 
-      def status_bar(style=nil, args={})
-        if NSBundle.mainBundle.objectForInfoDictionaryKey('UIViewControllerBasedStatusBarAppearance').nil?
-          mp "status_bar will have no effect unless you set 'UIViewControllerBasedStatusBarAppearance' to false in your info.plist", force_color: :yellow
-        end
-        @status_bar_style = style
-        @status_bar_animation = args[:animation] if args[:animation]
-      end
-
-      def status_bar_type
-        @status_bar_style || :default
-      end
-
-      def status_bar_animation
-        @status_bar_animation || UIStatusBarAnimationSlide
-      end
-
       def nav_bar(enabled, args={})
         @nav_bar_args = ({ nav_bar: enabled }).merge(args)
       end
@@ -291,6 +248,7 @@ module ProMotion
 
     def self.included(base)
       base.extend(ClassMethods)
+      base.extend(StatusBarModule::ClassMethods)
       base.extend(TabClassMethods) # TODO: Is there a better way?
     end
   end

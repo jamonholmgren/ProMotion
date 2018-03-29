@@ -75,7 +75,10 @@ module ProMotion
     def bar_button_item(button_type, args)
       return mp("`system_icon:` no longer supported. Use `system_item:` instead.", force_color: :yellow) if args[:system_icon]
       return button_type if button_type.is_a?(UIBarButtonItem)
-      return bar_button_item_system_item(args) if args[:system_item]
+      if args[:system_item]
+        mp("Nav bar button specified both `system_item:` and `title:`. Title will be ignored.", force_color: :yellow) if args[:title]
+        return bar_button_item_system_item(args)
+      end
       return bar_button_item_image(button_type, args) if button_type.is_a?(UIImage)
       return bar_button_item_string(button_type, args) if button_type.is_a?(String)
       return bar_button_item_custom(button_type) if button_type.is_a?(UIView)

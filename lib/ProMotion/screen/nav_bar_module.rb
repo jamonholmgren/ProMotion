@@ -108,6 +108,7 @@ module ProMotion
     end
 
     def map_bar_button_system_item(symbol)
+      mp("Nav bar button stytem item `:page_curl` has been deprecated.", force_color: :yellow) if symbol == :page_curl
       {
         done:         UIBarButtonSystemItemDone,
         cancel:       UIBarButtonSystemItemCancel,
@@ -132,14 +133,15 @@ module ProMotion
         fast_forward: UIBarButtonSystemItemFastForward,
         undo:         UIBarButtonSystemItemUndo,
         redo:         UIBarButtonSystemItemRedo,
-        page_curl:    UIBarButtonSystemItemPageCurl
+        page_curl:    UIBarButtonSystemItemPageCurl # DEPRECATED
       }[symbol] ||    UIBarButtonSystemItemDone
     end
 
     def map_bar_button_item_style(symbol)
+      mp("Nav bar button style `:bordered` has been deprecated.", force_color: :yellow) if symbol == :bordered
       {
         plain:     UIBarButtonItemStylePlain,
-        bordered:  UIBarButtonItemStyleBordered,
+        bordered:  UIBarButtonItemStyleBordered, # DEPRECATED
         done:      UIBarButtonItemStyleDone
       }[symbol] || UIBarButtonItemStyleDone
     end

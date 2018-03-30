@@ -300,7 +300,7 @@ Runs just before the screen rotates.
 
 #### set_nav_bar_button(side, args = {})
 
-Set a nav bar button. `args` can be `image:`, `title:`, `system_item:`, `button:`, `custom_view:`.
+Set a nav bar button. `args` can be `image:`, `title:` or `system_item:` (not both), `tint_color:`, `button:`, or `custom_view:`.
 
 You can also set arbitrary attributes in the hash and they'll be applied to the button.
 
@@ -318,7 +318,7 @@ set_nav_bar_button :left, {
 ```ruby
 :done,:cancel,:edit,:save,:add,:flexible_space,:fixed_space,:compose,
 :reply,:action,:organize,:bookmarks,:search,:refresh,:stop,:camera,
-:trash,:play,:pause,:rewind,:fast_forward,:undo,:redo,:page_curl
+:trash,:play,:pause,:rewind,:fast_forward,:undo,:redo
 ```
 
 `custom_view` can be any custom `UIView` subclass you initialize yourself

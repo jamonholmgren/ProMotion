@@ -12,7 +12,7 @@ The PM::Delegate gives you ProMotion's nice API for your AppDelegate class.
 ```ruby
 # app/app_delegate.rb
 class AppDelegate < PM::Delegate
-  status_bar false, animation: :none
+  status_bar :dark, animation: :none
 
   def on_load(app, options)
     open HomeScreen
@@ -25,7 +25,7 @@ If you need to inherit from a different AppDelegate superclass, do this:
 ```ruby
 class AppDelegate < JHMyParentDelegate
   include PM::DelegateModule
-  status_bar false, animation: :none
+  status_bar :dark, animation: :none
 
   def on_load(app, options)
     open HomeScreen
@@ -148,18 +148,36 @@ end
 
 #### status_bar
 
-Class method that allows hiding or showing the status bar. Setting this to `false` will hide it throughout the app.
+This class method allows you to configure the default setting of whether or not to show the status bar and whether you want the status bar text to appear light or dark. You may also optionally specify the animation style when hiding/showing the status bar. These will become the default setting throughout the app. Note that if you specify `:light` as the status bar style, and the current screen uses a navigation bar, the bar style must have a dark style in order for the status bar to have white text.
+
+**Style Options:**
+- `:dark` (default)
+- `:light`
+- `:hidden`/`:none`
+
+**Animation Options:**
+- `:fade` (default)
+- `:slide`
+- `:none`
 
 ```ruby
 class AppDelegate < PM::Delegate
-  status_bar true, animation: :none # :slide, :fade
+  status_bar :light, animation: :fade
 end
 ```
 
-If you want the status bar to be hidden on the splash screen you must set this in your rakefile.
+**Configuring status bar appearance during app launch**
+
+If you want the status bar to be initially hidden when the app launches, you must set this `info_plist` setting in your rakefile.
 
 ```ruby
 app.info_plist['UIStatusBarHidden'] = true
+```
+
+To configure the style (light or dark text) of the status bar during app launch, you can configure the `status_bar_style` project config setting in your rakefile.
+
+```ruby
+app.status_bar_style = :light_content # or :default (dark)
 ```
 
 #### tint_color

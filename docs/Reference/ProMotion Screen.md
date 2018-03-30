@@ -611,18 +611,44 @@ end
 
 #### status_bar(style=nil, args={animation: UIStatusBarAnimationSlide})
 
-Set the properties of the application's status bar. Options for style are: `:none`, `:light`, `:dark`, and `:default`. If a screen doesn't call `status_bar` and a `UIStatusBarStyle` is set on the application bundle, then that style will be used. Otherwise, `UIStatusBarStyleDefault` will be used. The animation argument should be a `UIStatusBarAnimation` (or `:none` / `:fade` / `:slide`) and is used to hide or show the status bar when appropriate and defaults to `:slide`. If `status_bar` is set to `false` in the app delegate this will default to hidden as well.
+This method allows you to specify whether or not to show the status bar and whether you want the status bar text to appear light or dark. You may also optionally specify the animation style when hiding/showing the status bar. These settings will only affect the status bar for this screen. Note that if you specify `:light` as the status bar style, and the current screen uses a navigation bar, the bar style must have a dark style in order for the status bar to have white text.
+
+**Style Options:**
+- `:dark` (default)
+- `:light`
+- `:hidden`/`:none`
+
+**Animation Options:**
+- `:fade` (default)
+- `:slide`
+- `:none`
 
 ```ruby
 class MyScreen < PM::Screen
-  status_bar :none, {animation: :fade}
+  status_bar :hidden
   # ...
 end
 
 class MyScreenWithADarkColoredNavBar < PM::Screen
-  status_bar :light
+  status_bar :light, animation: :fade
   # ...
 end
+```
+
+#### hide_status_bar(args={animated: false})
+
+If the status bar is currently displayed, but you want to hide it some time after the screen has already rendered, call `hide_status_bar`. You may optionally specify that the hiding should be animated. This will use the animation style that you already specified (either on the screen or globally on your AppDelegate). If you did not already specify an animation style, the default is `:fade`.
+
+```ruby
+hide_status_bar(animated: true)
+```
+
+#### show_status_bar(args={style: nil, animated: false})
+
+If the status bar is currently hidden and the screen has already rendered, but now you want want to display it, call `show_status_bar`. You may optionally specify the status bar style (light or dark). If you do not specify a style, then the default style that you specified (either on the screen or globally on your AppDelegate) will be used. You may also optionally specify that the showing should be animated. This will use the animation style that you already specified (either on the screen or globally on your AppDelegate). If you did not already specify an animation style, the default is `:fade`.
+
+```ruby
+show_status_bar(style: :light, animated: true)
 ```
 
 #### nav_bar(enabled, nav_bar_options={})

@@ -12,7 +12,6 @@ module ProMotion
     end
 
     def application(application, didFinishLaunchingWithOptions:launch_options)
-      apply_status_bar
       on_load application, launch_options
       # Requires 'ProMotion-push' gem.
       check_for_push_notification(launch_options) if respond_to?(:check_for_push_notification)
@@ -66,37 +65,43 @@ module ProMotion
     alias :open_screen :open
     alias :open_root_screen :open_screen
 
+    # DEPRECATED
     def status_bar?
-      UIApplication.sharedApplication.statusBarHidden
+      mp "The default behavior of `status_bar?` has changed. Calling `status_bar?` on AppDelegate may not return the correct result.", force_color: :yellow
+      self.class.status_bar_style != :hidden
     end
 
-  private
+    def status_bar_style
+      self.class.status_bar_style
+    end
 
-    def apply_status_bar
-      self.class.send(:apply_status_bar)
+    def status_bar_animation
+      self.class.status_bar_animation
     end
 
   public
 
     module ClassMethods
 
-      def status_bar(visible = true, opts={})
-        @status_bar_visible = visible
-        @status_bar_opts = opts
+      def status_bar(visible = true, opts = {})
+        info_plist_setting = NSBundle.mainBundle.objectForInfoDictionaryKey('UIViewControllerBasedStatusBarAppearance')
+        if info_plist_setting == false && visible == false
+          mp "The default behavior of `status_bar` has changed. Calling `status_bar` will have no effect until you remove the 'UIViewControllerBasedStatusBarAppearance' setting from info_plist.", force_color: :yellow
+        end
+        @status_bar_style = case visible
+                            when false then :hidden
+                            when true  then :default
+                            else visible
+                            end
+        @status_bar_animation = opts[:animation] || :default
       end
 
-      def apply_status_bar
-        @status_bar_visible = true if @status_bar_visible.nil?
-        @status_bar_opts ||= { animation: :none }
-        UIApplication.sharedApplication.setStatusBarHidden(!@status_bar_visible, withAnimation:status_bar_animation(@status_bar_opts[:animation]))
+      def status_bar_style
+        @status_bar_style
       end
 
-      def status_bar_animation(opt)
-        {
-          fade:   UIStatusBarAnimationFade,
-          slide:  UIStatusBarAnimationSlide,
-          none:   UIStatusBarAnimationNone
-        }[opt] || UIStatusBarAnimationNone
+      def status_bar_animation
+        @status_bar_animation
       end
 
       def tint_color(c)
@@ -110,12 +115,10 @@ module ProMotion
       def get_tint_color
         @tint_color || nil
       end
-
     end
 
     def self.included(base)
       base.extend(ClassMethods)
     end
-
   end
 end

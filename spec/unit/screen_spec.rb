@@ -34,44 +34,6 @@ describe "screen properties" do
     HomeScreen.title.should != 'instance method'
   end
 
-  it "should set the UIStatusBar style to :none" do
-    @screen.class.status_bar :none
-    @screen.view_will_appear(false)
-    UIApplication.sharedApplication.isStatusBarHidden.should == true
-  end
-
-  it "should set the UIStatusBar style to :light" do
-    @screen.class.status_bar :light
-    @screen.view_will_appear(false)
-    UIApplication.sharedApplication.isStatusBarHidden.should == false
-    UIApplication.sharedApplication.statusBarStyle.should == UIStatusBarStyleLightContent
-  end
-
-  it "should set the UIStatusBar style to :dark" do
-    UIApplication.sharedApplication.statusBarStyle = UIStatusBarStyleLightContent
-    @screen.class.status_bar :dark
-    @screen.view_will_appear(false)
-    UIApplication.sharedApplication.isStatusBarHidden.should == false
-    UIApplication.sharedApplication.statusBarStyle.should == UIStatusBarStyleDefault
-  end
-
-  it "should default to a global UIStatusBar style" do
-    NSBundle.mainBundle.mock!(:objectForInfoDictionaryKey) do |key|
-      "UIStatusBarStyleLightContent"
-    end
-    @screen.class.status_bar :default
-    @screen.view_will_appear(false)
-    UIApplication.sharedApplication.isStatusBarHidden.should == false
-    UIApplication.sharedApplication.statusBarStyle.should == UIStatusBarStyleLightContent
-  end
-
-  it "should default to a hidden UIStatusBar if already hidden" do
-    UIApplication.sharedApplication.setStatusBarHidden(true, withAnimation: UIStatusBarAnimationNone)
-    @screen.class.status_bar :default
-    @screen.view_will_appear(false)
-    UIApplication.sharedApplication.isStatusBarHidden.should == true
-  end
-
   it "should set the tab bar item with a system item" do
     @screen.set_tab_bar_item system_item: :contacts
     comparison = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemContacts, tag: 0)

@@ -35,12 +35,6 @@ module ProMotion
       self.navigationItem.setRightBarButtonItems(buttons) if side == :right
     end
 
-    # TODO: In PM 2.1+, entirely remove this deprecated method.
-    def set_nav_bar_left_button(title, args={})
-      mp "set_nav_bar_right_button and set_nav_bar_left_button have been removed. Use set_nav_bar_button :right/:left instead.", force_color: :yellow
-    end
-    alias_method :set_nav_bar_right_button, :set_nav_bar_left_button
-
     def set_toolbar_items(buttons = [], animated = true)
       if buttons
         self.toolbarItems = Array(buttons).map{|b| b.is_a?(UIBarButtonItem) ? b : create_toolbar_button(b) }
@@ -81,7 +75,10 @@ module ProMotion
     def bar_button_item(button_type, args)
       return mp("`system_icon:` no longer supported. Use `system_item:` instead.", force_color: :yellow) if args[:system_icon]
       return button_type if button_type.is_a?(UIBarButtonItem)
-      return bar_button_item_system_item(args) if args[:system_item]
+      if args[:system_item]
+        mp("Nav bar button specified both `system_item:` and `title:`. Title will be ignored.", force_color: :yellow) if args[:title]
+        return bar_button_item_system_item(args)
+      end
       return bar_button_item_image(button_type, args) if button_type.is_a?(UIImage)
       return bar_button_item_string(button_type, args) if button_type.is_a?(String)
       return bar_button_item_custom(button_type) if button_type.is_a?(UIView)
@@ -111,6 +108,7 @@ module ProMotion
     end
 
     def map_bar_button_system_item(symbol)
+      mp("Nav bar button stytem item `:page_curl` has been deprecated.", force_color: :yellow) if symbol == :page_curl
       {
         done:         UIBarButtonSystemItemDone,
         cancel:       UIBarButtonSystemItemCancel,
@@ -135,14 +133,15 @@ module ProMotion
         fast_forward: UIBarButtonSystemItemFastForward,
         undo:         UIBarButtonSystemItemUndo,
         redo:         UIBarButtonSystemItemRedo,
-        page_curl:    UIBarButtonSystemItemPageCurl
+        page_curl:    UIBarButtonSystemItemPageCurl # DEPRECATED
       }[symbol] ||    UIBarButtonSystemItemDone
     end
 
     def map_bar_button_item_style(symbol)
+      mp("Nav bar button style `:bordered` has been deprecated.", force_color: :yellow) if symbol == :bordered
       {
         plain:     UIBarButtonItemStylePlain,
-        bordered:  UIBarButtonItemStyleBordered,
+        bordered:  UIBarButtonItemStyleBordered, # DEPRECATED
         done:      UIBarButtonItemStyleDone
       }[symbol] || UIBarButtonItemStyleDone
     end

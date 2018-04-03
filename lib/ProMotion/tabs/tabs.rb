@@ -105,7 +105,7 @@ module ProMotion
       @_tab_symbols[symbol] || symbol
     end
 
-    module TabClassMethods
+    module ClassMethods
       def tab_bar_item(args={})
         @tab_bar_item = args
       end
@@ -116,8 +116,7 @@ module ProMotion
     end
 
     def self.included(base)
-      base.extend(TabClassMethods)
+      base.extend(ClassMethods)
     end
-
   end
 end

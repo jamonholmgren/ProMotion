@@ -6,6 +6,12 @@ module ProMotion
       s
     end
 
+    def init
+      super.tap do
+        screen_init if respond_to?(:screen_init)
+      end
+    end
+
     def loadView
       self.respond_to?(:load_view) ? self.load_view : super
     end

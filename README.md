@@ -65,7 +65,7 @@ class HelpScreen < PM::TableScreen
 end
 ```
 
-# Features
+## Features
 
 |Screens|Navigation Bars|Tab Bars|
 |---|---|---|
@@ -84,44 +84,18 @@ end
 
 #### ...and much more.
 
-# Getting Started
+## Getting Started
 
 1. Check out the [Getting Started Guide](https://github.com/infinitered/ProMotion/blob/master/docs/Guides/Getting%20Started.md)
 2. Watch the excellent [MotionInMotion screencast about ProMotion](https://motioninmotion.tv/screencasts/8) (very reasonably priced subscription required)
 3. Follow a tutorial: [Building an ESPN app using RubyMotion, ProMotion, and TDD](http://jamonholmgren.com/building-an-espn-app-using-rubymotion-promotion-and-tdd)
 4. Read the [Documentation](https://github.com/infinitered/ProMotion/blob/master/docs)
 
-# Changelog
+## Changelog
 
-## Version 2.6.1
+[See Releases page](https://github.com/infinitered/ProMotion/releases)
 
-This release includes a few new features and bugfixes and is backwards compatible with all 2.x releases.
-
-* PR #777 New Feature: Add ability to register live reload plugins
-* PR #778 Bugfix: Only update search results table data if possible
-* PR #779 Fix bug where remote images are not shown on first load of table screen
-* PR #787 Fix Travis CI build from failing when RubyMotion is up-to-date
-* PR #796 Fix iOS 10 from crashing when determining supportedInterfaceOrientations for UIImagePickerController
-* Other minor bugfixes and documentation updates
-
-## Version 2.6.0
-
-This release includes a few new features and bugfixes and is backwards compatible with all 2.x releases.
-
-* PR #773 Add a `on_continue_user_activity` delegate method
-* PR #766 Fix nav_bar_button class method
-* Other minor bugfixes and documentation updates
-
-## Version 2.5.0
-
-This release includes some new features and bugfixes and is backwards compatible with all 2.x releases.
-
-* PR #763 Adds footer_view to TableScreens
-* PR #705 Adds split-screen support for large iPhones
-* PR #736 Adds the index path when deleting a cell
-* Several other bugfix PRs
-
-# Apps built on ProMotion
+## Apps built on ProMotion
 
 [Apps built on ProMotion](http://promotion.readthedocs.org/en/master/ProMotion%20Apps/)
 
@@ -129,31 +103,31 @@ This release includes some new features and bugfixes and is backwards compatible
 
 Open a pull request! We love adding new ProMotion-built apps.
 
-# API Reference
+## API Reference
 
-We've created a comprehensive and always updated wiki with code examples, usage examples, and API reference.
+We have comprehensive documentation with code examples, usage examples, and API reference.
 
 ### [ProMotion Documentation](https://github.com/infinitered/ProMotion/blob/master/docs)
 
-# Screencasts
+## Screencasts
 
 * Watch Jamon Holmgren give a talk about ProMotion at [RubyMotion #inspect2014](http://confreaks.com/videos/3813-inspect-going-pro-with-promotion-from-prototype-to-production) (video)
 * Watch the [September 2013 Motion Meetup](http://www.youtube.com/watch?v=rf7h-3AiMRQ) where Gant Laborde
 interviews Jamon Holmgren about ProMotion
 
-# Help
+## Help
 
 ProMotion is not only an easy DSL to get started. The community is very helpful and
 welcoming to new RubyMotion developers. We don't mind newbie questions.
 
 The quickest way to get help is to join the [Motioneers Slack Group](http://motioneers.herokuapp.com). If you still need help, feel free to open an issue on GitHub. If we don't respond within a day, tweet us a link to the issue -- sometimes we get busy.
 
-## Premium Support
+### Premium Support
 
 [ProMotion](https://github.com/infinitered/ProMotion), as an open source project, is free to use and always will be. [Infinite Red](https://infinite.red/) offers premium ProMotion support and general mobile app design/development services. Email us at [hello@infinite.red](mailto:hello@infinite.red) to get in touch with us for more details.
 
 
-# Contributing
+## Contributing
 
 See [CONTRIBUTING.md](https://github.com/infinitered/ProMotion/blob/master/CONTRIBUTING.md).
 

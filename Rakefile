@@ -2,6 +2,7 @@
 $:.unshift("/Library/RubyMotion/lib")
 $:.unshift("~/.rubymotion/rubymotion-templates")
 require 'motion/project/template/ios'
+require 'motion/project/template/gem/gem_tasks'
 require 'bundler'
 Bundler.setup
 Bundler.require(:development)

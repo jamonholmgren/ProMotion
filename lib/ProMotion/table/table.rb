@@ -50,10 +50,7 @@ module ProMotion
 
     def set_up_searchable
       if self.class.respond_to?(:get_searchable) && self.class.get_searchable
-        self.make_searchable(content_controller: self, search_bar: self.class.get_searchable_params)
-        if self.class.get_searchable_params[:hide_initially]
-          self.tableView.contentOffset = CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height)
-        end
+        self.make_searchable(self.class.get_searchable_params)
       end
     end
 
@@ -152,7 +149,6 @@ module ProMotion
       args = { index_paths: args } unless args.is_a?(Hash)
 
       self.update_table_view_data(self.table_data, args)
-      self.promotion_table_data.search(search_string) if searching?
     end
 
     def toggle_edit_mode(animated = true)

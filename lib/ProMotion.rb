@@ -23,7 +23,10 @@ Motion::Project::App.setup do |app|
     "#{core_lib}/table/cell/table_view_cell_module.rb" => [ "#{core_lib}/styling/styling.rb" ],
     "#{core_lib}/cocoatouch/collection_view_cell.rb" => [ "#{core_lib}/collection/cell/collection_view_cell_module.rb" ],
     "#{core_lib}/collection/collection_screen.rb" => [
+       "#{core_lib}/cocoatouch/collection_view_controller.rb",
        "#{core_lib}/screen/screen_module.rb",
+       "#{core_lib}/collection/collection_builder.rb",
+       "#{core_lib}/collection/collection.rb",
        "#{core_lib}/collection/cell/collection_view_cell_module.rb",
     ],
     "#{core_lib}/collection/cell/collection_view_cell_module.rb" => [ "#{core_lib}/styling/styling.rb" ],
@@ -37,6 +40,7 @@ Motion::Project::App.setup do |app|
     "#{core_lib}/screen/screen.rb" => [ "#{core_lib}/screen/screen_module.rb" ],
     "#{core_lib}/screen/screen_navigation.rb" => [ "#{core_lib}/support/support.rb", ],
     "#{core_lib}/screen/screen_module.rb" => [
+       "#{core_lib}/styling/styling.rb",
        "#{core_lib}/tabs/tabs.rb",
        "#{core_lib}/screen/nav_bar_module.rb",
        "#{core_lib}/screen/screen_navigation.rb",

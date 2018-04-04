@@ -56,7 +56,7 @@ module ProMotion
     end
 
     def search(search_string)
-      start_searching(search_string)
+      start_searching(search_string) # update the search string
 
       self.data.compact.each do |section|
         new_section = {}
@@ -78,20 +78,18 @@ module ProMotion
       self.filtered_data
     end
 
+    def start_searching(search_string = '')
+      self.filtered_data = []
+      self.filtered = true
+      self.search_string = search_string.downcase.strip
+      self.original_search_string = search_string
+    end
+
     def stop_searching
       self.filtered_data = []
       self.filtered = false
       self.search_string = false
       self.original_search_string = false
-    end
-
-  private
-
-    def start_searching(search_string)
-      self.filtered_data = []
-      self.filtered = true
-      self.search_string = search_string.downcase.strip
-      self.original_search_string = search_string
     end
   end
 end

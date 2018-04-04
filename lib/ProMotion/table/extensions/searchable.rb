@@ -2,75 +2,77 @@ module ProMotion
   module Table
     module Searchable
 
-      def make_searchable(params={})
+      def search_controller
+        @search_controller ||= UISearchController.alloc.initWithSearchResultsController(nil)
+      end
+
+      def make_searchable(params = {})
         params = set_searchable_param_defaults(params)
 
-        search_bar = create_search_bar(params)
+        self.definesPresentationContext = true
+        search_controller.delegate = params[:delegate]
+        search_controller.searchResultsUpdater = params[:search_results_updater]
+        search_controller.hidesNavigationBarDuringPresentation = params[:hidesNavigationBarDuringPresentation]
+        search_controller.dimsBackgroundDuringPresentation = params[:obscuresBackgroundDuringPresentation] # iOS 8+ (not deprecated yet)
+        # search_controller.obscuresBackgroundDuringPresentation = params[:obscuresBackgroundDuringPresentation] # iOS 9.1+ recommends using this instead of dimsBackgroundDuringPresentation
 
-        if params[:search_bar] && params[:search_bar][:placeholder]
-          search_bar.placeholder = params[:search_bar][:placeholder]
+        search_bar = search_controller.searchBar
+        search_bar.delegate = params[:search_bar_delegate]
+        search_bar.autoresizingMask = UIViewAutoresizingFlexibleWidth
+        search_bar.placeholder = NSLocalizedString(params[:placeholder], nil) if params[:placeholder]
+        if params[:scopes]
+          @scopes = params[:scopes]
+          search_bar.scopeButtonTitles = @scopes
         end
+        tableView.tableHeaderView = search_bar
+        search_bar.sizeToFit
 
-        @no_results_text = params[:search_bar][:no_results] if params[:search_bar][:no_results]
-
-        @table_search_display_controller = UISearchDisplayController.alloc.initWithSearchBar(search_bar, contentsController: params[:content_controller])
-        @table_search_display_controller.delegate = params[:delegate]
-        @table_search_display_controller.searchResultsDataSource = params[:data_source]
-        @table_search_display_controller.searchResultsDelegate = params[:search_results_delegate]
-
-        self.tableView.tableHeaderView = search_bar
+        if params[:hide_initially]
+          tableView.contentOffset = CGPointMake(0, search_bar.frame.size.height)
+        end
       end
-      alias :makeSearchable :make_searchable
 
       def set_searchable_param_defaults(params)
-        params[:content_controller] ||= params[:contentController]
-        params[:data_source] ||= params[:searchResultsDataSource]
-        params[:search_results_delegate] ||= params[:searchResultsDelegate]
+        # support camelCase params
+        params[:search_results_updater] ||= params[:searchResultsUpdater]
 
-        params[:frame] ||= CGRectMake(0, 0, 320, 44) # TODO: Don't hardcode this...
-        params[:content_controller] ||= self
         params[:delegate] ||= self
-        params[:data_source] ||= self
-        params[:search_results_delegate] ||= self
+        params[:search_results_updater] ||= self
+        params[:search_bar_delegate] ||= self
+
+        if params[:hidesNavigationBarDuringPresentation].nil?
+          params[:hidesNavigationBarDuringPresentation] = true
+        end
+
+        if params[:obscuresBackgroundDuringPresentation].nil?
+          params[:obscuresBackgroundDuringPresentation] = false
+        end
+
         params
       end
 
-      def create_search_bar(params)
-        search_bar = UISearchBar.alloc.initWithFrame(params[:frame])
-        search_bar.autoresizingMask = UIViewAutoresizingFlexibleWidth
-        search_bar
+      ######### UISearchControllerDelegate methods #######
+
+      def willPresentSearchController(search_controller)
+        promotion_table_data.start_searching
+        search_controller.delegate.will_begin_search if search_controller.delegate.respond_to? "will_begin_search"
       end
 
-      def set_no_results_text(controller)
-        Dispatch::Queue.main.async do
-          controller.searchResultsTableView.subviews.each do |v|
-            v.text = @no_results_text if v.is_a?(UILabel)
-          end
-        end if @no_results_text
+      def willDismissSearchController(search_controller)
+        promotion_table_data.stop_searching
+        table_view.reloadData
+        search_controller.delegate.will_end_search if search_controller.delegate.respond_to? "will_end_search"
       end
 
-      ######### iOS methods, headless camel case #######
-
-      def searchDisplayController(controller, shouldReloadTableForSearchString:search_string)
-        self.promotion_table_data.search(search_string)
-        set_no_results_text(controller) if @no_results_text
-        true
+      # UISearchResultsUpdating protocol method
+      def updateSearchResultsForSearchController(search_controller)
+        search_string = search_controller.searchBar.text
+        promotion_table_data.search(search_string) if searching?
+        update_table_data
       end
 
-      def searchDisplayControllerWillEndSearch(controller)
-        self.promotion_table_data.stop_searching
-        self.table_view.setScrollEnabled true
-        self.table_view.reloadData
-        @table_search_display_controller.delegate.will_end_search if @table_search_display_controller.delegate.respond_to? "will_end_search"
-      end
-
-      def searchDisplayControllerWillBeginSearch(controller)
-        self.table_view.setScrollEnabled false
-        @table_search_display_controller.delegate.will_begin_search if @table_search_display_controller.delegate.respond_to? "will_begin_search"
-      end
-
-      def searchDisplayController(controller, didLoadSearchResultsTableView: tableView)
-        tableView.rowHeight = self.table_view.rowHeight
+      def searchBar(search_bar, selectedScopeButtonIndexDidChange: selected_scope_index)
+        try :did_change_selected_scope, selected_scope_index
       end
     end
   end

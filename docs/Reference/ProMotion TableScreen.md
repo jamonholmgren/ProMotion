@@ -319,22 +319,13 @@ This is useful for information that needs to only be at the very bottom of a tab
 
 ### Class Methods
 
-#### searchable(placeholder: "placeholder text", no_results: "some short qiup here", with: -> (cell, search_string){})
+#### searchable(placeholder: "placeholder text", with: -> (cell, search_string){})
 
 Class method to make the current table searchable.
 
 ```ruby
 class MyTableScreen < PM::TableScreen
   searchable placeholder: "Search This Table"
-end
-```
-
-Specifying `no_results:` will change the text that is displayed when there are
-no results found.
-
-```ruby
-class MyTableScreen < PM::TableScreen
-  searchable placeholder: "Search This Table", no_results: "BZZZZZ! Try Again!"
 end
 ```
 
@@ -345,7 +336,7 @@ are aliases). E.g.:
 
 ```ruby
 class MyTableScreen < PM::TableScreen
-  searchable placeholder: "Search This Table", with: -> (cell, search_string){
+  searchable placeholder: "Search This Table", with: -> (cell, search_string) {
     cell[:properties][:some_obscure_attribute].strip.downcase.include? search_string.strip.downcase
   }
 end

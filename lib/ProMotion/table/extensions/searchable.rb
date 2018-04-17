@@ -2,11 +2,14 @@ module ProMotion
   module Table
     module Searchable
 
+      def search_controller
+        @search_controller ||= UISearchController.alloc.initWithSearchResultsController(nil)
+      end
+
       def make_searchable(params = nil) # params argument is deprecated. No longer need to use it.
         params = get_searchable_params
 
         self.definesPresentationContext = true
-        search_controller = UISearchController.alloc.initWithSearchResultsController(nil)
         search_controller.delegate = params[:delegate]
         search_controller.searchResultsUpdater = params[:search_results_updater]
         search_controller.hidesNavigationBarDuringPresentation = params[:hides_nav_bar]

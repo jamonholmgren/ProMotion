@@ -18,7 +18,6 @@ describe "Searchable table spec" do
 
   it "should allow searching for all the 'New' states" do
     controller.willPresentSearchController(controller.search_controller)
-    controller.searching?.should == true
     controller.search_controller.searchBar.text = "New"
     controller.updateSearchResultsForSearchController(controller.search_controller)
     controller.tableView(controller.tableView, numberOfRowsInSection:0).should == 4
@@ -37,33 +36,16 @@ describe "Searchable table spec" do
     controller.tableView(controller.tableView, numberOfRowsInSection:0).should == 50
   end
 
-  it "should expose the search_string variable and clear it properly" do
-    controller.willPresentSearchController(controller.search_controller)
-    controller.search_controller.searchBar.text = "North"
-    controller.updateSearchResultsForSearchController(controller.search_controller)
+  it "should call the start and stop searching callbacks properly" do
+    controller.will_begin_search_called.should == nil
+    controller.will_end_search_called.should == nil
 
-    controller.search_string.should == "north"
-    controller.original_search_string.should == "North"
+    controller.willPresentSearchController(controller.search_controller)
+    controller.will_begin_search_called.should == true
 
     controller.willDismissSearchController(controller.search_controller)
-    controller.search_controller.searchBar.text = ""
-    controller.updateSearchResultsForSearchController(controller.search_controller) # iOS calls this again
-
-    controller.search_string.should == false
-    controller.original_search_string.should == false
+    controller.will_end_search_called.should == true
   end
-
-  # FIXME: Can't figure out why this test passes in isolation, but fails when run after the other tests.
-  # it "should call the start and stop searching callbacks properly" do
-  #   controller.will_begin_search_called.should == nil
-  #   controller.will_end_search_called.should == nil
-
-  #   controller.willPresentSearchController(controller.search_controller)
-  #   controller.will_begin_search_called.should == true
-
-  #   controller.willDismissSearchController(controller.search_controller)
-  #   controller.will_end_search_called.should == true
-  # end
 
   describe "custom search" do
     before do

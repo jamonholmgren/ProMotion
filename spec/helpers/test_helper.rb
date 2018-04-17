@@ -1,21 +1,30 @@
 class TestHelper
+  def self.ios_version
+    UIDevice.currentDevice.systemVersion.to_f
+  end
+
   def self.ios6
-    UIDevice.currentDevice.systemVersion.to_f >= 6.0 &&
-    UIDevice.currentDevice.systemVersion.to_f < 7.0
+    ios_version >= 6.0 && ios_version < 7.0
   end
 
   def self.ios7
-    UIDevice.currentDevice.systemVersion.to_f >= 7.0 &&
-    UIDevice.currentDevice.systemVersion.to_f < 8.0
+    ios_version >= 7.0 && ios_version < 8.0
   end
 
   def self.ios8
-    UIDevice.currentDevice.systemVersion.to_f >= 8.0 &&
-    UIDevice.currentDevice.systemVersion.to_f < 9.0
+    ios_version >= 8.0 && ios_version < 9.0
   end
 
   def self.gte_ios8
-    UIDevice.currentDevice.systemVersion.to_f >= 8.0
+    ios_version >= 8.0
+  end
+
+  def self.lt_ios11
+    ios_version < 11.0
+  end
+
+  def self.gte_ios11
+    ios_version >= 11.0
   end
 end
 

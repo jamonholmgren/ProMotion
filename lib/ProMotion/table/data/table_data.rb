@@ -79,6 +79,8 @@ module ProMotion
           self.filtered_data << new_section
         end
       end
+
+      self.filtered_data
     end
 
     def clear_filter

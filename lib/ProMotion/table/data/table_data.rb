@@ -3,7 +3,7 @@ module ProMotion
     include ProMotion::Table::Utils
     include ProMotion::TableDataBuilder
 
-    attr_accessor :data, :filtered_data, :search_string, :original_search_string, :filtered, :table_view, :search_params
+    attr_accessor :data, :filtered_data, :table_view
 
     def initialize(data, table_view, search_action = nil)
       @search_action ||= search_action
@@ -27,7 +27,7 @@ module ProMotion
     end
 
     def sections
-      self.filtered ? self.filtered_data : self.data
+      filtered? ? self.filtered_data : self.data
     end
 
     def section_length(index)
@@ -55,8 +55,13 @@ module ProMotion
       cell[:searchable] != false && "#{cell[:title]}\n#{cell[:search_text]}".downcase.strip.include?(search_string.downcase.strip)
     end
 
+    def filtered?
+      @filtered == true
+    end
+
     def search(search_string)
-      start_searching(search_string) # update the search string
+      @filtered = true
+      self.filtered_data = []
 
       self.data.compact.each do |section|
         new_section = {}
@@ -74,22 +79,10 @@ module ProMotion
           self.filtered_data << new_section
         end
       end
-
-      self.filtered_data
     end
 
-    def start_searching(search_string = '')
-      self.filtered_data = []
-      self.filtered = true
-      self.search_string = search_string.downcase.strip
-      self.original_search_string = search_string
-    end
-
-    def stop_searching
-      self.filtered_data = []
-      self.filtered = false
-      self.search_string = false
-      self.original_search_string = false
+    def clear_filter
+      @filtered = false
     end
   end
 end

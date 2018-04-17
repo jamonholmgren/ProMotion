@@ -26,7 +26,7 @@ module ProMotion
       private
 
       def pressed_table_view
-        searching? ? @table_search_display_controller.searchResultsTableView : table_view
+        table_view
       end
 
     end

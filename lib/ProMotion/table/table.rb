@@ -92,15 +92,7 @@ module ProMotion
     end
 
     def searching?
-      self.promotion_table_data.filtered
-    end
-
-    def original_search_string
-      self.promotion_table_data.original_search_string
-    end
-
-    def search_string
-      self.promotion_table_data.search_string
+      self.promotion_table_data.filtered?
     end
 
     def update_table_view_data(data, args = {})
@@ -113,10 +105,6 @@ module ProMotion
         table_view.endUpdates
       else
         table_view.reloadData
-      end
-
-      if searching? && @table_search_display_controller.respond_to?(:searchResultsTableView)
-        @table_search_display_controller.searchResultsTableView.reloadData
       end
     end
 
@@ -193,7 +181,7 @@ module ProMotion
 
     # Set table_data_index if you want the right hand index column (jumplist)
     def sectionIndexTitlesForTableView(_)
-      return if self.promotion_table_data.filtered
+      return if searching?
       return self.table_data_index if self.respond_to?(:table_data_index)
       nil
     end

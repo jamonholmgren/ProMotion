@@ -12,6 +12,7 @@ module ProMotion
     def navigation_controller=(nav)
       self.navigationController = nav
     end
+    alias :nav_controller= :navigation_controller=
 
     def navigationController=(nav)
       @navigationController = nav
@@ -59,9 +60,11 @@ module ProMotion
       self.navigationController.toolbarHidden = !args[:toolbar] unless args[:toolbar].nil?
     end
 
-    def view_will_appear(animated)
-      if @screen_options && !@screen_options[:hide_nav_bar].nil?
-        self.navigationController.setNavigationBarHidden(@screen_options[:hide_nav_bar], animated: false)
+    def update_nav_bar_visibility(animated)
+      return unless navigationController
+      hidden = @screen_options[:hide_nav_bar]
+      unless hidden.nil?
+        navigationController.setNavigationBarHidden(hidden, animated: animated)
       end
     end
 

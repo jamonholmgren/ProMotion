@@ -78,12 +78,11 @@ module ProMotion
   protected
 
     def set_up_screen_for_open(screen, args={})
-
       # Instantiate screen if given a class
-      screen = screen.new if screen.respond_to?(:new)
+      screen = screen.new(args) if screen.respond_to?(:new)
 
       # Store screen options
-      screen.instance_variable_set(:@screen_options, args)
+      screen.screen_options.merge(args) if screen.respond_to?(:screen_options)
 
       # Set parent
       screen.parent_screen = self if screen.respond_to?(:parent_screen=)
@@ -100,7 +99,6 @@ module ProMotion
 
       # Return modified screen instance
       screen
-
     end
 
     def ensure_wrapper_controller_in_place(screen, args={})

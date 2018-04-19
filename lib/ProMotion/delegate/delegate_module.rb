@@ -51,7 +51,7 @@ module ProMotion
     end
 
     def open(screen, args={})
-      screen = screen.new if screen.respond_to?(:new)
+      screen = set_up_screen_for_open(screen, args)
 
       self.home_screen = screen
 
@@ -64,6 +64,27 @@ module ProMotion
     end
     alias :open_screen :open
     alias :open_root_screen :open_screen
+
+    def set_up_screen_for_open(screen, args={})
+      # Instantiate screen if given a class
+      screen = screen.new(args) if screen.respond_to?(:new)
+
+      # Store screen options
+      screen.screen_options.merge(args) if screen.respond_to?(:screen_options)
+
+      # Set title & modal properties
+      screen.title = args[:title] if args[:title] && screen.respond_to?(:title=)
+      screen.modal = args[:modal] if args[:modal] && screen.respond_to?(:modal=)
+
+      # Hide bottom bar?
+      screen.hidesBottomBarWhenPushed = args[:hide_tab_bar] == true
+
+      # Wrap in a PM::NavigationController?
+      screen.add_nav_bar(args) if args[:nav_bar] && screen.respond_to?(:add_nav_bar)
+
+      # Return modified screen instance
+      screen
+    end
 
     # DEPRECATED
     def status_bar?

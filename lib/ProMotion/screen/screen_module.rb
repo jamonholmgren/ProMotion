@@ -9,7 +9,7 @@ module ProMotion
     include ProMotion::SplitScreen if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad || (UIDevice.currentDevice.systemVersion.to_i >= 8 )
 
     attr_reader :parent_screen
-    attr_accessor :first_screen, :modal, :split_screen
+    attr_accessor :screen_options, :first_screen, :modal, :split_screen
 
     def screen_init(args = {})
       @screen_options = args
@@ -41,7 +41,8 @@ module ProMotion
     end
 
     def view_will_appear(animated)
-      super
+      update_nav_bar_visibility(animated)
+
       self.will_appear
 
       self.will_present if isMovingToParentViewController

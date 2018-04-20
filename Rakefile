@@ -13,6 +13,7 @@ Motion::Project::App.setup do |app|
   app.name = 'ProMotion'
   app.device_family = [ :ipad ] # so we can test split screen capability
   app.deployment_target = "8.0"
+  app.redgreen_style = :full # test output
 end
 
 namespace :spec do

@@ -18,7 +18,7 @@ class TestMiniTableScreen < ProMotion::TableScreen
 
   def table_data
     [{
-      cells: (0..20).map do |n|
+      cells: (0..30).map do |n|
         { title: "test#{n}", cell_class: TestCell, height: 200, cell_identifier: "test" }
       end
     }]

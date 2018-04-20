@@ -12,7 +12,6 @@ module ProMotion
     def navigation_controller=(nav)
       self.navigationController = nav
     end
-    alias :nav_controller= :navigation_controller=
 
     def navigationController=(nav)
       @navigationController = nav
@@ -49,10 +48,16 @@ module ProMotion
 
     def add_nav_bar(args = {})
       args = self.class.get_nav_bar.merge(args)
-      return unless args[:nav_bar]
+      return unless args[:nav_bar] || args[:nav_controller]
       self.navigationController ||= begin
         self.first_screen = true if self.respond_to?(:first_screen=)
-        nav = (args[:nav_controller] || NavigationController).alloc.initWithRootViewController(self)
+        nav_controller_class = args[:nav_controller] || NavigationController
+        if nav_controller_class.is_a? Class
+          nav = nav_controller_class.alloc.initWithRootViewController(self)
+        else
+          nav = nav_controller_class
+          nav.setViewControllers([self], animated: false)
+        end
         nav.setModalTransitionStyle(args[:transition_style]) if args[:transition_style]
         nav.setModalPresentationStyle(args[:presentation_style]) if args[:presentation_style]
         nav

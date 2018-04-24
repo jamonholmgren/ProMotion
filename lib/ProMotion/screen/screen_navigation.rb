@@ -10,11 +10,12 @@ module ProMotion
       ensure_wrapper_controller_in_place(screen, args)
 
       opened ||= open_in_split_screen(screen, args) if self.split_screen
-      opened ||= open_root_screen(screen) if args[:close_all]
+      opened ||= open_root_screen(screen, args) if args[:close_all]
+      opened ||= replace_nav_stack([screen], args) if args[:replace_nav_stack]
       opened ||= present_modal_view_controller(screen, args) if args[:modal]
       opened ||= open_in_tab(screen, args[:in_tab]) if args[:in_tab]
       opened ||= push_view_controller(screen, self.navigationController, !!args[:animated]) if self.navigationController
-      opened ||= open_root_screen(screen.navigationController || screen)
+      opened ||= open_root_screen(screen.navigationController || screen, args)
       screen
     end
     alias :open :open_screen
@@ -25,8 +26,8 @@ module ProMotion
       args[:in_detail] || args[:in_master]
     end
 
-    def open_root_screen(screen)
-      app_delegate.open_root_screen(screen)
+    def open_root_screen(screen, args = {})
+      app_delegate.open_root_screen(screen, args)
     end
 
     def open_modal(screen, args = {})
@@ -73,6 +74,11 @@ module ProMotion
       return if nav_controller.topViewController == vc
       vc.first_screen = false if vc.respond_to?(:first_screen=)
       nav_controller.pushViewController(vc, animated: animated)
+    end
+
+    def replace_nav_stack(screens, args = {})
+      args[:animated] ||= true
+      navigationController.setViewControllers(screens, animated: !!args[:animated])
     end
 
   protected

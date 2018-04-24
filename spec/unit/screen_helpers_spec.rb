@@ -155,7 +155,7 @@ describe "screen helpers" do
       end
 
       it "should open a root screen if :close_all is provided" do
-        @screen.mock!(:open_root_screen) { |screen| screen.should.be.instance_of BasicScreen }
+        @screen.mock!(:open_root_screen) { |screen, args| screen.should.be.instance_of BasicScreen }
         screen = @screen.open BasicScreen, close_all: true
         screen.should.be.kind_of BasicScreen
       end
@@ -218,7 +218,7 @@ describe "screen helpers" do
       it "should open the provided view controller as root view if no other conditions are met" do
         parent_screen = HomeScreen.new
         new_screen = BasicScreen.new
-        parent_screen.mock!(:open_root_screen) { |vc| vc.should.be == new_screen }
+        parent_screen.mock!(:open_root_screen) { |vc, args| vc.should.be == new_screen }
         screen = parent_screen.open_screen new_screen
         screen.should == new_screen
       end

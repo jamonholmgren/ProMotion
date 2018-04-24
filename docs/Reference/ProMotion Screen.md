@@ -493,7 +493,13 @@ class MyNavigationController < PM::NavigationController; end
 open HomeScreen.new(nav_bar: true, nav_controller: MyNavigationController), close_all: true
 
 # Opens a screen with a navigation controller but with the navigation bar hidden
-open HomeScreen.new(nav_bar: true, hide_nav_bar: true) # Edge feature
+open HomeScreen.new(nav_bar: true, hide_nav_bar: true)
+
+# Sometimes you need to push a new screen onto the nav stack and remove the previous screens (disable the back button). This is similar to setting a new root screen, while keeping the existing navigation controller.
+open OtherScreen, replace_nav_stack: true
+
+# ...or update the current nav stack:
+replace_nav_stack([PreviousScreen.new, TopScreen.new], animated: false)
 ```
 
 ##### Setting screen accessors

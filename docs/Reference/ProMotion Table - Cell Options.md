@@ -56,6 +56,7 @@ def table_data
 
       # Swipe-to-delete
       editing_style: :delete, # (can be :delete, :insert, or :none)
+      indent_while_editing: true,   # indent while editing?
 
       # Moveable Cell
       moveable: true # can also be false or :section

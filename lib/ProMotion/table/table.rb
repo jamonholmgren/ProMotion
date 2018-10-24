@@ -95,6 +95,10 @@ module ProMotion
       self.promotion_table_data.filtered?
     end
 
+    def search_string
+      self.promotion_table_data.search_string
+    end
+
     def update_table_view_data(data, args = {})
       self.promotion_table_data.data = data
       if args[:index_paths]

@@ -60,7 +60,7 @@ module ProMotion
     end
 
     def search_string
-      @search_string ||= null
+      @search_string ||= nil
     end
 
     def search(search_string)

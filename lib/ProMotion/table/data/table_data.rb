@@ -59,8 +59,13 @@ module ProMotion
       @filtered == true
     end
 
+    def search_string
+      @search_string ||= nil
+    end
+
     def search(search_string)
       @filtered = true
+      @search_string = search_string
       self.filtered_data = []
 
       self.data.compact.each do |section|

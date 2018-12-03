@@ -95,6 +95,10 @@ module ProMotion
       self.promotion_table_data.filtered?
     end
 
+    def search_string
+      self.promotion_table_data.search_string
+    end
+
     def update_table_view_data(data, args = {})
       self.promotion_table_data.data = data
       if args[:index_paths]
@@ -268,7 +272,7 @@ module ProMotion
 
       if index == 0
         table_view.scrollRectToVisible(CGRectMake(0.0, 0.0, 1.0, 1.0), animated: false)
-        NSNotFound
+        -1 # NOTE: returning -1 since NSNotFound has been removed in Mojave/Marzipan
       else
         index - 1
       end

@@ -12,8 +12,4 @@ Motion::Project::App.setup do |app|
     app.files.insert(insert_point, file)
   end
 
-  app.development do
-    app.info_plist["ProjectRootPath"] ||= File.absolute_path(app.project_dir)
-  end
-
 end

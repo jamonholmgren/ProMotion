@@ -38,10 +38,9 @@ module ProMotion
 
     # Usage: PM.logger.log("ERROR", "message here", :red)
     def log(label, message_text, color)
-      # return if defined?(RUBYMOTION_ENV) && RUBYMOTION_ENV == "test"
-      color = COLORS[color] || COLORS[:default]
-      $stderr.puts color[0] + NAME + "[#{label}] #{message_text}" + color[1]
-      nil
+      show_deprecation_warning
+
+      mp "#{NAME}[#{label}] #{message_text}", force_color: color
     end
 
     def error(message)
@@ -62,6 +61,10 @@ module ProMotion
 
     def info(message)
       log('INFO', message, :green) if self.levels.include?(:info)
+    end
+
+    def show_deprecation_warning
+      mp "PM.logger.log has been deprecated. Please update to motion_print: https://github.com/OTGApps/motion_print", force_color: :yellow
     end
 
   end

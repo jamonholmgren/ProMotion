@@ -51,7 +51,8 @@ describe "PM::TableViewCellModule" do
             { title: "Test 1", properties: { accessory_type: UITableViewCellStateShowingEditControlMask } },
             custom_cell,
             { title: "Test2", accessory: { view: button } },
-            attributed_cell
+            attributed_cell,
+            { title: "Image Size Test", image: {image: UIImage.imageNamed("list"), size: 20} },
           ]
         }
       ]
@@ -61,6 +62,7 @@ describe "PM::TableViewCellModule" do
 
     @custom_ip = NSIndexPath.indexPathForRow(1, inSection: 1) # Cell "Crazy Full Featured Cell"
     @attributed_ip = NSIndexPath.indexPathForRow(3, inSection: 1) # Attributed Cell
+    @image_size_ip = NSIndexPath.indexPathForRow(4, inSection: 1) # Attributed Cell
 
     @screen.update_table_data
 
@@ -135,6 +137,23 @@ describe "PM::TableViewCellModule" do
     @subject.imageView.should.be.kind_of(UIImageView)
     @subject.imageView.image.should == UIImage.imageNamed("list")
     @subject.imageView.layer.cornerRadius.should == 15.0
+  end
+
+  it "should set an image size" do
+    cell_for_height = UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:"CellForHeight")
+    default_cell_height = cell_for_height.frame.size.height
+
+    @subject.layoutSubviews
+    @subject.imageView.frame.size.should == UIImage.imageNamed("list").size
+
+    image_cell = @screen.tableView(@screen.table_view, cellForRowAtIndexPath: @image_size_ip)
+    image_cell.layoutSubviews
+
+    image_cell.imageView.frame.origin.should.not == CGPointMake(0,0)
+    image_cell.imageView.bounds.origin.should == CGPointMake(0,0)
+
+    image_cell.imageView.frame.size.should == CGSizeMake(20,20)
+    image_cell.imageView.bounds.size.should == CGSizeMake(20,20)
   end
 
   it "should have the proper accessory type" do

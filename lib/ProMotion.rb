@@ -2,6 +2,8 @@ unless defined?(Motion::Project::Config)
   raise "The ProMotion gem must be required within a RubyMotion project Rakefile."
 end
 
+require 'motion_print'
+
 Motion::Project::App.setup do |app|
   core_lib = File.join(File.dirname(__FILE__), 'ProMotion')
   insert_point = app.files.find_index { |file| file =~ /^(?:\.\/)?app\// } || 0
@@ -10,24 +12,8 @@ Motion::Project::App.setup do |app|
     app.files.insert(insert_point, file)
   end
 
-  # For compatibility with libraries that don't use detect_dependencies. :-(
-  app.files_dependencies({
-    "#{core_lib}/version.rb" => [ "#{core_lib}/pro_motion.rb" ],
-    "#{core_lib}/cocoatouch/table_view_cell.rb" => [ "#{core_lib}/table/cell/table_view_cell_module.rb" ],
-    "#{core_lib}/table/cell/table_view_cell_module.rb" => [ "#{core_lib}/styling/styling.rb" ],
-    "#{core_lib}/delegate/delegate.rb" => [ "#{core_lib}/delegate/delegate_parent.rb" ],
-    "#{core_lib}/delegate/delegate_parent.rb" => [ "#{core_lib}/delegate/delegate_module.rb" ],
-    "#{core_lib}/delegate/delegate_module.rb" => [ "#{core_lib}/tabs/tabs.rb", "#{core_lib}/ipad/split_screen.rb" ],
-    "#{core_lib}/screen/screen.rb" => [ "#{core_lib}/screen/screen_module.rb" ],
-    "#{core_lib}/screen/screen_module.rb" => [ "#{core_lib}/screen/screen_navigation.rb" ],
-    "#{core_lib}/table/data/table_data.rb" => [ "#{core_lib}/table/table.rb" ],
-    "#{core_lib}/table/table.rb" => [
-      "#{core_lib}/table/table_utils.rb",
-      "#{core_lib}/table/extensions/searchable.rb",
-      "#{core_lib}/table/extensions/refreshable.rb",
-      "#{core_lib}/table/extensions/indexable.rb",
-      "#{core_lib}/table/extensions/longpressable.rb"
-    ],
-    "#{core_lib}/web/web_screen.rb" => [ "#{core_lib}/web/web_screen_module.rb" ],
-  })
+  app.development do
+    app.info_plist["ProjectRootPath"] ||= File.absolute_path(app.project_dir)
+  end
+
 end

@@ -1,12 +1,8 @@
 language: objective-c
+osx_image: xcode8
 before_install:
-    - (ruby --version)
-    - sudo chown -R travis ~/Library/RubyMotion
-    - mkdir -p ~/Library/RubyMotion/build
-    - sudo motion update --cache-version=3.3
-gemfile:
-  - Gemfile
+  - sudo motion update
+  - motion repo
 script:
-    - bundle install
-    - bundle exec rake clean
-    - bundle exec rake spec
+  - bundle exec rake clean
+  - bundle exec rake spec

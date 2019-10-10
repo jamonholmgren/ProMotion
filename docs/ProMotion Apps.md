@@ -5,7 +5,7 @@
 [![rm yelp](http://media.clearsightstudio.com/jamon/iOS_Simulator__iPhone_Retina_4inch__iOS_7.0.3_11B508_20140114_091423.jpg)](https://github.com/faizaanshamsi/rubymotion_yelp)
 
 > Simple Yelp search using Rubymotion. My First Rubymotion app!
-> 
+>
 > Uses Yelp API v1.0 so search by location. Allows you to filter results in a table view. Clicking on a results will redirect you to the mobile yelp page.
 
 By [@faizaanshamsi](https://twitter.com/faizaanshamsi).
@@ -119,6 +119,32 @@ It's open source!
 
 More information: [http://wejn.com/ios/odorik/](http://wejn.com/ios/odorik/)
 
+### Dropzones
+
+[![Dropzones](https://github.com/OTGApps/Dropzones/blob/master/resources/Icon-120.png)](https://itunes.apple.com/us/app/dropzones-uspa-dropzone-finder/id960515397?mt=8&uo=4&at=10l4yY&ct=github)
+
+[App Store Link](https://itunes.apple.com/us/app/dropzones-uspa-dropzone-finder/id960515397?mt=8&uo=4&at=10l4yY&ct=github)
+
+Dropzones lists all current U.S. Parachute Association (USPA) member dropzones in an easy to navigate interface. Because these dropzones are USPA certified, you can be assured that the staff, training, equipment, and airplanes are top-quality!
+
+
+* Quickly find the dropzones closest to where you are now!
+* Search by state, region, aircraft, services offered, and training capabilities.
+* See a map of every USPA dropzone in the US!
+* Detailed information about each dropzone
+
+
+This application is open source! [Check out the source code](https://github.com/OTGApps/Dropzones)
+
+### Bright Phonics
+
+[![https://pbs.twimg.com/profile_images/593445791345192960/YZlXl_CE.png](https://pbs.twimg.com/profile_images/593445791345192960/YZlXl_CE.png)](https://itunes.apple.com/us/app/bright-phonics/id986665887)
+
+[App Store Link](https://itunes.apple.com/us/app/bright-phonics/id986665887)
+
+Bright Phonics is an educational app to help children learn to read. It is designed to be the most efficient way for children to learn and memorize English phonemes. Bright Phonics uses the scientifically supported Spaced Repetition learning technique to enable fast, efficient learning.
+
+More information: [http://zero41.com/bright-phonics/](http://zero41.com/bright-phonics/)
 
 ### Your app here
 

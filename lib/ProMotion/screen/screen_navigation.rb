@@ -1,5 +1,6 @@
 module ProMotion
   module ScreenNavigation
+    include ProMotion::Support
 
     def open_screen(screen, args = {})
       args = { animated: true }.merge(args)
@@ -9,11 +10,12 @@ module ProMotion
       ensure_wrapper_controller_in_place(screen, args)
 
       opened ||= open_in_split_screen(screen, args) if self.split_screen
-      opened ||= open_root_screen(screen) if args[:close_all]
+      opened ||= open_root_screen(screen, args) if args[:close_all]
+      opened ||= replace_nav_stack([screen], args) if args[:replace_nav_stack]
       opened ||= present_modal_view_controller(screen, args) if args[:modal]
       opened ||= open_in_tab(screen, args[:in_tab]) if args[:in_tab]
       opened ||= push_view_controller(screen, self.navigationController, !!args[:animated]) if self.navigationController
-      opened ||= open_root_screen(screen.navigationController || screen)
+      opened ||= open_root_screen(screen.navigationController || screen, args)
       screen
     end
     alias :open :open_screen
@@ -24,20 +26,12 @@ module ProMotion
       args[:in_detail] || args[:in_master]
     end
 
-    def open_root_screen(screen)
-      app_delegate.open_root_screen(screen)
+    def open_root_screen(screen, args = {})
+      app_delegate.open_root_screen(screen, args)
     end
 
     def open_modal(screen, args = {})
       open screen, args.merge({ modal: true })
-    end
-
-    def app
-      UIApplication.sharedApplication
-    end
-
-    def app_delegate
-      UIApplication.sharedApplication.delegate
     end
 
     def close_screen(args = {})
@@ -54,25 +48,27 @@ module ProMotion
         send_on_return(args)
 
       else
-        PM.logger.warn "Tried to close #{self.to_s}; however, this screen isn't modal or in a nav bar."
-
+        mp "Tried to close #{self.to_s}; however, this screen isn't modal or in a nav bar.", force_color: :yellow
       end
     end
     alias :close :close_screen
 
     def send_on_return(args = {})
-      if self.parent_screen && self.parent_screen.respond_to?(:on_return)
+      return unless self.parent_screen
+      if self.parent_screen.respond_to?(:on_return)
         if args && self.parent_screen.method(:on_return).arity != 0
           self.parent_screen.send(:on_return, args)
         else
           self.parent_screen.send(:on_return)
         end
+      elsif self.parent_screen.private_methods.include?(:on_return)
+        mp "#{self.parent_screen.inspect} has an `on_return` method, but it is private and not callable from the closing screen.", force_color: :yellow
       end
     end
 
     def push_view_controller(vc, nav_controller=nil, animated=true)
       unless self.navigationController
-        PM.logger.error "You need a nav_bar if you are going to push #{vc.to_s} onto it."
+        mp "You need a nav_bar if you are going to push #{vc.to_s} onto it.", force_color: :red
       end
       nav_controller ||= self.navigationController
       return if nav_controller.topViewController == vc
@@ -80,12 +76,19 @@ module ProMotion
       nav_controller.pushViewController(vc, animated: animated)
     end
 
+    def replace_nav_stack(screens, args = {})
+      args[:animated] ||= true
+      navigationController.setViewControllers(screens, animated: !!args[:animated])
+    end
+
   protected
 
     def set_up_screen_for_open(screen, args={})
-
       # Instantiate screen if given a class
-      screen = screen.new if screen.respond_to?(:new)
+      screen = screen.new(args) if screen.respond_to?(:new)
+
+      # Store screen options
+      screen.screen_options.merge(args) if screen.respond_to?(:screen_options)
 
       # Set parent
       screen.parent_screen = self if screen.respond_to?(:parent_screen=)
@@ -98,11 +101,10 @@ module ProMotion
       screen.hidesBottomBarWhenPushed = args[:hide_tab_bar] == true
 
       # Wrap in a PM::NavigationController?
-      screen.add_nav_bar(args) if args[:nav_bar] && screen.respond_to?(:add_nav_bar)
+      screen.add_nav_bar(args) if screen.respond_to?(:add_nav_bar)
 
       # Return modified screen instance
       screen
-
     end
 
     def ensure_wrapper_controller_in_place(screen, args={})
@@ -118,7 +120,7 @@ module ProMotion
 
     def open_in_tab(screen, tab_name)
       vc = open_tab(tab_name)
-      return PM.logger.error("No tab bar item '#{tab_name}'") && nil unless vc
+      return mp("No tab bar item '#{tab_name}'", force_color: :red) && nil unless vc
       if vc.is_a?(UINavigationController)
         push_view_controller(screen, vc)
       else

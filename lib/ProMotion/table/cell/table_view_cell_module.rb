@@ -19,13 +19,25 @@ module ProMotion
       set_accessory_type
     end
 
+    def layoutSubviews
+      super
+      return unless data_cell
+
+      # Support changing sizes of the image view
+      if (data_cell[:image] && data_cell[:image].is_a?(Hash) && data_cell[:image][:size])
+        self.imageView.bounds = CGRectMake(0, 0, data_cell[:image][:size], data_cell[:image][:size]);
+      elsif (data_cell[:remote_image] && data_cell[:remote_image][:size])
+        self.imageView.bounds = CGRectMake(0, 0, data_cell[:remote_image][:size], data_cell[:remote_image][:size]);
+      end
+    end
+
   protected
 
     # TODO: Remove this in ProMotion 2.1. Just for migration purposes.
     def check_deprecated_styles
-      whitelist = [ :title, :subtitle, :image, :remote_image, :accessory, :selection_style, :action, :long_press_action, :arguments, :cell_style, :cell_class, :cell_identifier, :editing_style, :moveable, :search_text, :keep_selection, :height, :accessory_type, :style, :properties ]
+      whitelist = [ :title, :subtitle, :image, :remote_image, :accessory, :selection_style, :action, :long_press_action, :arguments, :cell_style, :cell_class, :cell_identifier, :editing_style, :moveable, :search_text, :keep_selection, :height, :accessory_type, :style, :properties, :searchable ]
       if (data_cell.keys - whitelist).length > 0
-        PM.logger.deprecated("In #{self.table_screen.class.to_s}#table_data, you should set :#{(data_cell.keys - whitelist).join(", :")} in a `properties:` hash. See TableScreen documentation.")
+        mp "In #{self.table_screen.class.to_s}#table_data, you should set :#{(data_cell.keys - whitelist).join(", :")} in a `properties:` hash. See TableScreen documentation.", force_color: :yellow
       end
     end
 
@@ -35,7 +47,7 @@ module ProMotion
     end
 
     def set_title
-      set_attributed_text(self.textLabel, data_cell[:title])
+      set_attributed_text(self.textLabel, data_cell[:title]) if data_cell[:title]
     end
 
     def set_subtitle
@@ -46,13 +58,39 @@ module ProMotion
     end
 
     def set_remote_image
-      return unless data_cell[:remote_image] && jm_image_cache?
+      return unless data_cell[:remote_image] && (sd_web_image? || jm_image_cache?)
 
       self.imageView.image = remote_placeholder
-      JMImageCache.sharedCache.imageForURL(data_cell[:remote_image][:url].to_url, completionBlock:proc { |downloaded_image|
-        self.imageView.image = downloaded_image
-        self.setNeedsLayout
-      })
+
+      if sd_web_image?
+        if SDWebImageManager.sharedManager.respond_to?('downloadWithURL:options:progress:completed:')
+          # SDWebImage 3.x
+          @remote_image_operation = SDWebImageManager.sharedManager.downloadWithURL(data_cell[:remote_image][:url].to_url,
+            options:SDWebImageRefreshCached,
+            progress:nil,
+            completed: -> image, error, cacheType, finished {
+              self.imageView.image = image unless image.nil?
+              self.setNeedsLayout
+          })
+        else
+          # SDWebImage 4.x
+          @remote_image_operation = SDWebImageManager.sharedManager.loadImageWithURL(data_cell[:remote_image][:url].to_url,
+            options:SDWebImageRefreshCached | SDWebImageScaleDownLargeImages,
+            progress:nil,
+            completed: -> image, imageData, error, cacheType, finished, imageURL {
+              self.imageView.image = image unless image.nil?
+              self.setNeedsLayout
+          })
+        end
+      elsif jm_image_cache?
+        mp "'JMImageCache' is known to have issues with ProMotion. Please consider switching to 'SDWebImage'. 'JMImageCache' support will be deprecated in the next major version.", force_color: :yellow
+        JMImageCache.sharedCache.imageForURL(data_cell[:remote_image][:url].to_url, completionBlock:proc { |downloaded_image|
+          self.imageView.image = downloaded_image
+          self.setNeedsLayout
+        })
+      else
+        mp "To use remote_image with TableScreen you need to include the CocoaPod 'SDWebImage'.", force_color: :red
+      end
 
       self.imageView.layer.masksToBounds = true
       self.imageView.layer.cornerRadius = data_cell[:remote_image][:radius] if data_cell[:remote_image][:radius]
@@ -73,6 +111,9 @@ module ProMotion
       if data_cell[:accessory][:view] == :switch
         self.accessoryView = switch_view
       else
+        if data_cell[:accessory][:view].superview && data_cell[:accessory][:view].superview.is_a?(UITableViewCell)
+          data_cell[:accessory][:view].superview.accessoryView = nil # Fix for issue #586
+        end
         self.accessoryView = data_cell[:accessory][:view]
         self.accessoryView.autoresizingMask = UIViewAutoresizingFlexibleWidth
       end
@@ -86,12 +127,25 @@ module ProMotion
       self.accessoryType = map_accessory_type_symbol(data_cell[:accessory_type]) if data_cell[:accessory_type]
     end
 
+    def prepareForReuse
+      super
+      if @remote_image_operation && @remote_image_operation.respond_to?(:cancel)
+        @remote_image_operation.cancel
+        @remote_image_operation = nil
+      end
+      self.send(:prepare_for_reuse) if self.respond_to?(:prepare_for_reuse)
+    end
+
   private
+
+    def sd_web_image?
+      return false if RUBYMOTION_ENV == 'test'
+      !!defined?(SDWebImageManager)
+    end
 
     def jm_image_cache?
       return false if RUBYMOTION_ENV == 'test'
-      return true if self.imageView.respond_to?("setImageWithURL:placeholder:")
-      PM.logger.error "ProMotion Warning: to use remote_image with TableScreen you need to include the CocoaPod 'JMImageCache'."
+      !!defined?(JMImageCache)
       false
     end
 

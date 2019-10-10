@@ -19,6 +19,47 @@ describe "PM::Tabs" do
     app.window.rootViewController.should.be.kind_of UITabBarController
   end
 
+  it "should set the the pm_tab_delegate to the opener" do
+    tab_bar.pm_tab_delegate.should.equal(app)
+    tab_bar.delegate.should.equal(tab_bar)
+  end
+
+  it "should call should_select_tab before a tab is selected" do
+    tab_bar.pm_tab_delegate.called_should_select_tab = false
+    @screen1.open_tab "Screen 2"
+    tab_bar.pm_tab_delegate.called_should_select_tab.should.be.true
+  end
+
+  it "should call on_tab_selected when a tab is selected" do
+    tab_bar.pm_tab_delegate.called_on_tab_selected = false
+    @screen1.open_tab "Screen 2"
+    tab_bar.pm_tab_delegate.called_on_tab_selected.should.be.true
+  end
+
+  it "should call on_tab_selected when delegate does not respond to should_select_tab" do
+    method_to_stub = :can_send_method_to_delegate?
+    tab_bar.pm_tab_delegate.stub!(method_to_stub) do |method|
+      method == :should_select_tab ? false : send("__original_#{method_to_stub}", method)
+    end
+
+    tab_bar.pm_tab_delegate.called_on_tab_selected = false
+    @screen1.open_tab "Screen 2"
+    tab_bar.pm_tab_delegate.called_on_tab_selected.should.be.true
+
+    tab_bar.pm_tab_delegate.reset(method_to_stub)
+  end
+
+  it "does not call on_tab_selected when should_select_tab returns false" do
+    method_to_stub = :should_select_tab
+    tab_bar.pm_tab_delegate.stub!(method_to_stub) { |_vc| false }
+
+    tab_bar.pm_tab_delegate.called_on_tab_selected = false
+    @screen1.open_tab "Screen 2"
+    tab_bar.pm_tab_delegate.called_on_tab_selected.should.be.false
+
+    tab_bar.pm_tab_delegate.reset(method_to_stub)
+  end
+
   it "should have four tabs" do
     tab_bar.viewControllers.length.should == 4
   end

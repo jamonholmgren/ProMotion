@@ -18,8 +18,8 @@ module ProMotion
     end
 
     def set_nav_bar_button(side, args={})
-      button = create_toolbar_button(args)
-      button.setTintColor args[:tint_color] if args[:tint_color]
+      button = (args.is_a?(UIBarButtonItem)) ? args : create_toolbar_button(args)
+      button.setTintColor args[:tint_color] if args.is_a?(Hash) && args[:tint_color]
 
       self.navigationItem.leftBarButtonItem = button if side == :left
       self.navigationItem.rightBarButtonItem = button if side == :right
@@ -28,11 +28,12 @@ module ProMotion
       button
     end
 
-    # TODO: In PM 2.1+, entirely remove this deprecated method.
-    def set_nav_bar_left_button(title, args={})
-      PM.logger.deprecated "set_nav_bar_right_button and set_nav_bar_left_button have been removed. Use set_nav_bar_button :right/:left instead."
+    def set_nav_bar_buttons(side, buttons=[])
+      buttons = buttons.map{ |b| b.is_a?(UIBarButtonItem) ? b : create_toolbar_button(b) }.reverse
+
+      self.navigationItem.setLeftBarButtonItems(buttons) if side == :left
+      self.navigationItem.setRightBarButtonItems(buttons) if side == :right
     end
-    alias_method :set_nav_bar_right_button, :set_nav_bar_left_button
 
     def set_toolbar_items(buttons = [], animated = true)
       if buttons
@@ -46,15 +47,30 @@ module ProMotion
     alias_method :set_toolbar_button,  :set_toolbar_items
 
     def add_nav_bar(args = {})
+      args = self.class.get_nav_bar.merge(args)
+      return unless args[:nav_bar] || args[:nav_controller]
       self.navigationController ||= begin
         self.first_screen = true if self.respond_to?(:first_screen=)
-        nav = (args[:nav_controller] || NavigationController).alloc.initWithRootViewController(self)
+        nav_controller_class = args[:nav_controller] || NavigationController
+        if nav_controller_class.is_a? Class
+          nav = nav_controller_class.alloc.initWithRootViewController(self)
+        else
+          nav = nav_controller_class
+          nav.setViewControllers([self], animated: false)
+        end
         nav.setModalTransitionStyle(args[:transition_style]) if args[:transition_style]
         nav.setModalPresentationStyle(args[:presentation_style]) if args[:presentation_style]
         nav
       end
       self.navigationController.toolbarHidden = !args[:toolbar] unless args[:toolbar].nil?
-      self.navigationController.setNavigationBarHidden(args[:hide_nav_bar], animated: false) unless args[:hide_nav_bar].nil?
+    end
+
+    def update_nav_bar_visibility(animated)
+      return unless navigationController
+      hidden = @screen_options[:hide_nav_bar]
+      unless hidden.nil?
+        navigationController.setNavigationBarHidden(hidden, animated: animated)
+      end
     end
 
   private
@@ -65,13 +81,16 @@ module ProMotion
     end
 
     def bar_button_item(button_type, args)
-      return PM.logger.deprecated("`system_icon:` no longer supported. Use `system_item:` instead.") if args[:system_icon]
+      return mp("`system_icon:` no longer supported. Use `system_item:` instead.", force_color: :yellow) if args[:system_icon]
       return button_type if button_type.is_a?(UIBarButtonItem)
-      return bar_button_item_system_item(args) if args[:system_item]
+      if args[:system_item]
+        mp("Nav bar button specified both `system_item:` and `title:`. Title will be ignored.", force_color: :yellow) if args[:title]
+        return bar_button_item_system_item(args)
+      end
       return bar_button_item_image(button_type, args) if button_type.is_a?(UIImage)
       return bar_button_item_string(button_type, args) if button_type.is_a?(String)
       return bar_button_item_custom(button_type) if button_type.is_a?(UIView)
-      PM.logger.error("Please supply a title string, a UIImage or :system.") && nil
+      mp("Please supply a title string, a UIImage or :system.", force_color: :red) && nil
     end
 
     def bar_button_item_image(img, args)
@@ -97,6 +116,7 @@ module ProMotion
     end
 
     def map_bar_button_system_item(symbol)
+      mp("Nav bar button stytem item `:page_curl` has been deprecated.", force_color: :yellow) if symbol == :page_curl
       {
         done:         UIBarButtonSystemItemDone,
         cancel:       UIBarButtonSystemItemCancel,
@@ -121,14 +141,15 @@ module ProMotion
         fast_forward: UIBarButtonSystemItemFastForward,
         undo:         UIBarButtonSystemItemUndo,
         redo:         UIBarButtonSystemItemRedo,
-        page_curl:    UIBarButtonSystemItemPageCurl
+        page_curl:    UIBarButtonSystemItemPageCurl # DEPRECATED
       }[symbol] ||    UIBarButtonSystemItemDone
     end
 
     def map_bar_button_item_style(symbol)
+      mp("Nav bar button style `:bordered` has been deprecated.", force_color: :yellow) if symbol == :bordered
       {
         plain:     UIBarButtonItemStylePlain,
-        bordered:  UIBarButtonItemStyleBordered,
+        bordered:  UIBarButtonItemStyleBordered, # DEPRECATED
         done:      UIBarButtonItemStyleDone
       }[symbol] || UIBarButtonItemStyleDone
     end

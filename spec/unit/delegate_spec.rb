@@ -80,10 +80,23 @@ describe "PM::Delegate" do
     @subject.application(UIApplication.sharedApplication, openURL: url, sourceApplication:sourceApplication, annotation: annotation)
   end
 
-  it "should have an awesome convenience method for UIApplication.sharedApplication" do
-    @subject.app.should == UIApplication.sharedApplication
-  end
+  describe "#on_continue_user_activity" do
+    before do
+      @subject.application(UIApplication.sharedApplication, continueUserActivity: {}, restorationHandler: [])
+    end
 
+    it "should call on_continue_user_activity when launching with a user activity" do
+      @subject.called_on_continue_user_activity.should == true
+    end
+
+    it "should pass the user activity" do
+      @subject.user_activity.should == {}
+    end
+
+    it "should pass the restoration_handler" do
+      @subject.restoration_handler.should == []
+    end
+  end
 end
 
 # iOS 7 ONLY tests

@@ -6,6 +6,16 @@ describe "screen properties" do
     @screen.on_load
   end
 
+  it "does not have a default title" do
+    screen = UntitledScreen.new
+    screen.title.should == nil
+  end
+
+  it "does not display a default title in the nav bar" do
+    screen = UntitledScreen.new
+    screen.navigationItem.title.should == nil
+  end
+
   it "should store title" do
     HomeScreen.title.should == "Home"
   end
@@ -22,25 +32,6 @@ describe "screen properties" do
   it "should not let the instance reset the default title" do
     @screen.title = "instance method"
     HomeScreen.title.should != 'instance method'
-  end
-
-  it "should have a default UIStatusBar style" do
-    @screen.view_will_appear(false)
-    UIApplication.sharedApplication.isStatusBarHidden.should == false
-    UIApplication.sharedApplication.statusBarStyle.should == UIStatusBarStyleDefault
-  end
-
-  it "should set the UIStatusBar style to :none" do
-    @screen.class.status_bar :none
-    @screen.view_will_appear(false)
-    UIApplication.sharedApplication.isStatusBarHidden.should == true
-  end
-
-  it "should set the UIStatusBar style to :light" do
-    @screen.class.status_bar :light
-    @screen.view_will_appear(false)
-    UIApplication.sharedApplication.isStatusBarHidden.should == false
-    UIApplication.sharedApplication.statusBarStyle.should == UIStatusBarStyleLightContent
   end
 
   it "should set the tab bar item with a system item" do
@@ -131,10 +122,6 @@ describe "screen properties" do
     @screen.shouldAutorotateToInterfaceOrientation(UIInterfaceOrientationMaskPortrait)
   end
 
-  it "should have an awesome convenience method for UIApplication.sharedApplication" do
-    @screen.app.should == UIApplication.sharedApplication
-  end
-
   describe "iOS lifecycle methods" do
 
     it "-viewDidLoad" do
@@ -183,6 +170,33 @@ describe "screen properties" do
     it "-didRotateFromInterfaceOrientation" do
       @screen.mock!(:on_rotate) { true }
       @screen.didRotateFromInterfaceOrientation(UIInterfaceOrientationPortrait).should == true
+    end
+
+  end
+
+  describe "memory warnings" do
+
+    it "should call didReceiveMemoryWarning when exists" do
+      memory_screen = MemoryWarningScreenSelfImplemented.new
+      memory_screen.memory_warning_from_uikit.should.be.nil
+      memory_screen.didReceiveMemoryWarning
+      memory_screen.memory_warning_from_uikit.should == true
+    end
+
+    it "should call super up the chain" do
+      memory_screen = MemoryWarningNotSoSuperScreen.new
+
+      memory_screen.memory_warning_from_super.should.be.nil
+      memory_screen.didReceiveMemoryWarning
+      memory_screen.memory_warning_from_super.should == true
+    end
+
+    it "should call on_memory_warning when implemented" do
+      memory_screen = MemoryWarningScreen.new
+
+      memory_screen.memory_warning_from_pm.should.be.nil
+      memory_screen.didReceiveMemoryWarning
+      memory_screen.memory_warning_from_pm.should == true
     end
 
   end
@@ -302,19 +316,19 @@ describe "screen with toolbar" do
 
   it "showing" do
     # Simulate AppDelegate setup of main screen
-    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen = HomeScreen.new(nav_bar: true, modal: true, toolbar: true)
     screen.on_load
     screen.navigationController.toolbarHidden?.should == false
   end
 
   it "hidden" do
-    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: false
+    screen = HomeScreen.new(nav_bar: true, modal: true, toolbar: false)
     screen.on_load
     screen.navigationController.toolbarHidden?.should == true
   end
 
   it "adds a single item" do
-    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen = HomeScreen.new(nav_bar: true, modal: true, toolbar: true)
     screen.on_load
     screen.set_toolbar_button([{title: "Testing Toolbar"}])
 
@@ -325,7 +339,7 @@ describe "screen with toolbar" do
   end
 
   it "adds multiple items" do
-    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen = HomeScreen.new(nav_bar: true, modal: true, toolbar: true)
     screen.set_toolbar_buttons [{title: "Testing Toolbar"}, {title: "Another Test"}]
 
     screen.navigationController.toolbar.items.should.be.instance_of Array
@@ -335,7 +349,7 @@ describe "screen with toolbar" do
   end
 
   it "shows the toolbar when setting items" do
-    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: false
+    screen = HomeScreen.new(nav_bar: true, modal: true, toolbar: false)
     screen.on_load
     screen.navigationController.toolbarHidden?.should == true
     screen.set_toolbar_button([{title: "Testing Toolbar"}], false)
@@ -343,21 +357,21 @@ describe "screen with toolbar" do
   end
 
   it "doesn't show the toolbar when passed nil" do
-    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen = HomeScreen.new(nav_bar: true, modal: true, toolbar: true)
     screen.on_load
     screen.set_toolbar_button(nil, false)
     screen.navigationController.toolbarHidden?.should == true
   end
 
   it "doesn't show the toolbar when passed false" do
-    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen = HomeScreen.new(nav_bar: true, modal: true, toolbar: true)
     screen.on_load
     screen.set_toolbar_button(false, false)
     screen.navigationController.toolbarHidden?.should == true
   end
 
   it "hides the toolbar when passed nil" do
-    screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    screen = HomeScreen.new(nav_bar: true, modal: true, toolbar: true)
     screen.on_load
     screen.set_toolbar_button([{title: "Testing Toolbar"}], false)
     screen.navigationController.toolbarHidden?.should == false
@@ -367,9 +381,9 @@ describe "screen with toolbar" do
 
 end
 
-describe 'toolbar tinted buttons' do
+describe "toolbar tinted buttons" do
   before do
-    @screen = HomeScreen.new modal: true, nav_bar: true, toolbar: true
+    @screen = HomeScreen.new(nav_bar: true, modal: true, toolbar: true)
     @screen.on_load
   end
 
@@ -389,3 +403,30 @@ describe 'toolbar tinted buttons' do
   end
 
 end
+
+describe "child screen management" do
+  before do
+    @screen = HomeScreen.new
+    @child = BasicScreen.new
+  end
+
+  it "#add_child_screen" do
+    autorelease_pool do
+      @screen.add_child_screen @child
+    end
+    @screen.childViewControllers.should.include(@child)
+    @screen.childViewControllers.length.should == 1
+    @child.parent_screen.should == @screen
+  end
+
+  it "#remove_child_screen" do
+    @screen.add_child_screen @child
+    @screen.childViewControllers.should.include(@child)
+    @screen.remove_child_screen @child
+    @screen.childViewControllers.length.should == 0
+    @child.parent_screen.should == nil
+  end
+
+end
+
+

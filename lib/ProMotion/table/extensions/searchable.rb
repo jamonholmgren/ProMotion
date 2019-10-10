@@ -2,60 +2,87 @@ module ProMotion
   module Table
     module Searchable
 
-      def make_searchable(params={})
-        params = set_searchable_param_defaults(params)
+      def search_controller
+        @search_controller ||= UISearchController.alloc.initWithSearchResultsController(nil)
+      end
 
-        search_bar = create_search_bar(params)
+      def make_searchable(params = nil) # params argument is deprecated. No longer need to use it.
+        params = get_searchable_params
 
-        if params[:search_bar] && params[:search_bar][:placeholder]
-          search_bar.placeholder = params[:search_bar][:placeholder]
+        self.definesPresentationContext = true
+        search_controller.delegate = params[:delegate]
+        search_controller.searchResultsUpdater = params[:search_results_updater]
+        search_controller.hidesNavigationBarDuringPresentation = params[:hides_nav_bar]
+        search_controller.dimsBackgroundDuringPresentation = params[:obscures_background] # iOS 8+ (not deprecated yet)
+        # search_controller.obscuresBackgroundDuringPresentation = params[:obscures_background] # iOS 9.1+ recommends using this instead of dimsBackgroundDuringPresentation
+
+        search_bar = search_controller.searchBar
+        search_bar.delegate = params[:search_bar_delegate]
+        search_bar.placeholder = NSLocalizedString(params[:placeholder], nil) if params[:placeholder]
+        if params[:scopes]
+          @scopes = params[:scopes]
+          search_bar.scopeButtonTitles = @scopes
         end
 
-        @table_search_display_controller = UISearchDisplayController.alloc.initWithSearchBar(search_bar, contentsController: params[:content_controller])
-        @table_search_display_controller.delegate = params[:delegate]
-        @table_search_display_controller.searchResultsDataSource = params[:data_source]
-        @table_search_display_controller.searchResultsDelegate = params[:search_results_delegate]
+        if navigationItem && navigationItem.respond_to?(:setSearchController)
+          # For iOS 11 and later, we place the search bar in the navigation bar.
+          navigationItem.searchController = search_controller
+          navigationItem.hidesSearchBarWhenScrolling = params[:hides_search_bar_when_scrolling]
+        else
+          # For iOS 10 and earlier, we place the search bar in the table view's header.
+          search_bar.autoresizingMask = UIViewAutoresizingFlexibleWidth
+          tableView.tableHeaderView = search_bar
+          if params[:hide_initially]
+            tableView.contentOffset = CGPointMake(0, search_bar.frame.size.height)
+          end
+        end
 
-        self.table_view.tableHeaderView = search_bar
+        @search_controller = search_controller
       end
-      alias :makeSearchable :make_searchable
 
-      def set_searchable_param_defaults(params)
-        params[:content_controller] ||= params[:contentController]
-        params[:data_source] ||= params[:searchResultsDataSource]
-        params[:search_results_delegate] ||= params[:searchResultsDelegate]
+      def get_searchable_params
+        params = self.class.get_searchable_params.dup
 
-        params[:frame] ||= CGRectMake(0, 0, 320, 44) # TODO: Don't hardcode this...
-        params[:content_controller] ||= self
+        # support camelCase params
+        params[:search_results_updater] ||= params[:searchResultsUpdater]
+        params[:hides_nav_bar] = params[:hidesNavigationBarDuringPresentation] if params[:hides_nav_bar].nil?
+        params[:obscures_background] = params[:obscuresBackgroundDuringPresentation] if params[:obscures_background].nil?
+        params[:hides_search_bar_when_scrolling] = params[:hidesSearchBarWhenScrolling] if params[:hides_search_bar_when_scrolling].nil?
+
         params[:delegate] ||= self
-        params[:data_source] ||= self
-        params[:search_results_delegate] ||= self
+        params[:search_results_updater] ||= self
+        params[:search_bar_delegate] ||= self
+        params[:hides_nav_bar] = true if params[:hides_nav_bar].nil?
+        params[:obscures_background] = false if params[:obscures_background].nil?
+        params[:hides_search_bar_when_scrolling] = false if params[:hides_search_bar_when_scrolling].nil?
+
         params
       end
 
-      def create_search_bar(params)
-        search_bar = UISearchBar.alloc.initWithFrame(params[:frame])
-        search_bar.autoresizingMask = UIViewAutoresizingFlexibleWidth
-        search_bar
+      ######### UISearchControllerDelegate methods #######
+
+      def willPresentSearchController(search_controller)
+        search_controller.delegate.will_begin_search if search_controller.delegate.respond_to? "will_begin_search"
       end
 
-      ######### iOS methods, headless camel case #######
-
-      def searchDisplayController(controller, shouldReloadTableForSearchString:search_string)
-        self.promotion_table_data.search(search_string)
-        true
+      def willDismissSearchController(search_controller)
+        search_controller.delegate.will_end_search if search_controller.delegate.respond_to? "will_end_search"
       end
 
-      def searchDisplayControllerWillEndSearch(controller)
-        self.promotion_table_data.stop_searching
-        self.table_view.setScrollEnabled true
-        self.table_view.reloadData
-        @table_search_display_controller.delegate.will_end_search if @table_search_display_controller.delegate.respond_to? "will_end_search"
+      ######### UISearchResultsUpdating protocol methods #########
+
+      def updateSearchResultsForSearchController(search_controller)
+        search_text = search_controller.searchBar.text
+        if search_text.empty?
+          promotion_table_data.clear_filter
+        else
+          promotion_table_data.search(search_text)
+        end
+        table_view.reloadData
       end
 
-      def searchDisplayControllerWillBeginSearch(controller)
-        self.table_view.setScrollEnabled false
-        @table_search_display_controller.delegate.will_begin_search if @table_search_display_controller.delegate.respond_to? "will_begin_search"
+      def searchBar(search_bar, selectedScopeButtonIndexDidChange: selected_scope_index)
+        try :did_change_selected_scope, selected_scope_index
       end
     end
   end

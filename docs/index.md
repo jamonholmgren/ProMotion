@@ -1,12 +1,12 @@
-## Welcome to the ProMotion wiki!
+## Welcome to the ProMotion docs!
 
-Documentation is targeting ProMotion 2.2.0. Any exceptions will be noted.
+Documentation is targeting ProMotion 2.3.x. Any exceptions will be noted.
 
 If you have a problem with *any* of the documentation, *please* [open an issue](https://github.com/clearsightstudio/ProMotion/issues) so we can resolve it quickly.
 
 ### Getting Started
 
-#### [Getting Started with ProMotion](https://github.com/clearsightstudio/ProMotion/wiki/Guide:-Getting-Started)
+#### [Getting Started with ProMotion](./Guides/Getting Started.md)
 
 Everything you need to know to install ProMotion and create your first iPhone app.
 
@@ -42,7 +42,3 @@ I don't want ProMotion to become bloated with little-used features. The features
 Matt Brewer [@macfanatic](https://twitter.com/macfanatic)
 
 Many others contribute every day!
-
-
-
-

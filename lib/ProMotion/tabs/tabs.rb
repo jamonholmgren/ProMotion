@@ -4,6 +4,7 @@ module ProMotion
 
     def open_tab_bar(*screens)
       self.tab_bar = PM::TabBarController.new(screens)
+      self.tab_bar.pm_tab_delegate = WeakRef.new(self)
 
       delegate = self.respond_to?(:open_root_screen) ? self : UIApplication.sharedApplication.delegate
 
@@ -49,15 +50,18 @@ module ProMotion
     end
 
     def create_tab_bar_item(tab={})
-      if tab[:system_icon] || tab[:icon]
-        PM.logger.deprecated("`system_icon:` no longer supported. Use `system_item:` instead.") if tab[:system_icon]
-        PM.logger.deprecated("`icon:` no longer supported. Use `item:` instead.") if tab[:icon]
+      if tab[:system_icon]
+        mp("`system_icon:` no longer supported. Use `system_item:` instead.", force_color: :yellow)
         tab[:system_item] ||= tab[:system_icon]
+      end
+
+      if tab[:icon]
+        mp("`icon:` no longer supported. Use `item:` instead.", force_color: :yellow)
         tab[:item] ||= tab[:icon]
       end
 
       unless tab[:system_item] || tab[:item]
-        PM.logger.warn("You must provide either a `system_item:` or custom `item:` in `tab_bar_item`")
+        mp "You must provide either a `system_item:` or custom `item:` in `tab_bar_item`", force_color: :yellow
         abort
       end
 
@@ -67,6 +71,7 @@ module ProMotion
       tab_bar_item = create_tab_bar_item_custom(title, tab[:item], current_tag) if tab[:item]
 
       tab_bar_item.badgeValue = tab[:badge_number].to_s unless tab[:badge_number].nil? || tab[:badge_number] <= 0
+      tab_bar_item.imageInsets = tab[:image_insets] if tab[:image_insets]
 
       tab_bar_item
     end
@@ -100,7 +105,7 @@ module ProMotion
       @_tab_symbols[symbol] || symbol
     end
 
-    module TabClassMethods
+    module ClassMethods
       def tab_bar_item(args={})
         @tab_bar_item = args
       end
@@ -111,8 +116,7 @@ module ProMotion
     end
 
     def self.included(base)
-      base.extend(TabClassMethods)
+      base.extend(ClassMethods)
     end
-
   end
 end

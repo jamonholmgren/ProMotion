@@ -88,6 +88,16 @@ describe "screen helpers" do
       end
 
     end
+
+    it "allows setting nav bar buttons via nav_bar_button class method" do
+      screen = DetailScreen.new(nav_bar: true)
+
+      screen.navigationItem.leftBarButtonItem.title.should == 'Back'
+      screen.navigationItem.rightBarButtonItem.title.should == 'More'
+
+      screen.navigationItem.leftBarButtonItem.class.should == UIBarButtonItem
+      screen.navigationItem.rightBarButtonItem.class.should == UIBarButtonItem
+    end
   end
 
   describe "screen navigation" do
@@ -130,7 +140,7 @@ describe "screen helpers" do
         new_screen.modal?.should == true
         new_screen.hidesBottomBarWhenPushed.should == true
         new_screen.nav_bar?.should == true
-        new_screen.navigationController.isNavigationBarHidden.should == true
+        new_screen.instance_variable_get(:@screen_options)[:hide_nav_bar].should == true
       end
 
       it "should present the navigationController when showing a modal screen" do
@@ -145,7 +155,7 @@ describe "screen helpers" do
       end
 
       it "should open a root screen if :close_all is provided" do
-        @screen.mock!(:open_root_screen) { |screen| screen.should.be.instance_of BasicScreen }
+        @screen.mock!(:open_root_screen) { |screen, args| screen.should.be.instance_of BasicScreen }
         screen = @screen.open BasicScreen, close_all: true
         screen.should.be.kind_of BasicScreen
       end
@@ -208,7 +218,7 @@ describe "screen helpers" do
       it "should open the provided view controller as root view if no other conditions are met" do
         parent_screen = HomeScreen.new
         new_screen = BasicScreen.new
-        parent_screen.mock!(:open_root_screen) { |vc| vc.should.be == new_screen }
+        parent_screen.mock!(:open_root_screen) { |vc, args| vc.should.be == new_screen }
         screen = parent_screen.open_screen new_screen
         screen.should == new_screen
       end
@@ -286,6 +296,21 @@ describe "screen helpers" do
 
         parent_screen.mock!(:on_return) { |args| args[:key].should == :value }
         @screen.send_on_return key: :value
+      end
+
+      # Regression test: https://github.com/clearsightstudio/ProMotion/issues/635
+      context "when both screens have nav_bar: true" do
+        it "#close_modal_screen should still call #send_on_return" do
+          parent_screen = HomeScreen.new(nav_bar: true)
+          child_screen = BasicScreen.new(nav_bar: true)
+
+          parent_screen.mock!(:on_return) do |args|
+            args[:name].should == "Kevin VanGelder"
+          end
+
+          parent_screen.open(child_screen, animated: false)
+          child_screen.close(animated: false, name: "Kevin VanGelder")
+        end
       end
 
       context "there are two parent screens and we're closing to the first" do

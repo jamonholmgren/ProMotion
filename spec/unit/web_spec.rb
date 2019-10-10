@@ -31,6 +31,15 @@ describe "web screen properties" do
         @webscreen.current_url.should == 'http://mixi.jp/'
       end
     end
+    
+    it "should open web page via NSMutableURLRequest" do
+      nsurl = NSURL.URLWithString('http://mixi.jp/')
+      @webscreen.web.loadRequest NSMutableURLRequest.requestWithURL(nsurl)
+
+      wait_for_change @webscreen, 'is_load_finished' do
+        @webscreen.current_url.should == 'http://mixi.jp/'
+      end
+    end
 
     it "should open web page by url string" do
       @webscreen.open_url('http://mixi.jp/')

@@ -1,21 +1,33 @@
 module ProMotion
   class TableData
     include ProMotion::Table::Utils
+    include ProMotion::TableDataBuilder
 
-    attr_accessor :data, :filtered_data, :search_string, :original_search_string, :filtered, :table_view
+    attr_accessor :data, :filtered_data, :table_view
 
-    def initialize(data, table_view)
-      self.data = data
+    def initialize(data, table_view, search_action = nil)
+      @search_action ||= search_action
+
+      if data.include?(nil)
+        mp("Warning: You have a `nil` section in your table_data method.", force_color: :yellow)
+      end
+
+      self.data = data.compact.each_with_index.map do |section,index|
+        if section[:cells].include?(nil)
+          mp("Warning: You have a `nil` cell in table section #{index}.", force_color: :yellow)
+          section[:cells].compact!
+        end
+        section
+      end
       self.table_view = WeakRef.new(table_view)
     end
 
     def section(index)
-      s = sections.at(index)
-      s || { title: nil, cells: [] }
+      sections.at(index) || { cells: [] }
     end
 
     def sections
-      self.filtered ? self.filtered_data : self.data
+      filtered? ? self.filtered_data : self.data
     end
 
     def section_length(index)
@@ -26,7 +38,7 @@ module ProMotion
       params = index_path_to_section_index(params)
       table_section = params[:unfiltered] ? self.data[params[:section]] : self.section(params[:section])
       c = table_section[:cells].at(params[:index].to_i)
-      set_data_cell_defaults c
+      set_data_cell_defaults(c)
     end
 
     def delete_cell(params={})
@@ -39,14 +51,32 @@ module ProMotion
       section(to.section)[:cells].insert(to.row, section(from.section)[:cells].delete_at(from.row))
     end
 
+    def default_search(cell, search_string)
+      cell[:searchable] != false && "#{cell[:title]}\n#{cell[:search_text]}".downcase.strip.include?(search_string.downcase.strip)
+    end
+
+    def filtered?
+      @filtered == true
+    end
+
+    def search_string
+      @search_string ||= nil
+    end
+
     def search(search_string)
-      start_searching(search_string)
+      @filtered = true
+      @search_string = search_string
+      self.filtered_data = []
 
       self.data.compact.each do |section|
         new_section = {}
 
         new_section[:cells] = section[:cells].map do |cell|
-          cell[:searchable] != false && "#{cell[:title]}\n#{cell[:search_text]}".downcase.strip.include?(self.search_string) ? cell : nil
+          if @search_action
+            @search_action.call(cell, search_string)
+          else
+            self.default_search(cell, search_string)
+          end ? cell : nil
         end.compact
 
         if new_section[:cells] && new_section[:cells].length > 0
@@ -58,48 +88,8 @@ module ProMotion
       self.filtered_data
     end
 
-    def stop_searching
-      self.filtered_data = []
-      self.filtered = false
-      self.search_string = false
-      self.original_search_string = false
-    end
-
-    def set_data_cell_defaults(data_cell)
-      data_cell[:cell_style] ||= begin
-        data_cell[:subtitle] ? UITableViewCellStyleSubtitle : UITableViewCellStyleDefault
-      end
-      data_cell[:cell_class] ||= PM::TableViewCell
-      data_cell[:cell_identifier] ||= build_cell_identifier(data_cell)
-      data_cell[:properties] ||= data_cell[:style] || data_cell[:styles]
-
-      data_cell[:accessory] = {
-        view: data_cell[:accessory],
-        value: data_cell[:accessory_value],
-        action: data_cell[:accessory_action],
-        arguments: data_cell[:accessory_arguments]
-      } unless data_cell[:accessory].nil? || data_cell[:accessory].is_a?(Hash)
-
-      data_cell
-    end
-
-    def build_cell_identifier(data_cell)
-      ident = "#{data_cell[:cell_class].to_s}"
-      ident << "-#{data_cell[:stylename].to_s}" if data_cell[:stylename] # For Teacup
-      ident << "-accessory" if data_cell[:accessory]
-      ident << "-subtitle" if data_cell[:subtitle]
-      ident << "-remoteimage" if data_cell[:remote_image]
-      ident << "-image" if data_cell[:image]
-      ident
-    end
-
-  private
-
-    def start_searching(search_string)
-      self.filtered_data = []
-      self.filtered = true
-      self.search_string = search_string.downcase.strip
-      self.original_search_string = search_string
+    def clear_filter
+      @filtered = false
     end
   end
 end

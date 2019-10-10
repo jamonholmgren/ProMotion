@@ -81,11 +81,6 @@ module ProMotion
       mp "Received memory warning in #{self.inspect}. You should implement on_memory_warning in your screen.", force_color: :red
     end
 
-    def on_live_reload
-      self.view.subviews.each(&:removeFromSuperview)
-      on_load
-    end
-
     def should_rotate(orientation)
       case orientation
       when UIInterfaceOrientationPortrait

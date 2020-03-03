@@ -1,9 +1,10 @@
 os: osx
-osx_image: xcode11.1
+osx_image: xcode11.3
 env:
   global:
     - RUBYMOTION_LICENSE=1dcac45cc434293009f74b33037bdf7361a3a1ff # Official license key for open-source projects
     - TMP_DIR=./tmp  # For motion repo, so it doesn't attempt to use /tmp, to which it has no access
+    - OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 before_install:
   - wget http://travisci.rubymotion.com/ -O RubyMotion-TravisCI.pkg
   - sudo installer -pkg RubyMotion-TravisCI.pkg -target /

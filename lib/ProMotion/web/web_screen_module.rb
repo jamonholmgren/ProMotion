@@ -1,5 +1,7 @@
 module ProMotion
   module WebScreenModule
+    include WKWebScreenModule if defined?(WKWebView)
+    include UIWebScreenModule unless defined?(WKWebView)
 
     attr_accessor :webview, :external_links, :detector_types, :scale_to_fit
 
@@ -15,17 +17,6 @@ module ProMotion
 
     def on_init
       # TODO: Remove in 3.0
-    end
-
-    def web_view_setup
-      self.webview ||= add UIWebView.new, {
-        frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height),
-        delegate: self,
-        data_detector_types: data_detector_types
-      }
-      self.webview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
-      self.webview.scalesPageToFit = self.scale_to_fit
-      self.webview.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal
     end
 
     def web
@@ -58,10 +49,7 @@ module ProMotion
     end
 
     def open_url(url)
-      request = NSURLRequest.requestWithURL(
-        url.is_a?(NSURL) ? url : NSURL.URLWithString(url)
-      )
-      web.loadRequest request
+      web.loadRequest NSURLRequest.requestWithURL(url.to_url)
     end
 
     def convert_retina_images(content)
@@ -87,10 +75,6 @@ module ProMotion
 
     def html
       evaluate("document.documentElement.outerHTML")
-    end
-
-    def evaluate(js)
-      self.webview.stringByEvaluatingJavaScriptFromString(js)
     end
 
     def current_url
@@ -119,36 +103,6 @@ module ProMotion
       UIApplication.sharedApplication.openURL(in_request.URL)
     end
 
-    # UIWebViewDelegate Methods - Camelcase
-    def webView(in_web, shouldStartLoadWithRequest:in_request, navigationType:in_type)
-      if %w(http https).include?(in_request.URL.scheme)
-        if self.external_links == true && in_type == UIWebViewNavigationTypeLinkClicked
-          if defined?(OpenInChromeController)
-            open_in_chrome in_request
-          else
-            open_in_safari in_request
-          end
-          return false # don't allow the web view to load the link.
-        end
-      end
-
-      load_request_enable = true #return true on default for local file loading.
-      load_request_enable = !!on_request(in_request, in_type) if self.respond_to?(:on_request)
-      load_request_enable
-    end
-
-    def webViewDidStartLoad(webView)
-      load_started if self.respond_to?(:load_started)
-    end
-
-    def webViewDidFinishLoad(webView)
-      load_finished if self.respond_to?(:load_finished)
-    end
-
-    def webView(webView, didFailLoadWithError:error)
-      load_failed(error) if self.respond_to?("load_failed:")
-    end
-
     protected
 
     def data_detector_types
@@ -166,6 +120,5 @@ module ProMotion
         all:      UIDataDetectorTypeAll
       }[symbol] || UIDataDetectorTypeNone
     end
-
   end
 end

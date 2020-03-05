@@ -79,11 +79,11 @@ describe "PM::TableViewCellModule" do
   end
 
   it "should allow attributed title" do
-    @attributed_subject.textLabel.attributedText.mutableString.should == "Attributed Title"
+    @attributed_subject.textLabel.attributedText.string.should == "Attributed Title"
   end
 
   it "should allow attributed subtitle" do
-    @attributed_subject.detailTextLabel.attributedText.mutableString.should == "Attributed Subtitle"
+    @attributed_subject.detailTextLabel.attributedText.string.should == "Attributed Subtitle"
   end
 
   it "should have the right subtitle" do

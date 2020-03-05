@@ -64,6 +64,7 @@ describe "ProMotion::TableScreen functionality" do
       table_screen.tableView.scrollToRowAtIndexPath(ip, atScrollPosition: UITableViewScrollPositionTop, animated: false)
 
       cell = views(TestCell).first
+      cell.prepare_for_reuse_time.should.not.be.nil
       cell.prepare_for_reuse_time.should < cell.on_reuse_time
     end
   end

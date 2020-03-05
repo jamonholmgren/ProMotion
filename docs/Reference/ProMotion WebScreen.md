@@ -30,17 +30,17 @@ class MyWebScreen < PM::WebScreen
     "AboutView.html"
   end
 
-  def load_started
+  def navigation_started
     # Optional
     # Called when the request starts to load
   end
 
-  def load_finished
+  def navigation_finished
     # Optional
     # Called when the request is finished
   end
 
-  def load_failed(error)
+  def navigation_failed(error)
     # Optional
     # "error" is an instance of NSError
   end
@@ -62,7 +62,7 @@ detector_types: [:none, :phone, :link, :address, :event, :all]
 ```
 
 **Default:** :none  
-**Behavior:** An array of any of the above values to specify what sort of detectors you'd like the webview to auto-link for you. [You can read more about `UIDataDetector`s here](http://developer.apple.com/library/ios/#documentation/uikit/reference/UIKitDataTypesReference/Reference/reference.html).
+**Behavior:** An array of any of the above values to specify what sort of detectors you'd like the webview to auto-link for you. [You can read more about `WKDataDetectorType`s here](https://developer.apple.com/documentation/webkit/wkdatadetectortypes?language=objc).
 
 ### Opening External Links in Chrome
 
@@ -85,6 +85,12 @@ Causes the `WebScreen` to load new content (where `content` is a string referenc
 #### html
 
 Returns the current HTML contained in the `WebScreen` as a string.
+
+```ruby
+screen.html do |html|
+  # fetched current html asynchronously
+end
+```
 
 #### can_go_back
 
@@ -122,7 +128,7 @@ None.
 
 #### webview
 
-Reference to the UIWebView that is automatically created.
+Reference to the WKWebView that is automatically created.
 
 #### external_links
 

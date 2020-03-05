@@ -40,7 +40,6 @@ module ProMotion
       if File.exists? content_path
         content_string = File.read content_path
         content_base_url = NSURL.fileURLWithPath NSBundle.mainBundle.resourcePath
-
         self.web.loadHTMLString(convert_retina_images(content_string), baseURL:content_base_url)
       else
         # We assume the user wants to load an arbitrary string into the web view
@@ -73,12 +72,12 @@ module ProMotion
       mp("Missing #content method in WebScreen #{self.class.to_s}.", force_color: :red) unless self.respond_to?(:content)
     end
 
-    def html
-      evaluate("document.documentElement.outerHTML")
+    def html(&block)
+      evaluate('document.documentElement.outerHTML', &block)
     end
 
-    def current_url
-      evaluate('document.URL')
+    def current_url(&block)
+      evaluate('document.URL', &block)
     end
 
     # Navigation

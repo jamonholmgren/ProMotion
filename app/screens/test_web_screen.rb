@@ -3,7 +3,7 @@ class TestWebScreen < PM::WebScreen
   title "WebScreen Test"
 
   # accesor for wait_change method which is testing helper
-  attr_accessor :is_load_started, :is_load_finished, :is_load_failed, :is_load_failed_error
+  attr_accessor :is_nav_started, :is_nav_finished, :is_nav_failed, :nav_failed_error
 
   def on_init
     @on_init_available = true
@@ -18,18 +18,18 @@ class TestWebScreen < PM::WebScreen
   end
 
   # implementation of PM::WebScreen's hook
-  def load_started
-    self.is_load_started = true
+  def navigation_started(nav)
+    self.is_nav_started = true
   end
 
-  def load_finished
-    self.is_load_finished = true
+  def navigation_finished(nav)
+    self.is_nav_finished = true
   end
 
-  def load_failed(error)
+  def navigation_failed(nav, error)
     puts "Load Failed: #{error.localizedDescription}"
     puts error.localizedFailureReason
-    self.is_load_failed = true
-    self.is_load_failed_error = error
+    self.is_nav_failed = true
+    self.nav_failed_error = error
   end
 end

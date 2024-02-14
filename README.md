@@ -109,21 +109,13 @@ interviews Jamon Holmgren about ProMotion
 
 ## Help
 
-ProMotion is not only an easy DSL to get started. The community is very helpful and
-welcoming to new RubyMotion developers. We don't mind newbie questions.
-
-The quickest way to get help is to join the [Motioneers Slack Group](http://motioneers.herokuapp.com). If you still need help, feel free to open an issue on GitHub. If we don't respond within a day, tweet us a link to the issue -- sometimes we get busy.
-
-### Premium Support
-
-[ProMotion](https://github.com/infinitered/ProMotion), as an open source project, is free to use and always will be. [Infinite Red](https://infinite.red/) offers premium ProMotion support and general mobile app design/development services. Email us at [hello@infinite.red](mailto:hello@infinite.red) to get in touch with us for more details.
-
+We're no longer supporting ProMotion and it's mostly retired. If you need help, feel free to file an issue, but I may not see it.
 
 ## Contributing
 
 See [CONTRIBUTING.md](https://github.com/infinitered/ProMotion/blob/master/CONTRIBUTING.md).
 
-## Core Team
+## Core Team (inactive)
 
 * Jamon Holmgren: [@jamonholmgren](https://twitter.com/jamonholmgren)
 * Andrew Havens: [@misbehavens](https://twitter.com/misbehavens)

@@ -1,9 +1,8 @@
 # ProMotion
 
 [![Gem Version](https://img.shields.io/gem/v/ProMotion.svg?style=flat)](https://rubygems.org/gems/ProMotion)
-[![Build Status](https://img.shields.io/travis/infinitered/ProMotion.svg?style=flat)](https://travis-ci.org/infinitered/ProMotion)
 
-ProMotion was created by [Infinite Red](http://infinite.red), a web and mobile development company based in Portland, OR and San Francisco, CA. While you're welcome to use ProMotion, please note that we rely on the community to maintain it. We are happy to merge pull requests and release new versions but are no longer driving primary development.
+ProMotion was created by me, Jamon Holmgren. While you're welcome to use ProMotion, please note that it's no longer maintained!
 
 ## iPhone Apps, Ruby-style
 

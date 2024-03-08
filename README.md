@@ -4,6 +4,8 @@
 
 ProMotion was created by me, Jamon Holmgren. While you're welcome to use ProMotion, please note that it's no longer maintained!
 
+(And yes -- I created it long before [Apple launched their own ProMotion](https://www.apple.com/newsroom/2017/06/ipad-pro-10-5-and-12-9-inch-models-introduces-worlds-most-advanced-display-breakthrough-performance/).)
+
 ## iPhone Apps, Ruby-style
 
 ProMotion is a RubyMotion gem that makes iOS development more like Ruby and less like Objective-C.

@@ -81,13 +81,13 @@ end
 ## Getting Started
 
 1. Check out the [Getting Started Guide](https://github.com/infinitered/ProMotion/blob/master/docs/Guides/Getting%20Started.md)
-2. Watch the excellent [MotionInMotion screencast about ProMotion](https://motioninmotion.tv/screencasts/8) (very reasonably priced subscription required)
+2. Watch the excellent [MotionInMotion screencast about ProMotion](https://web.archive.org/web/20160318203350/https://motioninmotion.tv/screencasts/8) (note: no longer active. ~very reasonably priced subscription required~)
 3. Follow a tutorial: [Building an ESPN app using RubyMotion, ProMotion, and TDD](http://jamonholmgren.com/building-an-espn-app-using-rubymotion-promotion-and-tdd)
 4. Read the [Documentation](https://github.com/infinitered/ProMotion/blob/master/docs)
 
 ## Changelog
 
-[See Releases page](https://github.com/infinitered/ProMotion/releases)
+[See Releases page](https://github.com/jamomholmgren/ProMotion/releases)
 
 ## Apps built on ProMotion
 
